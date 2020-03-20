@@ -1,0 +1,11 @@
+Django==3.0.4
+requests==2.21.0
+djangorestframework==3.11.0
+django-filter==2.1.0
+Pillow==6.0.0
+django-model-utils==3.1.2
+django-imagekit==4.0.2
+django-debug-toolbar
+python-memcached==1.59
+django-cors-headers==3.2.1
+django-colorfield==0.2.1
