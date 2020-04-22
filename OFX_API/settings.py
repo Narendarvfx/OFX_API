@@ -35,6 +35,7 @@ ALLOWED_HOSTS = ['127.0.0.1','*']
 INSTALLED_APPS = [
     'profiles',
     'hrm',
+    'production',
     'imagekit',
     'rest_framework',
     'debug_toolbar',
