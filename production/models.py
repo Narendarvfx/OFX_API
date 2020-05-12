@@ -10,6 +10,7 @@ class Clients(models.Model):
     country = models.CharField(max_length=100, blank=True, null=True)
     TIMEZONES = tuple(zip(pytz.all_timezones, pytz.all_timezones))
     timezone = models.CharField(max_length=32, choices=TIMEZONES, default='Asia/Kolkata')
+    status = models.CharField(max_length=40, default="Active", null=True, blank=True)
 
     def upload_photo_dir(self, filename):
         ext = filename.split('.')[-1]
