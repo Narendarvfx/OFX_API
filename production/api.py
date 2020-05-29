@@ -140,3 +140,10 @@ class ShotsData(APIView):
             os.makedirs(final_dir, exist_ok=True)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ProjectShotsData(APIView):
+
+    def get(self, request, projectId, format=None):
+        shot = Shots.objects.filter(project=projectId)
+        serializer = ShotsSerializer(shot, many=True, context={"request":request})
+        return Response(serializer.data)
