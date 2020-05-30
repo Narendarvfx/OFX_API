@@ -6,7 +6,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from production.models import Clients, Projects, Status, Shots, Complexity
-from production.serializers import ClientSerializer, ProjectSerializer, StatusSerializer, ShotsSerializer
+from production.serializers import ClientSerializer, ProjectSerializer, StatusSerializer, ShotsSerializer, \
+    ShotsPostSerializer
 
 
 class StatusInfo(APIView):
@@ -132,12 +133,12 @@ class ShotsData(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        serializer = ShotsSerializer(data=request.data)
+        serializer = ShotsPostSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            shot_dir = serializer.data['name']
-            final_dir = os.path.join('//192.168.4.114//R&D_Share//OFXSTORAGE//jobs//'+serializer.data['project']['client']+'//'+serializer.data['project']['name'], shot_dir)
-            os.makedirs(final_dir, exist_ok=True)
+            # shot_dir = serializer.data['name']
+            # final_dir = os.path.join('//192.168.4.114//R&D_Share//OFXSTORAGE//jobs//'+serializer.data['project']['client']+'//'+serializer.data['project']['name'], shot_dir)
+            # os.makedirs(final_dir, exist_ok=True)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -147,3 +148,23 @@ class ProjectShotsData(APIView):
         shot = Shots.objects.filter(project=projectId)
         serializer = ShotsSerializer(shot, many=True, context={"request":request})
         return Response(serializer.data)
+
+class ShotUpdate(APIView):
+
+    def get(self, request, shotId, format=None):
+        shot = Shots.objects.get(id=shotId)
+        serializer = ShotsSerializer(shot)
+        return Response(serializer.data)
+
+    def put(self, request, shotId):
+        shot = Shots.objects.get(id=shotId)
+        serializer = ShotsSerializer(shot, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, shotId, format=None):
+        model_object = Shots.objects.get(id=shotId)
+        model_object.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

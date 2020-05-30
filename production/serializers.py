@@ -38,6 +38,15 @@ class ProjectCompactSerializer(serializers.ModelSerializer):
         fields = ('name',
                   'client')
 
+class ShotsPostSerializer(serializers.ModelSerializer):
+    status = serializers.SlugRelatedField(queryset=Status.objects.all(), slug_field='name', required=False)
+    complexity = serializers.SlugRelatedField(queryset=Complexity.objects.all(), slug_field='name', required=False)
+    imageSrc = serializers.ImageField(max_length=None, use_url=True, allow_null=True, required=False)
+
+    class Meta:
+        model = Shots
+        fields = '__all__'
+
 class ShotsSerializer(serializers.ModelSerializer):
     project = ProjectCompactSerializer(read_only=True)
     status = serializers.SlugRelatedField(queryset=Status.objects.all(), slug_field='name', required=False)

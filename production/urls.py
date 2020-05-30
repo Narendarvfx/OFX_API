@@ -17,4 +17,5 @@ urlpatterns = [
     # Shots Urls
     url(r'^api/production/shots/$', api.ShotsData.as_view(), name='Shots API'),
     url(r'^api/production/projects/shots/(?P<projectId>\d+)/$', api.ProjectShotsData.as_view(), name='Projects Shots API'),
+    url(r'^api/production/shots/(?P<shotId>\d+)/$', api.ShotUpdate.as_view(), name='Shot Update API'),
 ]
