@@ -5,9 +5,9 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from production.models import Clients, Projects, Status, Shots, Complexity
+from production.models import Clients, Projects, Status, Shots, Complexity, Sequence
 from production.serializers import ClientSerializer, ProjectSerializer, StatusSerializer, ShotsSerializer, \
-    ShotsPostSerializer
+    ShotsPostSerializer, ComplexitySerializer, SequenceSerializer
 
 
 class StatusInfo(APIView):
@@ -22,7 +22,7 @@ class StatusInfo(APIView):
 
 class ComplexityInfo(APIView):
     """
-    This is for getting the Status info
+    This is for getting the Complexity info
     """
 
     def get(self, request, format=None):
@@ -44,9 +44,9 @@ class ClientDetail(APIView):
         serializer = ClientSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            client_dir = serializer.data['name']
-            final_dir = os.path.join('//192.168.4.114//R&D_Share//OFXSTORAGE//jobs//', client_dir)
-            os.makedirs(final_dir, exist_ok=True)
+            # client_dir = serializer.data['name']
+            # final_dir = os.path.join('//192.168.4.114//R&D_Share//OFXSTORAGE//jobs//', client_dir)
+            # os.makedirs(final_dir, exist_ok=True)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -86,7 +86,33 @@ class ProjectDetail(APIView):
             serializer.save()
             project_dir = serializer.data['name']
             final_dir = os.path.join('//192.168.4.114//R&D_Share//OFXSTORAGE//jobs//'+serializer.data['client'], project_dir)
-            os.makedirs(final_dir, exist_ok=True)
+            try:
+                os.makedirs(final_dir, exist_ok=True)
+            except Exception as e:
+                print(e)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class SequenceDetail(APIView):
+    """
+    This is for get and post sequence detail
+    """
+
+    def get(self, request, format=None):
+        sequence = Sequence.objects.select_related('status','project','project__client').all()
+        serializer = SequenceSerializer(sequence, many=True, context={"request":request})
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = ProjectSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            project_dir = serializer.data['name']
+            final_dir = os.path.join('//192.168.4.114//R&D_Share//OFXSTORAGE//jobs//'+serializer.data['client'], project_dir)
+            try:
+                os.makedirs(final_dir, exist_ok=True)
+            except Exception as e:
+                print(e)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -144,8 +170,8 @@ class ShotsData(APIView):
 
 class ProjectShotsData(APIView):
 
-    def get(self, request, projectId, format=None):
-        shot = Shots.objects.filter(project=projectId)
+    def get(self, request, sequenceId, format=None):
+        shot = Shots.objects.filter(sequence=sequenceId)
         serializer = ShotsSerializer(shot, many=True, context={"request":request})
         return Response(serializer.data)
 

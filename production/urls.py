@@ -14,8 +14,13 @@ urlpatterns = [
     url(r'^api/production/projects/(?P<projectId>\d+)/$', api.ProjectUpdate.as_view(), name='Project API'),
     url(r'^api/production/fileexplorer/(?P<projectId>\d+)/$', api.FileExplorer.as_view(), name='File Explorer'),
 
+    # Sequence Urls
+    url(r'^api/production/projects/sequence/$', api.SequenceDetail.as_view(), name='Sequence API'),
+    # url(r'^api/production/projects/(?P<projectId>\d+)/$', api.ProjectUpdate.as_view(), name='Project API'),
+    # url(r'^api/production/fileexplorer/(?P<projectId>\d+)/$', api.FileExplorer.as_view(), name='File Explorer'),
+
     # Shots Urls
     url(r'^api/production/shots/$', api.ShotsData.as_view(), name='Shots API'),
-    url(r'^api/production/projects/shots/(?P<projectId>\d+)/$', api.ProjectShotsData.as_view(), name='Projects Shots API'),
+    url(r'^api/production/projects/sequence/shots/(?P<sequenceId>\d+)/$', api.ProjectShotsData.as_view(), name='Projects Shots API'),
     url(r'^api/production/shots/(?P<shotId>\d+)/$', api.ShotUpdate.as_view(), name='Shot Update API'),
 ]

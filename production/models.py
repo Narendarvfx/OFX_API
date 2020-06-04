@@ -21,7 +21,7 @@ class Complexity(models.Model):
 
 class Clients(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    email = models.EmailField(null=True, blank=True)
+    email = models.EmailField(max_length=70, null=True)
     country = models.CharField(max_length=100, blank=True, null=True)
     status = models.ForeignKey(Status, default=1, on_delete=models.CASCADE,null=True,blank=True, related_name='+')
 
@@ -48,7 +48,6 @@ class Projects(models.Model):
     client = models.ForeignKey(Clients, on_delete=models.CASCADE, related_name='+')
     status = models.ForeignKey(Status, on_delete=models.CASCADE, related_name='+')
     start_date = models.DateTimeField(null=True, blank=True)
-    end_date = models.DateTimeField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
 
     def upload_photo_dir(self, filename):
@@ -71,9 +70,22 @@ class Projects(models.Model):
     class Meta:
         verbose_name_plural = "Projects"
 
+class Sequence(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    project = models.ForeignKey(Projects, on_delete=models.CASCADE, related_name='+')
+    status = models.ForeignKey(Status, on_delete=models.CASCADE, related_name='+')
+    creation_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = "Sequence"
+
 class Shots(models.Model):
     name = models.CharField(max_length=100)
-    project = models.ForeignKey(Projects, on_delete=models.CASCADE, related_name='+')
+    sequence = models.ForeignKey(Sequence, on_delete=models.CASCADE, related_name='+')
     status = models.ForeignKey(Status, on_delete=models.CASCADE, related_name='+')
     actual_start_frame = models.IntegerField(null=True, blank=True)
     actual_end_frame = models.IntegerField(null=True, blank=True)
