@@ -71,7 +71,7 @@ class Projects(models.Model):
         verbose_name_plural = "Projects"
 
 class Sequence(models.Model):
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100, unique=False)
     project = models.ForeignKey(Projects, on_delete=models.CASCADE, related_name='+')
     status = models.ForeignKey(Status, on_delete=models.CASCADE, related_name='+')
     creation_date = models.DateTimeField(auto_now_add=True)
@@ -95,7 +95,7 @@ class Shots(models.Model):
     end_date = models.DateTimeField(null=True, blank=True)
     bid_days = models.IntegerField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    complexity = models.ForeignKey(Complexity, on_delete=models.CASCADE, related_name='+')
+    complexity = models.ForeignKey(Complexity, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
     def upload_photo_dir(self, filename):
         ext = filename.split('.')[-1]
         path = 'shots/photo/{}.{}'.format(self.name, ext)

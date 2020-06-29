@@ -4,16 +4,16 @@ from production.models import Clients, Projects, Status, Complexity, Shots, Sequ
 
 
 class StatusSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Status
         fields = '__all__'
 
-class ComplexitySerializer(serializers.ModelSerializer):
 
+class ComplexitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Complexity
         fields = '__all__'
+
 
 class ClientSerializer(serializers.ModelSerializer):
     imageSrc = serializers.ImageField(max_length=None, use_url=True, allow_null=True, required=False)
@@ -22,6 +22,7 @@ class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Clients
         fields = '__all__'
+
 
 class ProjectSerializer(serializers.ModelSerializer):
     client = serializers.SlugRelatedField(queryset=Clients.objects.all(), slug_field='name', required=False)
@@ -32,17 +33,20 @@ class ProjectSerializer(serializers.ModelSerializer):
         model = Projects
         fields = '__all__'
 
+
 class ProjectCompactSerializer(serializers.ModelSerializer):
     client = serializers.SlugRelatedField(queryset=Clients.objects.all(), slug_field='name', required=False)
 
     class Meta:
         model = Projects
-        fields = ('name',
+        fields = ('id',
+                  'name',
                   'client')
         depth = 1
 
+
 class SequenceCompactSerializer(serializers.ModelSerializer):
-    project = serializers.SlugRelatedField(queryset=Projects.objects.all(), slug_field='name', required=False)
+    project = ProjectCompactSerializer(read_only=True)
 
     class Meta:
         model = Sequence
@@ -50,8 +54,16 @@ class SequenceCompactSerializer(serializers.ModelSerializer):
                   'project')
         depth = 1
 
+
 class SequenceSerializer(serializers.ModelSerializer):
     project = ProjectCompactSerializer(read_only=True)
+    status = serializers.SlugRelatedField(queryset=Status.objects.all(), slug_field='name', required=False)
+
+    class Meta:
+        model = Sequence
+        fields = '__all__'
+
+class SequencePostSerializer(serializers.ModelSerializer):
     status = serializers.SlugRelatedField(queryset=Status.objects.all(), slug_field='name', required=False)
 
     class Meta:
@@ -66,6 +78,7 @@ class ShotsPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Shots
         fields = '__all__'
+
 
 class ShotsSerializer(serializers.ModelSerializer):
     sequence = SequenceCompactSerializer(read_only=True)
