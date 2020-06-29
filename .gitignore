@@ -1,7 +1,13 @@
 .idea/
 *.pyc
-__pycache__/
+images/
+media/
 logs/
+migrations/
+*.db
 venv/
 db.sqlite3
-
+*.json
+*.sql
+static/third_party/ui-grid*
+MIST_API/settings.ini
