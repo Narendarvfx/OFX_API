@@ -4,6 +4,7 @@ images/
 media/
 logs/
 migrations/
+dump/
 *.db
 venv/
 db.sqlite3
