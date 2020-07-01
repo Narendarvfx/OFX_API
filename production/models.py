@@ -83,10 +83,20 @@ class Sequence(models.Model):
     class Meta:
         verbose_name_plural = "Sequence"
 
+class Task_Type(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = "Task_Type"
+
 class Shots(models.Model):
     name = models.CharField(max_length=100)
     sequence = models.ForeignKey(Sequence, on_delete=models.CASCADE, related_name='+')
     status = models.ForeignKey(Status, on_delete=models.CASCADE, related_name='+')
+    task_type = models.ForeignKey(Task_Type, on_delete=models.CASCADE, related_name='+')
     actual_start_frame = models.IntegerField(null=True, blank=True)
     actual_end_frame = models.IntegerField(null=True, blank=True)
     work_start_frame = models.IntegerField(null=True, blank=True)
