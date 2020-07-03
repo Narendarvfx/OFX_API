@@ -15,11 +15,12 @@ from decouple import config
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 AUTH_LDAP_SERVER_URI = "ldap://192.168.5.2"
-AUTH_LDAP_BIND_DN = "pipeline account"
+AUTH_LDAP_BIND_DN = "Pipeline Account"
 
 AUTH_LDAP_BIND_PASSWORD = "Gunreddy^999"
 AUTH_LDAP_USER_SEARCH = LDAPSearchUnion(
     LDAPSearch("OU=DevelopmentTeam,dc=oscarfx,dc=com", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
+    LDAPSearch("OU=Pipeline,dc=oscarfx,dc=com", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
     LDAPSearch("OU=OFXMatchmove,dc=oscarfx,dc=com", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
     LDAPSearch("OU=OFXIT,dc=oscarfx,dc=com", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
     LDAPSearch("OU=OFXData,dc=oscarfx,dc=com", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
