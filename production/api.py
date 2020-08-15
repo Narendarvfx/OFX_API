@@ -2,9 +2,10 @@ import os
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from production.models import Clients, Projects, Status, Shots, Complexity, Sequence
+from production.models import Clients, Projects, Status, Shots, Complexity, Sequence, MyTask, Assignments
 from production.serializers import ClientSerializer, ProjectSerializer, StatusSerializer, ShotsSerializer, \
-    ShotsPostSerializer, ComplexitySerializer, SequenceSerializer, SequencePostSerializer
+    ShotsPostSerializer, ComplexitySerializer, SequenceSerializer, SequencePostSerializer, MyTaskSerializer, \
+    MyTaskPostSerializer, MyTaskShotSerializer, AssignmentSerializer, AssignmentPostSerializer
 
 
 class StatusInfo(APIView):
@@ -201,3 +202,70 @@ class ShotUpdate(APIView):
         model_object = Shots.objects.get(id=shotId)
         model_object.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class MyTaskData(APIView):
+    """
+    This is for edit employee detail
+    """
+    def get(self, request, format=None):
+        mytask = MyTask.objects.all()
+        serializer = MyTaskSerializer(mytask, many=True, context={"request":request})
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = MyTaskPostSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            # shot_dir = serializer.data['name']
+            # final_dir = os.path.join('//192.168.5.14//R&D_Share//OFXSTORAGE//jobs//'+serializer.data['project']['client']+'//'+serializer.data['project']['name'], shot_dir)
+            # os.makedirs(final_dir, exist_ok=True)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class MyTaskShotData(APIView):
+    """
+    This is for edit employee detail
+    """
+    def get(self, request,shotId, format=None):
+        mytask = MyTask.objects.all().filter(shot=shotId)
+        serializer = MyTaskShotSerializer(mytask, many=True)
+        return Response(serializer.data)
+
+class MyTaskDetail(APIView):
+
+    def get(self, request, taskId, format=None):
+        task = MyTask.objects.get(id=taskId)
+        serializer = MyTaskSerializer(task)
+        return Response(serializer.data)
+
+    def put(self, request, shotId):
+        shot = Shots.objects.get(id=shotId)
+        serializer = ShotsSerializer(shot, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, shotId, format=None):
+        model_object = Shots.objects.get(id=shotId)
+        model_object.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class ShotAssignment(APIView):
+    """
+    This is for edit employee detail
+    """
+    def get(self, request, format=None):
+        assignment = Assignments.objects.all()
+        serializer = AssignmentSerializer(assignment, many=True, context={"request":request})
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = AssignmentPostSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            # shot_dir = serializer.data['name']
+            # final_dir = os.path.join('//192.168.5.14//R&D_Share//OFXSTORAGE//jobs//'+serializer.data['project']['client']+'//'+serializer.data['project']['name'], shot_dir)
+            # os.makedirs(final_dir, exist_ok=True)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

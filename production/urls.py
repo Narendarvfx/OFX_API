@@ -24,4 +24,12 @@ urlpatterns = [
     url(r'^api/production/shots/$', api.ShotsData.as_view(), name='Shots API'),
     url(r'^api/production/projects/sequence/shots/(?P<sequenceId>\d+)/$', api.ProjectShotsData.as_view(), name='Projects Shots API'),
     url(r'^api/production/shots/(?P<shotId>\d+)/$', api.ShotUpdate.as_view(), name='Shot Update API'),
+
+    # MyTask Urls
+    url(r'^api/production/mytask/$', api.MyTaskData.as_view(), name='MyTask API'),
+    url(r'^api/production/mytask/shot/(?P<shotId>\d+)/$', api.MyTaskShotData.as_view(), name='MyTask API'),
+    url(r'^api/production/mytask/(?P<taskId>\d+)/$', api.MyTaskDetail.as_view(), name='MyTask API'),
+
+    # Assignment Urls
+    url(r'^api/production/shot/assignments/$', api.ShotAssignment.as_view(), name='MyTask API'),
 ]

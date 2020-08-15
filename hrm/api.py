@@ -1,3 +1,4 @@
+from django.db.models import Q
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -24,3 +25,13 @@ class EmployeeDetail(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class AllEmployeeDetail(APIView):
+    """
+    This is for edit employee detail
+    """
+
+    def get(self, request, format=None):
+        employee = Employee.objects.select_related('department','role','employement_status','grade').filter(Q(department__name="PAINT") | Q(department__name="ROTO") | Q(department__name="MATCH MOVE"))
+        serializer = EmployeeSerializer(employee, many=True, context={"request":request})
+        return Response(serializer.data)
