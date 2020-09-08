@@ -29,7 +29,11 @@ urlpatterns = [
     url(r'^api/production/mytask/$', api.MyTaskData.as_view(), name='MyTask API'),
     url(r'^api/production/mytask/shot/(?P<shotId>\d+)/$', api.MyTaskShotData.as_view(), name='MyTask API'),
     url(r'^api/production/mytask/(?P<taskId>\d+)/$', api.MyTaskDetail.as_view(), name='MyTask API'),
+    url(r'^api/production/mytask/artist/(?P<artistId>\d+)/$', api.MyTaskArtistData.as_view(), name='MyTask API'),
 
     # Assignment Urls
     url(r'^api/production/shot/assignments/$', api.ShotAssignment.as_view(), name='MyTask API'),
+
+    # Lead Urls
+    url(r'^api/production/leads/shots/(?P<leadId>\d+)/$', api.LeadShotsData.as_view(), name='Projects Shots API'),
 ]

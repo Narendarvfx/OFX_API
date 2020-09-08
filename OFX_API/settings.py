@@ -15,7 +15,7 @@ from decouple import config
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 AUTH_LDAP_SERVER_URI = "ldap://192.168.5.2"
-AUTH_LDAP_BIND_DN = "Pipeline Account"
+AUTH_LDAP_BIND_DN = "pipeline account"
 
 AUTH_LDAP_BIND_PASSWORD = "Gunreddy^999"
 AUTH_LDAP_USER_SEARCH = LDAPSearchUnion(
@@ -70,7 +70,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    'colorfield'
+    'colorfield',
+    'channels'
 ]
 
 {
@@ -116,6 +117,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'OFX_API.wsgi.application'
+
+ASGI_APPLICATION = "OFX_API.routing.application"
+
 
 
 # Database

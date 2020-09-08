@@ -45,7 +45,6 @@ class ProjectCompactSerializer(serializers.ModelSerializer):
                   'client')
         depth = 1
 
-
 class SequenceCompactSerializer(serializers.ModelSerializer):
     project = ProjectCompactSerializer(read_only=True)
 
@@ -55,6 +54,18 @@ class SequenceCompactSerializer(serializers.ModelSerializer):
                   'project')
         depth = 1
 
+class ShotCompactSerializer(serializers.ModelSerializer):
+    # client = serializers.SlugRelatedField(queryset=Clients.objects.all(), slug_field='name', required=False)
+    sequence = SequenceCompactSerializer(read_only=True)
+    status = serializers.SlugRelatedField(queryset=Status.objects.all(), slug_field='name', required=False)
+    complexity = serializers.SlugRelatedField(queryset=Complexity.objects.all(), slug_field='name', required=False)
+    task_type = serializers.SlugRelatedField(queryset=Task_Type.objects.all(), slug_field='name', required=False)
+    imageSrc = serializers.ImageField(max_length=None, use_url=True, allow_null=True, required=False)
+
+    class Meta:
+        model = Shots
+        fields = '__all__'
+        depth = 1
 
 class SequenceSerializer(serializers.ModelSerializer):
     project = ProjectCompactSerializer(read_only=True)
@@ -118,8 +129,19 @@ class MyTaskPostSerializer(serializers.ModelSerializer):
         model = MyTask
         fields = '__all__'
 
+class MyTaskArtistSerializer(serializers.ModelSerializer):
+    shot = ShotCompactSerializer(read_only=True)
+    artist = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
+    assigned_by = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
+    status = serializers.SlugRelatedField(queryset=Status.objects.all(), slug_field='name', required=False)
+
+    class Meta:
+        model = MyTask
+        fields = '__all__'
+
 class AssignmentSerializer(serializers.ModelSerializer):
-    shot = serializers.SlugRelatedField(queryset=Shots.objects.all(), slug_field='name', required=False)
+    shot = ShotCompactSerializer(read_only=True)
+    # shot = serializers.SlugRelatedField(queryset=Shots.objects.all(), slug_field='name', required=False)
     lead = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
     assigned_by = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
     status = serializers.SlugRelatedField(queryset=Status.objects.all(), slug_field='name', required=False)
