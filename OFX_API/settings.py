@@ -120,7 +120,20 @@ WSGI_APPLICATION = 'OFX_API.wsgi.application'
 
 ASGI_APPLICATION = "OFX_API.routing.application"
 
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             "hosts": [('192.168.5.13', '6379')],
+#         },
+#     },
+# }
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases

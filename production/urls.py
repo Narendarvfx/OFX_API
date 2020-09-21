@@ -36,4 +36,12 @@ urlpatterns = [
 
     # Lead Urls
     url(r'^api/production/leads/shots/(?P<leadId>\d+)/$', api.LeadShotsData.as_view(), name='Projects Shots API'),
+
+    # Channel Urls
+    url(r'^api/production/channels/(?P<shotId>\d+)/$', api.ChannelsData.as_view(), name='Channels API'),
+    url(r'^api/production/channels/', api.ChannelsPostData.as_view(), name='Channels API'),
+
+    # Channel group urls
+    url(r'^api/production/groups/(?P<groupId>[\w\-]+)/$', api.GroupsData.as_view(), name='Channels API'),
+    url(r'^api/production/groups/', api.GroupsPostData.as_view(), name='Channels API'),
 ]

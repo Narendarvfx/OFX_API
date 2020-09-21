@@ -1,15 +1,23 @@
 import os
+
+from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from hrm.models import Employee
 from hrm.serializers import EmployeeSerializer
-from production.models import Clients, Projects, Status, Shots, Complexity, Sequence, MyTask, Assignments
+from production.models import Clients, Projects, ShotStatus, Shots, Complexity, Sequence, MyTask, Assignments, Channels, \
+    Groups
 from production.serializers import ClientSerializer, ProjectSerializer, StatusSerializer, ShotsSerializer, \
     ShotsPostSerializer, ComplexitySerializer, SequenceSerializer, SequencePostSerializer, MyTaskSerializer, \
-    MyTaskPostSerializer, MyTaskShotSerializer, AssignmentSerializer, AssignmentPostSerializer, MyTaskArtistSerializer
+    MyTaskPostSerializer, MyTaskShotSerializer, AssignmentSerializer, AssignmentPostSerializer, MyTaskArtistSerializer, \
+    ChannelsSerializer, ChannelsPostSerializer, GroupsSerializer
 
+import configparser
+
+config = configparser.ConfigParser()
+config.read('D:\\settings.ini')
 
 class StatusInfo(APIView):
     """
@@ -17,7 +25,7 @@ class StatusInfo(APIView):
     """
 
     def get(self, request, format=None):
-        status = Status.objects.all()
+        status = ShotStatus.objects.all()
         serializer = StatusSerializer(status, many=True, context={"request":request} )
         return Response(serializer.data)
 
@@ -63,7 +71,7 @@ class ClientUpdate(APIView):
 
     def put(self, request, client_id):
         client = Clients.objects.get(id=client_id)
-        serializer = ClientSerializer(client, data=request.data)
+        serializer = ClientSerializer(client, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -129,7 +137,7 @@ class ProjectUpdate(APIView):
 
     def put(self, request, projectId):
         project = Projects.objects.get(id=projectId)
-        serializer = ProjectSerializer(project, data=request.data)
+        serializer = ProjectSerializer(project, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -194,7 +202,7 @@ class ShotUpdate(APIView):
 
     def put(self, request, shotId):
         shot = Shots.objects.get(id=shotId)
-        serializer = ShotsSerializer(shot, data=request.data)
+        serializer = ShotsPostSerializer(shot, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -240,7 +248,7 @@ class MyTaskDetail(APIView):
 
     def put(self, request, shotId):
         shot = Shots.objects.get(id=shotId)
-        serializer = ShotsSerializer(shot, data=request.data)
+        serializer = ShotsSerializer(shot, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -284,13 +292,54 @@ class LeadShotsData(APIView):
         serializer = AssignmentSerializer(lead, many=True, context={"request":request})
         return Response(serializer.data)
 
+class ChannelsData(APIView):
+
+    def get(self, request, shotId):
+        data = Channels.objects.select_related('shot','sender').filter(shot=shotId)
+        serializer = ChannelsSerializer(data, many=True, context={"request": request})
+        return Response(serializer.data)
+
+class ChannelsPostData(APIView):
+
+    def get(self, request):
+        data = Channels.objects.select_related('shot','sender').all()
+        serializer = ChannelsSerializer(data, many=True, context={"request": request})
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = ChannelsPostSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class GroupsData(APIView):
+
+    def get(self, request, groupId):
+        data = Groups.objects.get(name=groupId)
+        serializer = GroupsSerializer(data, context={"request": request})
+        return Response(serializer.data)
+
+class GroupsPostData(APIView):
+
+    def get(self, request):
+        data = Groups.objects.all()
+        serializer = GroupsSerializer(data, many=True, context={"request": request})
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = GroupsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 def create_dir_permissions(assigned_data):
-    print(assigned_data)
     shot = Shots.objects.get(id=assigned_data['shot'])
     shot_Serializer = ShotsSerializer(shot)
     artist = Employee.objects.get(id=assigned_data['artist'])
     artist_Serializer = EmployeeSerializer(artist)
-    print(artist_Serializer.data['fullName'])
+    artist_user_id = User.objects.get(id=artist_Serializer.data['profile'])
     if artist_Serializer.data['department'] == 'PAINT':
         dep_dir = '_paint'
     elif artist_Serializer.data['department'] == 'ROTO':
@@ -300,26 +349,27 @@ def create_dir_permissions(assigned_data):
     else:
         print('No Artist Found')
     shot_dir = shot_Serializer.data['sequence']['project']['client']+'//'+shot_Serializer.data['sequence']['project']['name']+'//'+shot_Serializer.data['sequence']['name']+'//'+shot_Serializer.data['name']
-    final_dir = '//192.168.5.250//OFX_Storage//jobs//'+shot_dir+'//'+dep_dir+'//scripts//nk//'+artist_Serializer.data['fullName']
-    if not os.path.exists(final_dir):
-        os.makedirs(final_dir)
-    try:
-        import win32security
-        import ntsecuritycon as con
+    scripts_dir = config['STORAGE']['storage_url']+'\\'+config['STORAGE']['parent_directory']+'\\'+shot_dir+'\\'+dep_dir+'\\scripts'
+    # TODO: add artist folder to pre_render folder
+    for scripts in os.listdir(scripts_dir):
+        final_dir = os.path.join(scripts_dir, scripts, artist_Serializer.data['fullName'])
+        if not os.path.exists(final_dir):
+            os.makedirs(final_dir)
+        try:
+            import win32security
+            import ntsecuritycon as con
 
-        FILENAME = final_dir
+            FILENAME = final_dir
 
-        userx, domain, type = win32security.LookupAccountName("", "narendarreddy.g@oscarfx.com")
+            artist, domain, type = win32security.LookupAccountName("", str(artist_user_id))
 
-        sd = win32security.GetFileSecurity(FILENAME, win32security.DACL_SECURITY_INFORMATION)
+            sd = win32security.GetFileSecurity(FILENAME, win32security.DACL_SECURITY_INFORMATION)
 
-        dacl = sd.GetSecurityDescriptorDacl()
+            dacl = sd.GetSecurityDescriptorDacl()
 
-        dacl.AddAccessAllowedAce(win32security.ACL_REVISION, con.FILE_GENERIC_READ | con.FILE_GENERIC_WRITE, userx)
+            dacl.AddAccessAllowedAceEx(win32security.ACL_REVISION_DS, win32security.SUB_CONTAINERS_AND_OBJECTS_INHERIT, con.GENERIC_ALL, artist)
 
-        sd.SetSecurityDescriptorDacl(1, dacl, 0)
-        win32security.SetFileSecurity(FILENAME, win32security.DACL_SECURITY_INFORMATION, sd)
-    except Exception as e:
-        print("Permissions:",e)
-    # os.makedirs(final_dir, exist_ok=True)
-    print(final_dir)
+            sd.SetSecurityDescriptorDacl(1, dacl, 0)
+            win32security.SetFileSecurity(FILENAME, win32security.DACL_SECURITY_INFORMATION, sd)
+        except Exception as e:
+            print("Permissions:",e)
