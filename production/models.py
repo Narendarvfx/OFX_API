@@ -1,7 +1,7 @@
 from django.db import models
 from imagekit.models import ProcessedImageField
 
-from hrm.models import Employee
+from hrm.models import Employee, ProductionTeam, Department
 
 
 class ShotStatus(models.Model):
@@ -27,7 +27,7 @@ class Clients(models.Model):
     name = models.CharField(max_length=100, unique=True)
     email = models.EmailField(max_length=70, null=True)
     country = models.CharField(max_length=100, blank=True, null=True)
-    status = models.ForeignKey(ShotStatus, default=1, on_delete=models.CASCADE,null=True,blank=True, related_name='+')
+    # status = models.ForeignKey(ShotStatus, default=1, on_delete=models.CASCADE,null=True,blank=True, related_name='+')
 
     def upload_photo_dir(self, filename):
         ext = filename.split('.')[-1]
@@ -77,7 +77,6 @@ class Projects(models.Model):
 class Sequence(models.Model):
     name = models.CharField(max_length=100, unique=False)
     project = models.ForeignKey(Projects, on_delete=models.CASCADE, related_name='+')
-    status = models.ForeignKey(ShotStatus, on_delete=models.CASCADE, related_name='+')
     creation_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
@@ -138,7 +137,7 @@ class MyTask(models.Model):
     art_percentage = models.FloatField(null=True, blank=True)
     assigned_bids = models.FloatField(null=True,blank=True)
     eta = models.DateTimeField(null=True,blank=True)
-    status = models.ForeignKey(ShotStatus, on_delete=models.CASCADE, related_name='+')
+    task_status = models.ForeignKey(ShotStatus, on_delete=models.CASCADE, related_name='+')
     version = models.CharField(max_length=10, null=True, blank=True)
 
     def __str__(self):
@@ -159,6 +158,35 @@ class Assignments(models.Model):
 
     class Meta:
         verbose_name_plural = "Assignments"
+
+class Qc_Assignment(models.Model):
+    task = models.ForeignKey(MyTask, on_delete=models.CASCADE, related_name='+')
+    team = models.ForeignKey(ProductionTeam, on_delete=models.CASCADE, related_name='+')
+    qc_status = models.ForeignKey(ShotStatus, on_delete=models.CASCADE, related_name='+')
+
+    def __str__(self):
+        return self.team.lead.user.first_name
+
+class HeadQCTeam(models.Model):
+    hqc = models.ForeignKey(Employee, on_delete=models.CASCADE,related_name='+', null=True)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='+')
+
+    def __str__(self):
+        return self.hqc.fullName
+
+    class Meta:
+        verbose_name_plural = "HeadQCTeam"
+
+class HeadQc_Assignment(models.Model):
+    qc_task = models.ForeignKey(Qc_Assignment, on_delete=models.CASCADE, related_name='+')
+    hqc = models.ForeignKey(HeadQCTeam, on_delete=models.CASCADE, related_name='+')
+    hqc_status = models.ForeignKey(ShotStatus, on_delete=models.CASCADE, related_name='+')
+
+    def __str__(self):
+        return self.hqc.hqc.fullName
+
+    class Meta:
+        verbose_name_plural = "Head Qc Assignments"
 
 class Groups(models.Model):
     name = models.CharField(max_length=10, null=True, blank=True)

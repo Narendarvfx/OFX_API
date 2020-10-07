@@ -44,4 +44,14 @@ urlpatterns = [
     # Channel group urls
     url(r'^api/production/groups/(?P<groupId>[\w\-]+)/$', api.GroupsData.as_view(), name='Channels API'),
     url(r'^api/production/groups/', api.GroupsPostData.as_view(), name='Channels API'),
+
+    # Qc Assignment urls
+    url(r'^api/production/update_qc/(?P<qcId>\d+)/$', api.QCDataById.as_view(), name='QC Update API'),
+    url(r'^api/production/qc/(?P<teamId>\d+)/$', api.QCDataByTeamId.as_view(), name='QC Assignments API'),
+    url(r'^api/production/qc/qc/', api.QCData.as_view(), name='QC Assignments API'),
+
+    # HeadQc Assignment urls
+    url(r'^api/production/update_head_qc/(?P<hqcId>\d+)/$', api.HeadQCDataById.as_view(), name='Head QC Update API'),
+    url(r'^api/production/head_qc/(?P<hqcId>\d+)/$', api.QCDataByHQCId.as_view(), name='Head QC Assignments API'),
+    url(r'^api/production/head_qc/qc/', api.HeadQCData.as_view(), name='Head QC Assignments API'),
 ]

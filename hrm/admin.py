@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Employee, Department, EmployementStatus, Role, Grade
+from .models import Employee, Department, EmployementStatus, Role, Grade, ProductionTeam
 
 
 class EmployeeFields(admin.ModelAdmin):
@@ -10,6 +10,7 @@ class EmployeeFields(admin.ModelAdmin):
     list_per_page = 10
 
 admin.site.register(Employee, EmployeeFields)
+admin.site.register(ProductionTeam)
 admin.site.register(Department)
 admin.site.register(EmployementStatus)
 admin.site.register(Role)

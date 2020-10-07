@@ -13,7 +13,7 @@ class EmployeeDetail(APIView):
     """
 
     def get(self, request, profile_id, format=None):
-        employee = Employee.objects.get(profile=profile_id)
+        employee = Employee.objects.select_related('department','grade','role','employement_status').get(profile=profile_id)
         serializer = EmployeeSerializer(employee, context={"request":request})
         return Response(serializer.data)
 

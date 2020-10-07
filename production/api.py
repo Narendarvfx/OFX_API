@@ -8,11 +8,12 @@ from rest_framework.views import APIView
 from hrm.models import Employee
 from hrm.serializers import EmployeeSerializer
 from production.models import Clients, Projects, ShotStatus, Shots, Complexity, Sequence, MyTask, Assignments, Channels, \
-    Groups
+    Groups, Qc_Assignment, HeadQc_Assignment
 from production.serializers import ClientSerializer, ProjectSerializer, StatusSerializer, ShotsSerializer, \
     ShotsPostSerializer, ComplexitySerializer, SequenceSerializer, SequencePostSerializer, MyTaskSerializer, \
     MyTaskPostSerializer, MyTaskShotSerializer, AssignmentSerializer, AssignmentPostSerializer, MyTaskArtistSerializer, \
-    ChannelsSerializer, ChannelsPostSerializer, GroupsSerializer
+    ChannelsSerializer, ChannelsPostSerializer, GroupsSerializer, QCSerializer, TeamQCSerializer, \
+    MyTaskUpdateSerializer, HeadQCSerializer, HQCSerializer
 
 import configparser
 
@@ -45,7 +46,7 @@ class ClientDetail(APIView):
     """
 
     def get(self, request, format=None):
-        client = Clients.objects.select_related('status').all()
+        client = Clients.objects.all()
         serializer = ClientSerializer(client, many=True, context={"request":request} )
         return Response(serializer.data)
 
@@ -53,12 +54,6 @@ class ClientDetail(APIView):
         serializer = ClientSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            client_dir = serializer.data['name']
-            final_dir = os.path.join('//172.168.1.250//n-drive//R&D//OFXSTORAGE//jobs//', client_dir.upper())
-            try:
-                os.makedirs(final_dir,  exist_ok=True)
-            except Exception as e:
-                print(e)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -111,7 +106,7 @@ class SequenceDetail(APIView):
     """
 
     def get(self, request, format=None):
-        sequence = Sequence.objects.select_related('status','project','project__client').all()
+        sequence = Sequence.objects.select_related('project','project__client').all()
         serializer = SequenceSerializer(sequence, many=True, context={"request":request})
         return Response(serializer.data)
 
@@ -246,9 +241,9 @@ class MyTaskDetail(APIView):
         serializer = MyTaskSerializer(task)
         return Response(serializer.data)
 
-    def put(self, request, shotId):
-        shot = Shots.objects.get(id=shotId)
-        serializer = ShotsSerializer(shot, data=request.data, partial=True)
+    def put(self, request, taskId):
+        task = MyTask.objects.get(id=taskId)
+        serializer = MyTaskUpdateSerializer(task, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -264,7 +259,7 @@ class MyTaskArtistData(APIView):
     This is for edit employee detail
     """
     def get(self, request,artistId, format=None):
-        mytask = MyTask.objects.all().filter(artist=artistId)
+        mytask = MyTask.objects.filter(artist=artistId).all()
         serializer = MyTaskArtistSerializer(mytask, many=True)
         return Response(serializer.data)
 
@@ -287,7 +282,6 @@ class ShotAssignment(APIView):
 class LeadShotsData(APIView):
 
     def get(self, request, leadId, format=None):
-        print(leadId)
         lead = Assignments.objects.filter(lead=leadId)
         serializer = AssignmentSerializer(lead, many=True, context={"request":request})
         return Response(serializer.data)
@@ -334,6 +328,83 @@ class GroupsPostData(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class QCData(APIView):
+
+    def get(self, request):
+        data = Qc_Assignment.objects.all()
+        serializer = QCSerializer(data, many=True,context={"request": request})
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = QCSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class QCDataByTeamId(APIView):
+
+    def get(self, request,teamId):
+        data = Qc_Assignment.objects.select_related('task__shot__sequence__project','task__shot__sequence__project__client','task__shot__sequence','task__shot__task_type','task__shot__status','task__task_status','qc_status').filter(team=teamId)
+        serializer = TeamQCSerializer(data, many=True, context={"request": request})
+        return Response(serializer.data)
+
+class QCDataById(APIView):
+
+    def get(self, request,qcId):
+        data = Qc_Assignment.objects.get(id=qcId)
+        serializer = TeamQCSerializer(data, many=True, context={"request": request})
+        return Response(serializer.data)
+
+    def put(self, request, qcId):
+        print("Qc:", qcId)
+        qc_task = Qc_Assignment.objects.get(id=qcId)
+        serializer = TeamQCSerializer(qc_task, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class HeadQCData(APIView):
+
+    def get(self, request):
+        data = HeadQc_Assignment.objects.all()
+        serializer = HQCSerializer(data, many=True,context={"request": request})
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = HQCSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class HeadQCDataById(APIView):
+
+    def get(self, request,hqcId):
+        print("Head Qc:",hqcId)
+        data = HeadQc_Assignment.objects.get(id=hqcId)
+        serializer = HeadQCSerializer(data, context={"request": request})
+        return Response(serializer.data)
+
+    def put(self, request, hqcId):
+        print("Head Qc:", hqcId)
+        hqc_task = HeadQc_Assignment.objects.get(id=hqcId)
+        serializer = HeadQCSerializer(hqc_task, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class QCDataByHQCId(APIView):
+
+    def get(self, request,hqcId):
+        print(hqcId)
+        data = HeadQc_Assignment.objects.select_related('qc_task__task__shot__sequence__project','qc_task__task__shot__sequence__project__client','qc_task__task__shot__sequence','qc_task__task__shot__task_type','qc_task__task__shot__status','qc_task__task__task_status','hqc_status').filter(hqc__hqc__id=hqcId)
+        serializer = HeadQCSerializer(data, many=True, context={"request": request})
+        return Response(serializer.data)
+
+
 def create_dir_permissions(assigned_data):
     shot = Shots.objects.get(id=assigned_data['shot'])
     shot_Serializer = ShotsSerializer(shot)
@@ -350,9 +421,33 @@ def create_dir_permissions(assigned_data):
         print('No Artist Found')
     shot_dir = shot_Serializer.data['sequence']['project']['client']+'//'+shot_Serializer.data['sequence']['project']['name']+'//'+shot_Serializer.data['sequence']['name']+'//'+shot_Serializer.data['name']
     scripts_dir = config['STORAGE']['storage_url']+'\\'+config['STORAGE']['parent_directory']+'\\'+shot_dir+'\\'+dep_dir+'\\scripts'
-    # TODO: add artist folder to pre_render folder
+    others = ['cp', 'internal_denoise', 'output', 'pre_renders', 'qc', 'sv']
+    for others in others:
+        other_dirs = os.path.join(config['STORAGE']['storage_url'],config['STORAGE']['parent_directory'],shot_dir,dep_dir,others,str(artist_user_id))
+        print(other_dirs)
+        if not os.path.exists(other_dirs):
+            os.makedirs(other_dirs)
+        try:
+            import win32security
+            import ntsecuritycon as con
+
+            FILENAME = other_dirs
+
+            artist, domain, type = win32security.LookupAccountName("", str(artist_user_id))
+
+            sd = win32security.GetFileSecurity(FILENAME, win32security.DACL_SECURITY_INFORMATION)
+
+            dacl = sd.GetSecurityDescriptorDacl()
+
+            dacl.AddAccessAllowedAceEx(win32security.ACL_REVISION_DS, win32security.SUB_CONTAINERS_AND_OBJECTS_INHERIT, con.GENERIC_ALL, artist)
+
+            sd.SetSecurityDescriptorDacl(1, dacl, 0)
+            win32security.SetFileSecurity(FILENAME, win32security.DACL_SECURITY_INFORMATION, sd)
+        except Exception as e:
+            print("Permissions:",e)
+
     for scripts in os.listdir(scripts_dir):
-        final_dir = os.path.join(scripts_dir, scripts, artist_Serializer.data['fullName'])
+        final_dir = os.path.join(scripts_dir, scripts, str(artist_user_id))
         if not os.path.exists(final_dir):
             os.makedirs(final_dir)
         try:

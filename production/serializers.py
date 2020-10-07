@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from hrm.models import Employee
 from production.models import Clients, Projects, ShotStatus, Complexity, Shots, Sequence, Task_Type, MyTask, \
-    Assignments, Channels, Groups
+    Assignments, Channels, Groups, Qc_Assignment, HeadQc_Assignment, HeadQCTeam
 
 
 class StatusSerializer(serializers.ModelSerializer):
@@ -126,7 +126,15 @@ class MyTaskShotSerializer(serializers.ModelSerializer):
         model = MyTask
         fields = '__all__'
 
+class MyTaskUpdateSerializer(serializers.ModelSerializer):
+    task_status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=False)
+
+    class Meta:
+        model = MyTask
+        fields = '__all__'
+
 class MyTaskPostSerializer(serializers.ModelSerializer):
+    task_status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=False)
 
     class Meta:
         model = MyTask
@@ -134,9 +142,9 @@ class MyTaskPostSerializer(serializers.ModelSerializer):
 
 class MyTaskArtistSerializer(serializers.ModelSerializer):
     shot = ShotCompactSerializer(read_only=True)
+    task_status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=False)
     artist = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
     assigned_by = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
-    # status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='name', required=False)
 
     class Meta:
         model = MyTask
@@ -176,4 +184,41 @@ class GroupsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Groups
+        fields = '__all__'
+
+class QCSerializer(serializers.ModelSerializer):
+    qc_status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=False)
+    class Meta:
+        model = Qc_Assignment
+        fields = '__all__'
+
+class TaskCompactSerializer(serializers.ModelSerializer):
+    shot = ShotCompactSerializer(read_only=True)
+    task_status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=False)
+
+    class Meta:
+        model = MyTask
+        fields = '__all__'
+
+class TeamQCSerializer(serializers.ModelSerializer):
+    task = TaskCompactSerializer(read_only=True)
+    qc_status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=False)
+
+    class Meta:
+        model = Qc_Assignment
+        fields = '__all__'
+
+class HQCSerializer(serializers.ModelSerializer):
+    hqc_status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=False)
+    class Meta:
+        model = HeadQc_Assignment
+        fields = '__all__'
+
+class HeadQCSerializer(serializers.ModelSerializer):
+    qc_task = TeamQCSerializer(read_only=True)
+    # hqc = serializers.SlugRelatedField(queryset=HeadQCTeam.objects.all(), slug_field='hqc__id', required=False)
+    hqc_status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=False)
+
+    class Meta:
+        model = HeadQc_Assignment
         fields = '__all__'
