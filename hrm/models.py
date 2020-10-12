@@ -49,6 +49,16 @@ class Grade(models.Model):
     class Meta:
         verbose_name_plural = "Grade"
 
+class ProductionTeam(models.Model):
+    lead = models.ForeignKey(Profile, on_delete=models.CASCADE,related_name='+', null=True)
+    qc = models.ForeignKey(Profile, on_delete=models.CASCADE,related_name='+', null=True)
+
+    def __str__(self):
+        return self.lead.user.username
+
+    class Meta:
+        verbose_name_plural = "Teams"
+
 class Employee(models.Model):
     """
     User Profile
@@ -72,6 +82,7 @@ class Employee(models.Model):
     employement_status = models.ForeignKey(EmployementStatus, on_delete=models.CASCADE, related_name='+', null=True,
                                           blank=True)
     department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
+    team = models.ForeignKey(ProductionTeam, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
     role = models.ForeignKey(Role, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
     grade = models.ForeignKey(Grade, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
     creation_date = models.DateTimeField(auto_now_add=True)

@@ -15,7 +15,7 @@ from decouple import config
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 AUTH_LDAP_SERVER_URI = "ldap://192.168.5.2"
-AUTH_LDAP_BIND_DN = "Pipeline Account"
+AUTH_LDAP_BIND_DN = "pipeline account"
 
 AUTH_LDAP_BIND_PASSWORD = "Gunreddy^999"
 AUTH_LDAP_USER_SEARCH = LDAPSearchUnion(
@@ -48,7 +48,7 @@ AUTHENTICATION_BACKENDS = (
 SECRET_KEY = '$qk=xmf1nr6xy)4-!w2g5!wh=)$e6^8@v^z%w@i8n44pjf5lg2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1','*']
 
@@ -61,8 +61,8 @@ INSTALLED_APPS = [
     'production',
     'imagekit',
     'rest_framework',
-    'debug_toolbar',
     'rest_framework.authtoken',
+    'debug_toolbar',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -70,7 +70,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    'colorfield'
+    'colorfield',
+    'channels'
 ]
 
 {
@@ -117,16 +118,54 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'OFX_API.wsgi.application'
 
+ASGI_APPLICATION = "OFX_API.routing.application"
+
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             "hosts": [('192.168.5.13', '6379')],
+#         },
+#     },
+# }
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
+else:
+    import MySQLdb
+
+    connection = MySQLdb.connect(host='127.0.0.1',
+                                 port=3306,
+                                 user='ofx_data_admin',
+                                 passwd='ofx1234',
+                                 )
+    cur = connection.cursor()
+    cur.execute('CREATE DATABASE IF NOT EXISTS erp_data;')
+    connection.close()
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'erp_data',
+            'USER': 'ofx_data_admin',
+            'PASSWORD': 'ofx1234',
+            'HOST': '127.0.0.1',
+            'PORT': '3306'
+        },
+    }
 
 
 # Password validation

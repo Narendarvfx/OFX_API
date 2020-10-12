@@ -24,4 +24,34 @@ urlpatterns = [
     url(r'^api/production/shots/$', api.ShotsData.as_view(), name='Shots API'),
     url(r'^api/production/projects/sequence/shots/(?P<sequenceId>\d+)/$', api.ProjectShotsData.as_view(), name='Projects Shots API'),
     url(r'^api/production/shots/(?P<shotId>\d+)/$', api.ShotUpdate.as_view(), name='Shot Update API'),
+
+    # MyTask Urls
+    url(r'^api/production/mytask/$', api.MyTaskData.as_view(), name='MyTask API'),
+    url(r'^api/production/mytask/shot/(?P<shotId>\d+)/$', api.MyTaskShotData.as_view(), name='MyTask API'),
+    url(r'^api/production/mytask/(?P<taskId>\d+)/$', api.MyTaskDetail.as_view(), name='MyTask API'),
+    url(r'^api/production/mytask/artist/(?P<artistId>\d+)/$', api.MyTaskArtistData.as_view(), name='MyTask API'),
+
+    # Assignment Urls
+    url(r'^api/production/shot/assignments/$', api.ShotAssignment.as_view(), name='MyTask API'),
+
+    # Lead Urls
+    url(r'^api/production/leads/shots/(?P<leadId>\d+)/$', api.LeadShotsData.as_view(), name='Projects Shots API'),
+
+    # Channel Urls
+    url(r'^api/production/channels/(?P<shotId>\d+)/$', api.ChannelsData.as_view(), name='Channels API'),
+    url(r'^api/production/channels/', api.ChannelsPostData.as_view(), name='Channels API'),
+
+    # Channel group urls
+    url(r'^api/production/groups/(?P<groupId>[\w\-]+)/$', api.GroupsData.as_view(), name='Channels API'),
+    url(r'^api/production/groups/', api.GroupsPostData.as_view(), name='Channels API'),
+
+    # Qc Assignment urls
+    url(r'^api/production/update_qc/(?P<qcId>\d+)/$', api.QCDataById.as_view(), name='QC Update API'),
+    url(r'^api/production/qc/(?P<teamId>\d+)/$', api.QCDataByTeamId.as_view(), name='QC Assignments API'),
+    url(r'^api/production/qc/qc/', api.QCData.as_view(), name='QC Assignments API'),
+
+    # HeadQc Assignment urls
+    url(r'^api/production/update_head_qc/(?P<hqcId>\d+)/$', api.HeadQCDataById.as_view(), name='Head QC Update API'),
+    url(r'^api/production/head_qc/(?P<hqcId>\d+)/$', api.QCDataByHQCId.as_view(), name='Head QC Assignments API'),
+    url(r'^api/production/head_qc/qc/', api.HeadQCData.as_view(), name='Head QC Assignments API'),
 ]
