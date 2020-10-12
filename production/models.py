@@ -138,6 +138,7 @@ class MyTask(models.Model):
     assigned_bids = models.FloatField(null=True,blank=True)
     eta = models.DateTimeField(null=True,blank=True)
     task_status = models.ForeignKey(ShotStatus, on_delete=models.CASCADE, related_name='+')
+    compiler = models.IntegerField(default=0)
     version = models.CharField(max_length=10, null=True, blank=True)
 
     def __str__(self):

@@ -18,7 +18,7 @@ from production.serializers import ClientSerializer, ProjectSerializer, StatusSe
 import configparser
 
 config = configparser.ConfigParser()
-config.read('D:\\settings.ini')
+config.read('D:\\Repo_Settings\\settings.ini')
 
 class StatusInfo(APIView):
     """
@@ -416,7 +416,7 @@ def create_dir_permissions(assigned_data):
     elif artist_Serializer.data['department'] == 'ROTO':
         dep_dir = '_roto'
     elif artist_Serializer.data['department'] == 'MATCH MOVE':
-        dep_dir = '_matchmove'
+        dep_dir = '_mm'
     else:
         print('No Artist Found')
     shot_dir = shot_Serializer.data['sequence']['project']['client']+'//'+shot_Serializer.data['sequence']['project']['name']+'//'+shot_Serializer.data['sequence']['name']+'//'+shot_Serializer.data['name']
