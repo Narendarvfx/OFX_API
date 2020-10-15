@@ -41,7 +41,7 @@ class Role(models.Model):
 
 class Grade(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    a_man_day = models.FloatField(max_length=100, unique=True)
+    a_man_day = models.FloatField(max_length=100, unique=False)
 
     def __str__(self):
         return self.name
