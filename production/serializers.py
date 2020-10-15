@@ -1,8 +1,9 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from hrm.models import Employee
+from hrm.models import Employee, Department
 from production.models import Clients, Projects, ShotStatus, Complexity, Shots, Sequence, Task_Type, MyTask, \
-    Assignments, Channels, Groups, Qc_Assignment, HeadQc_Assignment, HeadQCTeam
+    Assignments, Channels, Groups, Qc_Assignment, HeadQc_Assignment, HeadQCTeam, Folder_Permissions, Permission_Groups
 
 
 class StatusSerializer(serializers.ModelSerializer):
@@ -208,6 +209,12 @@ class TeamQCSerializer(serializers.ModelSerializer):
         model = Qc_Assignment
         fields = '__all__'
 
+class HQTSerializer(serializers.ModelSerializer):
+    department = serializers.SlugRelatedField(queryset=Department.objects.all(), slug_field='name', required=False)
+    class Meta:
+        model = HeadQCTeam
+        fields = '__all__'
+
 class HQCSerializer(serializers.ModelSerializer):
     hqc_status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=False)
     class Meta:
@@ -221,4 +228,11 @@ class HeadQCSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = HeadQc_Assignment
+        fields = '__all__'
+
+class PGSerializer(serializers.ModelSerializer):
+    permitted_users = serializers.SlugRelatedField(queryset=User.objects.all(), slug_field='username', required=False)
+
+    class Meta:
+        model = Permission_Groups
         fields = '__all__'
