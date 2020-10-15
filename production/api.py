@@ -499,7 +499,7 @@ def create_dir_permissions(assigned_data):
         dacl = sd.GetSecurityDescriptorDacl()
 
         dacl.AddAccessAllowedAceEx(win32security.ACL_REVISION_DS, win32security.SUB_CONTAINERS_AND_OBJECTS_INHERIT,
-                                   con.GENERIC_ALL, artist)
+                                   con.FILE_GENERIC_READ, artist)
 
         sd.SetSecurityDescriptorDacl(1, dacl, 0)
         win32security.SetFileSecurity(FILENAME, win32security.DACL_SECURITY_INFORMATION, sd)
