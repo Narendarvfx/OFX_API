@@ -6,14 +6,11 @@ import datetime
 import csv
 import requests
 
-server = "http://127.0.0.1:8000"
-token = '90cca45e7d7cc3f2ae98832d77ab6bc1978bbf12'
-employee_csv = 'data/Employees_data.csv'
-
+server = "http://172.168.1.197:80"
+token = '03baf85c42a2bebf5f9d665bb8bec95cc1ffcdc1'
+employee_csv = 'data/Employees_data_final.csv'
 
 ########################################################################################################################
-
-
 
 def update_employee_details(data, row):
     """

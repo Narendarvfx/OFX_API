@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from imagekit.models import ProcessedImageField
 
@@ -213,3 +214,22 @@ class Channels(models.Model):
 
     class Meta:
         verbose_name_plural = "Channels"
+
+class Folder_Permissions(models.Model):
+    permissions = models.CharField(max_length=10, null=True, blank=True)
+
+    def __str__(self):
+        return self.permissions
+
+    class Meta:
+        verbose_name_plural = "Folder_Permissions"
+
+class Permission_Groups(models.Model):
+    permitted_users = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
+    permissions = models.ManyToManyField(Folder_Permissions, related_name='+')
+
+    def __str__(self):
+        return self.permitted_users.first_name
+
+    class Meta:
+        verbose_name_plural = "Permission_Groups"

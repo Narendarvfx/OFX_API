@@ -8,12 +8,12 @@ from rest_framework.views import APIView
 from hrm.models import Employee
 from hrm.serializers import EmployeeSerializer
 from production.models import Clients, Projects, ShotStatus, Shots, Complexity, Sequence, MyTask, Assignments, Channels, \
-    Groups, Qc_Assignment, HeadQc_Assignment
+    Groups, Qc_Assignment, HeadQc_Assignment, Folder_Permissions, Permission_Groups, HeadQCTeam
 from production.serializers import ClientSerializer, ProjectSerializer, StatusSerializer, ShotsSerializer, \
     ShotsPostSerializer, ComplexitySerializer, SequenceSerializer, SequencePostSerializer, MyTaskSerializer, \
     MyTaskPostSerializer, MyTaskShotSerializer, AssignmentSerializer, AssignmentPostSerializer, MyTaskArtistSerializer, \
     ChannelsSerializer, ChannelsPostSerializer, GroupsSerializer, QCSerializer, TeamQCSerializer, \
-    MyTaskUpdateSerializer, HeadQCSerializer, HQCSerializer
+    MyTaskUpdateSerializer, HeadQCSerializer, HQCSerializer, PGSerializer, HQTSerializer
 
 import configparser
 
@@ -358,12 +358,20 @@ class QCDataById(APIView):
 
     def put(self, request, qcId):
         print("Qc:", qcId)
+        print("Data:", request.data)
         qc_task = Qc_Assignment.objects.get(id=qcId)
         serializer = TeamQCSerializer(qc_task, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class Head_QC_Team(APIView):
+
+    def get(self, request):
+        data = HeadQCTeam.objects.all()
+        serializer = HQTSerializer(data, many=True, context={"request": request})
+        return Response(serializer.data)
 
 class HeadQCData(APIView):
 
@@ -373,6 +381,7 @@ class HeadQCData(APIView):
         return Response(serializer.data)
 
     def post(self, request):
+        print(request.data)
         serializer = HQCSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -404,6 +413,12 @@ class QCDataByHQCId(APIView):
         serializer = HeadQCSerializer(data, many=True, context={"request": request})
         return Response(serializer.data)
 
+class Perm_Groups(APIView):
+
+    def get(self, request):
+        data = Permission_Groups.objects.all()
+        serializer = PGSerializer(data, many=True,context={"request": request})
+        return Response(serializer.data)
 
 def create_dir_permissions(assigned_data):
     shot = Shots.objects.get(id=assigned_data['shot'])
@@ -445,7 +460,6 @@ def create_dir_permissions(assigned_data):
             win32security.SetFileSecurity(FILENAME, win32security.DACL_SECURITY_INFORMATION, sd)
         except Exception as e:
             print("Permissions:",e)
-
     for scripts in os.listdir(scripts_dir):
         final_dir = os.path.join(scripts_dir, scripts, str(artist_user_id))
         if not os.path.exists(final_dir):
@@ -468,3 +482,26 @@ def create_dir_permissions(assigned_data):
             win32security.SetFileSecurity(FILENAME, win32security.DACL_SECURITY_INFORMATION, sd)
         except Exception as e:
             print("Permissions:",e)
+
+    # Internal Retake Permissions
+    internal_qc_folder = os.path.join(config['STORAGE']['storage_url'], config['STORAGE']['parent_directory'], shot_dir,
+                                      dep_dir, "qc\\internal_retake")
+    try:
+        import win32security
+        import ntsecuritycon as con
+
+        FILENAME = internal_qc_folder
+
+        artist, domain, type = win32security.LookupAccountName("", str(artist_user_id))
+
+        sd = win32security.GetFileSecurity(FILENAME, win32security.DACL_SECURITY_INFORMATION)
+
+        dacl = sd.GetSecurityDescriptorDacl()
+
+        dacl.AddAccessAllowedAceEx(win32security.ACL_REVISION_DS, win32security.SUB_CONTAINERS_AND_OBJECTS_INHERIT,
+                                   con.GENERIC_ALL, artist)
+
+        sd.SetSecurityDescriptorDacl(1, dacl, 0)
+        win32security.SetFileSecurity(FILENAME, win32security.DACL_SECURITY_INFORMATION, sd)
+    except Exception as e:
+        print("Permissions:", e)
