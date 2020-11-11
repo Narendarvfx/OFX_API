@@ -41,7 +41,7 @@ class UserAuthentication(ObtainAuthToken):
             }
             return Response(data)
         else:
-            return Response(False)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserList(APIView):
@@ -79,7 +79,6 @@ class UserProfileAPIView(APIView):
     """
     This class will return json data of user profile
     """
-
     def get_object(self, profile_id):
         try:
             return Profile.objects.get(pk=profile_id)

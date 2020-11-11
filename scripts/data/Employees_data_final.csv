@@ -1,41 +1,85 @@
-SL NO.,Employee ID,Full Name,Email ID,Department,Role,Grade,Man_Days,UserName,Passsword,,,,,
-,OFX351,Rama Krishna Chari S,,ROTO,TEAM LEAD,A+,,RamaKrishnaChari.s,Ofx@12345,,,,,
-,OFX290,Ramesh Mukurala,,ROTO,VFX ARTIST,D,,ramesh.m,Ofx@12345,,,,,
-,OFX023,Ravindra Babu Pathakamuri,,ROTO,VFX ARTIST,B,,ravindrababu.p,Ofx@12345,,,,,
-,OFX302,Sai Durshanam,,ROTO,VFX ARTIST,D,,sai.d,Ofx@12345,,,,,
-,OFX249,Sai Krishna Galipally,,ROTO,VFX ARTIST,C,,SaiKrishna.G,Ofx@12345,,,,,
-,OFX274,Saibabu Mukurala,,ROTO,VFX ARTIST,D,,Saibabu.M,Ofx@12345,,,,,
-,OFX316,Saleem Shaik,,ROTO,VFX ARTIST,D,,saleem.shaik,Ofx@12345,,,,,
-,OFX434,Sara Santu Kumar,,ROTO,VFX ARTIST,A,,santukumar.s,Ofx@12345,,,,,
-,OFX265,Shiva Bandi,,ROTO,VFX ARTIST,C,,Shiva.b,Ofx@12345,,,,,
-,OFX296,Shiva Kumar Chary Chelpuri,,ROTO,VFX ARTIST,D,,ShivaKumarChary.ch,Ofx@12345,,,,,
-,OFX190,Shiva Kumar Kunti,,ROTO,VFX ARTIST,C,,shivaKumar.k,Ofx@12345,,,,,
-,OFX337,Shivakrishna Nomula,,ROTO,VFX ARTIST,C,,Shivakrishna.N,Ofx@12345,,,,,
-,OFX342,Shravan Kumar Sriram,,ROTO,VFX ARTIST,B,,ShravanKumar.S,Ofx@12345,,,,,
-,OFX383,Sikanth Katla,,ROTO,VFX ARTIST,B,,Srikanth.k,Ofx@12345,,,,,
-,OFX295,Sreekanth Chindam,,ROTO,VFX ARTIST,D,,Sreekanth.ch,Ofx@12345,,,,,
-,OFX423,Srimant Kumar Behera,,ROTO,VFX ARTIST,B,,SrimantKumar.B,Ofx@12345,,,,,
-,OFX145,Srinivas Kallem,,ROTO,VFX ARTIST,C,,srinivas.k,Ofx@12345,,,,,
-,OFX060,Srisailam Mukurala,,ROTO,VFX ARTIST,B,,srisailam.m,Ofx@12345,,,,,
-,OFX239,Sukumar Kunta,,ROTO,VFX ARTIST,B,,Sukumar.K,Ofx@12345,,,,,
-,OFX415,Tapash Kumar Swain,,ROTO,VFX ARTIST,A,,tapashkumar.s,Ofx@12345,,,,,
-,OFX379,Thatikonda Rakesh,,ROTO,VFX ARTIST,D,,rakesh.tatikonda,Ofx@12345,,,,,
-,OFX195,Vamshi Krishna Kunti,,ROTO,VFX ARTIST,C,,vamshikrishna.k,Ofx@12345,,,,,
-,OFX012,Vijaysena Reddy Kotha,,ROTO,TEAM LEAD,A,,vijay.k,Ofx@12345,,,,,
-,OFX224,Vinay Kantem,,ROTO,VFX ARTIST,C,,vinay.m,Ofx@12345,,,,,
-,OFX014,Vinod Kumar Reddy Anumula,,ROTO,TEAM LEAD,A+,,vinod.a,Ofx@12345,,,,,
-,OFX322,Waseem Akram Shaik,,ROTO,QC,A+,,waseemakram.shaik,Ofx@12345,,,,,
-,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,0.4
+SL NO.,Employee ID,Full Name,Email ID,Department,Role,Grade,Man_Days,UserName,Passsword,Team
+,OFX094,Praveen Reddy Yadaram,,DATA I/O,DATA I/O,,,praveenreddy.y,Ofx@12345,
+,OFX105,Prashanth Ravula,,DATA I/O,DATA I/O,,,Prashanth.R,Ofx@12345,
+,OFX321,Kiran Kumar Chennaboina,,MATCH MOVE,SUPERVISOR,A+,,KiranKumar.ch,Ofx@12345,2
+,OFX222,Radha Kishan Mannepu,,MATCH MOVE,VFX ARTIST,A,,RadhaKishan.M,Ofx@12345,2
+,OFX288,Akshay Naik Surabhi,,MATCH MOVE,VFX ARTIST,A+,,AkshayNaik.s,Ofx@12345,2
+,OFX008,Chandrashekar Ginka,,PAINT,VFX ARTIST,A,,chandu.g,Ofx@12345,
+,OFX095,Srinivasulu Reni,,PAINT,HEAD QC,A+,,srinivas.r,Ofx@12345,
+,OFX411,Gilla Surender,,PAINT,SUPERVISOR,A+,,Surender.g,Ofx@12345,
+,OFX437,Hima Balaji Pindi,,PAINT,TEAM LEAD,A+,,himabalaji.p,Ofx@12345,1
+,OFX438,Ganeshbabu Gubbala,,PAINT,QC,A+,,Ganeshbabu.G,Ofx@12345,1
+,OFX032,Sivamani Thokala,,PAINT,VFX ARTIST,B,,sivamani.t,Ofx@12345,1
+,OFX090,Saikiran Ravula,,PAINT,VFX ARTIST,C,,saikiran.r,Ofx@12345,1
+,OFX091,Rajashekar Nakeertha,,PAINT,VFX ARTIST,C,,rajashekar.n,Ofx@12345,1
+,OFX093,Karunakar Kommu,,PAINT,VFX ARTIST,C,,karunakar.k,Ofx@12345,1
+,OFX128,Naresh Kumar Vutkuri,,PAINT,VFX ARTIST,A+,,nareshkumar.v,Ofx@12345,1
+,OFX268,Rambabu Guggilla,,PAINT,VFX ARTIST,C,,Rambabu.G,Ofx@12345,1
+,OFX272,Joshua Aama,,PAINT,VFX ARTIST,C,,Joshua.A,Ofx@12345,1
+,OFX273,Raj Kumar Kardam,,PAINT,VFX ARTIST,D,,RajKumar.K,Ofx@12345,1
+,OFX309,Vishnuvardhan Tullimilli,,PAINT,VFX ARTIST,A,,Vishnuvardhan.t,Ofx@12345,1
+,OFX333,Bala Krishna Chary Kondoju,,PAINT,VFX ARTIST,A,,balakrishna.k,Ofx@12345,1
+,OFX354,Naresh Kalikota,,PAINT,VFX ARTIST,A,,Naresh.k,Ofx@12345,1
+,OFX356,Bharath Kumar Padige,,PAINT,VFX ARTIST,A+,,BharathKumar.P,Ofx@12345,1
+,OFX386,Praneeth Kumar Mandala,,PAINT,VFX ARTIST,A,,PraneethKumar.M,Ofx@12345,1
+,OFX398,Govardhangiri Vattipally,,PAINT,VFX ARTIST,A,,Govardhangiri.V,Ofx@12345,1
+,OFX401,Gouse Shaik,,PAINT,VFX ARTIST,C,,Gouse.s,Ofx@12345,1
+,OFX403,Pradeep Kumar,,PAINT,VFX ARTIST,A,,Pradeep.k,Ofx@12345,1
+,OFX408,Vamshi krishna reddy Katti,,PAINT,VFX ARTIST,A+,,Vamsikrishnareddy.k,Ofx@12345,1
+,OFX409,Bharadwaj Tati,,PAINT,VFX ARTIST,C,,Bharadwaj.T,Ofx@12345,1
+,OFX414,Gajam Siddeshwar,,PAINT,VFX ARTIST,A,,siddeshwar.g,Ofx@12345,1
+,OFX424,Animesh Mondal,,PAINT,VFX ARTIST,A+,,Animesh.m,Ofx@12345,1
+,OFX428,Raju Thouti,,PAINT,VFX ARTIST,B,,raju.t,Ofx@12345,1
+,OFX436,Vikas Chauhan,,PAINT,VFX ARTIST,A+,,Vikaschauhan,Ofx@12345,1
+,OFX279,Arunjay Shanagonda,,PAINT,VFX ARTIST,D,,Arunjay.s,Ofx@12345,1
+,OFX253,Sai Krishna Kasthuri,,PAINT,VFX ARTIST,C,,SaiKrishna.K,Ofx@12345,1
+,OFX011,Akhil Pasupuleti,,ROTO,HEAD QC,A,,akhil.p,Ofx@12345,
+,OFX029,Amar Sakshi Velga,,ROTO,VFX ARTIST,A,,amarsakshi.v,Ofx@12345,4
+,OFX227,Anjan Kumar Amula,,ROTO,VFX ARTIST,A,,Anjankumar.a,Ofx@12345,3
+,OFX376,Arikatla Indrasena Reddy,,ROTO,VFX ARTIST,C,,IndrasenaReedy.A,Ofx@12345,3
+,OFX303,Avinash Thatikonda,,ROTO,VFX ARTIST,D,,avinash.t,Ofx@12345,4
+,OFX432,Bere Mallikarjun,,ROTO,VFX ARTIST,A,,mallikarjun.b,Ofx@12345,3
+,OFX229,Biswabijayee Jyoti Prakash,,ROTO,VFX ARTIST,B,,JyotiPrakash.d,Ofx@12345,3
+,OFX422,Budireddi Sandyarani,,ROTO,VFX ARTIST,B,,SandyaRani.B,Ofx@12345,4
+,OFX292,Chinnaiah Bandapally,,ROTO,VFX ARTIST,D,,chinnaiah.b,Ofx@12345,4
+,OFX430,Dugyala Srikanth,,ROTO,VFX ARTIST,B,,srikanth.d,Ofx@12345,3
+,OFX013,Gangadhar Rao Ventapalli,,ROTO,QC,A+,,gangadhar.v,Ofx@12345,
+,OFX433,Gudeti Raju,,ROTO,VFX ARTIST,B,,raju.g,Ofx@12345,4
+,OFX194,Manjeet Dixit,,ROTO,VFX ARTIST,B,,manjitKumar,Ofx@12345,4
+,OFX347,Mukesh Kondra,,ROTO,VFX ARTIST,C,,Mukesh.K,Ofx@12345,3
+,OFX278,Muralidhar Reddy Mettu,,ROTO,VFX ARTIST,C,,muralidhar.m,Ofx@12345,3
+,OFX132,Naveen Kumar Pallati,,ROTO,VFX ARTIST,C,,naveen.pallati,Ofx@12345,3
+,OFX412,Nidamanuri Sai Krishna,,ROTO,VFX ARTIST,A,,Saikrishna.n,Ofx@12345,4
+,OFX416,Padala Manikanta,,ROTO,VFX ARTIST,C,,manikanta.p,Ofx@12345,4
+,OFX256,Pranay Kumar Bitla,,ROTO,VFX ARTIST,C,,pranaykumar.b,Ofx@12345,4
+,OFX231,Prasanth Vanga,,ROTO,VFX ARTIST,B,,Prasanth.v,Ofx@12345,4
+,OFX009,Praveen Gone,,ROTO,SUPERVISOR,A+,,praveen.g,Ofx@12345,
+,OFX027,Praveen Kumar Reddy Beeram,,ROTO,VFX ARTIST,B,,praveenkumar.b,Ofx@12345,4
+,OFX301,Rajeshwar Chary Tatikonda,,ROTO,VFX ARTIST,D,,RajeshwarChary.t,Ofx@12345,3
+,OFX252,Raju Yamma,,ROTO,VFX ARTIST,D,,raju.y,Ofx@12345,4
+,OFX351,Rama Krishna Chari Seerlavancha,,ROTO,TEAM LEAD,A+,,RamaKrishnaChari.s,Ofx@12345,
+,OFX290,Ramesh Mukurala,,ROTO,VFX ARTIST,D,,ramesh.m,Ofx@12345,4
+,OFX023,Ravindra Babu Pathakamuri,,ROTO,VFX ARTIST,B,,ravindrababu.p,Ofx@12345,
+,OFX302,Sai Durshanam,,ROTO,VFX ARTIST,D,,sai.d,Ofx@12345,3
+,OFX249,Sai Krishna Galipally,,ROTO,VFX ARTIST,C,,SaiKrishna.G,Ofx@12345,4
+,OFX274,Saibabu Mukurala,,ROTO,VFX ARTIST,D,,Saibabu.M,Ofx@12345,4
+,OFX316,Saleem Shaik,,ROTO,VFX ARTIST,D,,saleem.shaik,Ofx@12345,3
+,OFX434,Sara Santu Kumar,,ROTO,VFX ARTIST,A,,santukumar.s,Ofx@12345,4
+,OFX265,Shiva Bandi,,ROTO,VFX ARTIST,C,,Shiva.b,Ofx@12345,4
+,OFX296,Shiva Kumar Chary Chelpuri,,ROTO,VFX ARTIST,D,,ShivaKumarChary.ch,Ofx@12345,3
+,OFX190,Shiva Kumar Kunti,,ROTO,VFX ARTIST,C,,shivaKumar.k,Ofx@12345,4
+,OFX337,Shivakrishna Nomula,,ROTO,VFX ARTIST,C,,Shivakrishna.N,Ofx@12345,4
+,OFX342,Shravan Kumar Sriram,,ROTO,VFX ARTIST,B,,ShravanKumar.S,Ofx@12345,3
+,OFX383,Sikanth Katla,,ROTO,VFX ARTIST,B,,Srikanth.k,Ofx@12345,3
+,OFX295,Sreekanth Chindam,,ROTO,VFX ARTIST,D,,Sreekanth.ch,Ofx@12345,3
+,OFX423,Srimant Kumar Behera,,ROTO,VFX ARTIST,B,,SrimantKumar.B,Ofx@12345,4
+,OFX145,Srinivas Kallem,,ROTO,VFX ARTIST,C,,srinivas.k,Ofx@12345,3
+,OFX060,Srisailam Mukurala,,ROTO,VFX ARTIST,B,,srisailam.m,Ofx@12345,
+,OFX239,Sukumar Kunta,,ROTO,VFX ARTIST,B,,Sukumar.K,Ofx@12345,3
+,OFX415,Tapash Kumar Swain,,ROTO,VFX ARTIST,A,,tapashkumar.s,Ofx@12345,3
+,OFX379,Thatikonda Rakesh,,ROTO,VFX ARTIST,D,,rakesh.tatikonda,Ofx@12345,3
+,OFX195,Vamshi Krishna Kunti,,ROTO,VFX ARTIST,C,,vamshikrishna.k,Ofx@12345,4
+,OFX012,Vijaysena Reddy Kotha,,ROTO,TEAM LEAD,A,,vijay.k,Ofx@12345,3
+,OFX224,Vinay Kantem,,ROTO,VFX ARTIST,C,,vinay.m,Ofx@12345,3
+,OFX014,Vinod Kumar Reddy Anumula,,ROTO,TEAM LEAD,A+,,vinod.a,Ofx@12345,4
+,OFX322,Waseem Akram Shaik,,ROTO,QC,A+,,waseemakram.shaik,Ofx@12345,

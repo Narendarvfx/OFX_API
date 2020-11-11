@@ -39,7 +39,7 @@ AUTH_LDAP_USER_ATTR_MAP = {
 }
 
 AUTHENTICATION_BACKENDS = (
-    "django_auth_ldap.backend.LDAPBackend",
+    # "django_auth_ldap.backend.LDAPBackend",
     "django.contrib.auth.backends.ModelBackend",
 )
 
@@ -48,7 +48,7 @@ AUTHENTICATION_BACKENDS = (
 SECRET_KEY = '$qk=xmf1nr6xy)4-!w2g5!wh=)$e6^8@v^z%w@i8n44pjf5lg2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1','*']
 
@@ -138,34 +138,12 @@ CHANNEL_LAYERS = {
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-if DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-else:
-    import MySQLdb
-
-    connection = MySQLdb.connect(host='127.0.0.1',
-                                 port=3306,
-                                 user='ofx_data_admin',
-                                 passwd='ofx1234',
-                                 )
-    cur = connection.cursor()
-    cur.execute('CREATE DATABASE IF NOT EXISTS erp_data;')
-    connection.close()
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'erp_data',
-            'USER': 'ofx_data_admin',
-            'PASSWORD': 'ofx1234',
-            'HOST': '127.0.0.1',
-            'PORT': '3306'
-        },
-    }
+}
 
 
 # Password validation
