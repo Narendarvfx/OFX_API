@@ -32,6 +32,6 @@ class AllEmployeeDetail(APIView):
     """
 
     def get(self, request, format=None):
-        employee = Employee.objects.select_related('department','role','employement_status','grade').filter(Q(department__name="PAINT") | Q(department__name="ROTO") | Q(department__name="MATCH MOVE"))
+        employee = Employee.objects.select_related('department','role','employement_status','grade').filter(Q(department__name="PAINT") | Q(department__name="ROTO") | Q(department__name="MATCH MOVE") , employement_status__name='Active')
         serializer = EmployeeSerializer(employee, many=True, context={"request":request})
         return Response(serializer.data)

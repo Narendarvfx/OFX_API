@@ -34,7 +34,6 @@ def update_employee_details(data, row):
     response = requests.put(user_api_url, data=data_edit, headers={'Authorization': 'Token {}'.format(token)})
     print(response.text)
 
-
 def import_employee_data():
     """
     Import employee data from csv file
