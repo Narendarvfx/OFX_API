@@ -3,14 +3,35 @@ from production.models import Clients, Projects, ShotStatus, Complexity, Shots, 
     Assignments, Channels, Qc_Assignment, Groups, HeadQc_Assignment, HeadQCTeam, Permission_Groups, Folder_Permissions
 
 # Register your models here.
-admin.site.register(ShotStatus)
+class ShotStatusFields(admin.ModelAdmin):
+    list_display = [f.name for f in ShotStatus._meta.fields]
+    list_per_page = 15
+
+# Register your models here.
+class ShotsFields(admin.ModelAdmin):
+    list_display = [f.name for f in Shots._meta.fields]
+    list_per_page = 15
+
+class MyTaskFields(admin.ModelAdmin):
+    list_display = [f.name for f in MyTask._meta.fields]
+    list_per_page = 15
+
+class SequenceFields(admin.ModelAdmin):
+    list_display = [f.name for f in Sequence._meta.fields]
+    list_per_page = 15
+
+class ProjectFields(admin.ModelAdmin):
+    list_display = [f.name for f in Projects._meta.fields]
+    list_per_page = 15
+
+admin.site.register(ShotStatus, ShotStatusFields)
 admin.site.register(Complexity)
 admin.site.register(Clients)
-admin.site.register(Projects)
-admin.site.register(Sequence)
+admin.site.register(Projects, ProjectFields)
+admin.site.register(Sequence, SequenceFields)
 admin.site.register(Task_Type)
-admin.site.register(Shots)
-admin.site.register(MyTask)
+admin.site.register(Shots, ShotsFields)
+admin.site.register(MyTask, MyTaskFields)
 admin.site.register(Assignments)
 admin.site.register(Qc_Assignment)
 admin.site.register(Groups)

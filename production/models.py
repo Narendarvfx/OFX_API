@@ -1,3 +1,4 @@
+from colorfield.fields import ColorField
 from django.contrib.auth.models import User
 from django.db import models
 from imagekit.models import ProcessedImageField
@@ -8,6 +9,7 @@ from hrm.models import Employee, ProductionTeam, Department
 class ShotStatus(models.Model):
     code = models.CharField(max_length=100, unique=True)
     name = models.CharField(max_length=100, unique=True)
+    color = ColorField(default='#e38330')
 
     def __str__(self):
         return self.code
