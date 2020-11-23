@@ -52,15 +52,14 @@ class SequenceCompactSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Sequence
-        fields = ('name',
+        fields = ('id',
+                  'name',
                   'project')
         depth = 1
 
 class ShotCompactSerializer(serializers.ModelSerializer):
-    # client = serializers.SlugRelatedField(queryset=Clients.objects.all(), slug_field='name', required=False)
     sequence = SequenceCompactSerializer(read_only=True)
     status = StatusSerializer(read_only=True)
-    # status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='name', required=False)
     complexity = serializers.SlugRelatedField(queryset=Complexity.objects.all(), slug_field='name', required=False)
     task_type = serializers.SlugRelatedField(queryset=Task_Type.objects.all(), slug_field='name', required=False)
     imageSrc = serializers.ImageField(max_length=None, use_url=True, allow_null=True, required=False)
@@ -72,14 +71,12 @@ class ShotCompactSerializer(serializers.ModelSerializer):
 
 class SequenceSerializer(serializers.ModelSerializer):
     project = ProjectCompactSerializer(read_only=True)
-    # status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='name', required=False)
 
     class Meta:
         model = Sequence
         fields = '__all__'
 
 class SequencePostSerializer(serializers.ModelSerializer):
-    # status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='name', required=False)
 
     class Meta:
         model = Sequence

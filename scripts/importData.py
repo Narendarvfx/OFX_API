@@ -7,7 +7,7 @@ import csv
 import requests
 
 server = "http://172.168.1.197:80"
-token = '03baf85c42a2bebf5f9d665bb8bec95cc1ffcdc1'
+token = '8f1192dfa465d1f566c38e53ed199d8da7090a55'
 employee_csv = 'data/Employees_data_final.csv'
 
 ########################################################################################################################
@@ -26,14 +26,13 @@ def update_employee_details(data, row):
         "employee_id": row['Employee ID'],
         "fullName": row['Full Name'],
         "email": row['Email ID'],
-        "employment_status": "Active",
+        "employement_status": "Active",
         "department": row['Department'],
         "role": row['Role'],
         "grade": row['Grade'],
     }
     response = requests.put(user_api_url, data=data_edit, headers={'Authorization': 'Token {}'.format(token)})
     print(response.text)
-
 
 def import_employee_data():
     """
@@ -71,12 +70,29 @@ def generate_default_profile_photo():
                 shutil.copyfile('img/male.png', 'img/default/{}.jpg'.format(row['EMPLOYEE ID']))
             elif row['GENDER'] == 'female':
                 shutil.copyfile('img/female.png', 'img/default/{}.jpg'.format(row['EMPLOYEE ID']))
+
+def setTeamId():
+    get_user_url = "{}/api/users/".format(server)
+    get_user_id = requests.get(get_user_url, headers={'Authorization': 'Token {}'.format(token)})
+    # print(get_user_id.text)
+    for user in get_user_id.json():
+        with open(employee_csv, newline='') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                if row['UserName'] == user['username']:
+                    data = {
+                        "team" : row['Team']
+                    }
+                    user_api_url = "{}/api/hrm/employee/{}/".format(server, user['id'])
+                    response = requests.put(user_api_url, data=data, headers={'Authorization': 'Token {}'.format(token)})
+                    print(response.text)
                     
                     
 
 if __name__ == '__main__':
     #generate_default_profile_photo()
     #update_username()
-    import_employee_data()
+    # import_employee_data()
     # update_employee_pan_details()
     # update_el_data()
+    setTeamId()

@@ -12,7 +12,6 @@ urlpatterns = [
     # Project Urls
     url(r'^api/production/projects/$', api.ProjectDetail.as_view(), name='Project API'),
     url(r'^api/production/projects/(?P<projectId>\d+)/$', api.ProjectUpdate.as_view(), name='Project API'),
-    url(r'^api/production/fileexplorer/(?P<projectId>\d+)/$', api.FileExplorer.as_view(), name='File Explorer'),
 
     # Sequence Urls
     url(r'^api/production/projects/sequence/$', api.SequenceDetail.as_view(), name='Sequence API'),
