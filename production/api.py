@@ -294,7 +294,7 @@ class QCData(APIView):
 
     def get(self, request):
         data = Qc_Assignment.objects.all()
-        serializer = QCSerializer(data, many=True,context={"request": request})
+        serializer = TeamQCSerializer(data, many=True,context={"request": request})
         return Response(serializer.data)
 
     def post(self, request):
