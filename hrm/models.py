@@ -113,3 +113,17 @@ def create_user_profile(sender, instance, created, **kwargs):
                                 fullName=instance.first_name,
                                 email=instance.email,
                                 photo='profiles/photo/{}.jpg'.format(profile.user,firstName=instance.first_name))
+
+
+class Permissions(models.Model):
+    role = models.ForeignKey(Role, on_delete=models.CASCADE,related_name='+', null=True)
+    add_client = models.BooleanField(default=False)
+    view_client= models.BooleanField(default=False)
+    add_project = models.BooleanField(default=False)
+    view_project = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.role.name
+
+    class Meta:
+        verbose_name_plural = "Permissions"

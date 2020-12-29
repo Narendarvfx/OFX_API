@@ -71,8 +71,21 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'colorfield',
-    'channels'
+    'channels',
+    'log_viewer'
 ]
+
+LOG_VIEWER_FILES = ['ofx_pipeline','ofx_pipeline2', ...]
+LOG_VIEWER_FILES_PATTERN = 'ofx_pipeline*'
+LOG_VIEWER_FILES_DIR = os.path.join(BASE_DIR, 'logs')
+LOG_VIEWER_MAX_READ_LINES = 1000  # total log lines will be read
+LOG_VIEWER_PAGE_LENGTH = 25       # total log lines per-page
+LOG_VIEWER_PATTERNS = [']OFNI[', ']GUBED[', ']GNINRAW[', ']RORRE[', ']LACITIRC[']
+
+# Optionally you can set the next variables in order to customize the admin:
+
+LOG_VIEWER_FILE_LIST_TITLE = "Ofx Pipeline"
+LOG_VIEWER_FILE_LIST_STYLES = "/static/css/my-custom.css"
 
 {
     "BACKEND": "django_jinja.backend.Jinja2",
@@ -170,7 +183,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Calcutta'
 
 USE_I18N = True
 

@@ -1,10 +1,12 @@
 from colorfield.fields import ColorField
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.db import models
 from imagekit.models import ProcessedImageField
-
+import logging
 from hrm.models import Employee, ProductionTeam, Department
 
+logger = logging.getLogger('LoggerName')
 
 class ShotStatus(models.Model):
     code = models.CharField(max_length=100, unique=True)
@@ -40,7 +42,7 @@ class Clients(models.Model):
     imageSrc = ProcessedImageField(upload_to=upload_photo_dir,
                                 format='JPEG',
                                 options={'quality': 80},
-                                null=True
+                                null=True,blank=True
                                 )
     creation_date = models.DateTimeField(auto_now_add=True)
 
@@ -51,8 +53,8 @@ class Clients(models.Model):
         verbose_name_plural = "Clients"
 
 class Projects(models.Model):
-    name = models.CharField(max_length=100, unique=True)
     client = models.ForeignKey(Clients, on_delete=models.CASCADE, related_name='+')
+    name = models.CharField(max_length=100, unique=False)
     status = models.ForeignKey(ShotStatus, on_delete=models.CASCADE, related_name='+')
     start_date = models.DateTimeField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
@@ -65,11 +67,23 @@ class Projects(models.Model):
     imageSrc = ProcessedImageField(upload_to=upload_photo_dir,
                                 format='JPEG',
                                 options={'quality': 80},
-                                null=True
+                                null=True,
+                                   blank=True
                                 )
 
     creation_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
+
+    def validate_unique(self, exclude=None):
+        qs = Projects.objects.filter(name=self.name)
+        if qs.filter(client=self.client).exists():
+            logger.error('Project Name must be unique per Client')
+            raise ValidationError('Project Name must be unique per Client')
+
+    def save(self, *args, **kwargs):
+        self.validate_unique()
+
+        super(Projects, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -82,6 +96,16 @@ class Sequence(models.Model):
     project = models.ForeignKey(Projects, on_delete=models.CASCADE, related_name='+')
     creation_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
+
+    def validate_unique(self, exclude=None):
+        qs = Sequence.objects.filter(name=self.name)
+        if qs.filter(project=self.project).exists():
+            raise ValidationError('Sequence Name must be unique per Project')
+
+    def save(self, *args, **kwargs):
+        self.validate_unique()
+
+        super(Sequence, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -98,21 +122,28 @@ class Task_Type(models.Model):
     class Meta:
         verbose_name_plural = "Task_Type"
 
+class ShotVersion(models.Model):
+    version = models.CharField(max_length=10)
+    creation_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
+    
 class Shots(models.Model):
     name = models.CharField(max_length=100)
     sequence = models.ForeignKey(Sequence, on_delete=models.CASCADE, related_name='+')
     status = models.ForeignKey(ShotStatus, on_delete=models.CASCADE, related_name='+')
     task_type = models.ForeignKey(Task_Type, on_delete=models.CASCADE, related_name='+')
-    actual_start_frame = models.IntegerField(null=True, blank=True)
-    actual_end_frame = models.IntegerField(null=True, blank=True)
-    work_start_frame = models.IntegerField(null=True, blank=True)
-    work_end_frame = models.IntegerField(null=True, blank=True)
+    actual_start_frame = models.IntegerField(default=0)
+    actual_end_frame = models.IntegerField(default=0)
+    work_start_frame = models.IntegerField(default=0)
+    work_end_frame = models.IntegerField(default=0)
+    eta = models.DateTimeField(null=True, blank=True)
     start_date = models.DateTimeField(null=True, blank=True)
     end_date = models.DateTimeField(null=True, blank=True)
     bid_days = models.FloatField(null=True, blank=True)
     percentage = models.FloatField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     complexity = models.ForeignKey(Complexity, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
+
     def upload_photo_dir(self, filename):
         ext = filename.split('.')[-1]
         path = 'shots/photo/{}.{}'.format(self.name, ext)
@@ -121,7 +152,7 @@ class Shots(models.Model):
     imageSrc = ProcessedImageField(upload_to=upload_photo_dir,
                                 format='JPEG',
                                 options={'quality': 80},
-                                null=True
+                                null=True,blank=True
                                 )
 
     creation_date = models.DateTimeField(auto_now_add=True)
@@ -139,10 +170,14 @@ class MyTask(models.Model):
     shot = models.ForeignKey(Shots, on_delete=models.CASCADE, related_name='+')
     art_percentage = models.FloatField(null=True, blank=True)
     assigned_bids = models.FloatField(null=True,blank=True)
+    start_date = models.DateTimeField(null=True, blank=True)
+    end_date = models.DateTimeField(null=True , blank=True)
     eta = models.DateTimeField(null=True,blank=True)
     task_status = models.ForeignKey(ShotStatus, on_delete=models.CASCADE, related_name='+')
     compiler = models.IntegerField(default=0)
     version = models.CharField(max_length=10, null=True, blank=True)
+    creation_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.artist.fullName
@@ -193,7 +228,7 @@ class HeadQc_Assignment(models.Model):
         verbose_name_plural = "Head Qc Assignments"
 
 class Groups(models.Model):
-    name = models.CharField(max_length=10, null=True, blank=True)
+    name = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -228,6 +263,7 @@ class Folder_Permissions(models.Model):
 
 class Permission_Groups(models.Model):
     permitted_users = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='+')
     permissions = models.ManyToManyField(Folder_Permissions, related_name='+')
 
     def __str__(self):

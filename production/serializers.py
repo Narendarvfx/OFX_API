@@ -11,7 +11,6 @@ class StatusSerializer(serializers.ModelSerializer):
         model = ShotStatus
         fields = '__all__'
 
-
 class ComplexitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Complexity
@@ -29,7 +28,25 @@ class ClientSerializer(serializers.ModelSerializer):
 
 class ProjectSerializer(serializers.ModelSerializer):
     client = serializers.SlugRelatedField(queryset=Clients.objects.all(), slug_field='name', required=False)
-    # status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='name', required=False)
+    status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='name', required=False)
+    imageSrc = serializers.ImageField(max_length=None, use_url=True, allow_null=True, required=False)
+
+    class Meta:
+        model = Projects
+        fields = '__all__'
+
+class ProjectPostSerializer(serializers.ModelSerializer):
+    # client = serializers.SlugRelatedField(queryset=Clients.objects.all(), slug_field='name', required=False)
+    status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=False)
+    # imageSrc = serializers.ImageField(max_length=None, use_url=True, allow_null=True, required=False)
+
+    class Meta:
+        model = Projects
+        fields = '__all__'
+
+class ProjectClientSerializer(serializers.ModelSerializer):
+    client = ClientSerializer(read_only=True)
+    status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=False)
     imageSrc = serializers.ImageField(max_length=None, use_url=True, allow_null=True, required=False)
 
     class Meta:
@@ -87,6 +104,7 @@ class ShotsPostSerializer(serializers.ModelSerializer):
     complexity = serializers.SlugRelatedField(queryset=Complexity.objects.all(), slug_field='name', required=False)
     task_type = serializers.SlugRelatedField(queryset=Task_Type.objects.all(), slug_field='name', required=False)
     imageSrc = serializers.ImageField(max_length=None, use_url=True, allow_null=True, required=False)
+    eta = serializers.DateTimeField(format=None,input_formats=['%Y-%m-%d',])
 
     class Meta:
         model = Shots
@@ -119,7 +137,7 @@ class MyTaskShotSerializer(serializers.ModelSerializer):
     artist = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
     assigned_by = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
     # status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='name', required=False)
-
+    task_status = StatusSerializer(read_only=True)
     class Meta:
         model = MyTask
         fields = '__all__'
@@ -140,7 +158,7 @@ class MyTaskPostSerializer(serializers.ModelSerializer):
 
 class MyTaskArtistSerializer(serializers.ModelSerializer):
     shot = ShotCompactSerializer(read_only=True)
-    task_status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=False)
+    task_status = StatusSerializer(read_only=True)
     artist = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
     assigned_by = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
 
@@ -229,6 +247,7 @@ class HeadQCSerializer(serializers.ModelSerializer):
 
 class PGSerializer(serializers.ModelSerializer):
     permitted_users = serializers.SlugRelatedField(queryset=User.objects.all(), slug_field='username', required=False)
+    department = serializers.SlugRelatedField(queryset=Department.objects.all(), slug_field='name', required=False)
 
     class Meta:
         model = Permission_Groups
