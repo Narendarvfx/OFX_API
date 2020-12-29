@@ -17,3 +17,8 @@ static/admin/css/autocomplete.css
 *.svg
 *.gif
 *.png
+*.ico
+*.eot
+*.ttf
+*.woff
+*.woff2
