@@ -8,12 +8,15 @@ from rest_framework.views import APIView
 from hrm.models import Employee
 from hrm.serializers import EmployeeSerializer
 from production.models import Clients, Projects, ShotStatus, Shots, Complexity, Sequence, MyTask, Assignments, Channels, \
-    Groups, Qc_Assignment, HeadQc_Assignment, Folder_Permissions, Permission_Groups, HeadQCTeam
+    Groups, Qc_Assignment, HeadQc_Assignment, Folder_Permissions, Permission_Groups, HeadQCTeam, ShotVersions, \
+    HQCVersions
 from production.serializers import ClientSerializer, ProjectSerializer, StatusSerializer, ShotsSerializer, \
     ShotsPostSerializer, ComplexitySerializer, SequenceSerializer, SequencePostSerializer, MyTaskSerializer, \
     MyTaskPostSerializer, MyTaskShotSerializer, AssignmentSerializer, AssignmentPostSerializer, MyTaskArtistSerializer, \
     ChannelsSerializer, ChannelsPostSerializer, GroupsSerializer, QCSerializer, TeamQCSerializer, \
-    MyTaskUpdateSerializer, HeadQCSerializer, HQCSerializer, PGSerializer, HQTSerializer
+    MyTaskUpdateSerializer, HeadQCSerializer, HQCSerializer, PGSerializer, HQTSerializer, ProjectClientSerializer, \
+    ProjectPostSerializer, MyTaskStatusSerializer, ShotVersionsSerializer, AllShotVersionsSerializer, \
+    AllHQCVersionsSerializer, HQCVersionsSerializer
 
 import configparser
 
@@ -21,9 +24,6 @@ config = configparser.ConfigParser()
 config.read('D:\\Repo_Settings\\settings.ini')
 
 class StatusInfo(APIView):
-    """
-    This is for getting the Status info
-    """
 
     def get(self, request, format=None):
         status = ShotStatus.objects.all()
@@ -31,9 +31,6 @@ class StatusInfo(APIView):
         return Response(serializer.data)
 
 class ComplexityInfo(APIView):
-    """
-    This is for getting the Complexity info
-    """
 
     def get(self, request, format=None):
         complexity = Complexity.objects.all()
@@ -41,9 +38,6 @@ class ComplexityInfo(APIView):
         return Response(serializer.data)
 
 class ClientDetail(APIView):
-    """
-    This is for get and post client detail
-    """
 
     def get(self, request, format=None):
         client = Clients.objects.all()
@@ -78,9 +72,6 @@ class ClientUpdate(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class ProjectDetail(APIView):
-    """
-    This is for edit employee detail
-    """
 
     def get(self, request, format=None):
         project = Projects.objects.all()
@@ -88,16 +79,20 @@ class ProjectDetail(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        serializer = ProjectSerializer(data=request.data)
+        serializer = ProjectPostSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class ProjectByClient(APIView):
+
+    def get(self, request,client_id, format=None):
+        project = Projects.objects.filter(client__id=client_id)
+        serializer = ProjectClientSerializer(project, many=True, context={"request":request})
+        return Response(serializer.data)
+
 class SequenceDetail(APIView):
-    """
-    This is for get and post sequence detail
-    """
 
     def get(self, request, format=None):
         sequence = Sequence.objects.select_related('project','project__client').all()
@@ -132,9 +127,7 @@ class ProjectUpdate(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class ShotsData(APIView):
-    """
-    This is for edit employee detail
-    """
+
     def get(self, request, format=None):
         shot = Shots.objects.select_related('sequence','task_type','sequence__project','sequence__project__client','status','complexity').all()
         serializer = ShotsSerializer(shot, many=True, context={"request":request})
@@ -173,6 +166,7 @@ class ShotUpdate(APIView):
         serializer = ShotsPostSerializer(shot, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
+            serializer = ShotsSerializer(shot)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -182,11 +176,9 @@ class ShotUpdate(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class MyTaskData(APIView):
-    """
-    This is for edit employee detail
-    """
+
     def get(self, request, format=None):
-        mytask = MyTask.objects.all()
+        mytask = MyTask.objects.select_related('shot__task_type','shot__sequence','shot__sequence__project','artist','assigned_by').all()
         serializer = MyTaskSerializer(mytask, many=True, context={"request":request})
         return Response(serializer.data)
 
@@ -194,16 +186,14 @@ class MyTaskData(APIView):
         serializer = MyTaskPostSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            create_dir_permissions(serializer.data)
+            # create_dir_permissions(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class MyTaskShotData(APIView):
-    """
-    This is for edit employee detail
-    """
+
     def get(self, request,shotId, format=None):
-        mytask = MyTask.objects.all().filter(shot=shotId)
+        mytask = MyTask.objects.select_related('artist','assigned_by','task_status').filter(shot=shotId)
         serializer = MyTaskShotSerializer(mytask, many=True)
         return Response(serializer.data)
 
@@ -219,6 +209,8 @@ class MyTaskDetail(APIView):
         serializer = MyTaskUpdateSerializer(task, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
+
+            serializer = MyTaskStatusSerializer(task)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -228,18 +220,14 @@ class MyTaskDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class MyTaskArtistData(APIView):
-    """
-    This is for edit employee detail
-    """
+
     def get(self, request,artistId, format=None):
-        mytask = MyTask.objects.filter(artist=artistId).all()
+        mytask = MyTask.objects.select_related('assigned_by','shot__task_type','shot__sequence__project','shot__status','task_status','artist','shot__sequence','shot__sequence__project__client').filter(artist=artistId).all()
         serializer = MyTaskArtistSerializer(mytask, many=True)
         return Response(serializer.data)
 
 class ShotAssignment(APIView):
-    """
-    This is for edit employee detail
-    """
+
     def get(self, request, format=None):
         assignment = Assignments.objects.all()
         serializer = AssignmentSerializer(assignment, many=True, context={"request":request})
@@ -347,8 +335,8 @@ class Head_QC_Team(APIView):
 class HeadQCData(APIView):
 
     def get(self, request):
-        data = HeadQc_Assignment.objects.all()
-        serializer = HQCSerializer(data, many=True,context={"request": request})
+        data = HeadQc_Assignment.objects.select_related('qc_task__task__shot__sequence__project','qc_task__task__shot__sequence__project__client','qc_task__task__shot__sequence','qc_task__task__shot__task_type','qc_task__task__shot__status','qc_task__task__task_status','hqc_status').all()
+        serializer = HeadQCSerializer(data, many=True,context={"request": request})
         return Response(serializer.data)
 
     def post(self, request):
@@ -381,11 +369,82 @@ class QCDataByHQCId(APIView):
         serializer = HeadQCSerializer(data, many=True, context={"request": request})
         return Response(serializer.data)
 
+class ShotVersionsAPI(APIView):
+
+    def get(self, request):
+        data = ShotVersions.objects.all().order_by('version')
+        serializer = ShotVersionsSerializer(data, many=True, context={"request": request})
+        return  Response(serializer.data)
+
+    def post(self, request):
+        serializer = ShotVersionsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class LastShotVersionById(APIView):
+
+    def get(self, request, shotId):
+        data = ShotVersions.objects.filter(shot=shotId).last()
+        serializer = ShotVersionsSerializer(data, context={"request": request})
+        return  Response(serializer.data)
+
+class ShotVersionsById(APIView):
+    def get(self, request, verId):
+        data = ShotVersions.objects.filter(shot=verId).select_related('sent_by','status')
+        serializer = AllShotVersionsSerializer(data, many=True, context={"request": request})
+        return Response(serializer.data)
+
+    def put(self, request, verId):
+        data = ShotVersions.objects.get(id=verId)
+        serializer = ShotVersionsSerializer(data, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class HQCVersionsAPI(APIView):
+
+    def get(self, request):
+        data = HQCVersions.objects.all().order_by('version')
+        serializer = HQCVersionsSerializer(data, many=True, context={"request": request})
+        return  Response(serializer.data)
+
+    def post(self, request):
+        serializer = HQCVersionsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class LastHQCVersionById(APIView):
+
+    def get(self, request, shotId):
+        data = HQCVersions.objects.filter(shot=shotId).last()
+        serializer = HQCVersionsSerializer(data, context={"request": request})
+        return  Response(serializer.data)
+
+class HQCVersionsById(APIView):
+    def get(self, request, verId):
+        data = HQCVersions.objects.filter(shot=verId).select_related('sent_by','status')
+        serializer = AllHQCVersionsSerializer(data, many=True, context={"request": request})
+        return Response(serializer.data)
+
+    def put(self, request, verId):
+        data = HQCVersions.objects.get(id=verId)
+        serializer = HQCVersionsSerializer(data, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class Perm_Groups(APIView):
 
     def get(self, request):
         data = Permission_Groups.objects.all()
-        serializer = PGSerializer(data, many=True,context={"request": request})
+        serializer = PGSerializer(data, many=True, context={"request": request})
         return Response(serializer.data)
 
 def create_dir_permissions(assigned_data):

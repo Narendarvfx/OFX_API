@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Employee, Department, EmployementStatus, Role, Grade, ProductionTeam
+from .models import Employee, Department, EmployementStatus, Role, Grade, ProductionTeam, Permissions
 
 
 class EmployeeFields(admin.ModelAdmin):
@@ -9,9 +9,13 @@ class EmployeeFields(admin.ModelAdmin):
     exclude = ("profile",)
     list_per_page = 10
 
+class PermissionFields(admin.ModelAdmin):
+    list_display = [f.name for f in Permissions._meta.fields]
+
 admin.site.register(Employee, EmployeeFields)
 admin.site.register(ProductionTeam)
 admin.site.register(Department)
 admin.site.register(EmployementStatus)
 admin.site.register(Role)
 admin.site.register(Grade)
+admin.site.register(Permissions, PermissionFields)

@@ -38,8 +38,10 @@ AUTH_LDAP_USER_ATTR_MAP = {
     "last_name": "sn",
 }
 
+AUTH_LDAP_NO_NEW_USERS = True
+
 AUTHENTICATION_BACKENDS = (
-    # "django_auth_ldap.backend.LDAPBackend",
+    "django_auth_ldap.backend.LDAPBackend",
     "django.contrib.auth.backends.ModelBackend",
 )
 
@@ -48,7 +50,7 @@ AUTHENTICATION_BACKENDS = (
 SECRET_KEY = '$qk=xmf1nr6xy)4-!w2g5!wh=)$e6^8@v^z%w@i8n44pjf5lg2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1','*']
 
@@ -71,8 +73,21 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'colorfield',
-    'channels'
+    'channels',
+    'log_viewer'
 ]
+
+LOG_VIEWER_FILES = ['ofx_pipeline','ofx_pipeline2', ...]
+LOG_VIEWER_FILES_PATTERN = 'ofx_pipeline*'
+LOG_VIEWER_FILES_DIR = os.path.join(BASE_DIR, 'logs')
+LOG_VIEWER_MAX_READ_LINES = 1000  # total log lines will be read
+LOG_VIEWER_PAGE_LENGTH = 25       # total log lines per-page
+LOG_VIEWER_PATTERNS = [']OFNI[', ']GUBED[', ']GNINRAW[', ']RORRE[', ']LACITIRC[']
+
+# Optionally you can set the next variables in order to customize the admin:
+
+LOG_VIEWER_FILE_LIST_TITLE = "Ofx Pipeline"
+LOG_VIEWER_FILE_LIST_STYLES = "/static/css/my-custom.css"
 
 {
     "BACKEND": "django_jinja.backend.Jinja2",
@@ -170,13 +185,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Calcutta'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)

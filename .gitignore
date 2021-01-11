@@ -10,5 +10,16 @@ venv/
 db.sqlite3
 *.json
 *.sql
-static/third_party/ui-grid*
+static/admin/
 MIST_API/settings.ini
+static/admin/css/autocomplete.css
+*.css
+*.js
+*.svg
+*.gif
+*.png
+*.ico
+*.eot
+*.ttf
+*.woff
+*.woff2

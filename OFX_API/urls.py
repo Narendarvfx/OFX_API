@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^', include('hrm.urls')),
     url(r'^', include('production.urls')),
     path('admin/', admin.site.urls),
+    path('admin/log_viewer/', include('log_viewer.urls')),
 ]
 
 if settings.DEBUG:

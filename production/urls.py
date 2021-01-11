@@ -11,13 +11,12 @@ urlpatterns = [
 
     # Project Urls
     url(r'^api/production/projects/$', api.ProjectDetail.as_view(), name='Project API'),
+    url(r'^api/production/projects/(?P<client_id>\d+)/$', api.ProjectByClient.as_view(), name='Project API'),
     url(r'^api/production/projects/(?P<projectId>\d+)/$', api.ProjectUpdate.as_view(), name='Project API'),
 
     # Sequence Urls
     url(r'^api/production/projects/sequence/$', api.SequenceDetail.as_view(), name='Sequence API'),
     url(r'^api/production/projects/sequence/(?P<projectId>\d+)/$', api.ProjectSequenceData.as_view(), name='Projects Sequence API'),
-    # url(r'^api/production/projects/(?P<projectId>\d+)/$', api.ProjectUpdate.as_view(), name='Project API'),
-    # url(r'^api/production/fileexplorer/(?P<projectId>\d+)/$', api.FileExplorer.as_view(), name='File Explorer'),
 
     # Shots Urls
     url(r'^api/production/shots/$', api.ShotsData.as_view(), name='Shots API'),
@@ -56,5 +55,15 @@ urlpatterns = [
     url(r'^api/production/head_qc/qc/', api.HeadQCData.as_view(), name='Head QC Assignments API'),
 
     # Folder Permission Url
-    url(r'^api/production/permissions_groups/', api.Perm_Groups.as_view(), name='Permission Groups')
+    url(r'^api/production/permissions_groups/', api.Perm_Groups.as_view(), name='Permission Groups'),
+
+    # Internal Version urls
+    url(r'api/production/shotversions/$', api.ShotVersionsAPI.as_view(), name="Shot Versions"),
+    url(r'api/production/shotversions/(?P<shotId>\d+)/$', api.LastShotVersionById.as_view(), name="Shot Versions"),
+    url(r'^api/production/allshotversions/(?P<verId>\d+)/$', api.ShotVersionsById.as_view(), name="Shot Versions"),
+
+    # HQC Version urls
+    url(r'api/production/hqcversions/$', api.HQCVersionsAPI.as_view(), name="Shot Versions"),
+    url(r'api/production/hqcversions/(?P<shotId>\d+)/$', api.LastHQCVersionById.as_view(), name="Shot Versions"),
+    url(r'^api/production/allhqcversions/(?P<verId>\d+)/$', api.HQCVersionsById.as_view(), name="Shot Versions")
 ]

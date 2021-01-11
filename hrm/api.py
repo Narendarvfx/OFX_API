@@ -3,8 +3,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from hrm.models import Employee
-from hrm.serializers import EmployeeSerializer
+from hrm.models import Employee, ProductionTeam
+from hrm.serializers import EmployeeSerializer, TeamSerializer
 
 
 class EmployeeDetail(APIView):
@@ -34,4 +34,11 @@ class AllEmployeeDetail(APIView):
     def get(self, request, format=None):
         employee = Employee.objects.select_related('department','role','employement_status','grade').filter(Q(department__name="PAINT") | Q(department__name="ROTO") | Q(department__name="MATCH MOVE") , employement_status__name='Active')
         serializer = EmployeeSerializer(employee, many=True, context={"request":request})
+        return Response(serializer.data)
+
+class AllTeams(APIView):
+
+    def get(self, request, format=None):
+        team= ProductionTeam.objects.all()
+        serializer = TeamSerializer(team, many=True, context={"request":request})
         return Response(serializer.data)
