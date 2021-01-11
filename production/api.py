@@ -8,13 +8,15 @@ from rest_framework.views import APIView
 from hrm.models import Employee
 from hrm.serializers import EmployeeSerializer
 from production.models import Clients, Projects, ShotStatus, Shots, Complexity, Sequence, MyTask, Assignments, Channels, \
-    Groups, Qc_Assignment, HeadQc_Assignment, Folder_Permissions, Permission_Groups, HeadQCTeam
+    Groups, Qc_Assignment, HeadQc_Assignment, Folder_Permissions, Permission_Groups, HeadQCTeam, ShotVersions, \
+    HQCVersions
 from production.serializers import ClientSerializer, ProjectSerializer, StatusSerializer, ShotsSerializer, \
     ShotsPostSerializer, ComplexitySerializer, SequenceSerializer, SequencePostSerializer, MyTaskSerializer, \
     MyTaskPostSerializer, MyTaskShotSerializer, AssignmentSerializer, AssignmentPostSerializer, MyTaskArtistSerializer, \
     ChannelsSerializer, ChannelsPostSerializer, GroupsSerializer, QCSerializer, TeamQCSerializer, \
     MyTaskUpdateSerializer, HeadQCSerializer, HQCSerializer, PGSerializer, HQTSerializer, ProjectClientSerializer, \
-    ProjectPostSerializer
+    ProjectPostSerializer, MyTaskStatusSerializer, ShotVersionsSerializer, AllShotVersionsSerializer, \
+    AllHQCVersionsSerializer, HQCVersionsSerializer
 
 import configparser
 
@@ -164,6 +166,7 @@ class ShotUpdate(APIView):
         serializer = ShotsPostSerializer(shot, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
+            serializer = ShotsSerializer(shot)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -183,7 +186,7 @@ class MyTaskData(APIView):
         serializer = MyTaskPostSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            create_dir_permissions(serializer.data)
+            # create_dir_permissions(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -206,6 +209,8 @@ class MyTaskDetail(APIView):
         serializer = MyTaskUpdateSerializer(task, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
+
+            serializer = MyTaskStatusSerializer(task)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -364,11 +369,82 @@ class QCDataByHQCId(APIView):
         serializer = HeadQCSerializer(data, many=True, context={"request": request})
         return Response(serializer.data)
 
+class ShotVersionsAPI(APIView):
+
+    def get(self, request):
+        data = ShotVersions.objects.all().order_by('version')
+        serializer = ShotVersionsSerializer(data, many=True, context={"request": request})
+        return  Response(serializer.data)
+
+    def post(self, request):
+        serializer = ShotVersionsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class LastShotVersionById(APIView):
+
+    def get(self, request, shotId):
+        data = ShotVersions.objects.filter(shot=shotId).last()
+        serializer = ShotVersionsSerializer(data, context={"request": request})
+        return  Response(serializer.data)
+
+class ShotVersionsById(APIView):
+    def get(self, request, verId):
+        data = ShotVersions.objects.filter(shot=verId).select_related('sent_by','status')
+        serializer = AllShotVersionsSerializer(data, many=True, context={"request": request})
+        return Response(serializer.data)
+
+    def put(self, request, verId):
+        data = ShotVersions.objects.get(id=verId)
+        serializer = ShotVersionsSerializer(data, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class HQCVersionsAPI(APIView):
+
+    def get(self, request):
+        data = HQCVersions.objects.all().order_by('version')
+        serializer = HQCVersionsSerializer(data, many=True, context={"request": request})
+        return  Response(serializer.data)
+
+    def post(self, request):
+        serializer = HQCVersionsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class LastHQCVersionById(APIView):
+
+    def get(self, request, shotId):
+        data = HQCVersions.objects.filter(shot=shotId).last()
+        serializer = HQCVersionsSerializer(data, context={"request": request})
+        return  Response(serializer.data)
+
+class HQCVersionsById(APIView):
+    def get(self, request, verId):
+        data = HQCVersions.objects.filter(shot=verId).select_related('sent_by','status')
+        serializer = AllHQCVersionsSerializer(data, many=True, context={"request": request})
+        return Response(serializer.data)
+
+    def put(self, request, verId):
+        data = HQCVersions.objects.get(id=verId)
+        serializer = HQCVersionsSerializer(data, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class Perm_Groups(APIView):
 
     def get(self, request):
         data = Permission_Groups.objects.all()
-        serializer = PGSerializer(data, many=True,context={"request": request})
+        serializer = PGSerializer(data, many=True, context={"request": request})
         return Response(serializer.data)
 
 def create_dir_permissions(assigned_data):

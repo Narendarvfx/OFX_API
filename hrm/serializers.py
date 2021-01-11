@@ -22,3 +22,10 @@ class EmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
         fields = '__all__'
+
+class TeamSerializer(serializers.ModelSerializer):
+
+
+    class Meta:
+        model = ProductionTeam
+        fields = '__all__'

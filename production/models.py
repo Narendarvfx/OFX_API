@@ -164,6 +164,51 @@ class Shots(models.Model):
     class Meta:
         verbose_name_plural = "Shots"
 
+class HQCVersions(models.Model):
+    version = models.CharField(max_length=30)
+    shot = models.ForeignKey(Shots, on_delete=models.CASCADE, related_name='+')
+    sent_date = models.DateTimeField(auto_now_add=True)
+    sent_by = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+')
+    status = models.ForeignKey(ShotStatus, on_delete=models.CASCADE, related_name='+')
+    verified_by = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+', blank=True, null=True)
+    verified_date = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+        return self.version
+
+    class Meta:
+        verbose_name_plural = "HQCVersions"
+
+class ClientVersions(models.Model):
+    version = models.CharField(max_length=30)
+    shot = models.ForeignKey(Shots, on_delete=models.CASCADE, related_name='+')
+    sent_date = models.DateTimeField(auto_now_add=True)
+    sent_by = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+')
+    status = models.ForeignKey(ShotStatus, on_delete=models.CASCADE, related_name='+')
+    verified_by =models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+', blank=True, null=True)
+    verified_date = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+        return self.version
+
+    class Meta:
+        verbose_name_plural = "ClientVersions"
+
+class ShotVersions(models.Model):
+    version = models.CharField(max_length=30)
+    shot = models.ForeignKey(Shots, on_delete=models.CASCADE, related_name='+')
+    sent_date = models.DateTimeField(auto_now_add=True)
+    sent_by = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+')
+    status = models.ForeignKey(ShotStatus, on_delete=models.CASCADE, related_name='+')
+    verified_by =models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+', blank=True, null=True)
+    verified_date = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+        return self.version
+
+    class Meta:
+        verbose_name_plural = "ShotVersions"
+
 class MyTask(models.Model):
     artist = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+')
     assigned_by = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+', blank=True, null=True)
@@ -188,7 +233,7 @@ class MyTask(models.Model):
 class Assignments(models.Model):
     lead = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+')
     shot = models.ForeignKey(Shots, on_delete=models.CASCADE, related_name='+')
-    status = models.ForeignKey(ShotStatus, on_delete=models.CASCADE, related_name='+')
+    # status = models.ForeignKey(ShotStatus, on_delete=models.CASCADE, related_name='+')
     assigned_by = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+')
     assigned_date = models.DateTimeField(auto_now_add=True)
 

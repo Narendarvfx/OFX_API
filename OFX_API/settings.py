@@ -38,8 +38,10 @@ AUTH_LDAP_USER_ATTR_MAP = {
     "last_name": "sn",
 }
 
+AUTH_LDAP_NO_NEW_USERS = True
+
 AUTHENTICATION_BACKENDS = (
-    # "django_auth_ldap.backend.LDAPBackend",
+    "django_auth_ldap.backend.LDAPBackend",
     "django.contrib.auth.backends.ModelBackend",
 )
 
@@ -48,7 +50,7 @@ AUTHENTICATION_BACKENDS = (
 SECRET_KEY = '$qk=xmf1nr6xy)4-!w2g5!wh=)$e6^8@v^z%w@i8n44pjf5lg2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1','*']
 
