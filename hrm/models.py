@@ -51,7 +51,12 @@ class Grade(models.Model):
 
 class ProductionTeam(models.Model):
     lead = models.ForeignKey(Profile, on_delete=models.CASCADE,related_name='+', null=True)
-    qc = models.ForeignKey(Profile, on_delete=models.CASCADE,related_name='+', null=True)
+    qc_1 = models.ForeignKey(Profile, on_delete=models.CASCADE,related_name='+', null=True, blank=True)
+    qc_2 = models.ForeignKey(Profile, on_delete=models.CASCADE,related_name='+', null=True, blank=True)
+    qc_3 = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
+    qc_4 = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
+    qc_5 = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
+
 
     def __str__(self):
         return self.lead.user.username

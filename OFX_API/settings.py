@@ -41,7 +41,7 @@ AUTH_LDAP_USER_ATTR_MAP = {
 AUTH_LDAP_NO_NEW_USERS = True
 
 AUTHENTICATION_BACKENDS = (
-    "django_auth_ldap.backend.LDAPBackend",
+    # "django_auth_ldap.backend.LDAPBackend",
     "django.contrib.auth.backends.ModelBackend",
 )
 
@@ -50,7 +50,7 @@ AUTHENTICATION_BACKENDS = (
 SECRET_KEY = '$qk=xmf1nr6xy)4-!w2g5!wh=)$e6^8@v^z%w@i8n44pjf5lg2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1','*']
 
@@ -74,20 +74,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'colorfield',
     'channels',
-    'log_viewer'
+    'django_db_logger',
 ]
-
-LOG_VIEWER_FILES = ['ofx_pipeline','ofx_pipeline2', ...]
-LOG_VIEWER_FILES_PATTERN = 'ofx_pipeline*'
-LOG_VIEWER_FILES_DIR = os.path.join(BASE_DIR, 'logs')
-LOG_VIEWER_MAX_READ_LINES = 1000  # total log lines will be read
-LOG_VIEWER_PAGE_LENGTH = 25       # total log lines per-page
-LOG_VIEWER_PATTERNS = [']OFNI[', ']GUBED[', ']GNINRAW[', ']RORRE[', ']LACITIRC[']
-
-# Optionally you can set the next variables in order to customize the admin:
-
-LOG_VIEWER_FILE_LIST_TITLE = "Ofx Pipeline"
-LOG_VIEWER_FILE_LIST_STYLES = "/static/css/my-custom.css"
 
 {
     "BACKEND": "django_jinja.backend.Jinja2",
@@ -169,7 +157,7 @@ else:
                                  passwd='data_admin@1234',
                                  )
     cur = connection.cursor()
-    cur.execute('CREATE DATABASE IF NOT EXISTS mist_erp;')
+    cur.execute('CREATE DATABASE IF NOT EXISTS ofx_api;')
     connection.close()
     DATABASES = {
         'default': {
@@ -253,8 +241,12 @@ LOGGING = {
             'filename': LOG_PATH + '/ofx_pipeline.log',
             'formatter': 'verbose'
         },
-         'console': {
+        'console': {
             "class": "logging.StreamHandler",
+        },
+        'db_log': {
+            'level': 'DEBUG',
+            'class': 'django_db_logger.db_log_handler.DatabaseLogHandler'
         },
     },
     'loggers': {
@@ -267,6 +259,10 @@ LOGGING = {
             "handlers": ["console"],
             "level": "DEBUG",
         },
+        'db': {
+            'handlers': ['db_log'],
+            'level': 'DEBUG'
+        }
     },
 }
 
