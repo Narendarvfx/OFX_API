@@ -126,6 +126,21 @@ class Permissions(models.Model):
     view_client= models.BooleanField(default=False)
     add_project = models.BooleanField(default=False)
     view_project = models.BooleanField(default=False)
+    add_sequence = models.BooleanField(default=False)
+    view_sequence = models.BooleanField(default=False)
+    add_shots = models.BooleanField(default=False)
+    can_view_all_shots = models.BooleanField(default=False)
+    can_view_team_shots = models.BooleanField(default=False)
+    can_assign_shot = models.BooleanField(default=False)
+    can_assign_lead = models.BooleanField(default=False)
+    can_change_bid = models.BooleanField(default=False)
+    can_view_client_bid = models.BooleanField(default=False)
+    can_view_bid = models.BooleanField(default=False)
+    can_change_eta = models.BooleanField(default=False)
+    can_view_eta = models.BooleanField(default=False)
+    can_view_client_eta = models.BooleanField(default=False)
+    can_approve = models.BooleanField(default=False)
+    can_reject = models.BooleanField(default=False)
 
     def __str__(self):
         return self.role.name

@@ -3,8 +3,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from hrm.models import Employee, ProductionTeam
-from hrm.serializers import EmployeeSerializer, TeamSerializer
+from hrm.models import Employee, ProductionTeam, Permissions
+from hrm.serializers import EmployeeSerializer, TeamSerializer, PermissionSerializer
 
 
 class EmployeeDetail(APIView):
@@ -32,7 +32,7 @@ class AllEmployeeDetail(APIView):
     """
 
     def get(self, request, format=None):
-        employee = Employee.objects.select_related('department','role','employement_status','grade').filter(Q(department__name="PAINT") | Q(department__name="ROTO") | Q(department__name="MATCH MOVE") , employement_status__name='Active')
+        employee = Employee.objects.select_related('department','role','employement_status','grade').filter(Q(department__name="PAINT") | Q(department__name="ROTO") | Q(department__name="MM") , employement_status__name='Active')
         serializer = EmployeeSerializer(employee, many=True, context={"request":request})
         return Response(serializer.data)
 
@@ -41,4 +41,21 @@ class AllTeams(APIView):
     def get(self, request, format=None):
         team= ProductionTeam.objects.all()
         serializer = TeamSerializer(team, many=True, context={"request":request})
+        return Response(serializer.data)
+
+class AllPermissions(APIView):
+
+    def get(self, request, format=None):
+        permission= Permissions.objects.all()
+        serializer = PermissionSerializer(permission, many=True, context={"request":request})
+        return Response(serializer.data)
+
+class RolePermissions(APIView):
+    """
+    This is for edit employee detail
+    """
+
+    def get(self, request, role_id, format=None):
+        rpermission = Permissions.objects.get(role=role_id)
+        serializer = PermissionSerializer(rpermission, context={"request":request})
         return Response(serializer.data)
