@@ -140,7 +140,7 @@ class Shots(models.Model):
     start_date = models.DateTimeField(null=True, blank=True)
     end_date = models.DateTimeField(null=True, blank=True)
     bid_days = models.FloatField(default=0)
-    percentage = models.FloatField(default=0)
+    progress = models.FloatField(default=0)
     description = models.TextField(null=True, blank=True)
     complexity = models.ForeignKey(Complexity, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
 

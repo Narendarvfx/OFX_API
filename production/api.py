@@ -178,7 +178,7 @@ class ShotUpdate(APIView):
 class MyTaskData(APIView):
 
     def get(self, request, format=None):
-        mytask = MyTask.objects.select_related('shot__task_type','shot__sequence','shot__sequence__project','artist','assigned_by').all()
+        mytask = MyTask.objects.select_related('shot__task_type','shot__sequence','shot__sequence__project','artist','assigned_by','task_status').all()
         serializer = MyTaskSerializer(mytask, many=True, context={"request":request})
         return Response(serializer.data)
 
@@ -200,7 +200,7 @@ class MyTaskShotData(APIView):
 class MyTaskDetail(APIView):
 
     def get(self, request, taskId, format=None):
-        task = MyTask.objects.get(id=taskId)
+        task = MyTask.objects.select_related('artist','task_status','shot','assigned_by').get(id=taskId)
         serializer = MyTaskSerializer(task)
         return Response(serializer.data)
 
@@ -372,7 +372,7 @@ class QCDataByHQCId(APIView):
 class ShotVersionsAPI(APIView):
 
     def get(self, request):
-        data = ShotVersions.objects.all().order_by('version')
+        data = ShotVersions.objects.select_related('status').order_by('version')
         serializer = ShotVersionsSerializer(data, many=True, context={"request": request})
         return  Response(serializer.data)
 
@@ -386,7 +386,7 @@ class ShotVersionsAPI(APIView):
 class LastShotVersionById(APIView):
 
     def get(self, request, shotId):
-        data = ShotVersions.objects.filter(shot=shotId).last()
+        data = ShotVersions.objects.select_related('status').filter(shot=shotId).last()
         serializer = ShotVersionsSerializer(data, context={"request": request})
         return  Response(serializer.data)
 
@@ -407,7 +407,7 @@ class ShotVersionsById(APIView):
 class HQCVersionsAPI(APIView):
 
     def get(self, request):
-        data = HQCVersions.objects.all().order_by('version')
+        data = HQCVersions.objects.select_related('status').order_by('version')
         serializer = HQCVersionsSerializer(data, many=True, context={"request": request})
         return  Response(serializer.data)
 
@@ -421,7 +421,7 @@ class HQCVersionsAPI(APIView):
 class LastHQCVersionById(APIView):
 
     def get(self, request, shotId):
-        data = HQCVersions.objects.filter(shot=shotId).last()
+        data = HQCVersions.objects.select_related('status').filter(shot=shotId).last()
         serializer = HQCVersionsSerializer(data, context={"request": request})
         return  Response(serializer.data)
 

@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^', include('profiles.urls')),
     url(r'^', include('hrm.urls')),
     url(r'^', include('production.urls')),
+    url(r'^', include('essl.urls')),
     path('admin/', admin.site.urls),
     path('admin/log_viewer/', include('log_viewer.urls')),
 ]

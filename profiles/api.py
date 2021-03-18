@@ -3,7 +3,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.contrib import auth
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, update_last_login
 from django.http import Http404
 from rest_framework import status
 from .models import Profile
@@ -25,6 +25,7 @@ class UserAuthentication(ObtainAuthToken):
         password = request.POST.get('password', '')
         user = auth.authenticate(username=username, password=password)
         if user:
+            update_last_login(None, user)
             profile = Profile.objects.get(user__username=username)
             photo = profile.employee.photo
             if photo:

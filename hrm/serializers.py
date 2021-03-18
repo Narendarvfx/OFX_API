@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from hrm.models import Department, Role, Grade, EmployementStatus, Employee, ProductionTeam
+from hrm.models import Department, Role, Grade, EmployementStatus, Employee, ProductionTeam, Permissions
 
 
 class GradeCompactSerializer(serializers.ModelSerializer):
@@ -28,4 +28,11 @@ class TeamSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProductionTeam
+        fields = '__all__'
+
+class PermissionSerializer(serializers.ModelSerializer):
+
+
+    class Meta:
+        model = Permissions
         fields = '__all__'

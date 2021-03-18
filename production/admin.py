@@ -33,6 +33,11 @@ class MyTaskFields(admin.ModelAdmin):
     list_filter = ['task_status']
     search_fields = ['artist__fullName']
 
+class AssignmentFields(admin.ModelAdmin):
+    list_display = [f.name for f in Assignments._meta.fields]
+    list_per_page = 15
+    search_fields = ['lead__fullName','shot__name']
+
 class SequenceFields(admin.ModelAdmin):
     list_display = [f.name for f in Sequence._meta.fields]
     list_per_page = 15
@@ -51,7 +56,7 @@ admin.site.register(Sequence, SequenceFields)
 admin.site.register(Task_Type)
 admin.site.register(Shots, ShotsFields)
 admin.site.register(MyTask, MyTaskFields)
-admin.site.register(Assignments)
+admin.site.register(Assignments, AssignmentFields)
 admin.site.register(Qc_Assignment)
 admin.site.register(Groups)
 admin.site.register(Channels)
