@@ -58,12 +58,12 @@ urlpatterns = [
     url(r'^api/production/permissions_groups/', api.Perm_Groups.as_view(), name='Permission Groups'),
 
     # Internal Version urls
-    url(r'api/production/shotversions/$', api.ShotVersionsAPI.as_view(), name="Shot Versions"),
-    url(r'api/production/shotversions/(?P<shotId>\d+)/$', api.LastShotVersionById.as_view(), name="Shot Versions"),
+    url(r'^api/production/shotversions/$', api.ShotVersionsAPI.as_view(), name="Shot Versions"),
+    url(r'^api/production/shotversions/(?P<shotId>\d+)/$', api.LastShotVersionById.as_view(), name="Shot Versions"),
     url(r'^api/production/allshotversions/(?P<verId>\d+)/$', api.ShotVersionsById.as_view(), name="Shot Versions"),
 
     # HQC Version urls
-    url(r'api/production/hqcversions/$', api.HQCVersionsAPI.as_view(), name="Shot Versions"),
-    url(r'api/production/hqcversions/(?P<shotId>\d+)/$', api.LastHQCVersionById.as_view(), name="Shot Versions"),
+    url(r'^api/production/hqcversions/$', api.HQCVersionsAPI.as_view(), name="Shot Versions"),
+    url(r'^api/production/hqcversions/(?P<shotId>\d+)/$', api.LastHQCVersionById.as_view(), name="Shot Versions"),
     url(r'^api/production/allhqcversions/(?P<verId>\d+)/$', api.HQCVersionsById.as_view(), name="Shot Versions")
 ]

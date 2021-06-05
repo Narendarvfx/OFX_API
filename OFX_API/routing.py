@@ -6,6 +6,7 @@ from channels.security.websocket import AllowedHostsOriginValidator, OriginValid
 
 websocket_urlPattern=[
     re_path(r'ws/projects/(?P<room_name>\w+)/$', consumers.ProductionConsumer),
+    re_path(r'ws/emp/(?P<room_name>\w+)/$', consumers.ProductionConsumer),
 ]
 
 application = ProtocolTypeRouter({

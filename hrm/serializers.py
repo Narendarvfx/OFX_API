@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from hrm.models import Department, Role, Grade, EmployementStatus, Employee, ProductionTeam, Permissions
+from profiles.models import Profile
 
 
 class GradeCompactSerializer(serializers.ModelSerializer):
@@ -8,6 +9,12 @@ class GradeCompactSerializer(serializers.ModelSerializer):
     class Meta:
         model = Grade
         fields = '__all__'
+
+class EmployeeCompactSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Employee
+        fields = ('id','fullName')
 
 class EmployeeSerializer(serializers.ModelSerializer):
 
@@ -18,6 +25,8 @@ class EmployeeSerializer(serializers.ModelSerializer):
     employement_status = serializers.SlugRelatedField(queryset=EmployementStatus.objects.all(), slug_field='name',
                                                      required=False)
     photo = serializers.ImageField(max_length=None, use_url=True, allow_null=True, required=False)
+    team_lead = EmployeeCompactSerializer(read_only=True)
+    supervisor = EmployeeCompactSerializer(read_only=True)
 
     class Meta:
         model = Employee
