@@ -11,9 +11,8 @@ class EmployeeDetail(APIView):
     """
     This is for edit employee detail
     """
-
     def get(self, request, profile_id, format=None):
-        employee = Employee.objects.select_related('department','grade','role','employement_status').get(profile=profile_id)
+        employee = Employee.objects.select_related('department','grade','role','employement_status','team_lead','supervisor').get(profile=profile_id)
         serializer = EmployeeSerializer(employee, context={"request":request})
         return Response(serializer.data)
 
@@ -30,9 +29,12 @@ class AllEmployeeDetail(APIView):
     """
     This is for edit employee detail
     """
-
     def get(self, request, format=None):
-        employee = Employee.objects.select_related('department','role','employement_status','grade').filter(Q(department__name="PAINT") | Q(department__name="ROTO") | Q(department__name="MM") , employement_status__name='Active')
+        employment_status = request.GET.get('status')
+        if employment_status is not None:
+            employee = Employee.objects.select_related('department', 'role', 'employement_status', 'grade').filter(employement_status__name=employment_status)
+        else:
+            employee = Employee.objects.select_related('department', 'role', 'employement_status', 'grade')
         serializer = EmployeeSerializer(employee, many=True, context={"request":request})
         return Response(serializer.data)
 
@@ -41,6 +43,13 @@ class AllTeams(APIView):
     def get(self, request, format=None):
         team= ProductionTeam.objects.all()
         serializer = TeamSerializer(team, many=True, context={"request":request})
+        return Response(serializer.data)
+
+class TeamById(APIView):
+
+    def get(self, request,id, format=None):
+        team= ProductionTeam.objects.get(id=id)
+        serializer = TeamSerializer(team, context={"request":request})
         return Response(serializer.data)
 
 class AllPermissions(APIView):
@@ -54,7 +63,6 @@ class RolePermissions(APIView):
     """
     This is for edit employee detail
     """
-
     def get(self, request, role_id, format=None):
         rpermission = Permissions.objects.get(role=role_id)
         serializer = PermissionSerializer(rpermission, context={"request":request})

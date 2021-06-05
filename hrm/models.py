@@ -92,6 +92,8 @@ class Employee(models.Model):
     grade = models.ForeignKey(Grade, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
     creation_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
+    team_lead = models.ForeignKey('self', on_delete=models.CASCADE, related_name='+', null=True, blank=True)
+    supervisor = models.ForeignKey('self', on_delete=models.CASCADE, related_name='+', null=True, blank=True)
 
     def profile_photo(self):
         if self.photo:

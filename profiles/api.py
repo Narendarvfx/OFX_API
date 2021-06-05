@@ -24,7 +24,7 @@ class UserAuthentication(ObtainAuthToken):
         username = request.POST.get('username', '')
         password = request.POST.get('password', '')
         user = auth.authenticate(username=username, password=password)
-        if user:
+        if user.is_active:
             update_last_login(None, user)
             profile = Profile.objects.get(user__username=username)
             photo = profile.employee.photo

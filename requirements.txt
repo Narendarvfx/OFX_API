@@ -42,11 +42,8 @@ PyHamcrest==2.0.2
 pyinstaller-hooks-contrib==2020.10
 pyOpenSSL==19.1.0
 python-decouple==3.3
-python-ldap @ file:///D:/Ofx_Pipeline/OFX_API/python_ldap-3.2.0-cp36-cp36m-win_amd64.whl
 python-memcached==1.59
 pytz==2020.1
-pywin32==228
-pywin32-ctypes==0.2.0
 redis==3.5.3
 requests==2.21.0
 service-identity==18.1.0
@@ -56,3 +53,4 @@ Twisted==20.3.0
 txaio==20.4.1
 urllib3==1.24.3
 zope.interface==5.1.0
+drf-api-logger==1.0.6

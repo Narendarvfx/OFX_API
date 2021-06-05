@@ -40,7 +40,6 @@ class ProductionConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
-
         await self.accept()
 
     async def disconnect(self, close_code):
@@ -53,8 +52,6 @@ class ProductionConsumer(AsyncWebsocketConsumer):
 
     # Receive message from WebSocket
     async def receive(self, text_data):
-        print("Recieved")
-        print(text_data)
         text_data_json = json.loads(text_data)
         # Send message to room group
         await self.channel_layer.group_send(

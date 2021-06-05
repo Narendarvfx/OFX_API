@@ -212,7 +212,7 @@ class ShotVersions(models.Model):
 class MyTask(models.Model):
     artist = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+')
     assigned_by = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+', blank=True, null=True)
-    shot = models.ForeignKey(Shots, on_delete=models.CASCADE, related_name='+')
+    shot = models.ForeignKey(Shots, on_delete=models.CASCADE, related_name='task')
     art_percentage = models.FloatField(default=0)
     assigned_bids = models.FloatField(default=0)
     start_date = models.DateTimeField(null=True, blank=True)

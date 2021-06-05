@@ -20,9 +20,6 @@ from production.serializers import ClientSerializer, ProjectSerializer, StatusSe
 
 import configparser
 
-config = configparser.ConfigParser()
-config.read('D:\\Repo_Settings\\settings.ini')
-
 class StatusInfo(APIView):
 
     def get(self, request, format=None):
@@ -129,7 +126,7 @@ class ProjectUpdate(APIView):
 class ShotsData(APIView):
 
     def get(self, request, format=None):
-        shot = Shots.objects.select_related('sequence','task_type','sequence__project','sequence__project__client','status','complexity').all()
+        shot = Shots.objects.select_related('sequence','task_type','sequence__project','sequence__project__client','status','complexity').prefetch_related('task','task__artist','task__artist__team_lead').all()
         serializer = ShotsSerializer(shot, many=True, context={"request":request})
         return Response(serializer.data)
 
@@ -157,7 +154,7 @@ class ProjectSequenceData(APIView):
 class ShotUpdate(APIView):
 
     def get(self, request, shotId, format=None):
-        shot = Shots.objects.get(id=shotId)
+        shot = Shots.objects.select_related('sequence__project','sequence','sequence__project__client','status','task_type','complexity').prefetch_related('task','status','complexity','sequence').get(id=shotId)
         serializer = ShotsSerializer(shot)
         return Response(serializer.data)
 
@@ -349,7 +346,6 @@ class HeadQCData(APIView):
 class HeadQCDataById(APIView):
 
     def get(self, request,hqcId):
-        print("Head Qc:",hqcId)
         data = HeadQc_Assignment.objects.get(id=hqcId)
         serializer = HeadQCSerializer(data, context={"request": request})
         return Response(serializer.data)
@@ -446,89 +442,3 @@ class Perm_Groups(APIView):
         data = Permission_Groups.objects.all()
         serializer = PGSerializer(data, many=True, context={"request": request})
         return Response(serializer.data)
-
-def create_dir_permissions(assigned_data):
-    shot = Shots.objects.get(id=assigned_data['shot'])
-    shot_Serializer = ShotsSerializer(shot)
-    artist = Employee.objects.get(id=assigned_data['artist'])
-    artist_Serializer = EmployeeSerializer(artist)
-    artist_user_id = User.objects.get(id=artist_Serializer.data['profile'])
-    if artist_Serializer.data['department'] == 'PAINT':
-        dep_dir = '_paint'
-    elif artist_Serializer.data['department'] == 'ROTO':
-        dep_dir = '_roto'
-    elif artist_Serializer.data['department'] == 'MATCH MOVE':
-        dep_dir = '_mm'
-    else:
-        print('No Artist Found')
-    shot_dir = shot_Serializer.data['sequence']['project']['client']+'//'+shot_Serializer.data['sequence']['project']['name']+'//'+shot_Serializer.data['sequence']['name']+'//'+shot_Serializer.data['name']
-    scripts_dir = config['STORAGE']['storage_url']+'\\'+config['STORAGE']['parent_directory']+'\\'+shot_dir+'\\'+dep_dir+'\\scripts'
-    others = ['cp', 'internal_denoise', 'output', 'pre_renders', 'qc', 'sv']
-    for others in others:
-        other_dirs = os.path.join(config['STORAGE']['storage_url'],config['STORAGE']['parent_directory'],shot_dir,dep_dir,others,str(artist_user_id))
-        print(other_dirs)
-        if not os.path.exists(other_dirs):
-            os.makedirs(other_dirs)
-        try:
-            import win32security
-            import ntsecuritycon as con
-
-            FILENAME = other_dirs
-
-            artist, domain, type = win32security.LookupAccountName("", str(artist_user_id))
-
-            sd = win32security.GetFileSecurity(FILENAME, win32security.DACL_SECURITY_INFORMATION)
-
-            dacl = sd.GetSecurityDescriptorDacl()
-
-            dacl.AddAccessAllowedAceEx(win32security.ACL_REVISION_DS, win32security.SUB_CONTAINERS_AND_OBJECTS_INHERIT, con.GENERIC_ALL, artist)
-
-            sd.SetSecurityDescriptorDacl(1, dacl, 0)
-            win32security.SetFileSecurity(FILENAME, win32security.DACL_SECURITY_INFORMATION, sd)
-        except Exception as e:
-            print("Permissions:",e)
-    for scripts in os.listdir(scripts_dir):
-        final_dir = os.path.join(scripts_dir, scripts, str(artist_user_id))
-        if not os.path.exists(final_dir):
-            os.makedirs(final_dir)
-        try:
-            import win32security
-            import ntsecuritycon as con
-
-            FILENAME = final_dir
-
-            artist, domain, type = win32security.LookupAccountName("", str(artist_user_id))
-
-            sd = win32security.GetFileSecurity(FILENAME, win32security.DACL_SECURITY_INFORMATION)
-
-            dacl = sd.GetSecurityDescriptorDacl()
-
-            dacl.AddAccessAllowedAceEx(win32security.ACL_REVISION_DS, win32security.SUB_CONTAINERS_AND_OBJECTS_INHERIT, con.GENERIC_ALL, artist)
-
-            sd.SetSecurityDescriptorDacl(1, dacl, 0)
-            win32security.SetFileSecurity(FILENAME, win32security.DACL_SECURITY_INFORMATION, sd)
-        except Exception as e:
-            print("Permissions:",e)
-
-    # Internal Retake Permissions
-    internal_qc_folder = os.path.join(config['STORAGE']['storage_url'], config['STORAGE']['parent_directory'], shot_dir,
-                                      dep_dir, "qc\\internal_retake")
-    try:
-        import win32security
-        import ntsecuritycon as con
-
-        FILENAME = internal_qc_folder
-
-        artist, domain, type = win32security.LookupAccountName("", str(artist_user_id))
-
-        sd = win32security.GetFileSecurity(FILENAME, win32security.DACL_SECURITY_INFORMATION)
-
-        dacl = sd.GetSecurityDescriptorDacl()
-
-        dacl.AddAccessAllowedAceEx(win32security.ACL_REVISION_DS, win32security.SUB_CONTAINERS_AND_OBJECTS_INHERIT,
-                                   con.FILE_GENERIC_READ | con.FILE_GENERIC_WRITE, artist)
-
-        sd.SetSecurityDescriptorDacl(1, dacl, 0)
-        win32security.SetFileSecurity(FILENAME, win32security.DACL_SECURITY_INFORMATION, sd)
-    except Exception as e:
-        print("Permissions:", e)
