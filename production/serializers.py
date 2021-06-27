@@ -4,7 +4,7 @@ from rest_framework import serializers
 from hrm.models import Employee, Department
 from production.models import Clients, Projects, ShotStatus, Complexity, Shots, Sequence, Task_Type, MyTask, \
     Assignments, Channels, Groups, Qc_Assignment, HeadQc_Assignment, HeadQCTeam, Folder_Permissions, Permission_Groups, \
-    ShotVersions, HQCVersions
+    ShotVersions, HQCVersions, TaskHelp_Main, TaskHelp_Lead, TaskHelp_Artist
 
 
 class StatusSerializer(serializers.ModelSerializer):
@@ -305,4 +305,68 @@ class PGSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Permission_Groups
+        fields = '__all__'
+
+#TaskHelpMain Serializers
+class TaskHelpMainSerializer(serializers.ModelSerializer):
+    shot = ShotCompactSerializer(read_only=True)
+    status = StatusSerializer(read_only=True)
+    complexity = serializers.SlugRelatedField(queryset=Complexity.objects.all(), slug_field='name', required=False)
+    task_type = serializers.SlugRelatedField(queryset=Task_Type.objects.all(), slug_field='name', required=False)
+    imageSrc = serializers.ImageField(max_length=None, use_url=True, allow_null=True, required=False)
+    requested_by = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=True)
+
+    class Meta:
+        model = TaskHelp_Main
+        fields ='__all__'
+        depth = 1
+
+class TaskHelpMainPostSerializer(serializers.ModelSerializer):
+    status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=False)
+
+    class Meta:
+        model = TaskHelp_Main
+        fields = '__all__'
+
+class TaskHelpLeadSerializer(serializers.ModelSerializer):
+    shot = serializers.SlugRelatedField(queryset=Shots.objects.all(), slug_field='name', required=True)
+    # status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=True)
+    task_type = serializers.SlugRelatedField(queryset=Task_Type.objects.all(), slug_field='name', required=True)
+    assigned_by = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=True)
+    assigned_to = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=True)
+
+    class Meta:
+        model = TaskHelp_Lead
+        fields ='__all__'
+
+class TaskHelpArtistSerializer(serializers.ModelSerializer):
+    shot = ShotCompactSerializer(read_only=True)
+    status = StatusSerializer(read_only=True)
+    # task_type = serializers.SlugRelatedField(queryset=Task_Type.objects.all(), slug_field='name', required=True)
+    assigned_by = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=True)
+    assigned_to = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=True)
+
+    class Meta:
+        model = TaskHelp_Artist
+        fields ='__all__'
+
+class TaskHelpArtistPostSerializer(serializers.ModelSerializer):
+    status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=False)
+
+    class Meta:
+        model = TaskHelp_Artist
+        fields = '__all__'
+
+class TaskHelpArtistUpdateSerializer(serializers.ModelSerializer):
+    status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=False)
+    # task_status = StatusSerializer()
+    class Meta:
+        model = TaskHelp_Artist
+        fields = '__all__'
+
+class TaskHelpArtistStatusSerializer(serializers.ModelSerializer):
+    #task_status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=False)
+    status = StatusSerializer()
+    class Meta:
+        model = TaskHelp_Artist
         fields = '__all__'

@@ -316,3 +316,51 @@ class Permission_Groups(models.Model):
 
     class Meta:
         verbose_name_plural = "Permission_Groups"
+
+
+class TaskHelp_Main(models.Model):
+    shot = models.ForeignKey(Shots, on_delete=models.CASCADE, related_name='+')
+    task_type = models.ForeignKey(Task_Type, on_delete=models.CASCADE, related_name='+')
+    bid_days = models.FloatField(default=0)
+    eta = models.DateTimeField(null=True,blank=True)
+    status = models.ForeignKey(ShotStatus,on_delete=models.CASCADE, related_name='+')
+    requested_by = models.ForeignKey(Employee, models.CASCADE, related_name='+')
+    requested_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.shot.name
+
+    class Meta:
+        verbose_name_plural = "TaskHelp_Main"
+
+class TaskHelp_Lead(models.Model):
+    shot = models.ForeignKey(Shots, on_delete=models.CASCADE, related_name='+')
+    task_type = models.ForeignKey(Task_Type, on_delete=models.CASCADE, related_name='+')
+    assigned_to = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+')
+    assigned_by = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+')
+    assigned_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.shot.name
+
+    class Meta:
+        verbose_name_plural = "TaskHelp_Lead"
+
+class TaskHelp_Artist(models.Model):
+    shot = models.ForeignKey(Shots, on_delete=models.CASCADE, related_name='+')
+    parent = models.ForeignKey(TaskHelp_Main, on_delete=models.CASCADE, related_name='+')
+    bid_days = models.FloatField(default=0)
+    eta = models.DateTimeField(null=True,blank=True)
+    status = models.ForeignKey(ShotStatus, on_delete=models.CASCADE, related_name='+')
+    assigned_to = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+')
+    assigned_by = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+')
+    assigned_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.shot.name
+
+    class Meta:
+        verbose_name_plural = "TaskHelp_Artist"

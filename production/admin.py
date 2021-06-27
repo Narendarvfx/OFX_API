@@ -1,7 +1,7 @@
 from django.contrib import admin
 from production.models import Clients, Projects, ShotStatus, Complexity, Shots, Sequence, Task_Type, MyTask, \
     Assignments, Channels, Qc_Assignment, Groups, HeadQc_Assignment, HeadQCTeam, Permission_Groups, Folder_Permissions, \
-    ShotVersions, HQCVersions, ClientVersions
+    ShotVersions, HQCVersions, ClientVersions, TaskHelp_Main, TaskHelp_Lead, TaskHelp_Artist
 
 
 # Register your models here.
@@ -67,3 +67,6 @@ admin.site.register(Folder_Permissions)
 admin.site.register(ShotVersions)
 admin.site.register(HQCVersions)
 admin.site.register(ClientVersions)
+admin.site.register(TaskHelp_Main)
+admin.site.register(TaskHelp_Lead)
+admin.site.register(TaskHelp_Artist)
