@@ -65,5 +65,13 @@ urlpatterns = [
     # HQC Version urls
     url(r'^api/production/hqcversions/$', api.HQCVersionsAPI.as_view(), name="Shot Versions"),
     url(r'^api/production/hqcversions/(?P<shotId>\d+)/$', api.LastHQCVersionById.as_view(), name="Shot Versions"),
-    url(r'^api/production/allhqcversions/(?P<verId>\d+)/$', api.HQCVersionsById.as_view(), name="Shot Versions")
+    url(r'^api/production/allhqcversions/(?P<verId>\d+)/$', api.HQCVersionsById.as_view(), name="Shot Versions"),
+
+    #Task Help Urls
+    url(r'^api/production/taskhelp_main/$', api.TaskHelp_Main_API.as_view(), name="Task Help Main"),
+    url(r'^api/production/taskhelp_main/(?P<parentId>\d+)/$', api.TaskHelpMainUpdate.as_view(), name='Task Help Main Update API'),
+    url(r'^api/production/taskhelp_lead/$', api.TaskHelp_Lead_API.as_view(), name="Task Help Lead"),
+    url(r'^api/production/taskhelp_artist/$', api.TaskHelp_Artist_API.as_view(), name="Task Help Artist"),
+    url(r'^api/production/taskhelp_artist/(?P<taskId>\d+)/$', api.TaskHelpArtistDetail.as_view(), name="Task Help Artist"),
+    url(r'^api/production/taskhelp_artist/artist/(?P<artistId>\d+)/$', api.TaskHelpArtistData.as_view(), name='Task Help Artist By Id'),
 ]

@@ -9,14 +9,16 @@ from hrm.models import Employee
 from hrm.serializers import EmployeeSerializer
 from production.models import Clients, Projects, ShotStatus, Shots, Complexity, Sequence, MyTask, Assignments, Channels, \
     Groups, Qc_Assignment, HeadQc_Assignment, Folder_Permissions, Permission_Groups, HeadQCTeam, ShotVersions, \
-    HQCVersions
+    HQCVersions, TaskHelp_Main, TaskHelp_Lead, TaskHelp_Artist
 from production.serializers import ClientSerializer, ProjectSerializer, StatusSerializer, ShotsSerializer, \
     ShotsPostSerializer, ComplexitySerializer, SequenceSerializer, SequencePostSerializer, MyTaskSerializer, \
     MyTaskPostSerializer, MyTaskShotSerializer, AssignmentSerializer, AssignmentPostSerializer, MyTaskArtistSerializer, \
     ChannelsSerializer, ChannelsPostSerializer, GroupsSerializer, QCSerializer, TeamQCSerializer, \
     MyTaskUpdateSerializer, HeadQCSerializer, HQCSerializer, PGSerializer, HQTSerializer, ProjectClientSerializer, \
     ProjectPostSerializer, MyTaskStatusSerializer, ShotVersionsSerializer, AllShotVersionsSerializer, \
-    AllHQCVersionsSerializer, HQCVersionsSerializer
+    AllHQCVersionsSerializer, HQCVersionsSerializer, TaskHelpMainSerializer, TaskHelpLeadSerializer, \
+    TaskHelpArtistSerializer, TaskHelpMainPostSerializer, TaskHelpArtistPostSerializer, TaskHelpArtistUpdateSerializer, \
+    TaskHelpArtistStatusSerializer
 
 import configparser
 
@@ -442,3 +444,86 @@ class Perm_Groups(APIView):
         data = Permission_Groups.objects.all()
         serializer = PGSerializer(data, many=True, context={"request": request})
         return Response(serializer.data)
+
+#TaskHelp Main API
+class TaskHelp_Main_API(APIView):
+
+    def get(self, request):
+        data = TaskHelp_Main.objects.select_related('shot','shot__sequence','task_type','requested_by','shot__sequence__project','shot__sequence__project__client','shot__status','shot__task_type','status').all()
+        serializer = TaskHelpMainSerializer(data, many=True, context={"request": request})
+        return  Response(serializer.data)
+
+    def post(self, request):
+        serializer = TaskHelpMainPostSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TaskHelpMainUpdate(APIView):
+
+    def get(self, request, parentId, format=None):
+        taskhelp_main = TaskHelp_Main.objects.select_related('shot','shot__sequence__project','shot__sequence','sequence__project__client','status','task_type','complexity').prefetch_related('task','status','complexity','sequence').get(id=parentId)
+        serializer = TaskHelpMainSerializer(taskhelp_main)
+        return Response(serializer.data)
+
+    def put(self, request, parentId):
+        taskhelp_main = TaskHelp_Main.objects.get(id=parentId)
+        serializer = TaskHelpMainPostSerializer(taskhelp_main, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            serializer = TaskHelpMainSerializer(taskhelp_main)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TaskHelp_Lead_API(APIView):
+
+    def get(self, request):
+        data = TaskHelp_Lead.objects.all()
+        serializer = TaskHelpLeadSerializer(data, many=True, context={"request": request})
+        return  Response(serializer.data)
+
+    def post(self, request):
+        serializer = TaskHelpLeadSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TaskHelp_Artist_API(APIView):
+
+    def get(self, request):
+        data = TaskHelp_Artist.objects.all()
+        serializer = TaskHelpArtistSerializer(data, many=True, context={"request": request})
+        return  Response(serializer.data)
+
+    def post(self, request):
+        serializer = TaskHelpArtistPostSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TaskHelpArtistData(APIView):
+
+    def get(self, request,artistId, format=None):
+        mytask = TaskHelp_Artist.objects.select_related('assigned_by','shot__task_type','shot__sequence__project','shot__status','status','assigned_to','shot__sequence','shot__sequence__project__client').filter(assigned_to=artistId).all()
+        serializer = TaskHelpArtistSerializer(mytask, many=True)
+        return Response(serializer.data)
+
+class TaskHelpArtistDetail(APIView):
+
+    def get(self, request, taskId, format=None):
+        task = TaskHelp_Artist.objects.select_related('assigned_to','status','shot','assigned_by').get(id=taskId)
+        serializer = TaskHelpArtistSerializer(task)
+        return Response(serializer.data)
+
+    def put(self, request, taskId):
+        task = TaskHelp_Artist.objects.get(id=taskId)
+        serializer = TaskHelpArtistUpdateSerializer(task, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+
+            serializer = TaskHelpArtistStatusSerializer(task)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
