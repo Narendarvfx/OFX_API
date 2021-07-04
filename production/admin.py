@@ -1,7 +1,7 @@
 from django.contrib import admin
 from production.models import Clients, Projects, ShotStatus, Complexity, Shots, Sequence, Task_Type, MyTask, \
     Assignments, Channels, Qc_Assignment, Groups, HeadQc_Assignment, HeadQCTeam, Permission_Groups, Folder_Permissions, \
-    ShotVersions, HQCVersions, ClientVersions, TaskHelp_Main, TaskHelp_Lead, TaskHelp_Artist
+    ShotVersions, HQCVersions, ClientVersions, TaskHelp_Main, TaskHelp_Lead, TaskHelp_Artist, ShotLogs
 
 
 # Register your models here.
@@ -48,6 +48,11 @@ class ProjectFields(admin.ModelAdmin):
     list_per_page = 15
     search_fields = ['name']
 
+class ShotLogsFields(admin.ModelAdmin):
+    list_display = [f.name for f in ShotLogs._meta.fields]
+    list_per_page = 15
+    search_fields = ['name']
+
 admin.site.register(ShotStatus, ShotStatusFields)
 admin.site.register(Complexity)
 admin.site.register(Clients)
@@ -70,3 +75,4 @@ admin.site.register(ClientVersions)
 admin.site.register(TaskHelp_Main)
 admin.site.register(TaskHelp_Lead)
 admin.site.register(TaskHelp_Artist)
+admin.site.register(ShotLogs, ShotLogsFields)

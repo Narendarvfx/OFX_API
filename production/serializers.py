@@ -4,7 +4,7 @@ from rest_framework import serializers
 from hrm.models import Employee, Department
 from production.models import Clients, Projects, ShotStatus, Complexity, Shots, Sequence, Task_Type, MyTask, \
     Assignments, Channels, Groups, Qc_Assignment, HeadQc_Assignment, HeadQCTeam, Folder_Permissions, Permission_Groups, \
-    ShotVersions, HQCVersions, TaskHelp_Main, TaskHelp_Lead, TaskHelp_Artist
+    ShotVersions, HQCVersions, TaskHelp_Main, TaskHelp_Lead, TaskHelp_Artist, ShotLogs
 
 
 class StatusSerializer(serializers.ModelSerializer):
@@ -140,6 +140,23 @@ class ShotsSerializer(serializers.ModelSerializer):
         model = Shots
         fields = ('__all__')
         depth = 1
+
+class ShotLogsSerializer(serializers.ModelSerializer):
+    shot = serializers.SlugRelatedField(queryset=Shots.objects.all(), slug_field='name', required=False)
+    updated_by = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
+
+    class Meta:
+        model = ShotLogs
+        fields = ('__all__')
+        depth = 1
+
+class ShotLogsPostSerializer(serializers.ModelSerializer):
+    # shot = serializers.SlugRelatedField(queryset=Shots.objects.all(), slug_field='name', required=False)
+    # updated_by = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
+
+    class Meta:
+        model = ShotLogs
+        fields = ('__all__')
 
 class MyTaskSerializer(serializers.ModelSerializer):
     shot = serializers.SlugRelatedField(queryset=Shots.objects.all(), slug_field='name', required=False)

@@ -9,7 +9,7 @@ from hrm.models import Employee
 from hrm.serializers import EmployeeSerializer
 from production.models import Clients, Projects, ShotStatus, Shots, Complexity, Sequence, MyTask, Assignments, Channels, \
     Groups, Qc_Assignment, HeadQc_Assignment, Folder_Permissions, Permission_Groups, HeadQCTeam, ShotVersions, \
-    HQCVersions, TaskHelp_Main, TaskHelp_Lead, TaskHelp_Artist
+    HQCVersions, TaskHelp_Main, TaskHelp_Lead, TaskHelp_Artist, ShotLogs
 from production.serializers import ClientSerializer, ProjectSerializer, StatusSerializer, ShotsSerializer, \
     ShotsPostSerializer, ComplexitySerializer, SequenceSerializer, SequencePostSerializer, MyTaskSerializer, \
     MyTaskPostSerializer, MyTaskShotSerializer, AssignmentSerializer, AssignmentPostSerializer, MyTaskArtistSerializer, \
@@ -18,7 +18,7 @@ from production.serializers import ClientSerializer, ProjectSerializer, StatusSe
     ProjectPostSerializer, MyTaskStatusSerializer, ShotVersionsSerializer, AllShotVersionsSerializer, \
     AllHQCVersionsSerializer, HQCVersionsSerializer, TaskHelpMainSerializer, TaskHelpLeadSerializer, \
     TaskHelpArtistSerializer, TaskHelpMainPostSerializer, TaskHelpArtistPostSerializer, TaskHelpArtistUpdateSerializer, \
-    TaskHelpArtistStatusSerializer
+    TaskHelpArtistStatusSerializer, ShotLogsSerializer, ShotLogsPostSerializer
 
 import configparser
 
@@ -134,6 +134,20 @@ class ShotsData(APIView):
 
     def post(self, request, format=None):
         serializer = ShotsPostSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ShotLogsData(APIView):
+
+    def get(self, request, format=None):
+        shotlogs = ShotLogs.objects.all()
+        serializer = ShotLogsSerializer(shotlogs, many=True, context={"request":request})
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = ShotLogsPostSerializer(data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
