@@ -74,4 +74,7 @@ urlpatterns = [
     url(r'^api/production/taskhelp_artist/$', api.TaskHelp_Artist_API.as_view(), name="Task Help Artist"),
     url(r'^api/production/taskhelp_artist/(?P<taskId>\d+)/$', api.TaskHelpArtistDetail.as_view(), name="Task Help Artist"),
     url(r'^api/production/taskhelp_artist/artist/(?P<artistId>\d+)/$', api.TaskHelpArtistData.as_view(), name='Task Help Artist By Id'),
+
+    #ShotLogs url
+    url(r'^api/production/shotlogs/$', api.ShotLogsData.as_view(), name='Shots API'),
 ]

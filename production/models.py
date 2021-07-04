@@ -128,9 +128,15 @@ class ShotVersion(models.Model):
     modified_date = models.DateTimeField(auto_now=True)
     
 class Shots(models.Model):
+    Types = (
+        ("NEW", "NEW"),
+        ("RETAKE", "RETAKE"),
+        ("ADDITIONAL", "ADDITIONAL")
+    )
     name = models.CharField(max_length=100)
     sequence = models.ForeignKey(Sequence, on_delete=models.CASCADE, related_name='+')
     status = models.ForeignKey(ShotStatus, on_delete=models.CASCADE, related_name='+')
+    type = models.CharField(max_length=300, null=True, choices=Types, default=Types[0][0])
     task_type = models.ForeignKey(Task_Type, on_delete=models.CASCADE, related_name='+')
     actual_start_frame = models.IntegerField(default=0)
     actual_end_frame = models.IntegerField(default=0)
@@ -143,6 +149,7 @@ class Shots(models.Model):
     progress = models.FloatField(default=0)
     description = models.TextField(null=True, blank=True)
     complexity = models.ForeignKey(Complexity, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
+    duplicate = models.BooleanField(default=False)
 
     def upload_photo_dir(self, filename):
         ext = filename.split('.')[-1]
@@ -364,3 +371,17 @@ class TaskHelp_Artist(models.Model):
 
     class Meta:
         verbose_name_plural = "TaskHelp_Artist"
+
+class ShotLogs(models.Model):
+    shot = models.ForeignKey(Shots, on_delete=models.CASCADE, related_name='+')
+    original_value = models.CharField(max_length=100, null=True, blank=True)
+    updated_value = models.CharField(max_length=100, null=True, blank=True)
+    message = models.CharField(max_length=500, null=True, blank=True)
+    updated_by = models.ForeignKey(Employee,on_delete=models.CASCADE, null=True)
+    update_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.shot.name
+
+    class Meta:
+        verbose_name_plural = "ShotLogs"
