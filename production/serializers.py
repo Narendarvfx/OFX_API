@@ -75,13 +75,29 @@ class SequenceCompactSerializer(serializers.ModelSerializer):
                   'project')
         depth = 1
 
+class EmployeeCompactSerializer(serializers.ModelSerializer):
+    team_lead = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
+    class Meta:
+        model = Employee
+        fields = ('fullName','team_lead')
+        depth = 1
+
+class ShotTaskCompactSerializer(serializers.ModelSerializer):
+    shot = serializers.PrimaryKeyRelatedField(queryset=MyTask.objects.all(),source='shot.id')
+    artist = EmployeeCompactSerializer(read_only=True)
+
+    class Meta:
+        model = MyTask
+        fields = ('shot','artist','compiler')
+        depth = 1
+
 class ShotCompactSerializer(serializers.ModelSerializer):
     sequence = SequenceCompactSerializer(read_only=True)
     status = StatusSerializer(read_only=True)
     complexity = serializers.SlugRelatedField(queryset=Complexity.objects.all(), slug_field='name', required=False)
     task_type = serializers.SlugRelatedField(queryset=Task_Type.objects.all(), slug_field='name', required=False)
     imageSrc = serializers.ImageField(max_length=None, use_url=True, allow_null=True, required=False)
-
+    task = ShotTaskCompactSerializer(many=True, read_only=True)
     class Meta:
         model = Shots
         fields = '__all__'
@@ -110,22 +126,6 @@ class ShotsPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Shots
         fields = '__all__'
-
-class EmployeeCompactSerializer(serializers.ModelSerializer):
-    team_lead = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
-    class Meta:
-        model = Employee
-        fields = ('fullName','team_lead')
-        depth = 1
-
-class ShotTaskCompactSerializer(serializers.ModelSerializer):
-    shot = serializers.PrimaryKeyRelatedField(queryset=MyTask.objects.all(),source='shot.id')
-    artist = EmployeeCompactSerializer(read_only=True)
-
-    class Meta:
-        model = MyTask
-        fields = ('shot','artist','compiler')
-        depth = 1
 
 class ShotsSerializer(serializers.ModelSerializer):
     sequence = SequenceCompactSerializer(read_only=True)
