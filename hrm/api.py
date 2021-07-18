@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from hrm.models import Employee, ProductionTeam, Permissions
-from hrm.serializers import EmployeeSerializer, TeamSerializer, PermissionSerializer
+from hrm.serializers import EmployeeSerializer, TeamSerializer, PermissionSerializer, EmployeePutSerializer
 
 
 class EmployeeDetail(APIView):
@@ -19,7 +19,7 @@ class EmployeeDetail(APIView):
     def put(self, request, profile_id, format=None):
         employee = Employee.objects.get(profile=profile_id)
 
-        serializer = EmployeeSerializer(employee, data=request.data)
+        serializer = EmployeePutSerializer(employee, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
