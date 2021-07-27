@@ -7,7 +7,20 @@ class EmployeeFields(admin.ModelAdmin):
     list_display.insert(0, 'profile_photo')
     search_fields = ('employee_id', 'fullName')
     exclude = ("profile",)
-    list_per_page = 10
+    list_per_page = 15
+    list_filter = ['department', 'role', 'employement_status', 'team']
+
+    def get_dep(self, obj):
+        return obj.department.name
+
+    get_dep.admin_order_field = 'department'
+    get_dep.short_description = 'Department'
+
+    def get_role(self, obj):
+        return obj.role.name
+
+    get_role.admin_order_field = 'role'
+    get_role.short_description = 'Role'
 
 class PermissionFields(admin.ModelAdmin):
     list_display = [f.name for f in Permissions._meta.fields]
