@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Employee, Department, EmployementStatus, Role, Grade, ProductionTeam, Permissions
+from .models import Employee, Department, EmployementStatus, Role, Grade, ProductionTeam, Role_Permissions
 
 
 class EmployeeFields(admin.ModelAdmin):
@@ -8,7 +8,8 @@ class EmployeeFields(admin.ModelAdmin):
     search_fields = ('employee_id', 'fullName')
     exclude = ("profile",)
     list_per_page = 15
-    list_filter = ['department', 'role', 'employement_status', 'team']
+
+    list_filter = ['department', 'role', 'employement_status']
 
     def get_dep(self, obj):
         return obj.department.name
@@ -23,7 +24,7 @@ class EmployeeFields(admin.ModelAdmin):
     get_role.short_description = 'Role'
 
 class PermissionFields(admin.ModelAdmin):
-    list_display = [f.name for f in Permissions._meta.fields]
+    list_display = [f.name for f in Role_Permissions._meta.fields]
 
 admin.site.register(Employee, EmployeeFields)
 admin.site.register(ProductionTeam)
@@ -31,4 +32,3 @@ admin.site.register(Department)
 admin.site.register(EmployementStatus)
 admin.site.register(Role)
 admin.site.register(Grade)
-admin.site.register(Permissions, PermissionFields)

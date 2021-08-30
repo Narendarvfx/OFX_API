@@ -3,8 +3,8 @@ from rest_framework import serializers
 
 from hrm.models import Employee, Department
 from production.models import Clients, Projects, ShotStatus, Complexity, Shots, Sequence, Task_Type, MyTask, \
-    Assignments, Channels, Groups, Qc_Assignment, HeadQc_Assignment, HeadQCTeam, Folder_Permissions, Permission_Groups, \
-    ShotVersions, HQCVersions, TaskHelp_Main, TaskHelp_Lead, TaskHelp_Artist, ShotLogs
+    Assignments, Channels, Groups, Qc_Assignment, Folder_Permissions, Permission_Groups, \
+    ShotVersions, TaskHelp_Main, TaskHelp_Lead, TaskHelp_Artist, ShotLogs
 
 
 class StatusSerializer(serializers.ModelSerializer):
@@ -267,27 +267,6 @@ class TeamQCSerializer(serializers.ModelSerializer):
         model = Qc_Assignment
         fields = '__all__'
 
-class HQTSerializer(serializers.ModelSerializer):
-    department = serializers.SlugRelatedField(queryset=Department.objects.all(), slug_field='name', required=False)
-    class Meta:
-        model = HeadQCTeam
-        fields = '__all__'
-
-class HQCSerializer(serializers.ModelSerializer):
-    hqc_status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=False)
-    class Meta:
-        model = HeadQc_Assignment
-        fields = '__all__'
-
-class HeadQCSerializer(serializers.ModelSerializer):
-    qc_task = TeamQCSerializer(read_only=True)
-    # hqc = serializers.SlugRelatedField(queryset=HeadQCTeam.objects.all(), slug_field='hqc__id', required=False)
-    hqc_status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=False)
-
-    class Meta:
-        model = HeadQc_Assignment
-        fields = '__all__'
-
 class ShotVersionsSerializer(serializers.ModelSerializer):
     status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=True)
     class Meta:
@@ -300,20 +279,6 @@ class AllShotVersionsSerializer(serializers.ModelSerializer):
     status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=True)
     class Meta:
         model = ShotVersions
-        fields ='__all__'
-
-class HQCVersionsSerializer(serializers.ModelSerializer):
-    status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=True)
-    class Meta:
-        model = HQCVersions
-        fields ='__all__'
-
-class AllHQCVersionsSerializer(serializers.ModelSerializer):
-    sent_by = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=True)
-    verified_by = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=True)
-    status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=True)
-    class Meta:
-        model = HQCVersions
         fields ='__all__'
 
 class PGSerializer(serializers.ModelSerializer):

@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from hrm.models import Employee, ProductionTeam, Permissions
+from hrm.models import Employee, ProductionTeam, Role_Permissions
 from hrm.serializers import EmployeeSerializer, TeamSerializer, PermissionSerializer, EmployeePutSerializer
 
 
@@ -55,7 +55,7 @@ class TeamById(APIView):
 class AllPermissions(APIView):
 
     def get(self, request, format=None):
-        permission= Permissions.objects.all()
+        permission= Role_Permissions.objects.select_related('role').all()
         serializer = PermissionSerializer(permission, many=True, context={"request":request})
         return Response(serializer.data)
 
@@ -64,6 +64,6 @@ class RolePermissions(APIView):
     This is for edit employee detail
     """
     def get(self, request, role_id, format=None):
-        rpermission = Permissions.objects.get(role=role_id)
+        rpermission = Role_Permissions.objects.select_related('role').get(role=role_id)
         serializer = PermissionSerializer(rpermission, context={"request":request})
         return Response(serializer.data)
