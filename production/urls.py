@@ -33,7 +33,7 @@ urlpatterns = [
     url(r'^api/production/shot/assignments/$', api.ShotAssignment.as_view(), name='MyTask API'),
 
     # Lead Urls
-    url(r'^api/production/leads/shots/(?P<leadId>\d+)/$', api.LeadShotsData.as_view(), name='Projects Shots API'),
+    url(r'^api/production/leads/shots/$', api.LeadShotsData.as_view(), name='Projects Shots API'),
 
     # Channel Urls
     url(r'^api/production/channels/(?P<shotId>\d+)/$', api.ChannelsData.as_view(), name='Channels API'),
@@ -48,12 +48,6 @@ urlpatterns = [
     url(r'^api/production/qc/(?P<teamId>\d+)/$', api.QCDataByTeamId.as_view(), name='QC Assignments API'),
     url(r'^api/production/qc/qc/', api.QCData.as_view(), name='QC Assignments API'),
 
-    # HeadQc Assignment urls
-    url(r'^api/production/head_qc_list/$', api.Head_QC_Team.as_view(), name='Head QC Team API'),
-    url(r'^api/production/update_head_qc/(?P<hqcId>\d+)/$', api.HeadQCDataById.as_view(), name='Head QC Update API'),
-    url(r'^api/production/head_qc/(?P<hqcId>\d+)/$', api.QCDataByHQCId.as_view(), name='Head QC Assignments API'),
-    url(r'^api/production/head_qc/qc/', api.HeadQCData.as_view(), name='Head QC Assignments API'),
-
     # Folder Permission Url
     url(r'^api/production/permissions_groups/', api.Perm_Groups.as_view(), name='Permission Groups'),
 
@@ -61,11 +55,6 @@ urlpatterns = [
     url(r'^api/production/shotversions/$', api.ShotVersionsAPI.as_view(), name="Shot Versions"),
     url(r'^api/production/shotversions/(?P<shotId>\d+)/$', api.LastShotVersionById.as_view(), name="Shot Versions"),
     url(r'^api/production/allshotversions/(?P<verId>\d+)/$', api.ShotVersionsById.as_view(), name="Shot Versions"),
-
-    # HQC Version urls
-    url(r'^api/production/hqcversions/$', api.HQCVersionsAPI.as_view(), name="Shot Versions"),
-    url(r'^api/production/hqcversions/(?P<shotId>\d+)/$', api.LastHQCVersionById.as_view(), name="Shot Versions"),
-    url(r'^api/production/allhqcversions/(?P<verId>\d+)/$', api.HQCVersionsById.as_view(), name="Shot Versions"),
 
     #Task Help Urls
     url(r'^api/production/taskhelp_main/$', api.TaskHelp_Main_API.as_view(), name="Task Help Main"),

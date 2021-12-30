@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from hrm.models import Department, Role, Grade, EmployementStatus, Employee, ProductionTeam, Permissions
+from hrm.models import Department, Role, Grade, EmployementStatus, Employee, ProductionTeam, Role_Permissions
 from profiles.models import Profile
 
 
@@ -59,5 +59,5 @@ class PermissionSerializer(serializers.ModelSerializer):
 
 
     class Meta:
-        model = Permissions
+        model = Role_Permissions
         fields = '__all__'

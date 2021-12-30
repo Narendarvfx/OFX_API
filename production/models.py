@@ -171,21 +171,6 @@ class Shots(models.Model):
     class Meta:
         verbose_name_plural = "Shots"
 
-class HQCVersions(models.Model):
-    version = models.CharField(max_length=30)
-    shot = models.ForeignKey(Shots, on_delete=models.CASCADE, related_name='+')
-    sent_date = models.DateTimeField(auto_now_add=True)
-    sent_by = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+')
-    status = models.ForeignKey(ShotStatus, on_delete=models.CASCADE, related_name='+')
-    verified_by = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+', blank=True, null=True)
-    verified_date = models.DateTimeField(blank=True, null=True)
-
-    def __str__(self):
-        return self.version
-
-    class Meta:
-        verbose_name_plural = "HQCVersions"
-
 class ClientVersions(models.Model):
     version = models.CharField(max_length=30)
     shot = models.ForeignKey(Shots, on_delete=models.CASCADE, related_name='+')
@@ -257,27 +242,6 @@ class Qc_Assignment(models.Model):
 
     def __str__(self):
         return self.team.lead.user.first_name
-
-class HeadQCTeam(models.Model):
-    hqc = models.ForeignKey(Employee, on_delete=models.CASCADE,related_name='+', null=True)
-    department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='+')
-
-    def __str__(self):
-        return self.hqc.fullName
-
-    class Meta:
-        verbose_name_plural = "HeadQCTeam"
-
-class HeadQc_Assignment(models.Model):
-    qc_task = models.ForeignKey(Qc_Assignment, on_delete=models.CASCADE, related_name='+')
-    hqc = models.ForeignKey(HeadQCTeam, on_delete=models.CASCADE, related_name='+')
-    hqc_status = models.ForeignKey(ShotStatus, on_delete=models.CASCADE, related_name='+')
-
-    def __str__(self):
-        return self.hqc.hqc.fullName
-
-    class Meta:
-        verbose_name_plural = "Head Qc Assignments"
 
 class Groups(models.Model):
     name = models.CharField(max_length=100, null=True, blank=True)

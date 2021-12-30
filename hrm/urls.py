@@ -7,5 +7,5 @@ urlpatterns = [
     url(r'api/hrm/teams/$', api.AllTeams.as_view(), name='All Team Details'),
     url(r'api/hrm/teams/(?P<id>\d+)/$', api.TeamById.as_view(), name='All Team Details'),
     url(r'api/hrm/permissions', api.AllPermissions.as_view(), name= 'Role Permissions'),
-    url(r'api/hrm/role/permissions/(?P<role_id>\d+)/$', api.RolePermissions.as_view(), name=" Role Permissions by ID" )
+    url(r'api/hrm/role/role_permissions/(?P<role_id>\d+)/$', api.RolePermissions.as_view(), name=" Role Permissions by ID" )
 ]

@@ -50,13 +50,7 @@ class Grade(models.Model):
         verbose_name_plural = "Grade"
 
 class ProductionTeam(models.Model):
-    lead = models.ForeignKey(Profile, on_delete=models.CASCADE,related_name='+', null=True)
-    qc_1 = models.ForeignKey(Profile, on_delete=models.CASCADE,related_name='+', null=True, blank=True)
-    qc_2 = models.ForeignKey(Profile, on_delete=models.CASCADE,related_name='+', null=True, blank=True)
-    qc_3 = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
-    qc_4 = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
-    qc_5 = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
-
+    lead = models.ForeignKey(Profile, on_delete=models.SET_NULL,related_name='+', null=True)
 
     def __str__(self):
         return self.lead.user.username
@@ -66,7 +60,7 @@ class ProductionTeam(models.Model):
 
 class Employee(models.Model):
     """
-    User Profile
+    Employee Data
     """
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE, null=True)
     employee_id = models.CharField(max_length=100, null=True, unique=True, blank=True)
@@ -87,7 +81,6 @@ class Employee(models.Model):
     employement_status = models.ForeignKey(EmployementStatus, on_delete=models.CASCADE, related_name='+', null=True,
                                           blank=True)
     department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
-    team = models.ForeignKey(ProductionTeam, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
     role = models.ForeignKey(Role, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
     grade = models.ForeignKey(Grade, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
     creation_date = models.DateTimeField(auto_now_add=True)
@@ -122,7 +115,7 @@ def create_user_profile(sender, instance, created, **kwargs):
                                 photo='profiles/photo/{}.jpg'.format(profile.user,firstName=instance.first_name))
 
 
-class Permissions(models.Model):
+class Role_Permissions(models.Model):
     role = models.ForeignKey(Role, on_delete=models.CASCADE,related_name='+', null=True)
     add_client = models.BooleanField(default=False)
     view_client= models.BooleanField(default=False)
@@ -133,6 +126,9 @@ class Permissions(models.Model):
     add_shots = models.BooleanField(default=False)
     can_view_all_shots = models.BooleanField(default=False)
     can_view_team_shots = models.BooleanField(default=False)
+    can_view_my_task = models.BooleanField(default=False)
+    can_request_task_help = models.BooleanField(default=False)
+    can_view_task_help = models.BooleanField(default=False)
     can_assign_shot = models.BooleanField(default=False)
     can_assign_lead = models.BooleanField(default=False)
     can_change_bid = models.BooleanField(default=False)
@@ -141,11 +137,14 @@ class Permissions(models.Model):
     can_change_eta = models.BooleanField(default=False)
     can_view_eta = models.BooleanField(default=False)
     can_view_client_eta = models.BooleanField(default=False)
+    can_send_to_qc = models.BooleanField(default=False)
     can_approve = models.BooleanField(default=False)
     can_reject = models.BooleanField(default=False)
+    can_view_reports = models.BooleanField(default=False)
+    can_create_folder_permissions = models.BooleanField(default=False)
 
     def __str__(self):
         return self.role.name
 
     class Meta:
-        verbose_name_plural = "Permissions"
+        verbose_name_plural = "Role Permissions"
