@@ -10,7 +10,6 @@ import os
 import sys
 import ldap
 from django_auth_ldap.config import LDAPSearch, LDAPGroupQuery, GroupOfNamesType, LDAPSearchUnion
-from decouple import config
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -76,7 +75,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'colorfield',
     'channels',
-    'django_db_logger',
     'notifications',
 ]
 
@@ -147,34 +145,34 @@ CHANNEL_LAYERS = {
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-# if DEBUG:
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.sqlite3',
-#             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#         }
-#     }
-# else:
-import MySQLdb
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+else:
+    import MySQLdb
 
-connection = MySQLdb.connect(host='127.0.0.1',
-                             port=3306,
-                             user='ofx_data_admin',
-                             passwd='data_admin@1234',
-                             )
-cur = connection.cursor()
-cur.execute('CREATE DATABASE IF NOT EXISTS ofx_api;')
-connection.close()
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ofx_api',
-        'USER': 'ofx_data_admin',
-        'PASSWORD': 'data_admin@1234',
-        'HOST': '127.0.0.1',
-        'PORT': '3306'
-    },
-}
+    connection = MySQLdb.connect(host='127.0.0.1',
+                                 port=3306,
+                                 user='ofx_data_admin',
+                                 passwd='data_admin@1234',
+                                 )
+    cur = connection.cursor()
+    cur.execute('CREATE DATABASE IF NOT EXISTS ofx_api;')
+    connection.close()
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'ofx_api',
+            'USER': 'ofx_data_admin',
+            'PASSWORD': 'data_admin@1234',
+            'HOST': '127.0.0.1',
+            'PORT': '3306'
+        },
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -248,11 +246,7 @@ LOGGING = {
         },
         'console': {
             "class": "logging.StreamHandler",
-        },
-        'db_log': {
-            'level': 'DEBUG',
-            'class': 'django_db_logger.db_log_handler.DatabaseLogHandler'
-        },
+        }
     },
     'loggers': {
         'django': {
@@ -263,10 +257,6 @@ LOGGING = {
         "django_auth_ldap": {
             "handlers": ["console"],
             "level": "DEBUG",
-        },
-        'db': {
-            'handlers': ['db_log'],
-            'level': 'DEBUG'
         }
     },
 }
