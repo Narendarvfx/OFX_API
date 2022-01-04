@@ -155,10 +155,10 @@ if DEBUG:
 else:
     import MySQLdb
 
-    connection = MySQLdb.connect(host='127.0.0.1',
+    connection = MySQLdb.connect(host='192.168.5.21',
                                  port=3306,
-                                 user='ofx_data_admin',
-                                 passwd='data_admin@1234',
+                                 user='data_admin',
+                                 passwd='Ofx_data_Admin#5262',
                                  )
     cur = connection.cursor()
     cur.execute('CREATE DATABASE IF NOT EXISTS ofx_api;')
@@ -167,9 +167,9 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'ofx_api',
-            'USER': 'ofx_data_admin',
-            'PASSWORD': 'data_admin@1234',
-            'HOST': '127.0.0.1',
+            'USER': 'data_admin',
+            'PASSWORD': 'Ofx_data_Admin#5262',
+            'HOST': '192.168.5.21',
             'PORT': '3306'
         },
     }
