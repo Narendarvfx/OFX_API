@@ -2,6 +2,8 @@ from colorfield.fields import ColorField
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from imagekit.models import ProcessedImageField
 import logging
 from hrm.models import Employee, ProductionTeam, Department
@@ -150,6 +152,8 @@ class Shots(models.Model):
     description = models.TextField(null=True, blank=True)
     complexity = models.ForeignKey(Complexity, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
     duplicate = models.BooleanField(default=False)
+    team_lead = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
+    artist = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
 
     def upload_photo_dir(self, filename):
         ext = filename.split('.')[-1]
@@ -204,7 +208,7 @@ class ShotVersions(models.Model):
 class MyTask(models.Model):
     artist = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+')
     assigned_by = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+', blank=True, null=True)
-    shot = models.ForeignKey(Shots, on_delete=models.CASCADE, related_name='task')
+    shot = models.ForeignKey(Shots, on_delete=models.CASCADE, related_name='+')
     art_percentage = models.FloatField(default=0)
     assigned_bids = models.FloatField(default=0)
     start_date = models.DateTimeField(null=True, blank=True)
@@ -349,3 +353,16 @@ class ShotLogs(models.Model):
 
     class Meta:
         verbose_name_plural = "ShotLogs"
+
+
+@receiver(post_save, sender=Assignments)
+def on_assigning_to_tl(sender,instance,**kwargs):
+    shot_instance = Shots.objects.get(pk=instance.shot.id)
+    shot_instance.team_lead = instance.lead
+    shot_instance.save()
+
+@receiver(post_save, sender=MyTask)
+def on_assigning_to_artist(sender,instance,**kwargs):
+    shot_instance = Shots.objects.get(pk=instance.shot.id)
+    shot_instance.artist = instance.artist
+    shot_instance.save()

@@ -76,20 +76,30 @@ class SequenceCompactSerializer(serializers.ModelSerializer):
         depth = 1
 
 class EmployeeCompactSerializer(serializers.ModelSerializer):
-    team_lead = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
+    # team_lead = serializers.SlugRelatedField(queryset=Employee.objects.select_related('role','team_lead','supervisor').all(), slug_field='fullName', required=False)
     class Meta:
         model = Employee
-        fields = ('fullName','team_lead')
+        fields = ('fullName',)
         depth = 1
 
 class ShotTaskCompactSerializer(serializers.ModelSerializer):
     shot = serializers.PrimaryKeyRelatedField(queryset=MyTask.objects.all(),source='shot.id')
-    artist = EmployeeCompactSerializer(read_only=True)
+    artist = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
+    # lead = serializers.SlugRelatedField(queryset=)
 
     class Meta:
         model = MyTask
-        fields = ('shot','artist','compiler')
-        depth = 1
+        fields = ('shot','compiler', 'artist')
+        depth = 0
+
+class LeadCompactSerializer(serializers.ModelSerializer):
+    shot = serializers.PrimaryKeyRelatedField(queryset=Assignments.objects.all(),source='shot.id')
+    lead = serializers.SlugRelatedField(queryset=Employee.objects.prefetch_related('team_lead','supervisor'), slug_field='fullName', required=False)
+
+    class Meta:
+        model = Assignments
+        fields = ('shot','lead')
+        depth = 0
 
 class ShotCompactSerializer(serializers.ModelSerializer):
     sequence = SequenceCompactSerializer(read_only=True)
@@ -98,6 +108,8 @@ class ShotCompactSerializer(serializers.ModelSerializer):
     task_type = serializers.SlugRelatedField(queryset=Task_Type.objects.all(), slug_field='name', required=False)
     imageSrc = serializers.ImageField(max_length=None, use_url=True, allow_null=True, required=False)
     task = ShotTaskCompactSerializer(many=True, read_only=True)
+    team_lead = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
+    artist = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
     class Meta:
         model = Shots
         fields = '__all__'
@@ -134,12 +146,13 @@ class ShotsSerializer(serializers.ModelSerializer):
     complexity = serializers.SlugRelatedField(queryset=Complexity.objects.all(), slug_field='name', required=False)
     task_type = serializers.SlugRelatedField(queryset=Task_Type.objects.all(), slug_field='name', required=False)
     imageSrc = serializers.ImageField(max_length=None, use_url=True, allow_null=True, required=False)
-    task = ShotTaskCompactSerializer(many=True, read_only=True)
+    team_lead = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
+    artist = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
 
     class Meta:
         model = Shots
         fields = ('__all__')
-        depth = 1
+        depth = 0
 
 class ShotLogsSerializer(serializers.ModelSerializer):
     shot = serializers.SlugRelatedField(queryset=Shots.objects.all(), slug_field='name', required=False)

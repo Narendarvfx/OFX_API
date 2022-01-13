@@ -1,5 +1,6 @@
 from django.db.models import Q
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -17,6 +18,7 @@ class EmployeeDetail(APIView):
         return Response(serializer.data)
 
     def put(self, request, profile_id, format=None):
+        permission_classes = (IsAuthenticated,)  # permission classes
         employee = Employee.objects.get(profile=profile_id)
 
         serializer = EmployeePutSerializer(employee, data=request.data)
@@ -31,8 +33,13 @@ class AllEmployeeDetail(APIView):
     """
     def get(self, request, format=None):
         employment_status = request.GET.get('status')
+        department = request.GET.get('dept')
+        role = request.GET.get('role')
         if employment_status is not None:
             employee = Employee.objects.select_related('department', 'role', 'employement_status', 'grade').filter(employement_status__name=employment_status)
+        elif department and role is not None:
+            employee = Employee.objects.select_related('department', 'role', 'employement_status', 'grade').filter(
+                department__name=department, role__name=role, employement_status__name="Active")
         else:
             employee = Employee.objects.select_related('department', 'role', 'employement_status', 'grade')
         serializer = EmployeeSerializer(employee, many=True, context={"request":request})
