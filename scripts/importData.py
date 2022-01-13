@@ -65,7 +65,6 @@ def generate_default_profile_photo():
     with open(employee_csv, newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            print(row['EMPLOYEE ID'], row['GENDER'])
             if row['GENDER'] == 'male':
                 shutil.copyfile('img/male.png', 'img/default/{}.jpg'.format(row['EMPLOYEE ID']))
             elif row['GENDER'] == 'female':
