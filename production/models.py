@@ -154,6 +154,8 @@ class Shots(models.Model):
     duplicate = models.BooleanField(default=False)
     team_lead = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
     artist = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
+    pending_mandays = models.FloatField(default=0)
+    achieved_mandays = models.FloatField(default=0)
 
     def upload_photo_dir(self, filename):
         ext = filename.split('.')[-1]
@@ -354,6 +356,15 @@ class ShotLogs(models.Model):
     class Meta:
         verbose_name_plural = "ShotLogs"
 
+# @receiver(post_save, sender=Shots)
+# def on_updating_progress(sender,instance,**kwargs):
+#     print("Shots:",instance)
+#     pm = instance.bid_days / 100 * instance.progress
+#     pending_mandays = instance.bid_days - pm
+#     instance.pending_mandays = pending_mandays
+#     post_save.disconnect(on_updating_progress, sender=Shots)
+#     instance.save()
+#     post_save.connect(on_updating_progress, sender=Shots)
 
 @receiver(post_save, sender=Assignments)
 def on_assigning_to_tl(sender,instance,**kwargs):
