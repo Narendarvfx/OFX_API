@@ -131,16 +131,20 @@ class ShotsData(APIView):
     def get(self, request, format=None):
         query_params = self.request.query_params
         if query_params:
-            status_list = query_params.get('status', None)
-            dept = query_params.get('dept', None)
-            status = []
-            if status_list is not None:
-                for stat in status_list.split('|'):
-                    status.append(stat)
-            if dept is not None:
-                shot = Shots.objects.select_related('sequence','task_type','sequence__project','sequence__project__client', 'status', 'complexity', 'team_lead','artist').filter(status__code__in=status, task_type__name=dept)
+            project_id = query_params.get('project_id', None)
+            if project_id:
+                shot = Shots.objects.select_related('sequence','task_type','sequence__project','sequence__project__client', 'status', 'complexity', 'team_lead','artist').filter(sequence__project_id=project_id)
             else:
-                shot = Shots.objects.select_related('sequence','task_type','sequence__project','sequence__project__client', 'status', 'complexity', 'team_lead','artist').filter(status__code__in=status)
+                status_list = query_params.get('status', None)
+                dept = query_params.get('dept', None)
+                status = []
+                if status_list is not None:
+                    for stat in status_list.split('|'):
+                        status.append(stat)
+                if dept is not None:
+                    shot = Shots.objects.select_related('sequence','task_type','sequence__project','sequence__project__client', 'status', 'complexity', 'team_lead','artist').filter(status__code__in=status, task_type__name=dept)
+                else:
+                    shot = Shots.objects.select_related('sequence','task_type','sequence__project','sequence__project__client', 'status', 'complexity', 'team_lead','artist').filter(status__code__in=status)
         else:
             shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
                                                 'sequence__project__client', 'status', 'complexity','team_lead','artist')
