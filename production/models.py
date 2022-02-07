@@ -156,6 +156,9 @@ class Shots(models.Model):
     artist = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
     pending_mandays = models.FloatField(default=0)
     achieved_mandays = models.FloatField(default=0)
+    package_id = models.CharField(max_length=10, blank=True, null=True)
+    estimate_id = models.CharField(max_length=10, blank=True, null=True)
+    estimate_date = models.DateTimeField(null=True, blank=True)
 
     def upload_photo_dir(self, filename):
         ext = filename.split('.')[-1]
@@ -218,7 +221,7 @@ class MyTask(models.Model):
     eta = models.DateTimeField(null=True,blank=True)
     task_status = models.ForeignKey(ShotStatus, on_delete=models.CASCADE, related_name='+')
     compiler = models.IntegerField(default=0)
-    version = models.CharField(max_length=10, null=True, blank=True)
+    version = models.CharField(max_length=20, null=True, blank=True)
     creation_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
@@ -355,6 +358,22 @@ class ShotLogs(models.Model):
 
     class Meta:
         verbose_name_plural = "ShotLogs"
+
+class TeamLead_Week_Reports(models.Model):
+    team_lead = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+')
+    week = models.IntegerField(blank=True, null=True)
+    from_date = models.DateField(null=True, blank=True)
+    to_date = models.DateField(null=True, blank=True)
+    creation_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    total_mandays = models.FloatField(null=True, blank=True)
+    achieved_mandays = models.FloatField(null=True, blank=True)
+    forwarded_mandays = models.FloatField(null=True, blank=True)
+
+    def __str__(self):
+        return self.team_lead.fullName
+
+    class Meta:
+        verbose_name_plural = "TeamLead Week Reports"
 
 # @receiver(post_save, sender=Shots)
 # def on_updating_progress(sender,instance,**kwargs):
