@@ -1,0 +1,78 @@
+{% load mist_tags %}
+<div class="col-lg-4 col-xlg-3 col-md-5  " id="Employee_Card_Modal">
+
+</div>
+<div class="col-lg-8 col-xlg-9 col-md-7">
+    <div class="card">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs profile-tab" role="tablist">
+            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#general"
+                                    role="tab">General</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#contact" role="tab">Contact</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#job"
+                                    role="tab">Job</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#entitle"
+                                    role="tab">Entitlement</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#attach"
+                                    role="tab">Attachments</a></li>
+            <!-- <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#attendance"
+                                    role="tab">Attendance</a></li> -->
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane active" id="general" role="tabpanel">
+            </div>
+            <!--second tab-->
+            <div class="tab-pane" id="contact" role="tabpanel">
+            </div>
+            <!--Third tab-->
+            <div class="tab-pane" id="job" role="tabpanel">
+            </div>
+            <!--Fourth tab-->
+            <div class="tab-pane" id="entitle" role="tabpanel">
+            </div>
+            <!--Fifth tab-->
+            <div class="tab-pane" id="attach" role="tabpanel">
+              <div class="card-body">
+                <form id = "update_attach" class="form-horizontal form-material mt-5" role="form" enctype="multipart/form-data">
+                  <div class="row">
+                    <div class="col-md-12">
+                      {% if request.user|has_group:"Developers" %}
+                      <div class="form-group">
+                        <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                          <div data-trigger="fileinput"> <i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div> <span class="input-group-addon btn btn-default btn-file"> <span class="fileinput-new">Select file</span>
+                            <input type="file" id="file" name="photo"> </span>
+                            <p>   </p>
+                            <div class="float-right" style="margin-left: 10px">
+                              <select id="fileType" class="form-control">
+                                <option value="">File Type</option>
+                                  {% for attachment in attachments %}
+                                    <option value="{{attachment.name}}">{{ attachment.name }}</option>
+                                  {% endfor %}
+                              </select>
+                            </div>
+                              <div id="forid" class="col-sm-6">
+                              </div>
+                          </div>
+                        </div>
+                        <hr class="mt-0 mb-5">
+                        {% endif %}
+                                <div class="table-responsive m-t-40">
+                                    <table id="attachments_tview" class="table table-bordered table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>File</th>
+                                            <th>File Type</th>
+                                            <th>Uploaded Date</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="attachments_tbody_view">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                </form>
+              </div>
+            </div>

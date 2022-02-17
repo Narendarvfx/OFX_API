@@ -1,0 +1,26 @@
+{% extends 'main/base.html' %}
+{% block content %}
+
+    <h3>Hello {{ user.profile.employee.full_name }}</h3>
+    <h1>Welcome to OSCARFX</h1>
+
+    
+{% endblock content %}
+
+{% block page_scripts %}
+        <!-- ============================================================== -->
+        <!-- This page plugins -->
+        <!-- ============================================================== -->
+        <!-- chartist chart -->
+        <script src="/static/template/assets/plugins/chartist-js/dist/chartist.min.js"></script>
+        <script src="/static/template/assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js"></script>
+        <!-- Chart JS -->
+        <script src="/static/template/assets/plugins/echarts/echarts-all.js"></script>
+
+        <!-- Chart JS -->
+        <script src="/static/template/main/js/dashboard1.js"></script>
+        <!-- ============================================================== -->
+        <!-- Style switcher -->
+        <!-- ============================================================== -->
+        <script src="/static/template/assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
+{% endblock page_scripts %}

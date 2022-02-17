@@ -4,7 +4,11 @@ from django.conf.urls import url, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from OFX_API import views
+
 urlpatterns = [
+    url(r'^$', views.home_view, name='home_view'),
+    url(r'^home/$', views.home_view, name='home'),
     url(r'^', include('profiles.urls')),
     url(r'^', include('hrm.urls')),
     url(r'^', include('production.urls')),

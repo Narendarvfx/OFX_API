@@ -37,10 +37,12 @@ AUTH_LDAP_USER_ATTR_MAP = {
     "last_name": "sn",
 }
 
-AUTH_LDAP_NO_NEW_USERS = True
+AUTH_LDAP_NO_NEW_USERS = False
+
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
 AUTHENTICATION_BACKENDS = (
-    "django_auth_ldap.backend.LDAPBackend",
+    # "django_auth_ldap.backend.LDAPBackend",
     "django.contrib.auth.backends.ModelBackend",
 )
 
@@ -57,6 +59,7 @@ ALLOWED_HOSTS = ['127.0.0.1','*']
 # Application definition
 
 INSTALLED_APPS = [
+    'common',
     'profiles',
     'hrm',
     'production',
@@ -211,9 +214,9 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 # if sys.platform == 'linux':
-STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+# STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
@@ -300,3 +303,7 @@ CACHES = {
     }
 }
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
+LOGIN_REDIRECT_URL = r'^home'
+LOGIN_URL = '/login/'
+LOGIN_EXEMPT_URLS = (r'^admin/', r'^api/*', r'^media/')

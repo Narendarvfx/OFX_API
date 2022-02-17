@@ -10,7 +10,8 @@ from rest_framework.views import APIView
 from hrm.models import Employee
 from hrm.serializers import EmployeeSerializer
 from production.models import Clients, Projects, ShotStatus, Shots, Complexity, Sequence, MyTask, Assignments, Channels, \
-    Groups, Qc_Assignment, Folder_Permissions, Permission_Groups, ShotVersions, TaskHelp_Main, TaskHelp_Lead, TaskHelp_Artist, ShotLogs
+    Groups, Qc_Assignment, Folder_Permissions, Permission_Groups, ShotVersions, TaskHelp_Main, TaskHelp_Lead, \
+    TaskHelp_Artist, ShotLogs, Locality
 from production.serializers import ClientSerializer, ProjectSerializer, StatusSerializer, ShotsSerializer, \
     ShotsPostSerializer, ComplexitySerializer, SequenceSerializer, SequencePostSerializer, MyTaskSerializer, \
     MyTaskPostSerializer, MyTaskShotSerializer, AssignmentSerializer, AssignmentPostSerializer, MyTaskArtistSerializer, \
@@ -19,7 +20,7 @@ from production.serializers import ClientSerializer, ProjectSerializer, StatusSe
     ProjectPostSerializer, MyTaskStatusSerializer, ShotVersionsSerializer, AllShotVersionsSerializer, \
     TaskHelpMainSerializer, TaskHelpLeadSerializer, \
     TaskHelpArtistSerializer, TaskHelpMainPostSerializer, TaskHelpArtistPostSerializer, TaskHelpArtistUpdateSerializer, \
-    TaskHelpArtistStatusSerializer, ShotLogsSerializer, ShotLogsPostSerializer
+    TaskHelpArtistStatusSerializer, ShotLogsSerializer, ShotLogsPostSerializer, LocalitySerializer
 
 import configparser
 
@@ -28,6 +29,13 @@ class StatusInfo(APIView):
     def get(self, request, format=None):
         status = ShotStatus.objects.all()
         serializer = StatusSerializer(status, many=True, context={"request":request} )
+        return Response(serializer.data)
+
+class LocalityInfo(APIView):
+
+    def get(self, request, format=None):
+        locality = Locality.objects.all()
+        serializer = LocalitySerializer(locality, many=True, context={"request":request} )
         return Response(serializer.data)
 
 class ComplexityInfo(APIView):
@@ -133,7 +141,7 @@ class ShotsData(APIView):
         if query_params:
             project_id = query_params.get('project_id', None)
             if project_id:
-                shot = Shots.objects.select_related('sequence','task_type','sequence__project','sequence__project__client', 'status', 'complexity', 'team_lead','artist').filter(sequence__project_id=project_id)
+                shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project', 'sequence__project__client', 'status', 'complexity', 'team_lead','artist', 'location').filter(sequence__project_id=project_id)
             else:
                 status_list = query_params.get('status', None)
                 dept = query_params.get('dept', None)
@@ -142,12 +150,12 @@ class ShotsData(APIView):
                     for stat in status_list.split('|'):
                         status.append(stat)
                 if dept is not None:
-                    shot = Shots.objects.select_related('sequence','task_type','sequence__project','sequence__project__client', 'status', 'complexity', 'team_lead','artist').filter(status__code__in=status, task_type__name=dept)
+                    shot = Shots.objects.select_related('sequence','task_type','sequence__project','sequence__project__client', 'status', 'complexity', 'team_lead','artist','location').filter(status__code__in=status, task_type__name=dept)
                 else:
-                    shot = Shots.objects.select_related('sequence','task_type','sequence__project','sequence__project__client', 'status', 'complexity', 'team_lead','artist').filter(status__code__in=status)
+                    shot = Shots.objects.select_related('sequence','task_type','sequence__project','sequence__project__client', 'status', 'complexity', 'team_lead','artist','location').filter(status__code__in=status)
         else:
             shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
-                                                'sequence__project__client', 'status', 'complexity','team_lead','artist')
+                                                'sequence__project__client', 'status', 'complexity','team_lead','artist','location')
 
         serializer = ShotsSerializer(shot, many=True, context={"request":request})
         return Response(serializer.data)

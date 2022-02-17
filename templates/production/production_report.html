@@ -1,0 +1,424 @@
+{% extends 'main/base.html' %}
+
+
+{% block bread_crumb %}
+        <!-- ============================================================== -->
+        <!-- Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+{#        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css' type="text/css"/>#}
+{#        <link rel='stylesheet' href='https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap5.min.css' type="text/css"/>#}
+        <link rel='stylesheet' href='https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css' type="text/css"/>
+        <link rel='stylesheet' href='https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css' type="text/css"/>
+        <link rel='stylesheet' href='https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css' type="text/css"/>
+        <link rel='stylesheet' href='https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css' type="text/css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.1/css/bootstrap-multiselect.min.css" integrity="sha512-jpey1PaBfFBeEAsKxmkM1Yh7fkH09t/XDVjAgYGrq1s2L9qPD/kKdXC/2I6t2Va8xdd9SanwPYHIAnyBRdPmig==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <style>
+            .card{
+                padding: 10px;
+                background: #272c33 !important;
+                color: white;
+            }
+            .dt-buttons .dt-button{
+                border-radius: 4px;
+                background: orange;
+                color: #ffffff
+            }
+            table.dataTable tbody tr{
+                background-color: #272c33 !important;
+                font-size: small;
+                font-weight: normal;
+            }
+            table.dataTable tr.odd {
+                background-color: #2b3038 !important;
+            }
+            table.dataTable td {
+                border-bottom: 0.2px !important;
+                border-color: grey !important;
+            }
+            table.dataTable thead{
+                color:#bcbcbc;
+                font-weight: normal;
+                font-size: small;
+            }
+            #shots_table_length, #shots_table_info, #shots_table_filter{
+                color: #747d8a !important;
+            }
+            .dataTables_wrapper .dataTables_paginate .paginate_button {
+                padding: 2px;
+                background: white;
+            }
+            tfoot input {
+                width: 100% !important;
+                {#padding: 3px !important;#}
+                box-sizing: border-box !important;
+            }
+            table.dataTable tfoot th, table.dataTable tfoot td {
+                padding: 2px;
+                border-top: 0px;
+            }
+            .container-fluid{
+                padding : 5px !important;
+            }
+            .page-titles {
+                padding-bottom: 0px;
+            }
+            .dataTables_wrapper .dataTables_length select{
+                color: #bcbcbc !important;
+                background-color: inherit;
+            }
+            .dataTables_wrapper .dataTables_filter input {
+                color: #bcbcbc !important;
+            }
+            table.dataTable tbody tr.selected {
+                background-color: #315eb1 !important;
+                color:white !important;
+            }
+            label{
+                margin-bottom: 0px !important;
+            }
+            .multiselect-container>li>a>label {
+              padding: 4px 20px 3px 20px;
+            }
+        </style>
+        <div class="row page-titles">
+            <div class="col-md-4 col-6 align-self-center">
+                <h3 class="text-themecolor mb-0 mt-0">Live Production Report</h3>
+{#                <ol class="breadcrumb">#}
+{#                    <li class="breadcrumb-item"><a href="javascript:void(0)">Reports</a></li>#}
+{#                    <li class="breadcrumb-item active">Production Report</li>#}
+{#                </ol>#}
+            </div>
+            <div class="col-md-8 col-8 align-self-center">
+                <div class="float-right" style="margin-left: 5px">
+                        <select id="shot_locality_select" class="form-control" >
+                            <option value="">Locality</option>
+                            {% for locality in locality %}
+                                <option>{{ locality.name }}</option>
+                            {% endfor %}
+
+                        </select>
+                </div>
+                <div class="float-right" style="margin-left: 5px">
+                        <select id="shot_location_select" class="form-control" >
+                            <option value="">Location</option>
+                            {% for location in location %}
+                                <option>{{ location.name }}</option>
+                            {% endfor %}
+                        </select>
+                </div>
+                <div class="float-right" style="margin-left: 5px">
+                    <select id="shot_taskType_select" class="form-control">
+                        <option value="">TaskType</option>
+                        <option value="PAINT">Paint</option>
+                        <option value="ROTO">Roto</option>
+                        <option value="MM">MM</option>
+                        <option value="COMP">Comp</option>
+                    </select>
+                </div>
+                <div class="float-right" style="margin-left: 5px">
+                    <select id="shot_status_select" class="form-control">
+                        <option value="">Status</option>
+                        {% for status in status %}
+                            <option>{{ status.code }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="float-right" style="margin-left: 5px">
+                    <select id="shot_project_select" class="form-control">
+                        <option value="">Project</option>
+                        {% for project in projects %}
+                            <option>{{ project.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="float-right" style="margin-left: 5px">
+                        <select id="shot_client_select" class="form-control">
+                            <option value="">Client</option>
+                            {% for client in clients %}
+                                <option>{{ client.name }}</option>
+                            {% endfor %}
+                        </select>
+                </div>
+                <div class="float-right" style="margin-left: 5px">
+                    <button class="btn float-right hidden-sm-down btn-success" onclick="export_to_excel()"><i class="mdi mdi-plus-circle"></i> Export</button>
+                </div>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+{% endblock bread_crumb %}
+
+
+{% block content %}
+    <div class="container-fluid">
+
+        <!-- Shots Table View -->
+        <div id="shots_list_view" class="card">
+            <table id="shots_table" class="table display no-wrap" style="width:100%">
+                <thead>
+                <tr>
+                    <th>CLIENT</th>
+                    <th>PROJECT</th>
+                    <th>SEQUENCE</th>
+                    <th>SHOT</th>
+                    <th>TASK TYPE</th>
+                    <th>TYPE</th>
+                    <th>FRAME IN</th>
+                    <th>FRAME OUT</th>
+                    <th>DURATION</th>
+                    <th>STATUS</th>
+                    <th>BIDS</th>
+                    <th>PROGRESS</th>
+                    <th>PENDING BID DAYS</th>
+                    <th>ETA</th>
+                    <th>TEAM LEAD</th>
+                    <th>ARTIST</th>
+                    <th>LOCATION</th>
+                    <th>LOCALITY</th>
+                </tr>
+                </thead>
+                <tbody id="shots_tbody_view">
+                </tbody>
+{#                        <tfoot>#}
+{#                            <tr>#}
+{#                                <th>CLIENT</th>#}
+{#                                <th>PROJECT</th>#}
+{#                                <th>SEQUENCE</th>#}
+{#                                <th>SHOT</th>#}
+{#                                <th>TASK TYPE</th>#}
+{#                                <th>TYPE</th>#}
+{#                                <th>FRAME IN</th>#}
+{#                                <th>FRAME OUT</th>#}
+{#                                <th>DURATION</th>#}
+{#                                <th>STATUS</th>#}
+{#                                <th>BIDS</th>#}
+{#                                <th>PROGRESS</th>#}
+{#                                <th>PENDING BID DAYS</th>#}
+{#                                <th>ETA</th>#}
+{#                                <th>TEAM LEAD</th>#}
+{#                                <th>ARTIST</th>#}
+{#                            </tr>#}
+{#                        </tfoot>#}
+            </table>
+        </div>
+
+    </div>
+{% endblock content %}
+
+
+
+{% block page_scripts %}
+    <!--OFX Core JavaScript -->
+    <script src="/static/ofx/core.js"></script>
+{#    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>#}
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+{#    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.1/js/bootstrap-multiselect.min.js" integrity="sha512-fp+kGodOXYBIPyIXInWgdH2vTMiOfbLC9YqwEHslkUxc8JLI7eBL2UQ8/HbB5YehvynU3gA3klc84rAQcTQvXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>#}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/js/bootstrap.bundle.min.js" ></script>
+    <script>
+        //  Load Shots Information
+        status_list = "YTA|ATL|YTS|STQ|WIP|IRT|QIP|CRT|IAP|DTC"
+        const all_shots_json = $.ajax({
+            type: "GET",
+            url: "/api/production/shots/?status=" + status_list,
+            dataType: "application/json",
+            async: false,
+            error: function (xhr, status, errorThrown) {
+            }
+        }).responseText;
+
+        const all_shots = JSON.parse(all_shots_json);
+        all_shots.forEach(function (shot) {
+            render_shots_list(shot);
+        });
+
+        // Department Filter
+        function shot_project_filter() {
+            $('#shots_tbody_view').html('');
+            all_shots.forEach(function (shot) {
+                var project = 'Project';
+                if (shot.sequence.project) {
+                    var project = shot.sequence.project.name;
+                }
+                if (project == $('#shot_project_select').val()) {
+                    render_shots_list(shot);
+                } else if ($('#shot_project_select').val() == '') {
+                    render_shots_list(shot);
+                }
+            })
+        }
+
+        // Status Filter
+        function shot_status_filter() {
+            $('#shots_tbody_view').html('');
+            all_shots.forEach(function (shot) {
+                var status = 'Status';
+                if (shot.status) {
+                    var status = shot.status.code;
+                }
+                if (status == $('#shot_status_select').val()) {
+                    render_shots_list(shot);
+                    console.log(shot)
+                } else if ($('#shot_status_select').val() == 'Status') {
+                    render_shots_list(shot);
+                }
+            })
+        }
+
+        // Name Search
+        function employee_search(search_text) {
+            $('#employee_grid_view').html('');
+            $('#shots_tbody_view').html('');
+            all_employees.forEach(function (employee) {
+                var full_name = employee['full_name'].toUpperCase();
+                if (full_name.includes(search_text.toUpperCase())) {
+                    render_shots_list(employee);
+                }
+            })
+        }
+
+        // Render List
+        function render_shots_list(shot) {
+            let color = shot.status.color
+            let progress = shot.progress
+            let pink = "rgb(255, 44, 174)"
+            let light_green = "rgb(115, 255, 171)"
+            let orange = "rgb(231, 128, 30)"
+            let red = "rgb(255, 60, 11)"
+            let green = "rgb(0, 170, 0)"
+            let progress_color = ""
+            if(progress < 25) {
+                let progress_color = red
+            }
+            else if(progress >= 25 && progress < 50) {
+                let progress_color = pink
+            }
+            else if (progress >= 50 && progress < 75)
+            {
+                let progress_color = orange
+            }
+            else if (progress >= 75 && progress < 95)
+            {
+                let progress_color = light_green
+            }
+            else if (progress >= 95 && progress <= 100)
+            {
+                let progress_color = green
+            }
+            let pending_mandays = 0
+            let pm = shot.bid_days/100*shot.progress
+            pending_mandays = (shot.bid_days-pm).toFixed(1)
+            let artist = ''
+            if (shot.artist){
+                artist = shot.artist
+            }
+            let team_lead = ''
+            if (shot.team_lead){
+                team_lead = shot.team_lead
+            }
+            let eat = ''
+            if (shot.eta){
+                eta = shot.eta.split("T")[0]
+            }
+            let location = ""
+            if (shot.location){
+                location = shot.location
+            }
+            let locality = shot.sequence.project.client.locality
+            let shots_list_div = `
+              <tr style="color:#bcbcbc">
+                <td>${shot.sequence.project.client.name}</td>
+        {#        <td><a href=" " data-toggle="modal" data-target="#employee_detail_modal" data-backdrop="static" data-keyboard="false" onclick="modalCall(${employee.id})"><img src="${employee.photo}" onerror="this.src='/media/profiles/photo/default.png'" alt="user" width="40" class="img-circle" /> ${employee.full_name}</a></td>#}
+                <td>${shot.sequence.project.name}</td>
+                <td>${shot.sequence.name}</td>
+                <td>${shot.name}</td>
+                <td>${shot.task_type}</td>
+                <td>${shot.type}</td>
+                <td>${shot.actual_start_frame}</td>
+                <td>${shot.actual_end_frame}</td>
+                <td>0</td>
+                <td ><span class="badge" style="color:white;padding:5px 10px;font-size:1em; background-color:${color}">${shot.status.code}</span></td>
+                <td>${shot.bid_days}</td>
+                <td>
+                    <div class="progress" style="height: 20px;">
+                        <div class="progress-bar" style="width: ${shot.progress}%;background-color:${progress_color};" role="progressbar">${shot.progress}%</div>
+                    </div>
+                  {#<div id="myBar" style="background-color:${progress_color}; height:20px;width:${shot.progress}%; color:white">${shot.progress}%</div>#}
+                </td>
+                <td>${pending_mandays}</td>
+                <td>${eta}</td>
+                <td>${team_lead}</td>
+                <td>${artist}</td>
+                <td>${location}</td>
+                <td>${locality}</td>
+              </tr>
+            `;
+            $('#shots_tbody_view').append(shots_list_div);
+        }
+
+        $(document).ready(function () {
+            // DataTable
+            const table = $('#shots_table').DataTable({
+                "scrollX": true,
+                dom: 'Blfrtip',
+                scrollY: '55vh',
+                scrollCollapse: true,
+                buttons: [],
+                "searching": true,
+                "paging": true,
+                "pageLength": 25,
+                "bSortClasses": false,
+                stateSave: false,
+            });
+
+            $('#shots_table tbody').on( 'click', 'tr', function () {
+                if ( $(this).hasClass('selected') ) {
+                    $(this).removeClass('selected');
+                }
+                else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+            $('#shot_client_select').on('change', function () {
+                const client = $('#shot_client_select').val();
+                table.columns(0).search(client).draw();
+            });
+            $('#shot_project_select').on('change', function () {
+                const project = $('#shot_project_select').val();
+                table.columns(1).search(project).draw();
+            });
+            $('#shot_taskType_select').on('change', function () {
+                const taskType = $('#shot_taskType_select').val()
+                table.columns(4).search(taskType).draw();
+            });
+            $('#shot_status_select').on('change', function () {
+                const status = $('#shot_status_select').val();
+                table.columns(9).search(status).draw();
+            });
+            $('#shot_location_select').on('change', function () {
+                const location = $('#shot_location_select').val();
+                table.columns(16).search(location).draw();
+            });
+            $('#shot_locality_select').on('change', function () {
+                const locality = $('#shot_locality_select').val();
+                table.columns(17).search(locality).draw();
+            });
+        });
+        function export_to_excel(){
+            window.location = "/production/export_prod_report/"
+        }
+        {#$(function() {#}
+        {#    $('#shot_taskType_select').multiselect({#}
+        {#        includeSelectAllOption: true#}
+        {#    });#}
+        {#})#}
+
+    </script>
+{% endblock page_scripts %}

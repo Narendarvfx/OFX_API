@@ -1,7 +1,8 @@
 from django.contrib import admin
 from production.models import Clients, Projects, ShotStatus, Complexity, Shots, Sequence, Task_Type, MyTask, \
     Assignments, Channels, Qc_Assignment, Groups, Permission_Groups, Folder_Permissions, \
-    ShotVersions, ClientVersions, TaskHelp_Main, TaskHelp_Lead, TaskHelp_Artist, ShotLogs, TeamLead_Week_Reports
+    ShotVersions, ClientVersions, TaskHelp_Main, TaskHelp_Lead, TaskHelp_Artist, ShotLogs, TeamLead_Week_Reports, \
+    Locality
 
 
 # Register your models here.
@@ -74,3 +75,4 @@ admin.site.register(TaskHelp_Lead)
 admin.site.register(TaskHelp_Artist)
 admin.site.register(ShotLogs, ShotLogsFields)
 admin.site.register(TeamLead_Week_Reports)
+admin.site.register(Locality)
