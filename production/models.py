@@ -6,7 +6,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from imagekit.models import ProcessedImageField
 import logging
-from hrm.models import Employee, ProductionTeam, Department
+from hrm.models import Employee, ProductionTeam, Department, Location
 
 logger = logging.getLogger('LoggerName')
 
@@ -30,22 +30,27 @@ class Complexity(models.Model):
     class Meta:
         verbose_name_plural = "Complexity"
 
-class Clients(models.Model):
+class Locality(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    email = models.EmailField(max_length=70, null=True)
+    color = ColorField(default='#e38330')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = "Locality"
+
+class Clients(models.Model):
+    Status = (
+        ("IN PROGRESS", "IN PROGRESS"),
+        ("ARCHIVED", "ARCHIVED")
+    )
+    name = models.CharField(max_length=100, unique=True)
+    email = models.EmailField(max_length=70, null=True, blank=True)
     country = models.CharField(max_length=100, blank=True, null=True)
-    # status = models.ForeignKey(ShotStatus, default=1, on_delete=models.CASCADE,null=True,blank=True, related_name='+')
+    locality = models.ForeignKey(Locality, on_delete=models.CASCADE, blank=True, null=True)
+    status = models.CharField(max_length=300, null=True, blank=True, choices=Status, default=Status[0][0])
 
-    def upload_photo_dir(self, filename):
-        ext = filename.split('.')[-1]
-        path = 'clients/photo/{}.{}'.format(self.name, ext)
-        return path
-
-    imageSrc = ProcessedImageField(upload_to=upload_photo_dir,
-                                format='JPEG',
-                                options={'quality': 80},
-                                null=True,blank=True
-                                )
     creation_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -70,7 +75,7 @@ class Projects(models.Model):
                                 format='JPEG',
                                 options={'quality': 80},
                                 null=True,
-                                   blank=True
+                                blank=True
                                 )
 
     creation_date = models.DateTimeField(auto_now_add=True)
@@ -159,6 +164,11 @@ class Shots(models.Model):
     package_id = models.CharField(max_length=10, blank=True, null=True)
     estimate_id = models.CharField(max_length=10, blank=True, null=True)
     estimate_date = models.DateTimeField(null=True, blank=True)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='+',null=True, blank=True)
+    input_path = models.CharField(max_length=100, blank=True, null=True)
+    retake_path = models.CharField(max_length=100, blank=True, null=True)
+    output_path = models.CharField(max_length=100, blank=True, null=True)
+    comments = models.TextField(blank=True, null=True)
 
     def upload_photo_dir(self, filename):
         ext = filename.split('.')[-1]

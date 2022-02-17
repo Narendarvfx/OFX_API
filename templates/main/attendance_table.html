@@ -1,0 +1,103 @@
+<!--DAY INFO MODAL-->
+
+<div class="modal fade" id="day_info_modal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">DAY INFO</h4>
+            </div>
+            <div class="modal-body">
+              <div class="table-responsive m-t-50">
+                  <table id="dayInfoTable" class="display table table-bordered table-hover table-striped" style="width:100%">
+                  </table>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- All Info table-->
+
+<div class="card text-white bg-dark">
+  <div class="chart-body">
+    <div class="chart-header">
+      <center><h3 id="selected_date" name="selected_date" class="card-title text-white">DATE</h3></center>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="card text-white bg-primary">
+          <div class="card-body">
+            <center><h3 class="card-title text-white"><b>Total Hours</b></h3>
+            <p id="total" class="card-text"></p></center>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card text-white bg-info">
+          <div class="card-body">
+            <center><h3 class="card-title text-white"><b>Actual Hours</b></h3>
+            <p id="actual" class="card-text"></p></center>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="card text-white bg-danger">
+          <div class="card-body">
+            <center><h3 class="card-title text-white"><b>Incomplete Actual Hours</b></h3>
+            <p id="non_completed"  class="card-text"></p></center>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card text-white bg-success">
+          <div class="card-body">
+            <center><h3 class="card-title text-white"><b>Additional Hours</b></h3>
+            <p id="additional" class="card-text"></p></center>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="table-responsive m-t-40">
+      <div class="dataTables_wrapper dt-bootstrap4">
+        <table id="monthInfoTable" class="display table table-striped table-bordered dataTable" width="100%" style="width: 100%;">
+          <!-- SAMPLE DATA -->
+          <thead class="bg-warning text-white">
+            <tr>
+              <th>PARTICULARS</th>
+              <th>DEFAULT</th>
+              <th>TARGET</th>
+              <th>CURRENT</th>
+              <th>INCOMPLETE</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr role="row" class='odd'>
+              <td>Total Working Hours</td>
+              <td id="total_default"></td>
+              <td id="total_target"></td>
+              <td id="total_current"></td>
+              <td id="total_incomplete"></td>
+            </tr>
+            <tr role="row" class='even'>
+              <td>Actual Working Hours</td>
+              <td id="actual_default"></td>
+              <td id="actual_target"></td>
+              <td id="actual_current"></td>
+              <td id="actual_incomplete"></td>
+            </tr>
+            <tr role="row" class='odd'>
+              <td>Working Days</td>
+              <td id="days_default"></td>
+              <td id="days_target"></td>
+              <td >-</td>
+              <td id="days_incomplete"></td>
+            </tr>
+          </tbody>
+          <!-- SAMPLE DATA END -->
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

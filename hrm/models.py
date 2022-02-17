@@ -19,6 +19,16 @@ class EmployementStatus(models.Model):
     class Meta:
         verbose_name_plural = "EmployementStatus"
 
+# Create your models here.
+class Location(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = "Location"
+
 class Department(models.Model):
     name = models.CharField(max_length=100, unique=True)
     color = ColorField(default='#FF0000')
@@ -83,6 +93,7 @@ class Employee(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
     role = models.ForeignKey(Role, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
     grade = models.ForeignKey(Grade, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
     creation_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
     team_lead = models.ForeignKey('self', on_delete=models.CASCADE, related_name='+', null=True, blank=True)
@@ -103,7 +114,8 @@ class Employee(models.Model):
             return self.profile.user.username
 
     class Meta:
-        verbose_name_plural = "Employee"
+        verbose_name_plural = "Employee",
+        ordering = ('fullName',)
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -113,7 +125,6 @@ def create_user_profile(sender, instance, created, **kwargs):
                                 fullName=instance.first_name,
                                 email=instance.email,
                                 photo='profiles/photo/{}.jpg'.format(profile.user,firstName=instance.first_name))
-
 
 class Role_Permissions(models.Model):
     role = models.ForeignKey(Role, on_delete=models.CASCADE,related_name='+', null=True)

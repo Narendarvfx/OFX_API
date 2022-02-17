@@ -1,8 +1,13 @@
 from django.conf.urls import url
-from . import api
+from . import api, views
 
 urlpatterns = [
+    ################## Web Urls ######################
+    url(r'^production/production_report/$', views.production_reports, name='reports'),
+    url(r'^production/export_prod_report/$', views.export_prod_report, name='reports'),
+    ########## API URLS #################
     url(r'^api/production/status/$', api.StatusInfo.as_view(), name='Status API'),
+    url(r'^api/production/localities/$', api.LocalityInfo.as_view(), name='Locality API'),
     url(r'^api/production/complexity/$', api.ComplexityInfo.as_view(), name='Complexity API'),
 
     # Client Urls

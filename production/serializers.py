@@ -1,15 +1,20 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from hrm.models import Employee, Department
+from hrm.models import Employee, Department, Location
 from production.models import Clients, Projects, ShotStatus, Complexity, Shots, Sequence, Task_Type, MyTask, \
     Assignments, Channels, Groups, Qc_Assignment, Folder_Permissions, Permission_Groups, \
-    ShotVersions, TaskHelp_Main, TaskHelp_Lead, TaskHelp_Artist, ShotLogs
+    ShotVersions, TaskHelp_Main, TaskHelp_Lead, TaskHelp_Artist, ShotLogs, Locality
 
 
 class StatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShotStatus
+        fields = '__all__'
+
+class LocalitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Locality
         fields = '__all__'
 
 class ComplexitySerializer(serializers.ModelSerializer):
@@ -19,13 +24,12 @@ class ComplexitySerializer(serializers.ModelSerializer):
 
 
 class ClientSerializer(serializers.ModelSerializer):
-    imageSrc = serializers.ImageField(max_length=None, use_url=True, allow_null=True, required=False)
-    # status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='name', required=False)
+    locality = serializers.SlugRelatedField(queryset=Locality.objects.all(), slug_field='name', required=False)
 
     class Meta:
         model = Clients
-        fields = '__all__'
-
+        fields = ('id', 'name','country',
+                  'locality')
 
 class ProjectSerializer(serializers.ModelSerializer):
     client = serializers.SlugRelatedField(queryset=Clients.objects.all(), slug_field='name', required=False)
@@ -56,7 +60,7 @@ class ProjectClientSerializer(serializers.ModelSerializer):
 
 
 class ProjectCompactSerializer(serializers.ModelSerializer):
-    client = serializers.SlugRelatedField(queryset=Clients.objects.all(), slug_field='name', required=False)
+    client = ClientSerializer(read_only=True)
 
     class Meta:
         model = Projects
@@ -148,6 +152,7 @@ class ShotsSerializer(serializers.ModelSerializer):
     imageSrc = serializers.ImageField(max_length=None, use_url=True, allow_null=True, required=False)
     team_lead = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
     artist = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
+    location = serializers.SlugRelatedField(queryset=Location.objects.all(), slug_field='name', required=False)
 
     class Meta:
         model = Shots

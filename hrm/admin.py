@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Employee, Department, EmployementStatus, Role, Grade, ProductionTeam, Role_Permissions
+from .models import Employee, Department, EmployementStatus, Role, Grade, ProductionTeam, Role_Permissions, Location
 
 
 class EmployeeFields(admin.ModelAdmin):
@@ -32,3 +32,4 @@ admin.site.register(Department)
 admin.site.register(EmployementStatus)
 admin.site.register(Role)
 admin.site.register(Grade)
+admin.site.register(Location)
