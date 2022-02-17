@@ -1,6 +1,5 @@
 .idea/
 *.pyc
-images/
 media/
 logs/
 migrations/
@@ -12,13 +11,4 @@ db.sqlite3
 static/admin/
 MIST_API/settings.ini
 static/admin/css/autocomplete.css
-*.css
-*.js
-*.svg
-*.gif
-*.png
-*.ico
-*.eot
-*.ttf
-*.woff
-*.woff2
+*.map

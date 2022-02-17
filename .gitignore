@@ -1,7 +1,5 @@
 .idea/
 *.pyc
-images/
-media/
 logs/
 migrations/
 *.db
@@ -10,6 +8,5 @@ db.sqlite3
 *.json
 *.sql
 static/admin/
-MIST_API/settings.ini
 static/admin/css/autocomplete.css
 *.map
