@@ -8,36 +8,36 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import sys
-import ldap
-from django_auth_ldap.config import LDAPSearch, LDAPGroupQuery, GroupOfNamesType, LDAPSearchUnion
+# import ldap
+# from django_auth_ldap.config import LDAPSearch, LDAPGroupQuery, GroupOfNamesType, LDAPSearchUnion
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-AUTH_LDAP_SERVER_URI = "ldap://192.168.5.2"
-AUTH_LDAP_BIND_DN = "pipeline account"
-
-AUTH_LDAP_BIND_PASSWORD = "Gunreddy^999"
-AUTH_LDAP_USER_SEARCH = LDAPSearchUnion(
-    LDAPSearch("OU=DevelopmentTeam,dc=oscarfx,dc=com", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
-    LDAPSearch("OU=Pipeline,dc=oscarfx,dc=com", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
-    LDAPSearch("OU=OFXMatchmove,dc=oscarfx,dc=com", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
-    LDAPSearch("OU=OFXIT,dc=oscarfx,dc=com", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
-    LDAPSearch("OU=OFXData,dc=oscarfx,dc=com", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
-    LDAPSearch("OU=OFXPaint,dc=oscarfx,dc=com", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
-    LDAPSearch("OU=OFXProdManagement,dc=oscarfx,dc=com", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
-    LDAPSearch("OU=OFXRoto,dc=oscarfx,dc=com", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
-    LDAPSearch("OU=OFXBidding,dc=oscarfx,dc=com", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
-    LDAPSearch("OU=OFXTraining,dc=oscarfx,dc=com", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
-    LDAPSearch("OU=OFXUsers,dc=oscarfx,dc=com", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
-)
-
-# Populate the Django user from the LDAP directory.
-AUTH_LDAP_USER_ATTR_MAP = {
-    "first_name": "givenName",
-    "last_name": "sn",
-}
-
-AUTH_LDAP_NO_NEW_USERS = False
+# AUTH_LDAP_SERVER_URI = "ldap://192.168.5.2"
+# AUTH_LDAP_BIND_DN = "pipeline account"
+#
+# AUTH_LDAP_BIND_PASSWORD = "Gunreddy^999"
+# AUTH_LDAP_USER_SEARCH = LDAPSearchUnion(
+#     LDAPSearch("OU=DevelopmentTeam,dc=oscarfx,dc=com", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
+#     LDAPSearch("OU=Pipeline,dc=oscarfx,dc=com", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
+#     LDAPSearch("OU=OFXMatchmove,dc=oscarfx,dc=com", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
+#     LDAPSearch("OU=OFXIT,dc=oscarfx,dc=com", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
+#     LDAPSearch("OU=OFXData,dc=oscarfx,dc=com", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
+#     LDAPSearch("OU=OFXPaint,dc=oscarfx,dc=com", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
+#     LDAPSearch("OU=OFXProdManagement,dc=oscarfx,dc=com", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
+#     LDAPSearch("OU=OFXRoto,dc=oscarfx,dc=com", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
+#     LDAPSearch("OU=OFXBidding,dc=oscarfx,dc=com", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
+#     LDAPSearch("OU=OFXTraining,dc=oscarfx,dc=com", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
+#     LDAPSearch("OU=OFXUsers,dc=oscarfx,dc=com", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
+# )
+#
+# # Populate the Django user from the LDAP directory.
+# AUTH_LDAP_USER_ATTR_MAP = {
+#     "first_name": "givenName",
+#     "last_name": "sn",
+# }
+#
+# AUTH_LDAP_NO_NEW_USERS = False
 
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
@@ -51,7 +51,7 @@ AUTHENTICATION_BACKENDS = (
 SECRET_KEY = '$qk=xmf1nr6xy)4-!w2g5!wh=)$e6^8@v^z%w@i8n44pjf5lg2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1','*']
 
