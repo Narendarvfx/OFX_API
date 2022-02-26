@@ -114,7 +114,7 @@ class Employee(models.Model):
             return self.profile.user.username
 
     class Meta:
-        verbose_name_plural = "Employee",
+        verbose_name_plural = "Employee"
         ordering = ('fullName',)
 
 @receiver(post_save, sender=User)

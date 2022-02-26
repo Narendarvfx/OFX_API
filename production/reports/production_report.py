@@ -37,7 +37,6 @@ def create_workbook(buffer):
 
 
 def write_to_excel(workbook, worksheet, shots_data):
-    print("ShotsData:", type(shots_data))
     # Add a bold format to use to highlight cells.
     bold = workbook.add_format({'bold': True, 'bg_color': '#43d3f7', 'border': 1, 'border_color': 'black'})
     pending_color = workbook.add_format({'bg_color': 'yellow', 'border': 1, 'border_color': 'black'})
@@ -69,7 +68,6 @@ def write_to_excel(workbook, worksheet, shots_data):
     col = 0
     row = 0
     for shot_data in shots_data:
-        print(shot_data)
         shot_status = shot_data['status']['code']
         if shot_data['status']['code'] in ['YTA', 'ATL', 'YTS']:
             shot_status = "YTS"
@@ -121,6 +119,9 @@ def write_to_excel(workbook, worksheet, shots_data):
         else:
             estimate_date = ""
         worksheet.write(row + 1, col + 16, estimate_date, border)
-        worksheet.write(row + 1, col + 17, shot_data['sequence']['project']['client']['location'], border)
+        location =""
+        if shot_data['location']:
+            location = shot_data['location']
+        worksheet.write(row + 1, col + 17, location, border)
         row += 1
 # write_to_excel()

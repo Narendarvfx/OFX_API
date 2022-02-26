@@ -1,0 +1,244 @@
+{% extends 'main/base.html' %}
+
+
+{% block bread_crumb %}
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    {#        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css' type="text/css"/>#}
+            <!-- chartist CSS -->
+    <link rel="stylesheet" href="/static/template/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css"
+          type="text/css">
+    <style>
+        .datepicker .datepicker-days tr td.active ~ td,
+        .datepicker .datepicker-days tr td.active {
+            color: #af1623 !important;
+            background: transparent !important;
+        }
+
+        .datepicker .datepicker-days tr:hover td {
+            color: #000;
+            background: #e5e2e3;
+            border-radius: 0;
+        }
+    </style>
+    <div class="row page-titles">
+        <div class="col-md-4 col-6 align-self-center">
+            <h3 class="text-themecolor mb-0 mt-0">Team Lead Weekly Report</h3>
+            {#                <ol class="breadcrumb">#}
+            {#                    <li class="breadcrumb-item"><a href="javascript:void(0)">Reports</a></li>#}
+            {#                    <li class="breadcrumb-item active">Production Report</li>#}
+            {#                </ol>#}
+        </div>
+        <div class="col-md-8 col-8 align-self-center">
+            <div class="float-right" style="margin-left: 5px">
+                <button class="btn float-right hidden-sm-down btn-success" onclick="tl_export_to_excel()"><i
+                        class="mdi mdi-plus-circle"></i> Export
+                </button>
+            </div>
+            <div class='float-right input-group col-4'>
+                <input type='text' class="form-control showdropdowns" id="weekpicker" placeholder="Select Dates"/>
+                <div class="input-group-append">
+                        <span class="input-group-text">
+                            <span class="ti-calendar"></span>
+                        </span>
+                </div>
+            </div>
+            <div class="float-right" style="margin-left: 5px">
+                <select id="lead_select" class="form-control">
+                    <option value="0">Team Lead</option>
+                    {% for team_lead in team_lead %}
+                        <option value={{ team_lead.id }}>{{ team_lead.fullName }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+{% endblock bread_crumb %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-12 mb-12" id="top_data">
+            <div class="card">
+                <div class="card-body collapse show">
+                    <h3 class="card-title" id="top_title">Statistics Of </h3>
+                    <p class="card-text" id="selected_dates"></p>
+                </div>
+            </div>
+        </div>
+        <!-- Column -->
+        <div class="col-md-6 col-lg-3 col-xlg-3">
+            <div class="card card-inverse card-info">
+                <div class="box bg-info text-center">
+                    <h1 class="font-light text-white" id="ass_man">0</h1>
+                    <h6 class="text-white">Total Man Days</h6>
+                </div>
+            </div>
+        </div>
+        <!-- Column -->
+        <div class="col-md-6 col-lg-3 col-xlg-3">
+            <div class="card card-primary card-inverse">
+                <div class="box text-center">
+                    <h1 class="font-light text-white" id="ach_man">0</h1>
+                    <h6 class="text-white">Achieved Man Days</h6>
+                </div>
+            </div>
+        </div>
+        <!-- Column -->
+        <div class="col-md-6 col-lg-3 col-xlg-3">
+            <div class="card card-inverse card-success">
+                <div class="box text-center">
+                    <h1 class="font-light text-white" id="fwd_man">0</h1>
+                    <h6 class="text-white">Forwarded Man Days</h6>
+                </div>
+            </div>
+        </div>
+        <!-- Column -->
+        <div class="col-md-6 col-lg-3 col-xlg-3">
+            <div class="card card-inverse card-warning">
+                <div class="box text-center">
+                    <h1 class="font-light text-white" id="comp_per">0%</h1>
+                    <h6 class="text-white">Completion Percentage</h6>
+                </div>
+            </div>
+        </div>
+{#        <div class="col-12">#}
+{#            <div class="card">#}
+{#                <div class="card-body">#}
+{#                    <h4 class="card-title">Sales Difference</h4>#}
+{#                    <div class="d-flex flex-row">#}
+{#                        <div>#}
+{#                            <canvas id="myChart"></canvas>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+    </div>
+{% endblock content %}
+
+
+
+{% block page_scripts %}
+    <!--OFX Core JavaScript -->
+    <script src="/static/ofx/core.js"></script>
+    {#    <script src="/static/template/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>#}
+    {#    <script src="/static/template/assets/plugins/bootstrap/js/bootstrap.min.js"></script>#}
+    <!-- chartist chart -->
+    <script src="/static/template/assets/plugins/moment/moment.js"></script>
+    <script src="/static/template/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    {#    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>#}
+    {#    <script src="/static/template/assets/plugins/jquery/jquery.min.js"></script>#}
+    <!-- Bootstrap tether Core JavaScript -->
+    <script type="text/javascript">
+
+
+        var startDate;
+        let endDate;
+        let sdate;
+        let edate;
+        let lead_id;
+
+        $('#weekpicker').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy',
+            forceParse: false
+        }).on("changeDate", function (e) {
+            var date = e.date;
+            startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay());
+            endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 6);
+            //$('#weekpicker').datepicker("setDate", startDate);
+            $('#weekpicker').datepicker('update', startDate);
+            $('#weekpicker').val(startDate.getDate() + '/' + (startDate.getMonth() + 1) + '/' + startDate.getFullYear() + ' - ' + endDate.getDate() + '/' + (endDate.getMonth() + 1) + '/' + endDate.getFullYear());
+
+            sdate = moment(startDate).format('YYYY-MM-DD')
+            edate = moment(endDate).format('YYYY-MM-DD')
+            lead_id = $('#lead_select').val()
+            var red = "red"
+            var usual = "#747d8a"
+            if (lead_id > 0) {
+                const all_shots_json = $.ajax({
+                    type: "GET",
+                    url: "/api/production/teamleadreports/?start_date=" + sdate + "&end_date=" + edate + "&lead_id=" + lead_id,
+                    dataType: "application/json",
+                    async: false,
+                    error: function (xhr, status, err) {
+                    },
+                }).responseText;
+                const all_shots = JSON.parse(all_shots_json);
+                if (all_shots.length > 0) {
+                    all_shots.forEach(function (shot) {
+                        document.getElementById("ass_man").innerHTML = shot.assigned_mandays
+                        document.getElementById("ach_man").innerHTML = shot.achieved_mandays
+                        document.getElementById("fwd_man").innerHTML = shot.forwarded_mandays
+                        document.getElementById("comp_per").innerHTML = shot.percentage + "%"
+                        document.getElementById("top_title").innerHTML = "Statistics Of  " + $("#lead_select option:selected").html()
+                        document.getElementById("selected_dates").innerHTML = sdate + " --- " + edate
+                        $('#selected_dates').css("color", usual)
+                        $('#top_data').show();
+                    });
+                } else {
+                    document.getElementById("ass_man").innerHTML = "N/A"
+                    document.getElementById("ach_man").innerHTML = "N/A"
+                    document.getElementById("fwd_man").innerHTML = "N/A"
+                    document.getElementById("comp_per").innerHTML = "N/A"
+                    document.getElementById("top_title").innerHTML = "Statistics Of  " + $("#lead_select option:selected").html()
+                    document.getElementById("selected_dates").innerHTML = "No Statistics Found"
+                    $('#selected_dates').css("color", red)
+                }
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please Select Team Lead..',
+                })
+            }
+        });
+        $('#top_data').hide();
+        const labels = [
+            'Completion Percentage '
+          ];
+
+          const data = {
+            labels: labels,
+            datasets: [{
+              label: 'My First dataset',
+              backgroundColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(54, 162, 235)',
+                ],
+              data: [30],
+                hoverOffset: 4
+            }],
+          };
+
+          const config = {
+            type: 'doughnut',
+            data: data,
+            options: {}
+          };
+
+        const myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+          );
+
+        function tl_export_to_excel(){
+            if (lead_id > 0 && startDate >0) {
+                window.location = "/production/teamleadreports_export/?start_date=" + sdate + "&end_date=" + edate + "&lead_id=" + lead_id
+            }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please Select Team Lead and Date Range....',
+                })
+            }
+        }
+    </script>
+{% endblock page_scripts %}

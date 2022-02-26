@@ -169,6 +169,8 @@ class Shots(models.Model):
     retake_path = models.CharField(max_length=100, blank=True, null=True)
     output_path = models.CharField(max_length=100, blank=True, null=True)
     comments = models.TextField(blank=True, null=True)
+    version = models.CharField(max_length=10, blank=True, null=True)
+    submitted_date = models.DateTimeField(blank=True, null=True)
 
     def upload_photo_dir(self, filename):
         ext = filename.split('.')[-1]
@@ -369,15 +371,32 @@ class ShotLogs(models.Model):
     class Meta:
         verbose_name_plural = "ShotLogs"
 
+class DayLogs(models.Model):
+    shot = models.ForeignKey(Shots, on_delete=models.CASCADE, related_name='+')
+    percentage = models.FloatField(default=0, blank=True, null=True)
+    day_percentage = models.FloatField(default=0, blank=True, null=True)
+    consumed_man_day = models.FloatField(default=0, blank=True, null=True)
+    artist = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+')
+    updated_by = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True)
+    updated_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.shot.name
+
+    class Meta:
+        verbose_name_plural = "DayLogs"
+
 class TeamLead_Week_Reports(models.Model):
     team_lead = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+')
     week = models.IntegerField(blank=True, null=True)
     from_date = models.DateField(null=True, blank=True)
     to_date = models.DateField(null=True, blank=True)
-    creation_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-    total_mandays = models.FloatField(null=True, blank=True)
+    creation_date = models.DateTimeField(auto_now_add=True)
+    backlog_mandays = models.FloatField(null=True, blank=True)
+    assigned_mandays = models.FloatField(null=True, blank=True)
     achieved_mandays = models.FloatField(null=True, blank=True)
     forwarded_mandays = models.FloatField(null=True, blank=True)
+    percentage = models.FloatField(default=0)
 
     def __str__(self):
         return self.team_lead.fullName

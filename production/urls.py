@@ -5,6 +5,11 @@ urlpatterns = [
     ################## Web Urls ######################
     url(r'^production/production_report/$', views.production_reports, name='reports'),
     url(r'^production/export_prod_report/$', views.export_prod_report, name='reports'),
+    url(r'^production/teamleadreports/$', views.teamlead_report, name="Team Lead Reports"),
+    url(r'^production/teamleadreports_export/$', views.export_teamlead_report, name='TeamLeadReports'),
+    url(r'^production/reports/$', views.reports, name="Multi Reports"),
+    url(r'^production/reports/multi_export/$', views.reports_export, name="Multi Reports"),
+
     ########## API URLS #################
     url(r'^api/production/status/$', api.StatusInfo.as_view(), name='Status API'),
     url(r'^api/production/localities/$', api.LocalityInfo.as_view(), name='Locality API'),
@@ -71,4 +76,9 @@ urlpatterns = [
 
     #ShotLogs url
     url(r'^api/production/shotlogs/$', api.ShotLogsData.as_view(), name='Shots API'),
+    url(r'^api/production/daylogs/$', api.DayLogsData.as_view(), name='DayLogs API'),
+    # url(r'^api/production/daylogs/(?P<shotId>\d+)/$', api.DayLogsByShot.as_view(), name='DayLogs API'),
+
+    #Teamlead Report Urls
+    url(r'^api/production/teamleadreports/$', api.TeamLeadReports.as_view(), name='TeamLeadReports')
 ]
