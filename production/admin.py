@@ -2,8 +2,7 @@ from django.contrib import admin
 from production.models import Clients, Projects, ShotStatus, Complexity, Shots, Sequence, Task_Type, MyTask, \
     Assignments, Channels, Qc_Assignment, Groups, Permission_Groups, Folder_Permissions, \
     ShotVersions, ClientVersions, TaskHelp_Main, TaskHelp_Lead, TaskHelp_Artist, ShotLogs, TeamLead_Week_Reports, \
-    Locality
-
+    Locality, DayLogs
 
 # Register your models here.
 class ShotStatusFields(admin.ModelAdmin):
@@ -14,10 +13,11 @@ class ShotStatusFields(admin.ModelAdmin):
 class ShotsFields(admin.ModelAdmin):
     list_display = [f.name for f in Shots._meta.fields]
     list_per_page = 15
-    list_filter = ['task_type','sequence__project','status']
+    list_filter = ['task_type', 'sequence__project', 'status']
 
     def get_seq(self, obj):
         return obj.sequence.name
+
     get_seq.admin_order_field = 'sequence'
     get_seq.short_description = 'Sequence'
 
@@ -37,7 +37,7 @@ class MyTaskFields(admin.ModelAdmin):
 class AssignmentFields(admin.ModelAdmin):
     list_display = [f.name for f in Assignments._meta.fields]
     list_per_page = 15
-    search_fields = ['lead__fullName','shot__name']
+    search_fields = ['lead__fullName', 'shot__name']
 
 class SequenceFields(admin.ModelAdmin):
     list_display = [f.name for f in Sequence._meta.fields]
@@ -51,6 +51,11 @@ class ProjectFields(admin.ModelAdmin):
 
 class ShotLogsFields(admin.ModelAdmin):
     list_display = [f.name for f in ShotLogs._meta.fields]
+    list_per_page = 15
+    search_fields = ['name']
+
+class DayLogsFields(admin.ModelAdmin):
+    list_display = [f.name for f in DayLogs._meta.fields]
     list_per_page = 15
     search_fields = ['name']
 
@@ -76,3 +81,4 @@ admin.site.register(TaskHelp_Artist)
 admin.site.register(ShotLogs, ShotLogsFields)
 admin.site.register(TeamLead_Week_Reports)
 admin.site.register(Locality)
+admin.site.register(DayLogs, DayLogsFields)

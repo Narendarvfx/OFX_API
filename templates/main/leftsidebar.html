@@ -29,108 +29,110 @@
                     <a class="has-arrow12" href="/" aria-expanded="false"><i class="mdi mdi-gauge"></i><span class="hide-menu">Dashboard </span></a>
                 </li>
                 <li>
-                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-bullseye"></i><span class="hide-menu">Reports<span class="label label-rounded label-warning">WIP</span></span></a>
+                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-bullseye"></i><span class="hide-menu">Reports</span></a>
                     <ul aria-expanded="false" class="collapse">
 {#                        <li><a href="/production/mytask">My Task</a></li>#}
 {#                        <li><a href="/production/project">Projects</a></li>#}
 {#                        <li><a href="/production/planner">Project Planner</a></li>#}
 {#                        <li><a href="/production/dailies">Dailies</a></li>#}
                         <li><a href="/production/production_report">Production Reports</a></li>
+                        <li><a href="/production/teamleadreports">Team Lead Reports</a></li>
+                        <li><a href="/production/reports">Reports</a></li>
                     </ul>
                 </li>
-                <li>
-                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-clipboard-account"></i><span class="hide-menu">HRM <span class="label label-rounded label-success">New</span></span></a>
-                    <ul aria-expanded="false" class="collapse">
-                        <li><a href="/hrm/employee">Employee List</a></li>
-                        <li><a href="/hrm/leaves">Leaves Portal</a></li>
-                        <li><a href="/hrm/my_record">My Records</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="has-arrow" href="#" aria-expanded="false"><i class="mdi mdi-chart-bubble"></i><span class="hide-menu">Profile <span class="label label-rounded label-success">New</span></span></a>
-                    <ul aria-expanded="false" class="collapse">
-                        <li><a href="/profile/timeline/{{ user.id }}">Timeline</a></li>
-                        <li><a href="/profile/system-usage/{{ user.id }}">System Usage</a></li>
-                        <li><a href="/profile/attendance/{{ user.username }}">Attendance</a></li>
-                        <li><a href="/profile/performance/{{ user.id }}">Performance</a></li>
-
-                    </ul>
-                </li>
-                <li class="nav-devider"></li>
-                {% if request.user|has_group:"Developers" %}
-                <li class="nav-small-cap">Settings</li>
-                <li>
-                    <a class="has-arrow" href="#" aria-expanded="false"><i class="mdi mdi-file"></i><span class="hide-menu">Production</span></a>
-                    <ul aria-expanded="false" class="collapse">
-                        <li><a href="form-basic.html">Status</a></li>
-                        <li><a href="form-layout.html">Complexity</a></li>
-                        <li><a href="form-addons.html">Task</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-clipboard-account"></i><span class="hide-menu">HRM</span></a>
-                    <ul aria-expanded="false" class="collapse">
-                        <li><a href="table-basic.html">Employment Status</a></li>
-                        <li><a href="table-layout.html">Department</a></li>
-                        <li><a href="table-data-table.html">Designation</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-widgets"></i><span class="hide-menu">Inventory</span></a>
-                    <ul aria-expanded="false" class="collapse">
-                        <li><a href="widget-apps.html">Desk Number</a></li>
-                        <li><a href="widget-data.html">Computer</a></li>
-                        <li><a href="widget-charts.html">Software</a></li>
-                    </ul>
-                </li>
-                <li class="nav-devider"></li>
-                <li class="nav-small-cap">Administration</li>
-                <li>
-                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-account-multiple-outline"></i><span class="hide-menu">Users</span></a>
-                    <ul aria-expanded="false" class="collapse">
-                        <li><a href="/users">Users List</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-book-open-variant"></i><span class="hide-menu">Groups</span></a>
-                    <ul aria-expanded="false" class="collapse">
-                        <li><a href="starter-kit.html">Groups</a></li>
-                        <li><a href="pages-blank.html">Permissions</a></li>
-                        <li><a href="pages-profile.html">Roles</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-message-alert"></i><span class="hide-menu">Alert</span></a>
-                    <ul aria-expanded="false" class="collapse">
-                        <li><a href="chart-morris.html">Web Notification</a></li>
-                        <li><a href="chart-chartist.html">Email Notification</a></li>
-                        <li><a href="chart-echart.html">Desktop Notification</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-folder"></i><span class="hide-menu">Location</span></a>
-                    <ul aria-expanded="false" class="collapse">
-                        <li><a href="icon-material.html">Media</a></li>
-                        <li><a href="icon-fontawesome.html">Database</a></li>
-                        <li><a href="icon-themify.html">Backup</a></li>
-                        <li><a href="icon-linea.html">Cache</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-database"></i><span class="hide-menu">Database Settings</span></a>
-                    <ul aria-expanded="false" class="collapse">
-                        <li><a href="map-google.html">Main Database</a></li>
-                        <li><a href="map-vector.html">Cache Database</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-json"></i><span class="hide-menu">Logs</span></a>
-                    <ul aria-expanded="false" class="collapse">
-                        <li><a href="#">Warnings</a></li>
-                        <li><a href="#">Errors</a></li>
-                    </ul>
-                </li>
-                {% endif %}
+{#                <li>#}
+{#                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-clipboard-account"></i><span class="hide-menu">HRM <span class="label label-rounded label-success">New</span></span></a>#}
+{#                    <ul aria-expanded="false" class="collapse">#}
+{#                        <li><a href="/hrm/employee">Employee List</a></li>#}
+{#                        <li><a href="/hrm/leaves">Leaves Portal</a></li>#}
+{#                        <li><a href="/hrm/my_record">My Records</a></li>#}
+{#                    </ul>#}
+{#                </li>#}
+{#                <li>#}
+{#                    <a class="has-arrow" href="#" aria-expanded="false"><i class="mdi mdi-chart-bubble"></i><span class="hide-menu">Profile <span class="label label-rounded label-success">New</span></span></a>#}
+{#                    <ul aria-expanded="false" class="collapse">#}
+{#                        <li><a href="/profile/timeline/{{ user.id }}">Timeline</a></li>#}
+{#                        <li><a href="/profile/system-usage/{{ user.id }}">System Usage</a></li>#}
+{#                        <li><a href="/profile/attendance/{{ user.username }}">Attendance</a></li>#}
+{#                        <li><a href="/profile/performance/{{ user.id }}">Performance</a></li>#}
+{##}
+{#                    </ul>#}
+{#                </li>#}
+{#                <li class="nav-devider"></li>#}
+{#                {% if request.user|has_group:"Developers" %}#}
+{#                <li class="nav-small-cap">Settings</li>#}
+{#                <li>#}
+{#                    <a class="has-arrow" href="#" aria-expanded="false"><i class="mdi mdi-file"></i><span class="hide-menu">Production</span></a>#}
+{#                    <ul aria-expanded="false" class="collapse">#}
+{#                        <li><a href="form-basic.html">Status</a></li>#}
+{#                        <li><a href="form-layout.html">Complexity</a></li>#}
+{#                        <li><a href="form-addons.html">Task</a></li>#}
+{#                    </ul>#}
+{#                </li>#}
+{#                <li>#}
+{#                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-clipboard-account"></i><span class="hide-menu">HRM</span></a>#}
+{#                    <ul aria-expanded="false" class="collapse">#}
+{#                        <li><a href="table-basic.html">Employment Status</a></li>#}
+{#                        <li><a href="table-layout.html">Department</a></li>#}
+{#                        <li><a href="table-data-table.html">Designation</a></li>#}
+{#                    </ul>#}
+{#                </li>#}
+{#                <li>#}
+{#                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-widgets"></i><span class="hide-menu">Inventory</span></a>#}
+{#                    <ul aria-expanded="false" class="collapse">#}
+{#                        <li><a href="widget-apps.html">Desk Number</a></li>#}
+{#                        <li><a href="widget-data.html">Computer</a></li>#}
+{#                        <li><a href="widget-charts.html">Software</a></li>#}
+{#                    </ul>#}
+{#                </li>#}
+{#                <li class="nav-devider"></li>#}
+{#                <li class="nav-small-cap">Administration</li>#}
+{#                <li>#}
+{#                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-account-multiple-outline"></i><span class="hide-menu">Users</span></a>#}
+{#                    <ul aria-expanded="false" class="collapse">#}
+{#                        <li><a href="/users">Users List</a></li>#}
+{#                    </ul>#}
+{#                </li>#}
+{#                <li>#}
+{#                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-book-open-variant"></i><span class="hide-menu">Groups</span></a>#}
+{#                    <ul aria-expanded="false" class="collapse">#}
+{#                        <li><a href="starter-kit.html">Groups</a></li>#}
+{#                        <li><a href="pages-blank.html">Permissions</a></li>#}
+{#                        <li><a href="pages-profile.html">Roles</a></li>#}
+{#                    </ul>#}
+{#                </li>#}
+{#                <li>#}
+{#                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-message-alert"></i><span class="hide-menu">Alert</span></a>#}
+{#                    <ul aria-expanded="false" class="collapse">#}
+{#                        <li><a href="chart-morris.html">Web Notification</a></li>#}
+{#                        <li><a href="chart-chartist.html">Email Notification</a></li>#}
+{#                        <li><a href="chart-echart.html">Desktop Notification</a></li>#}
+{#                    </ul>#}
+{#                </li>#}
+{#                <li>#}
+{#                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-folder"></i><span class="hide-menu">Location</span></a>#}
+{#                    <ul aria-expanded="false" class="collapse">#}
+{#                        <li><a href="icon-material.html">Media</a></li>#}
+{#                        <li><a href="icon-fontawesome.html">Database</a></li>#}
+{#                        <li><a href="icon-themify.html">Backup</a></li>#}
+{#                        <li><a href="icon-linea.html">Cache</a></li>#}
+{#                    </ul>#}
+{#                </li>#}
+{#                <li>#}
+{#                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-database"></i><span class="hide-menu">Database Settings</span></a>#}
+{#                    <ul aria-expanded="false" class="collapse">#}
+{#                        <li><a href="map-google.html">Main Database</a></li>#}
+{#                        <li><a href="map-vector.html">Cache Database</a></li>#}
+{#                    </ul>#}
+{#                </li>#}
+{#                <li>#}
+{#                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-json"></i><span class="hide-menu">Logs</span></a>#}
+{#                    <ul aria-expanded="false" class="collapse">#}
+{#                        <li><a href="#">Warnings</a></li>#}
+{#                        <li><a href="#">Errors</a></li>#}
+{#                    </ul>#}
+{#                </li>#}
+{#                {% endif %}#}
             </ul>
         </nav>
         <!-- End Sidebar navigation -->

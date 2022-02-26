@@ -10,3 +10,4 @@ db.sqlite3
 static/admin/
 static/admin/css/autocomplete.css
 *.map
+*.bak

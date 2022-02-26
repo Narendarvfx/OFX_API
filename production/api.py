@@ -1,17 +1,10 @@
-import operator
-import os
-
-from django.contrib.auth.models import User
-from django.db.models import Q
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from hrm.models import Employee
-from hrm.serializers import EmployeeSerializer
 from production.models import Clients, Projects, ShotStatus, Shots, Complexity, Sequence, MyTask, Assignments, Channels, \
-    Groups, Qc_Assignment, Folder_Permissions, Permission_Groups, ShotVersions, TaskHelp_Main, TaskHelp_Lead, \
-    TaskHelp_Artist, ShotLogs, Locality
+    Groups, Qc_Assignment, Permission_Groups, ShotVersions, TaskHelp_Main, TaskHelp_Lead, \
+    TaskHelp_Artist, ShotLogs, Locality, DayLogs, TeamLead_Week_Reports
 from production.serializers import ClientSerializer, ProjectSerializer, StatusSerializer, ShotsSerializer, \
     ShotsPostSerializer, ComplexitySerializer, SequenceSerializer, SequencePostSerializer, MyTaskSerializer, \
     MyTaskPostSerializer, MyTaskShotSerializer, AssignmentSerializer, AssignmentPostSerializer, MyTaskArtistSerializer, \
@@ -20,36 +13,39 @@ from production.serializers import ClientSerializer, ProjectSerializer, StatusSe
     ProjectPostSerializer, MyTaskStatusSerializer, ShotVersionsSerializer, AllShotVersionsSerializer, \
     TaskHelpMainSerializer, TaskHelpLeadSerializer, \
     TaskHelpArtistSerializer, TaskHelpMainPostSerializer, TaskHelpArtistPostSerializer, TaskHelpArtistUpdateSerializer, \
-    TaskHelpArtistStatusSerializer, ShotLogsSerializer, ShotLogsPostSerializer, LocalitySerializer
+    TaskHelpArtistStatusSerializer, ShotLogsSerializer, ShotLogsPostSerializer, LocalitySerializer, DayLogsSerializer, \
+    DayLogsPostSerializer, TeamReportSerializer
 
-import configparser
 
 class StatusInfo(APIView):
 
     def get(self, request, format=None):
         status = ShotStatus.objects.all()
-        serializer = StatusSerializer(status, many=True, context={"request":request} )
+        serializer = StatusSerializer(status, many=True, context={"request": request})
         return Response(serializer.data)
+
 
 class LocalityInfo(APIView):
 
     def get(self, request, format=None):
         locality = Locality.objects.all()
-        serializer = LocalitySerializer(locality, many=True, context={"request":request} )
+        serializer = LocalitySerializer(locality, many=True, context={"request": request})
         return Response(serializer.data)
+
 
 class ComplexityInfo(APIView):
 
     def get(self, request, format=None):
         complexity = Complexity.objects.all()
-        serializer = ComplexitySerializer(complexity, many=True, context={"request":request} )
+        serializer = ComplexitySerializer(complexity, many=True, context={"request": request})
         return Response(serializer.data)
+
 
 class ClientDetail(APIView):
 
     def get(self, request, format=None):
         client = Clients.objects.all()
-        serializer = ClientSerializer(client, many=True, context={"request":request} )
+        serializer = ClientSerializer(client, many=True, context={"request": request})
         return Response(serializer.data)
 
     def post(self, request, format=None):
@@ -58,6 +54,7 @@ class ClientDetail(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class ClientUpdate(APIView):
 
@@ -79,11 +76,12 @@ class ClientUpdate(APIView):
         model_object.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 class ProjectDetail(APIView):
 
     def get(self, request, format=None):
-        project = Projects.objects.all().select_related('client','status')
-        serializer = ProjectSerializer(project, many=True, context={"request":request})
+        project = Projects.objects.all().select_related('client', 'status')
+        serializer = ProjectSerializer(project, many=True, context={"request": request})
         return Response(serializer.data)
 
     def post(self, request, format=None):
@@ -93,18 +91,20 @@ class ProjectDetail(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class ProjectByClient(APIView):
 
-    def get(self, request,client_id, format=None):
-        project = Projects.objects.filter(client__id=client_id).select_related('client','status')
-        serializer = ProjectClientSerializer(project, many=True, context={"request":request})
+    def get(self, request, client_id, format=None):
+        project = Projects.objects.filter(client__id=client_id).select_related('client', 'status')
+        serializer = ProjectClientSerializer(project, many=True, context={"request": request})
         return Response(serializer.data)
+
 
 class SequenceDetail(APIView):
 
     def get(self, request, format=None):
-        sequence = Sequence.objects.select_related('project','project__client').all()
-        serializer = SequenceSerializer(sequence, many=True, context={"request":request})
+        sequence = Sequence.objects.select_related('project', 'project__client').all()
+        serializer = SequenceSerializer(sequence, many=True, context={"request": request})
         return Response(serializer.data)
 
     def post(self, request, format=None):
@@ -113,6 +113,7 @@ class SequenceDetail(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class ProjectUpdate(APIView):
 
@@ -134,6 +135,7 @@ class ProjectUpdate(APIView):
         model_object.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 class ShotsData(APIView):
 
     def get(self, request, format=None):
@@ -141,7 +143,9 @@ class ShotsData(APIView):
         if query_params:
             project_id = query_params.get('project_id', None)
             if project_id:
-                shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project', 'sequence__project__client', 'status', 'complexity', 'team_lead','artist', 'location').filter(sequence__project_id=project_id)
+                shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
+                                                    'sequence__project__client', 'status', 'complexity', 'team_lead',
+                                                    'artist', 'location').filter(sequence__project_id=project_id)
             else:
                 status_list = query_params.get('status', None)
                 dept = query_params.get('dept', None)
@@ -150,14 +154,21 @@ class ShotsData(APIView):
                     for stat in status_list.split('|'):
                         status.append(stat)
                 if dept is not None:
-                    shot = Shots.objects.select_related('sequence','task_type','sequence__project','sequence__project__client', 'status', 'complexity', 'team_lead','artist','location').filter(status__code__in=status, task_type__name=dept)
+                    shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
+                                                        'sequence__project__client', 'status', 'complexity',
+                                                        'team_lead', 'artist', 'location').filter(
+                        status__code__in=status, task_type__name=dept)
                 else:
-                    shot = Shots.objects.select_related('sequence','task_type','sequence__project','sequence__project__client', 'status', 'complexity', 'team_lead','artist','location').filter(status__code__in=status)
+                    shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
+                                                        'sequence__project__client', 'status', 'complexity',
+                                                        'team_lead', 'artist', 'location').filter(
+                        status__code__in=status)
         else:
             shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
-                                                'sequence__project__client', 'status', 'complexity','team_lead','artist','location')
+                                                'sequence__project__client', 'status', 'complexity', 'team_lead',
+                                                'artist', 'location')
 
-        serializer = ShotsSerializer(shot, many=True, context={"request":request})
+        serializer = ShotsSerializer(shot, many=True, context={"request": request})
         return Response(serializer.data)
 
     def post(self, request, format=None):
@@ -167,11 +178,12 @@ class ShotsData(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class ShotLogsData(APIView):
 
     def get(self, request, format=None):
         shotlogs = ShotLogs.objects.all()
-        serializer = ShotLogsSerializer(shotlogs, many=True, context={"request":request})
+        serializer = ShotLogsSerializer(shotlogs, many=True, context={"request": request})
         return Response(serializer.data)
 
     def post(self, request, format=None):
@@ -181,24 +193,86 @@ class ShotLogsData(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class DayLogsData(APIView):
+
+    def get(self, request, format=None):
+        '''
+        [::-1] reverse order
+        [:2] last two records
+        '''
+        query_params = self.request.query_params
+        if query_params:
+            shot_id = query_params.get('shot_id', None)
+            log_id = query_params.get('log_id', None)
+            start_date = query_params.get('start_date', None)
+            end_date = query_params.get('end_date', None)
+            lead_id = query_params.get('lead_id', None)
+            if shot_id:
+                daylogs = DayLogs.objects.filter(shot_id=shot_id).select_related('shot', 'artist', 'updated_by')[::-1][
+                          :2]
+                serializer = DayLogsSerializer(daylogs, many=True, context={"request": request})
+            elif log_id:
+                daylogs = DayLogs.objects.get(id=log_id).select_related('shot','artist','updated_by', 'shot__sequence',
+                                                                                                                       'shot__sequence__project','shot__status',
+                                                                                                                       'shot__task_type', 'shot__location', 'shot__team_lead','shot__artist',
+                                                                                                                       'shot__sequence__project__client', 'shot__sequence__project__client__locality')
+                serializer = DayLogsSerializer(daylogs, context={"request": request})
+            elif start_date is not None and end_date is not None and lead_id is not None:
+                daylogs = DayLogs.objects.filter(updated_date__range=[start_date, end_date], shot__team_lead__profile_id = lead_id).select_related('shot','artist','updated_by', 'shot__sequence',
+                                                                                                                        'shot__sequence__project', 'shot__status',
+                                                                                                                       'shot__task_type', 'shot__location','shot__team_lead','shot__artist',
+                                                                                                                       'shot__sequence__project__client', 'shot__sequence__project__client__locality')
+                serializer = DayLogsSerializer(daylogs, many=True, context={"request": request})
+        else:
+            daylogs = DayLogs.objects.all().select_related('shot', 'artist', 'updated_by')
+            serializer = DayLogsSerializer(daylogs, many=True, context={"request": request})
+
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = DayLogsPostSerializer(data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request):
+        query_params = self.request.query_params
+        if query_params:
+            log_id = query_params.get('log_id', None)
+            if log_id:
+                day_logs = DayLogs.objects.get(id=log_id)
+                serializer = DayLogsSerializer(day_logs, data=request.data, partial=True)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class ProjectShotsData(APIView):
 
     def get(self, request, sequenceId, format=None):
-        shot = Shots.objects.select_related('sequence','sequence__project','sequence__project__client','status','complexity').filter(sequence=sequenceId)
-        serializer = ShotsSerializer(shot, many=True, context={"request":request})
+        shot = Shots.objects.select_related('sequence', 'sequence__project', 'sequence__project__client', 'status',
+                                            'complexity').filter(sequence=sequenceId)
+        serializer = ShotsSerializer(shot, many=True, context={"request": request})
         return Response(serializer.data)
+
 
 class ProjectSequenceData(APIView):
 
     def get(self, request, projectId, format=None):
         sequence = Sequence.objects.filter(project=projectId)
-        serializer = SequenceSerializer(sequence, many=True, context={"request":request})
+        serializer = SequenceSerializer(sequence, many=True, context={"request": request})
         return Response(serializer.data)
+
 
 class ShotUpdate(APIView):
 
     def get(self, request, shotId, format=None):
-        shot = Shots.objects.select_related('sequence__project','sequence','sequence__project__client','status','task_type','complexity').prefetch_related('task','status','complexity','sequence').get(id=shotId)
+        shot = Shots.objects.select_related('sequence__project', 'sequence', 'sequence__project__client', 'status',
+                                            'task_type', 'complexity').prefetch_related('task', 'status', 'complexity',
+                                                                                        'sequence').get(id=shotId)
         serializer = ShotsSerializer(shot)
         return Response(serializer.data)
 
@@ -216,11 +290,13 @@ class ShotUpdate(APIView):
         model_object.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 class MyTaskData(APIView):
 
     def get(self, request, format=None):
-        mytask = MyTask.objects.select_related('shot__task_type','shot__sequence','shot__sequence__project','artist','assigned_by','task_status').all()
-        serializer = MyTaskSerializer(mytask, many=True, context={"request":request})
+        mytask = MyTask.objects.select_related('shot__task_type', 'shot__sequence', 'shot__sequence__project', 'artist',
+                                               'assigned_by', 'task_status').all()
+        serializer = MyTaskSerializer(mytask, many=True, context={"request": request})
         return Response(serializer.data)
 
     def post(self, request, format=None):
@@ -231,17 +307,19 @@ class MyTaskData(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class MyTaskShotData(APIView):
 
-    def get(self, request,shotId, format=None):
-        mytask = MyTask.objects.select_related('artist','assigned_by','task_status').filter(shot=shotId)
+    def get(self, request, shotId, format=None):
+        mytask = MyTask.objects.select_related('artist', 'assigned_by', 'task_status').filter(shot=shotId)
         serializer = MyTaskShotSerializer(mytask, many=True)
         return Response(serializer.data)
+
 
 class MyTaskDetail(APIView):
 
     def get(self, request, taskId, format=None):
-        task = MyTask.objects.select_related('artist','task_status','shot','assigned_by').get(id=taskId)
+        task = MyTask.objects.select_related('artist', 'task_status', 'shot', 'assigned_by').get(id=taskId)
         serializer = MyTaskSerializer(task)
         return Response(serializer.data)
 
@@ -260,18 +338,22 @@ class MyTaskDetail(APIView):
         model_object.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 class MyTaskArtistData(APIView):
 
-    def get(self, request,artistId, format=None):
-        mytask = MyTask.objects.select_related('assigned_by','shot','shot__task_type','shot__sequence__project','shot__status','task_status','artist','shot__sequence','shot__sequence__project__client').filter(artist=artistId).all()
+    def get(self, request, artistid):
+        mytask = MyTask.objects.select_related('assigned_by', 'shot', 'shot__task_type', 'shot__sequence__project',
+                                               'shot__status', 'task_status', 'artist', 'shot__sequence',
+                                               'shot__sequence__project__client').filter(artist=artistid).all()
         serializer = MyTaskArtistSerializer(mytask, many=True)
         return Response(serializer.data)
+
 
 class ShotAssignment(APIView):
 
     def get(self, request, format=None):
         assignment = Assignments.objects.all()
-        serializer = AssignmentSerializer(assignment, many=True, context={"request":request})
+        serializer = AssignmentSerializer(assignment, many=True, context={"request": request})
         return Response(serializer.data)
 
     def post(self, request, format=None):
@@ -281,6 +363,7 @@ class ShotAssignment(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class LeadShotsData(APIView):
 
     def get(self, request, format=None):
@@ -288,27 +371,55 @@ class LeadShotsData(APIView):
         if query_params:
             leadId = query_params.get('lead_id', None)
             status_list = query_params.get('status', None)
+            start_date = query_params.get('start_date', None)
+            end_date = query_params.get('end_date', None)
             status = []
             if status_list is not None:
                 for stat in status_list.split('|'):
                     status.append(stat)
-            lead = Assignments.objects.filter(lead=leadId, shot__status__code__in=status).select_related('lead', 'shot', 'shot__sequence', 'shot__sequence__project', 'shot__sequence__project__client', 'shot__status', 'shot__task_type', 'assigned_by', 'shot__artist','shot__team_lead')
+                if start_date is not None and end_date is not None:
+                    lead = Assignments.objects.filter(lead=leadId, shot__status__code__in=status, assigned_date__range=[start_date, end_date
+                                                                                                                        ]).select_related('lead',
+                                                                                                                 'shot',
+                                                                                                                 'shot__sequence',
+                                                                                                                 'shot__sequence__project',
+                                                                                                                 'shot__sequence__project__client',
+                                                                                                                 'shot__status',
+                                                                                                                 'shot__task_type',
+                                                                                                                 'assigned_by',
+                                                                                                                 'shot__artist',
+                                                                                                                 'shot__team_lead')
+                else:
+                    lead = Assignments.objects.filter(lead=leadId, shot__status__code__in=status).select_related('lead', 'shot',
+                                                                                                                 'shot__sequence',
+                                                                                                                 'shot__sequence__project',
+                                                                                                                 'shot__sequence__project__client',
+                                                                                                                 'shot__status',
+                                                                                                                 'shot__task_type',
+                                                                                                                 'assigned_by',
+                                                                                                                 'shot__artist',
+                                                                                                                 'shot__team_lead')
         else:
-            lead = Assignments.objects.select_related('lead', 'shot', 'shot__sequence', 'shot__sequence__project', 'shot__sequence__project__client', 'shot__status', 'shot__task_type', 'assigned_by','shot__team_lead','shot__artist')
-        serializer = AssignmentSerializer(lead, many=True, context={"request":request})
+            lead = Assignments.objects.select_related('lead', 'shot', 'shot__sequence', 'shot__sequence__project',
+                                                      'shot__sequence__project__client', 'shot__status',
+                                                      'shot__task_type', 'assigned_by', 'shot__team_lead',
+                                                      'shot__artist')
+        serializer = AssignmentSerializer(lead, many=True, context={"request": request})
         return Response(serializer.data)
+
 
 class ChannelsData(APIView):
 
     def get(self, request, shotId):
-        data = Channels.objects.select_related('shot','sender').filter(shot=shotId)
+        data = Channels.objects.select_related('shot', 'sender').filter(shot=shotId)
         serializer = ChannelsSerializer(data, many=True, context={"request": request})
         return Response(serializer.data)
+
 
 class ChannelsPostData(APIView):
 
     def get(self, request):
-        data = Channels.objects.select_related('shot','sender').all()
+        data = Channels.objects.select_related('shot', 'sender').all()
         serializer = ChannelsSerializer(data, many=True, context={"request": request})
         return Response(serializer.data)
 
@@ -319,12 +430,14 @@ class ChannelsPostData(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class GroupsData(APIView):
 
     def get(self, request, groupId):
         data = Groups.objects.get(name=groupId)
         serializer = GroupsSerializer(data, context={"request": request})
         return Response(serializer.data)
+
 
 class GroupsPostData(APIView):
 
@@ -340,11 +453,12 @@ class GroupsPostData(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class QCData(APIView):
 
     def get(self, request):
         data = Qc_Assignment.objects.all()
-        serializer = TeamQCSerializer(data, many=True,context={"request": request})
+        serializer = TeamQCSerializer(data, many=True, context={"request": request})
         return Response(serializer.data)
 
     def post(self, request):
@@ -354,16 +468,21 @@ class QCData(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class QCDataByTeamId(APIView):
 
-    def get(self, request,teamId):
-        data = Qc_Assignment.objects.select_related('task__shot__sequence__project','task__shot__sequence__project__client','task__shot__sequence','task__shot__task_type','task__shot__status','task__task_status','qc_status').filter(team=teamId)
+    def get(self, request, teamId):
+        data = Qc_Assignment.objects.select_related('task__shot__sequence__project',
+                                                    'task__shot__sequence__project__client', 'task__shot__sequence',
+                                                    'task__shot__task_type', 'task__shot__status', 'task__task_status',
+                                                    'qc_status').filter(team=teamId)
         serializer = TeamQCSerializer(data, many=True, context={"request": request})
         return Response(serializer.data)
 
+
 class QCDataById(APIView):
 
-    def get(self, request,qcId):
+    def get(self, request, qcId):
         data = Qc_Assignment.objects.get(id=qcId)
         serializer = TeamQCSerializer(data, many=True, context={"request": request})
         return Response(serializer.data)
@@ -376,12 +495,13 @@ class QCDataById(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class ShotVersionsAPI(APIView):
 
     def get(self, request):
         data = ShotVersions.objects.select_related('status').order_by('version')
         serializer = ShotVersionsSerializer(data, many=True, context={"request": request})
-        return  Response(serializer.data)
+        return Response(serializer.data)
 
     def post(self, request):
         serializer = ShotVersionsSerializer(data=request.data)
@@ -390,16 +510,18 @@ class ShotVersionsAPI(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class LastShotVersionById(APIView):
 
     def get(self, request, shotId):
         data = ShotVersions.objects.select_related('status').filter(shot=shotId).last()
         serializer = ShotVersionsSerializer(data, context={"request": request})
-        return  Response(serializer.data)
+        return Response(serializer.data)
+
 
 class ShotVersionsById(APIView):
     def get(self, request, verId):
-        data = ShotVersions.objects.filter(shot=verId).select_related('sent_by','status')
+        data = ShotVersions.objects.filter(shot=verId).select_related('sent_by', 'status')
         serializer = AllShotVersionsSerializer(data, many=True, context={"request": request})
         return Response(serializer.data)
 
@@ -411,6 +533,7 @@ class ShotVersionsById(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class Perm_Groups(APIView):
 
     def get(self, request):
@@ -418,13 +541,16 @@ class Perm_Groups(APIView):
         serializer = PGSerializer(data, many=True, context={"request": request})
         return Response(serializer.data)
 
-#TaskHelp Main API
+
+# TaskHelp Main API
 class TaskHelp_Main_API(APIView):
 
     def get(self, request):
-        data = TaskHelp_Main.objects.select_related('shot','shot__sequence','task_type','requested_by','shot__sequence__project','shot__sequence__project__client','shot__status','shot__task_type','status').all()
+        data = TaskHelp_Main.objects.select_related('shot', 'shot__sequence', 'task_type', 'requested_by',
+                                                    'shot__sequence__project', 'shot__sequence__project__client',
+                                                    'shot__status', 'shot__task_type', 'status').all()
         serializer = TaskHelpMainSerializer(data, many=True, context={"request": request})
-        return  Response(serializer.data)
+        return Response(serializer.data)
 
     def post(self, request):
         serializer = TaskHelpMainPostSerializer(data=request.data)
@@ -433,10 +559,15 @@ class TaskHelp_Main_API(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class TaskHelpMainUpdate(APIView):
 
     def get(self, request, parentId, format=None):
-        taskhelp_main = TaskHelp_Main.objects.select_related('shot','shot__sequence__project','shot__sequence','sequence__project__client','status','task_type','complexity').prefetch_related('task','status','complexity','sequence').get(id=parentId)
+        taskhelp_main = TaskHelp_Main.objects.select_related('shot', 'shot__sequence__project', 'shot__sequence',
+                                                             'sequence__project__client', 'status', 'task_type',
+                                                             'complexity').prefetch_related('task', 'status',
+                                                                                            'complexity',
+                                                                                            'sequence').get(id=parentId)
         serializer = TaskHelpMainSerializer(taskhelp_main)
         return Response(serializer.data)
 
@@ -449,12 +580,13 @@ class TaskHelpMainUpdate(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class TaskHelp_Lead_API(APIView):
 
     def get(self, request):
         data = TaskHelp_Lead.objects.all()
         serializer = TaskHelpLeadSerializer(data, many=True, context={"request": request})
-        return  Response(serializer.data)
+        return Response(serializer.data)
 
     def post(self, request):
         serializer = TaskHelpLeadSerializer(data=request.data)
@@ -463,12 +595,13 @@ class TaskHelp_Lead_API(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class TaskHelp_Artist_API(APIView):
 
     def get(self, request):
         data = TaskHelp_Artist.objects.all()
         serializer = TaskHelpArtistSerializer(data, many=True, context={"request": request})
-        return  Response(serializer.data)
+        return Response(serializer.data)
 
     def post(self, request):
         serializer = TaskHelpArtistPostSerializer(data=request.data)
@@ -477,17 +610,22 @@ class TaskHelp_Artist_API(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class TaskHelpArtistData(APIView):
 
-    def get(self, request,artistId, format=None):
-        mytask = TaskHelp_Artist.objects.select_related('assigned_by','shot__task_type','shot__sequence__project','shot__status','status','assigned_to','shot__sequence','shot__sequence__project__client').filter(assigned_to=artistId).all()
+    def get(self, request, artistId, format=None):
+        mytask = TaskHelp_Artist.objects.select_related('assigned_by', 'shot__task_type', 'shot__sequence__project',
+                                                        'shot__status', 'status', 'assigned_to', 'shot__sequence',
+                                                        'shot__sequence__project__client').filter(
+            assigned_to=artistId).all()
         serializer = TaskHelpArtistSerializer(mytask, many=True)
         return Response(serializer.data)
+
 
 class TaskHelpArtistDetail(APIView):
 
     def get(self, request, taskId, format=None):
-        task = TaskHelp_Artist.objects.select_related('assigned_to','status','shot','assigned_by').get(id=taskId)
+        task = TaskHelp_Artist.objects.select_related('assigned_to', 'status', 'shot', 'assigned_by').get(id=taskId)
         serializer = TaskHelpArtistSerializer(task)
         return Response(serializer.data)
 
@@ -500,3 +638,44 @@ class TaskHelpArtistDetail(APIView):
             serializer = TaskHelpArtistStatusSerializer(task)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class TeamLeadReports(APIView):
+
+    def get(self, request):
+        query_params = self.request.query_params
+        if query_params:
+            lead_id = query_params.get('lead_id', None)
+            start_date = query_params.get('start_date', None)
+            end_date = query_params.get('end_date', None)
+            if lead_id is not None and start_date is None:
+                leadreports = TeamLead_Week_Reports.objects.filter(team_lead=lead_id)
+                serializer = TeamReportSerializer(leadreports, many=True, context={"request": request})
+            elif lead_id is not None and start_date is not None:
+                reports = TeamLead_Week_Reports.objects.filter(team_lead=lead_id, from_date=start_date,
+                                                               to_date=end_date)
+                serializer = TeamReportSerializer(reports,many=True, context={"request": request})
+        else:
+            leadreports = TeamLead_Week_Reports.objects.all()
+            serializer = TeamReportSerializer(leadreports, many=True, context={"request": request})
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = TeamReportSerializer(data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request):
+        query_params = self.request.query_params
+        pass
+        # if query_params:
+        #     log_id = query_params.get('log_id', None)
+        #     if log_id:
+        #         day_logs = DayLogs.objects.get(id=log_id)
+        #         serializer = TeamReportSerializer(day_logs, data=request.data, partial=True)
+        #         if serializer.is_valid():
+        #             serializer.save()
+        #             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
