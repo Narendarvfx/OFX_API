@@ -98,6 +98,7 @@ class Employee(models.Model):
     modified_date = models.DateTimeField(auto_now=True)
     team_lead = models.ForeignKey('self', on_delete=models.CASCADE, related_name='+', null=True, blank=True)
     supervisor = models.ForeignKey('self', on_delete=models.CASCADE, related_name='+', null=True, blank=True)
+    force_password_change= models.BooleanField(default=True)
 
     def profile_photo(self):
         if self.photo:

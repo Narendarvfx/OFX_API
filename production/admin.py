@@ -2,7 +2,8 @@ from django.contrib import admin
 from production.models import Clients, Projects, ShotStatus, Complexity, Shots, Sequence, Task_Type, MyTask, \
     Assignments, Channels, Qc_Assignment, Groups, Permission_Groups, Folder_Permissions, \
     ShotVersions, ClientVersions, TaskHelp_Main, TaskHelp_Lead, TaskHelp_Artist, ShotLogs, TeamLead_Week_Reports, \
-    Locality, DayLogs
+    Locality, DayLogs, QCVersions
+
 
 # Register your models here.
 class ShotStatusFields(admin.ModelAdmin):
@@ -74,6 +75,7 @@ admin.site.register(Channels)
 admin.site.register(Permission_Groups)
 admin.site.register(Folder_Permissions)
 admin.site.register(ShotVersions)
+admin.site.register(QCVersions)
 admin.site.register(ClientVersions)
 admin.site.register(TaskHelp_Main)
 admin.site.register(TaskHelp_Lead)

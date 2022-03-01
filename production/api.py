@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 
 from production.models import Clients, Projects, ShotStatus, Shots, Complexity, Sequence, MyTask, Assignments, Channels, \
     Groups, Qc_Assignment, Permission_Groups, ShotVersions, TaskHelp_Main, TaskHelp_Lead, \
-    TaskHelp_Artist, ShotLogs, Locality, DayLogs, TeamLead_Week_Reports
+    TaskHelp_Artist, ShotLogs, Locality, DayLogs, TeamLead_Week_Reports, QCVersions
 from production.serializers import ClientSerializer, ProjectSerializer, StatusSerializer, ShotsSerializer, \
     ShotsPostSerializer, ComplexitySerializer, SequenceSerializer, SequencePostSerializer, MyTaskSerializer, \
     MyTaskPostSerializer, MyTaskShotSerializer, AssignmentSerializer, AssignmentPostSerializer, MyTaskArtistSerializer, \
@@ -14,7 +14,7 @@ from production.serializers import ClientSerializer, ProjectSerializer, StatusSe
     TaskHelpMainSerializer, TaskHelpLeadSerializer, \
     TaskHelpArtistSerializer, TaskHelpMainPostSerializer, TaskHelpArtistPostSerializer, TaskHelpArtistUpdateSerializer, \
     TaskHelpArtistStatusSerializer, ShotLogsSerializer, ShotLogsPostSerializer, LocalitySerializer, DayLogsSerializer, \
-    DayLogsPostSerializer, TeamReportSerializer
+    DayLogsPostSerializer, TeamReportSerializer, QcVersionsSerializer, AllShotQcVersionsSerializer
 
 
 class StatusInfo(APIView):
@@ -142,10 +142,15 @@ class ShotsData(APIView):
         query_params = self.request.query_params
         if query_params:
             project_id = query_params.get('project_id', None)
+            client_id = query_params.get('client_id', None)
             if project_id:
                 shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
                                                     'sequence__project__client', 'status', 'complexity', 'team_lead',
-                                                    'artist', 'location').filter(sequence__project_id=project_id)
+                                                'artist', 'location').filter(sequence__project_id=project_id)
+            elif client_id:
+                shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
+                                                'sequence__project__client', 'status', 'complexity', 'team_lead',
+                                                'artist', 'location').filter(sequence__project__client_id=client_id)
             else:
                 status_list = query_params.get('status', None)
                 dept = query_params.get('dept', None)
@@ -342,6 +347,7 @@ class MyTaskDetail(APIView):
 class MyTaskArtistData(APIView):
 
     def get(self, request, artistid):
+        print(artistid)
         mytask = MyTask.objects.select_related('assigned_by', 'shot', 'shot__task_type', 'shot__sequence__project',
                                                'shot__status', 'task_status', 'artist', 'shot__sequence',
                                                'shot__sequence__project__client').filter(artist=artistid).all()
@@ -528,6 +534,43 @@ class ShotVersionsById(APIView):
     def put(self, request, verId):
         data = ShotVersions.objects.get(id=verId)
         serializer = ShotVersionsSerializer(data, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class QcVersionsAPI(APIView):
+
+    def get(self, request):
+        data = QCVersions.objects.select_related('status').order_by('version')
+        serializer = QcVersionsSerializer(data, many=True, context={"request": request})
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = QcVersionsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class LastQcVersionById(APIView):
+
+    def get(self, request, shotId):
+        data = QCVersions.objects.select_related('status').filter(shot=shotId).last()
+        serializer = QcVersionsSerializer(data, context={"request": request})
+        return Response(serializer.data)
+
+
+class QcVersionsById(APIView):
+    def get(self, request, verId):
+        data = QCVersions.objects.filter(shot=verId).select_related('sent_by', 'status')
+        serializer = AllShotQcVersionsSerializer(data, many=True, context={"request": request})
+        return Response(serializer.data)
+
+    def put(self, request, verId):
+        data = QCVersions.objects.get(id=verId)
+        serializer = QcVersionsSerializer(data, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

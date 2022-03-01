@@ -48,7 +48,7 @@ def export_prod_report(request):
 
 def teamlead_report(request):
     team_lead = Employee.objects.filter(role__name="TEAM LEAD").select_related('role','department','location','employement_status')
-
+    print(team_lead)
     context = {
         'team_lead': team_lead
     }

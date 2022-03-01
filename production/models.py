@@ -215,12 +215,29 @@ class ShotVersions(models.Model):
     status = models.ForeignKey(ShotStatus, on_delete=models.CASCADE, related_name='+')
     verified_by =models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+', blank=True, null=True)
     verified_date = models.DateTimeField(blank=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.version
 
     class Meta:
         verbose_name_plural = "ShotVersions"
+
+class QCVersions(models.Model):
+    version = models.CharField(max_length=30)
+    shot = models.ForeignKey(Shots, on_delete=models.CASCADE, related_name='+')
+    sent_date = models.DateTimeField(auto_now_add=True)
+    sent_by = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+')
+    status = models.ForeignKey(ShotStatus, on_delete=models.CASCADE, related_name='+')
+    verified_by =models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+', blank=True, null=True)
+    verified_date = models.DateTimeField(blank=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.version
+
+    class Meta:
+        verbose_name_plural = "QCVersions"
 
 class MyTask(models.Model):
     artist = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+')
@@ -308,7 +325,6 @@ class Permission_Groups(models.Model):
 
     class Meta:
         verbose_name_plural = "Permission_Groups"
-
 
 class TaskHelp_Main(models.Model):
     shot = models.ForeignKey(Shots, on_delete=models.CASCADE, related_name='+')

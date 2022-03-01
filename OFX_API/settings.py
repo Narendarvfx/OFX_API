@@ -235,7 +235,7 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-#STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 if sys.platform == 'linux':
     STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
@@ -260,29 +260,7 @@ LOGGING = {
         'simple': {
             'format': '%(levelname)s %(message)s'
         },
-    },
-    'handlers': {
-        'core': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': LOG_PATH + '/ofx_pipeline.log',
-            'formatter': 'verbose'
-        },
-        'console': {
-            "class": "logging.StreamHandler",
-        }
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['core'],
-            'level': 'WARNING',
-            'propagate': True,
-        },
-        "django_auth_ldap": {
-            "handlers": ["console"],
-            "level": "DEBUG",
-        }
-    },
+    }
 }
 
 REST_FRAMEWORK = {
