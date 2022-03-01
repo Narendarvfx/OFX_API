@@ -9,8 +9,9 @@ import xlsxwriter
 from django.http import FileResponse
 from requests import request, Response
 
-from production.models import Shots, DayLogs
-from production.serializers import ShotsSerializer, DayLogsSerializer
+from production.models import Shots, DayLogs, ShotVersions, QCVersions
+from production.serializers import ShotsSerializer, DayLogsSerializer, AllShotVersionsSerializer, \
+    AllShotQcVersionsSerializer
 
 
 def teamlead_sheet_export(buffer, start_date, end_date, lead_id):
@@ -26,19 +27,42 @@ def teamlead_sheet_export(buffer, start_date, end_date, lead_id):
     groups = groupby(fuck, lambda content: content['shot'])
     dictt = []
     for shot, group in groups:
+
         ss = [sum(f['consumed_man_day'] for f in group)]
+        l_version = ""
+        qc_version = ""
+        try:
+            lead_ver = ShotVersions.objects.filter(shot = shot).select_related('status').latest('modified_date')
+            l_serializer = AllShotVersionsSerializer(lead_ver)
+            l_ver_dat = json.dumps(l_serializer.data)
+            lead_ver_data = json.loads(l_ver_dat)
+            if lead_ver:
+                l_version = lead_ver_data['version']
+        except:
+            pass
+        try:
+            qc_ver = QCVersions.objects.filter(shot=shot).select_related('status').latest('modified_date')
+            q_serializer = AllShotQcVersionsSerializer(qc_ver)
+            q_ver_dat = json.dumps(q_serializer.data)
+            qc_ver_data = json.loads(q_ver_dat)
+            if qc_ver:
+                qc_version = qc_ver_data['version']
+        except:
+            pass
         dat = {
             'shot': shot,
-            'consumed_manday': ss
+            'consumed_manday': ss,
+            'l_version': l_version,
+            'qc_version': qc_version
         }
         dictt.append(dat)
     worksheet = workbook.add_worksheet()
-    write_to_excel(workbook, worksheet, dictt)
+    write_to_excel(workbook, worksheet, dictt, start_date, end_date)
     workbook.close()
     return buffer
 
 
-def write_to_excel(workbook, worksheet, shots_data):
+def write_to_excel(workbook, worksheet, shots_data, start_date, end_date):
     merge_format = workbook.add_format({
         'bold': 1,
         'border': 1,
@@ -47,8 +71,8 @@ def write_to_excel(workbook, worksheet, shots_data):
         'fg_color': 'yellow'})
 
     # Merge 3 cells.
-    worksheet.merge_range('A1:N1', 'PAINT TEAM', merge_format)
-    worksheet.merge_range('A2:N3', '20-02-2022 - 26-02-2022', merge_format)
+    worksheet.merge_range('A1:Q1', 'PAINT TEAM', merge_format)
+    worksheet.merge_range('A2:Q3', str(start_date) +"  ---  "+ str(end_date), merge_format)
     # Add a bold format to use to highlight cells.
     bold = workbook.add_format({'bold': True, 'bg_color': '#43d3f7', 'border': 1, 'border_color': 'black'})
     pending_color = workbook.add_format({'bg_color': 'yellow', 'border': 1, 'border_color': 'black'})
@@ -71,6 +95,9 @@ def write_to_excel(workbook, worksheet, shots_data):
     worksheet.write('L5', 'NOTES', bold)
     worksheet.write('M5', 'TEAM', bold)
     worksheet.write('N5', 'ARTIST NAME', bold)
+    worksheet.write('O5', 'CLIENT VERSION', bold)
+    worksheet.write('P5', 'QC VERSION', bold)
+    worksheet.write('Q5', 'LEAD VERSION', bold)
 
     # # Start from the first cell below the headers.
     col = 0
@@ -122,5 +149,9 @@ def write_to_excel(workbook, worksheet, shots_data):
         worksheet.write(row + 5, col + 11, " ", border)
         worksheet.write(row + 5, col + 12, shot_data['team_lead'], border)
         worksheet.write(row + 5, col + 13, shot_data['artist'], border)
+        worksheet.write(row + 5, col + 14, shot_data['version'], border)
+        worksheet.write(row + 5, col + 15, dat['qc_version'], border)
+        worksheet.write(row + 5, col + 16, dat['l_version'], border)
+
         row += 1
 # write_to_excel()

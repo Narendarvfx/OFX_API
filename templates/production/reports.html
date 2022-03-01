@@ -2,50 +2,52 @@
 
 
 {% block bread_crumb %}
-        <!-- ============================================================== -->
-        <!-- Bread crumb and right sidebar toggle -->
-        <!-- ============================================================== -->
-        <div class="row page-titles">
-            <div class="col-md-4 col-6 align-self-center">
-                <h3 class="text-themecolor mb-0 mt-0">Project Reports</h3>
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="javascript:void(0)">Production</a></li>
-                    <li class="breadcrumb-item active">Reports</li>
-                </ol>
-            </div>
-            <div class="col-md-8 col-8 align-self-center">
-                <div class="float-right" style="margin-left: 5px">
-{#                <button class="right-side-toggle waves-effect waves-light btn-info btn-circle btn-sm float-right ml-2"><i class="ti-settings text-white"></i></button>#}
-                    <button class="btn float-right hidden-sm-down btn-success" onclick="report_export_to_excel()"><i class="mdi mdi-plus-circle"></i> Export</button>
-                </div>
-                <div class="float-right" style="margin-left: 5px">
-                    <select id="tasktype_select" class="form-control">
-                        <option value="0">Task Type</option>
-                        <option value="1">PAINT</option>
-                        <option value="2">ROTO</option>
-                        <option value="3">MM</option>
-
-                    </select>
-                </div>
-                <div class="float-right" style="margin-left: 5px">
-                    <select id="project_select" class="form-control">
-                        <option value="0">Project</option>
-                    </select>
-                </div>
-                <div class="float-right" style="margin-left: 5px">
-                    <select id="client_select" class="form-control">
-                        <option value="0">Client</option>
-                        {% for client in clients %}
-                            <option value={{ client.id }}>{{ client.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-            </div>
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-4 col-6 align-self-center">
+            <h3 class="text-themecolor mb-0 mt-0">Project Reports</h3>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Production</a></li>
+                <li class="breadcrumb-item active">Reports</li>
+            </ol>
         </div>
-        <!-- ============================================================== -->
-        <!-- End Bread crumb and right sidebar toggle -->
-        <!-- ============================================================== -->
+        <div class="col-md-8 col-8 align-self-center">
+            <div class="float-right" style="margin-left: 5px">
+                {#                <button class="right-side-toggle waves-effect waves-light btn-info btn-circle btn-sm float-right ml-2"><i class="ti-settings text-white"></i></button>#}
+                <button class="btn float-right hidden-sm-down btn-success" onclick="report_export_to_excel()"><i
+                        class="mdi mdi-plus-circle"></i> Export
+                </button>
+            </div>
+            <div class="float-right" style="margin-left: 5px">
+                <select id="tasktype_select" class="form-control">
+                    <option value="0">Task Type</option>
+                    <option value="1">PAINT</option>
+                    <option value="2">ROTO</option>
+                    <option value="3">MM</option>
+
+                </select>
+            </div>
+            <div class="float-right" style="margin-left: 5px">
+                <select id="project_select" class="form-control">
+                    <option value="0">Project</option>
+                </select>
+            </div>
+            <div class="float-right" style="margin-left: 5px">
+                <select id="client_select" class="form-control">
+                    <option value="0">Client</option>
+                    {% for client in clients %}
+                        <option value={{ client.id }}>{{ client.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
 {% endblock bread_crumb %}
 
 
@@ -55,7 +57,7 @@
         <div class="col-md-6 col-lg-3 col-xlg-3">
             <div class="card card-inverse card-info">
                 <div class="box bg-info text-center">
-                    <h1 class="font-light text-white" id="ass_man">0</h1>
+                    <h1 class="font-light text-white" id="tot_pro">0</h1>
                     <h6 class="text-white">Total Projects</h6>
                 </div>
             </div>
@@ -64,7 +66,7 @@
         <div class="col-md-6 col-lg-3 col-xlg-3">
             <div class="card card-primary card-inverse">
                 <div class="box text-center">
-                    <h1 class="font-light text-white" id="ach_man">0</h1>
+                    <h1 class="font-light text-white" id="tot_shot">0</h1>
                     <h6 class="text-white">Total Shots</h6>
                 </div>
             </div>
@@ -97,26 +99,26 @@
             </div>
         </div>
         <!-- Column -->
-{#        <div class="col-md-6 col-lg-3 col-xlg-3">#}
-{#            <div class="card card-inverse card-warning">#}
-{#                <div class="box text-center">#}
-{#                    <h1 class="font-light text-white" id="comp_per">0%</h1>#}
-{#                    <h6 class="text-white">Retakes</h6>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#        <div class="col-12">#}
-{#            <div class="card">#}
-{#                <div class="card-body">#}
-{#                    <h4 class="card-title">Sales Difference</h4>#}
-{#                    <div class="d-flex flex-row">#}
-{#                        <div>#}
-{#                            <canvas id="myChart"></canvas>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
+        {#        <div class="col-md-6 col-lg-3 col-xlg-3">#}
+        {#            <div class="card card-inverse card-warning">#}
+        {#                <div class="box text-center">#}
+        {#                    <h1 class="font-light text-white" id="comp_per">0%</h1>#}
+        {#                    <h6 class="text-white">Retakes</h6>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#        </div>#}
+        {#        <div class="col-12">#}
+        {#            <div class="card">#}
+        {#                <div class="card-body">#}
+        {#                    <h4 class="card-title">Sales Difference</h4>#}
+        {#                    <div class="d-flex flex-row">#}
+        {#                        <div>#}
+        {#                            <canvas id="myChart"></canvas>#}
+        {#                        </div>#}
+        {#                    </div>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#        </div>#}
     </div>
 {% endblock content %}
 
@@ -128,42 +130,65 @@
         var client_id;
         var project_id;
         $('#client_select').on('change', function () {
-             client_id = $("#client_select option:selected").val();
-             const all_projects_json = $.ajax({
+            client_id = $("#client_select option:selected").val();
+            const all_projects_json = $.ajax({
                 type: "GET",
                 url: "/api/production/projects/" + client_id + "/",
                 dataType: "application/json",
                 async: false,
                 error: function (xhr, status, err) {
                 },
-             }).responseText;
-             const all_projects = JSON.parse(all_projects_json);
-             $('#project_select').empty()
+            }).responseText;
+            const all_projects = JSON.parse(all_projects_json);
+            var total_projects = all_projects.length
+            document.getElementById("tot_pro").innerHTML = total_projects
+            $('#project_select').empty()
             $('#project_select').append(`<option value="0">
                                        Project
                                   </option>`);
-             all_projects.forEach(function (project) {
+            all_projects.forEach(function (project) {
                 optionText = project['name'];
                 optionValue = project['id'];
                 $('#project_select').append(`<option value="${optionValue}">
                                        ${optionText}
                                   </option>`);
+                const all_shots_json = $.ajax({
+                    type: "GET",
+                    url: "/api/production/shots/?client_id="+client_id,
+                    dataType: "application/json",
+                    async: false,
+                    error: function (xhr, status, err) {
+                    },
+                }).responseText;
+                const all_shots = JSON.parse(all_shots_json);
+                document.getElementById("tot_shot").innerHTML = all_shots.length
             })
 
         });
         $('#project_select').on('change', function () {
             project_id = $("#project_select option:selected").val();
+            const all_shots_json = $.ajax({
+                    type: "GET",
+                    url: "/api/production/shots/?project_id="+project_id,
+                    dataType: "application/json",
+                    async: false,
+                    error: function (xhr, status, err) {
+                    },
+                }).responseText;
+                const all_shots = JSON.parse(all_shots_json);
+                document.getElementById("tot_shot").innerHTML = all_shots.length
         })
-        function report_export_to_excel(){
+
+        function report_export_to_excel() {
             var tasktype_id = $("#tasktype_select option:selected").val();
             var tasktype_text = $("#tasktype_select option:selected").text()
-            if (project_id > 0 && client_id > 0){
-                if (tasktype_id > 0){
-                    window.location = "/production/reports/multi_export/?client_id=" + client_id + "&project_id=" + project_id+"&task_type="+tasktype_text
-                }else {
+            if (project_id > 0 && client_id > 0) {
+                if (tasktype_id > 0) {
+                    window.location = "/production/reports/multi_export/?client_id=" + client_id + "&project_id=" + project_id + "&task_type=" + tasktype_text
+                } else {
                     window.location = "/production/reports/multi_export/?client_id=" + client_id + "&project_id=" + project_id
                 }
-            }else {
+            } else {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',

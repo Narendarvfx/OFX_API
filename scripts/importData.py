@@ -6,8 +6,8 @@ import datetime
 import csv
 import requests
 
-server = "http://172.168.1.197:80"
-token = '8f1192dfa465d1f566c38e53ed199d8da7090a55'
+server = "https://shotbuzz.oscarfx.com"
+token = '39bdb2c0347f12746b2fa909c9b48a81247ca120'
 employee_csv = 'data/Employees_data_final.csv'
 
 ########################################################################################################################

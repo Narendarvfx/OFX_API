@@ -5,7 +5,7 @@ urlpatterns = [
     ################## Web Urls ######################
     url(r'^production/production_report/$', views.production_reports, name='reports'),
     url(r'^production/export_prod_report/$', views.export_prod_report, name='reports'),
-    url(r'^production/teamleadreports/$', views.teamlead_report, name="Team Lead Reports"),
+    url(r'^production/teamleadreports$', views.teamlead_report, name="Team Lead Reports"),
     url(r'^production/teamleadreports_export/$', views.export_teamlead_report, name='TeamLeadReports'),
     url(r'^production/reports/$', views.reports, name="Multi Reports"),
     url(r'^production/reports/multi_export/$', views.reports_export, name="Multi Reports"),
@@ -37,7 +37,7 @@ urlpatterns = [
     url(r'^api/production/mytask/$', api.MyTaskData.as_view(), name='MyTask API'),
     url(r'^api/production/mytask/shot/(?P<shotId>\d+)/$', api.MyTaskShotData.as_view(), name='MyTask API'),
     url(r'^api/production/mytask/(?P<taskId>\d+)/$', api.MyTaskDetail.as_view(), name='MyTask API'),
-    url(r'^api/production/mytask/artist/(?P<artistId>\d+)/$', api.MyTaskArtistData.as_view(), name='MyTask API'),
+    url(r'^api/production/mytask/artist/(?P<artistid>\d+)/$', api.MyTaskArtistData.as_view(), name='MyTask API'),
 
     # Assignment Urls
     url(r'^api/production/shot/assignments/$', api.ShotAssignment.as_view(), name='MyTask API'),
@@ -61,10 +61,15 @@ urlpatterns = [
     # Folder Permission Url
     url(r'^api/production/permissions_groups/', api.Perm_Groups.as_view(), name='Permission Groups'),
 
-    # Internal Version urls
+    # Artist to Lead Version urls
     url(r'^api/production/shotversions/$', api.ShotVersionsAPI.as_view(), name="Shot Versions"),
     url(r'^api/production/shotversions/(?P<shotId>\d+)/$', api.LastShotVersionById.as_view(), name="Shot Versions"),
     url(r'^api/production/allshotversions/(?P<verId>\d+)/$', api.ShotVersionsById.as_view(), name="Shot Versions"),
+
+    # Lead to Qc Version urls
+    url(r'^api/production/qcversions/$', api.QcVersionsAPI.as_view(), name="Qc Versions"),
+    url(r'^api/production/qcversions/(?P<shotId>\d+)/$', api.LastQcVersionById.as_view(), name="Qc Versions"),
+    url(r'^api/production/allqcversions/(?P<verId>\d+)/$', api.QcVersionsById.as_view(), name="Qc Versions"),
 
     #Task Help Urls
     url(r'^api/production/taskhelp_main/$', api.TaskHelp_Main_API.as_view(), name="Task Help Main"),

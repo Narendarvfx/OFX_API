@@ -106,19 +106,21 @@ class UpdatePassword(APIView):
     """
     # permission_classes = (permissions.IsAuthenticated, )
 
-    def get_object(self, queryset=None):
-        return self.request.user
+    def get_object(self, user_id):
+        user = User.objects.get(id=user_id)
+        return user
 
-    def put(self, request, *args, **kwargs):
-        self.object = self.get_object()
+    def put(self, request,user_id, *args, **kwargs):
+        # query_params = self.request.query_params
+        # user_id = query_params.get('user_id', None)
+        self.object = self.get_object(user_id)
         serializer = ChangePasswordSerializer(data=request.data)
         if serializer.is_valid():
-            print(serializer.data)
-            # Check old password
-            # old_password = serializer.data.get("old_password")
-            # if not self.object.check_password(old_password):
-            #     return Response({"old_password": ["Wrong password."]},
-            #                     status=status.HTTP_400_BAD_REQUEST)
+            #Check old password
+            old_password = serializer.data.get("old_password")
+            if not self.object.check_password(old_password):
+                return Response({"old_password": ["Wrong password."]},
+                                status=status.HTTP_400_BAD_REQUEST)
             # set_password also hashes the password that the user will get
             self.object.set_password(serializer.data.get("new_password"))
             self.object.save()
