@@ -384,7 +384,7 @@ class LeadShotsData(APIView):
                 for stat in status_list.split('|'):
                     status.append(stat)
                 if start_date is not None and end_date is not None:
-                    lead = Assignments.objects.filter(lead=leadId, shot__status__code__in=status, assigned_date__range=[start_date, end_date
+                    lead = Assignments.objects.filter(lead_id=leadId, shot__status__code__in=status, assigned_date__range=[start_date, end_date
                                                                                                                         ]).select_related('lead',
                                                                                                                  'shot',
                                                                                                                  'shot__sequence',
@@ -397,6 +397,19 @@ class LeadShotsData(APIView):
                                                                                                                  'shot__team_lead')
                 else:
                     lead = Assignments.objects.filter(lead=leadId, shot__status__code__in=status).select_related('lead', 'shot',
+                                                                                                                 'shot__sequence',
+                                                                                                                 'shot__sequence__project',
+                                                                                                                 'shot__sequence__project__client',
+                                                                                                                 'shot__status',
+                                                                                                                 'shot__task_type',
+                                                                                                                 'assigned_by',
+                                                                                                                 'shot__artist',
+                                                                                                                 'shot__team_lead')
+            else:
+                if start_date is not None and end_date is not None:
+                    lead = Assignments.objects.filter(lead_id=leadId, assigned_date__range=[start_date, end_date
+                                                                                                                        ]).select_related('lead',
+                                                                                                                 'shot',
                                                                                                                  'shot__sequence',
                                                                                                                  'shot__sequence__project',
                                                                                                                  'shot__sequence__project__client',
