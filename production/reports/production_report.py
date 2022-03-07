@@ -62,7 +62,9 @@ def write_to_excel(workbook, worksheet, shots_data):
     worksheet.write('O1', 'PACKAGE ID', bold)
     worksheet.write('P1', 'ESTIMATE ID', bold)
     worksheet.write('Q1', 'ESTIMATE DATE', bold)
-    worksheet.write('R1', 'LOCATION', bold)
+    worksheet.write('R1', 'INTERNAL VERSION', bold)
+    worksheet.write('S1', 'CLIENT VERSION', bold)
+    worksheet.write('T1', 'LOCATION', bold)
 
     # # Start from the first cell below the headers.
     col = 0
@@ -122,6 +124,8 @@ def write_to_excel(workbook, worksheet, shots_data):
         location =""
         if shot_data['location']:
             location = shot_data['location']
-        worksheet.write(row + 1, col + 17, location, border)
+        worksheet.write(row + 1, col + 17, "", border)
+        worksheet.write(row + 1, col + 18, "", border)
+        worksheet.write(row + 1, col + 19, location, border)
         row += 1
 # write_to_excel()
