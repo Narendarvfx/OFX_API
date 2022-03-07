@@ -51,31 +51,31 @@ AUTHENTICATION_BACKENDS = (
 SECRET_KEY = '$qk=xmf1nr6xy)4-!w2g5!wh=)$e6^8@v^z%w@i8n44pjf5lg2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1','*']
 
-# X-XSS-Protection
-SECURE_BROWSER_XSS_FILTER = True
-
-## X-Frame-Options
-X_FRAME_OPTIONS = 'DENY'
-#X-Content-Type-Options
-SECURE_CONTENT_TYPE_NOSNIFF = True
-## Strict-Transport-Security
-SECURE_HSTS_SECONDS = 15768000
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
-
-## that requests over HTTP are redirected to HTTPS. aslo can config in webserver
-SECURE_SSL_REDIRECT = True
-
-# for more security
-CSRF_COOKIE_SECURE = True
-CSRF_USE_SESSIONS = True
-CSRF_COOKIE_HTTPONLY = True
-SESSION_COOKIE_SECURE = True
-SESSION_COOKIE_SAMESITE = 'Strict'
+# # X-XSS-Protection
+# SECURE_BROWSER_XSS_FILTER = True
+#
+# ## X-Frame-Options
+# X_FRAME_OPTIONS = 'DENY'
+# #X-Content-Type-Options
+# SECURE_CONTENT_TYPE_NOSNIFF = True
+# ## Strict-Transport-Security
+# SECURE_HSTS_SECONDS = 15768000
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# SECURE_HSTS_PRELOAD = True
+#
+# ## that requests over HTTP are redirected to HTTPS. aslo can config in webserver
+# SECURE_SSL_REDIRECT = True
+#
+# # for more security
+# CSRF_COOKIE_SECURE = True
+# CSRF_USE_SESSIONS = True
+# CSRF_COOKIE_HTTPONLY = True
+# SESSION_COOKIE_SECURE = True
+# SESSION_COOKIE_SAMESITE = 'Strict'
 
 # Application definition
 
