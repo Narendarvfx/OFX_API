@@ -175,7 +175,7 @@ a.link:hover, a.link:focus {
 }
 
 .sidebar-nav ul li a {
-  color: #798699;
+  color: #a2a1a1 !important;
 }
 
 .sidebar-nav ul li a.active, .sidebar-nav ul li a:hover {
@@ -212,7 +212,7 @@ a.link:hover, a.link:focus {
 }
 
 .sidebar-nav > ul > li > a i {
-  color: #798699;
+  color: #a2a1a1 !important;
 }
 
 .sidebar-nav > ul > li > a.active {
@@ -222,7 +222,7 @@ a.link:hover, a.link:focus {
 }
 
 .user-profile .profile-text a {
-  color: #798699 !important;
+  color: #a2a1a1 !important;
 }
 
 .card-no-border .sidebar-footer {

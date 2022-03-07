@@ -1,3 +1,5 @@
+import re
+
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
@@ -104,7 +106,7 @@ class UpdatePassword(APIView):
     """
     An endpoint for changing password.
     """
-    # permission_classes = (permissions.IsAuthenticated, )
+    permission_classes = (permissions.IsAuthenticated, )
 
     def get_object(self, user_id):
         user = User.objects.get(id=user_id)
@@ -115,14 +117,29 @@ class UpdatePassword(APIView):
         # user_id = query_params.get('user_id', None)
         self.object = self.get_object(user_id)
         serializer = ChangePasswordSerializer(data=request.data)
+        print(serializer)
         if serializer.is_valid():
             #Check old password
             old_password = serializer.data.get("old_password")
             if not self.object.check_password(old_password):
-                return Response({"old_password": ["Wrong password."]},
+                return Response("Current Password is incorrect",
+                                status=status.HTTP_400_BAD_REQUEST)
+            reg = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{8,20}$"
+
+            # compiling regex
+            pat = re.compile(reg)
+
+            # searching regex
+            mat = re.search(pat, serializer.data.get("new_password"))
+
+            # validating conditions
+            if not mat:
+                return Response("Password Should be the combination of Uppercase, Lowercase, \n Numeric, Special Character and minimum 8 character length",
                                 status=status.HTTP_400_BAD_REQUEST)
             # set_password also hashes the password that the user will get
             self.object.set_password(serializer.data.get("new_password"))
+            self.object.is_resetpwd = False
+            Profile.objects.filter(user=self.object).update(force_password_change=False)
             self.object.save()
             return Response(status=status.HTTP_204_NO_CONTENT)
 
