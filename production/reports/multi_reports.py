@@ -63,8 +63,12 @@ def write_to_excel(workbook, worksheet, shots_data):
         else:
             due_date = ""
         if shot_data['submitted_date']:
-            submitted_date = datetime.datetime.strptime(shot_data['submitted_date'], '%Y-%m-%dT%H:%M:%S').strftime(
-                "%d-%m-%Y")
+            try:
+                submitted_date = datetime.datetime.strptime(shot_data['submitted_date'], '%Y-%m-%dT%H:%M:%S.%f').strftime(
+                    "%d-%m-%Y")
+            except:
+                submitted_date = datetime.datetime.strptime(shot_data['submitted_date'], '%Y-%m-%dT%H:%M:%S').strftime(
+                    "%d-%m-%Y")
         else:
             submitted_date = ""
         worksheet.write(row + 1, col, shot_data['sequence']['project']['name'], border)

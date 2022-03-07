@@ -1481,7 +1481,7 @@ Checkbox
   color: #ffffff; }
 
 /*******************
-Radios 
+Radios
 *******************/
 .radio {
   padding-left: 20px; }
@@ -1618,7 +1618,7 @@ Radios
   cursor: pointer; }
 
 /*******************
-File Upload 
+File Upload
 ******************/
 .fileupload {
   overflow: hidden;
@@ -1807,8 +1807,8 @@ Author: Themedesigner
 Email: niravjoshi87@gmail.com
 File: scss
 */
-/*============================================================== 
- For all pages 
+/*==============================================================
+ For all pages
  ============================================================== */
 #main-wrapper {
   width: 100%; }
@@ -1932,10 +1932,10 @@ File: scss
       .topbar ul.dropdown-user li a {
         padding: 9px 15px;
         display: block;
-        color: #747d8a; }
+        color: #a2a1a1 !important; }
         .topbar ul.dropdown-user li a:hover {
           background: #383f48;
-          color: #009efb;
+          color: #a2a1a1 !important;
           text-decoration: none; }
 
 .mini-sidebar .top-navbar .navbar-header {
@@ -2262,7 +2262,7 @@ ul#themecolors {
   background: #01c0c8;
   border-color: #01c0c8; }
 
-/*============================================================== 
+/*==============================================================
  Buttons page
  ============================================================== */
 .button-group .btn {
@@ -2282,7 +2282,7 @@ ul#themecolors {
 .btn.active .text {
   display: none; }
 
-/*============================================================== 
+/*==============================================================
  Cards page
  ============================================================== */
 .card-actions {
@@ -2348,7 +2348,7 @@ ul#themecolors {
     background: #7460ee;
     border-color: #7460ee; }
 
-/*============================================================== 
+/*==============================================================
 Breadcrumb
  ============================================================== */
 .bc-colored .breadcrumb-item,
@@ -2364,7 +2364,7 @@ Breadcrumb
 .breadcrumb {
   margin-bottom: 0px; }
 
-/*============================================================== 
+/*==============================================================
  Ui-bootstrap
  ============================================================== */
 ul.list-icons {
@@ -2398,7 +2398,7 @@ ul.two-part {
 html body .accordion .card {
   margin-bottom: 0px; }
 
-/*============================================================== 
+/*==============================================================
  flot chart
  ============================================================== */
 .flot-chart {
@@ -2417,8 +2417,8 @@ html body .flotTip {
   color: #ffffff;
   padding: 5px 10px; }
 
-/*============================================================== 
-Easy pie chart 
+/*==============================================================
+Easy pie chart
  ============================================================== */
 .chart {
   position: relative;
@@ -2474,7 +2474,7 @@ Easy pie chart
     margin-left: 0.1em;
     font-size: .8em; }
 
-/*============================================================== 
+/*==============================================================
 Dashboard1 chart
  ============================================================== */
 .total-revenue,
@@ -2562,7 +2562,7 @@ Dashboard1 chart
     line-height: 12px;
     white-space: nowrap; }
 
-/*============================================================== 
+/*==============================================================
 Dashboard2 chart
  ============================================================== */
 .total-revenue2 .ct-series-a .ct-area {
@@ -2571,7 +2571,7 @@ Dashboard2 chart
 .total-revenue2 .ct-series-b .ct-area {
   fill: #e8fdeb; }
 
-/*============================================================== 
+/*==============================================================
 Dashboard3 chart
  ============================================================== */
 .total-sales {
@@ -2610,7 +2610,7 @@ Dashboard3 chart
 #calendar .fc-today-button {
   display: none; }
 
-/*============================================================== 
+/*==============================================================
 Dashboard4 chart
  ============================================================== */
 .total-revenue4 {
@@ -2634,13 +2634,13 @@ Dashboard4 chart
     fill: #55ce63;
     fill-opacity: 0.2; }
 
-/*============================================================== 
+/*==============================================================
 Widget-data
  ============================================================== */
 .sparkchart {
   margin-bottom: -2px; }
 
-/*============================================================== 
+/*==============================================================
 File upload
  ============================================================== */
 .btn-file {
@@ -2707,7 +2707,7 @@ File upload
 .fileinput.input-group > .btn-file {
   z-index: 1; }
 
-/*============================================================== 
+/*==============================================================
 widget-chart-page product review
  ============================================================== */
 .product-review {
@@ -2736,7 +2736,7 @@ widget-chart-page product review
   .profile-tab li a.nav-link:hover, .customtab li a.nav-link:hover {
     color: #009efb; }
 
-/*============================================================== 
+/*==============================================================
 Form addons page
 ============================================================== */
 /*Bootstrap select*/
@@ -2776,7 +2776,7 @@ Form addons page
 .input-form .btn {
   padding: 10px 12px; }
 
-/*============================================================== 
+/*==============================================================
 Form Material page
  ============================================================== */
 /*Material inputs*/
@@ -6508,24 +6508,24 @@ Author: Themedesigner
 Email: niravjoshi87@gmail.com
 File: scss
 */
-/*============================================================== 
- For Laptop & above all (1650px) 
+/*==============================================================
+ For Laptop & above all (1650px)
  ============================================================== */
 @media (min-width: 1650px) {
   .widget-app-columns {
     -webkit-column-count: 3;
     column-count: 3; } }
 
-/*============================================================== 
- For Laptop & above all (1370px) 
+/*==============================================================
+ For Laptop & above all (1370px)
  ============================================================== */
 @media (max-width: 1370px) {
   .widget-app-columns {
     -webkit-column-count: 2;
     column-count: 2; } }
 
-/*-- ============================================================== 
- Small Desktop & above all (1024px) 
+/*-- ==============================================================
+ Small Desktop & above all (1024px)
  ============================================================== */
 @media (min-width: 1024px) {
   .page-wrapper {
@@ -6547,8 +6547,8 @@ File: scss
   .inbox-center a {
     width: 200px; } }
 
-/*-- ============================================================== 
- Ipad & above all(768px) 
+/*-- ==============================================================
+ Ipad & above all(768px)
  ============================================================== */
 @media (min-width: 768px) {
   .navbar-header {
@@ -6570,8 +6570,8 @@ File: scss
     flex-wrap: no-wrap !important;
     -webkit-flex-wrap: no-wrap !important; } }
 
-/*-- ============================================================== 
- Phone and below ipad(767px) 
+/*-- ==============================================================
+ Phone and below ipad(767px)
  ============================================================== */
 @media (max-width: 767px) {
   /*Header*/
@@ -6715,13 +6715,13 @@ File: scss
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6, .footable .pagination li a, .select2-container--default .select2-selection--single .select2-selection__rendered, .ms-container .ms-selectable li.ms-elem-selectable, .ms-container .ms-selection li.ms-elem-selection, .close, .page-item .page-link {
   color: #ffffff; }
 
-/******************* 
+/*******************
 Border Colors
 *******************/
 .table td, .nav-tabs, hr, .form-control, ul.wysihtml5-toolbar, .tabcontent-border, .select2-container--default .select2-selection--single, .select2-container--default .select2-selection--multiple, .select2-container--default .select2-selection--multiple .select2-selection__choice, .bootstrap-tagsinput, .ms-container .ms-selectable li.ms-elem-selectable, .ms-container .ms-selection li.ms-elem-selection, .ms-container .ms-list, .wizard-content .wizard.wizard-circle > .steps .step, .table-bordered, .modal-footer, .modal-header, .jsgrid-header-row > .jsgrid-header-cell, .jsgrid-edit-row > .jsgrid-cell, .jsgrid-filter-row > .jsgrid-cell, .jsgrid-grid-body, .jsgrid-grid-header, .jsgrid-header-row > .jsgrid-header-cell, .jsgrid-insert-row > .jsgrid-cell, .bootstrap-table .table > thead > tr > th, .bootstrap-table .table, .fixed-table-container, .page-item .page-link, .page-item.disabled .page-link, .featured-plan .pricing-body {
   border-color: rgba(0, 0, 0, 0.4); }
 
-/******************* 
+/*******************
 /*Background Colors light*/
 /*******************/
 .progress, .fc-day, .css-bar > i, .dropzone, code, .popover, .grid-stack-item-content, .form-control:disabled, .form-control[readonly], .input-group-addon, .select2-container--default .select2-selection--multiple .select2-selection__choice, .ms-container .ms-selectable, .ms-container .ms-selection, .wizard-content .wizard > .actions > ul > li > a[href="#previous"], .dataTables_filter input, .jsgrid-grid-header, .jsgrid-filter-row > .jsgrid-cell, .dropdown-menu, .mega-dropdown .dropdown-menu {
@@ -6730,13 +6730,13 @@ Border Colors
 .grid-stack-item-content, .input-group-addon, .wizard-content .wizard > .steps > ul > li.current > a, .mailbox ul li .drop-title, .topbar .navbar-light .navbar-nav .nav-link {
   color: #ffffff; }
 
-/******************* 
+/*******************
 /*Background Colors border*/
 /*******************/
 .fc th.fc-mon, .fc th.fc-wed, .fc th.fc-fri, .fc th.fc-sun, .fc th.fc-tue, .fc th.fc-thu, .fc th.fc-sat {
   background: rgba(0, 0, 0, 0.4); }
 
-/******************* 
+/*******************
 /*Background Colors dark*/
 /*******************/
 .topbar .top-navbar .app-search .srh-btn {
@@ -6768,7 +6768,7 @@ Border Colors
   border-color: rgba(0, 0, 0, 0.4) rgba(0, 0, 0, 0.4) #272c33;
   color: #fff; }
 
-/******************* 
+/*******************
 /*Background Colors Transparent*/
 /*******************/
 .list-group-item, .checkbox label::before, .footer, .btn-outline-primary, .customvtab .tabs-vertical li .nav-link.active, .customvtab .tabs-vertical li .nav-link:hover, .customvtab .tabs-vertical li .nav-link:focus, .bd-example-popover-static, .myadmin-dd .dd-list .dd-item .dd-handle, .myadmin-dd-empty .dd-list .dd3-content, .myadmin-dd-empty .dd-list .dd3-handle, .highlight, .custom-file-control {
@@ -6777,7 +6777,7 @@ Border Colors
 .tabs-vertical li .nav-link.active, .tabs-vertical li .nav-link:hover, .tabs-vertical li .nav-link.active:focus, .dd-item > button {
   color: #ffffff; }
 
-/******************* 
+/*******************
 /*Border Colors Transparent*/
 /*******************/
 .comment-widgets .comment-row, .stylish-table tbody tr {
@@ -6817,7 +6817,7 @@ a.list-group-item:hover {
 .dp-off {
   background-color: #272c33 !important; }
 
-/******************* 
+/*******************
 /*Dashboard 1*/
 /*******************/
 .total-revenue4 .ct-series-a .ct-line, .total-revenue4 .ct-series-b .ct-line {

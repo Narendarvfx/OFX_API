@@ -19,11 +19,14 @@ def login_view(request):
         if user is not None:
             if user.groups.filter(name='WebUsers').exists():
                 auth.login(request, user)
-                # s = Profile.objects.get(user=user)
-                # if s.force_password_change:
-                #     return render(request, 'profile/password_change.html', None)
-                # else:
-                return HttpResponseRedirect('/')
+                s = Profile.objects.get(user=user)
+                if s.force_password_change:
+                    context = {
+                        'user':user.id
+                    }
+                    return render(request, 'profile/password_change.html', context=context)
+                else:
+                    return HttpResponseRedirect('/')
             else:
                 return render(request, 'profile/pages-error-403.html')
         else:
