@@ -19,9 +19,10 @@
           integrity="sha512-jpey1PaBfFBeEAsKxmkM1Yh7fkH09t/XDVjAgYGrq1s2L9qPD/kKdXC/2I6t2Va8xdd9SanwPYHIAnyBRdPmig=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <style>
-        .form-control{
+        .form-control {
             color: #a2a1a1 !important;
         }
+
         .card {
             padding: 10px;
             background: #272c33 !important;
@@ -114,19 +115,23 @@
         </div>
         <div class="col-md-8 col-8 align-self-center">
             <div class="float-right" style="margin-left: 5px">
+                <button class="btn float-right hidden-sm-down btn-success" onclick="export_to_excel()"><i
+                        class="mdi mdi-plus-circle"></i> Export
+                </button>
+            </div>
+            <div class="float-right" style="margin-left: 5px">
                 <select id="shot_taskType_select" class="form-control">
-                    <option value="">TaskType</option>
-                    <option value="PAINT">Paint</option>
-                    <option value="ROTO">Roto</option>
-                    <option value="MM">MM</option>
-                    <option value="COMP">Comp</option>
+                    <option value="0">TaskType</option>
+                    {% for task_type in task_type %}
+                        <option value="{{ task_type.id }}">{{ task_type.name }}</option>
+                    {% endfor %}
                 </select>
             </div>
             <div class="float-right" style="margin-left: 5px">
                 <select id="shot_status_select" class="form-control">
                     <option value="">Status</option>
                     {% for status in status %}
-                        <option>{{ status.code }}</option>
+                        <option value={{ status.id }}>{{ status.code }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -134,7 +139,7 @@
                 <select id="shot_project_select" class="form-control">
                     <option value="">Project</option>
                     {% for project in projects %}
-                        <option>{{ project.name }}</option>
+                        <option value={{ project.id }}>{{ project.name }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -150,22 +155,17 @@
                 <select id="shot_location_select" class="form-control">
                     <option value="">Location</option>
                     {% for location in location %}
-                        <option>{{ location.name }}</option>
+                        <option value={{ location.id }}>{{ location.name }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class="float-right" style="margin-left: 5px">
                 <select id="shot_locality_select" class="form-control">
-                    <option value="">Locality</option>
+                    <option value="0">Locality</option>
                     {% for locality in locality %}
-                        <option>{{ locality.name }}</option>
+                        <option value={{ locality.id }}>{{ locality.name }}</option>
                     {% endfor %}
                 </select>
-            </div>
-            <div class="float-right" style="margin-left: 5px">
-                <button class="btn float-right hidden-sm-down btn-success" onclick="export_to_excel()"><i
-                        class="mdi mdi-plus-circle"></i> Export
-                </button>
             </div>
         </div>
     </div>
@@ -249,6 +249,13 @@
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/js/bootstrap.bundle.min.js"></script>
     <script>
+        let client_id = 0;
+        let project_id = 0;
+        let status_id = 0
+        let location_id = 0
+        let locality_id = 0
+        let task_type_id = 0
+
         //  Load Shots Information
         status_list = "YTA|ATL|YTS|STQ|WIP|IRT|QIP|CRT|IAP|DTC"
         const all_shots_json = $.ajax({
@@ -406,12 +413,8 @@
             });
             $('#shot_client_select').on('change', function () {
                 const client = $('#shot_client_select option:selected').text().trim();
-                const client_id = $('#shot_client_select option:selected').val();
+                client_id = $('#shot_client_select option:selected').val();
                 table.columns(0).search(client).draw();
-                $('#shot_project_select').empty()
-                $('#shot_project_select').append(`<option value="0">
-                                       Project
-                                  </option>`);
                 const all_projects_json = $.ajax({
                     type: "GET",
                     url: "/api/production/projects/" + client_id + "/",
@@ -433,31 +436,56 @@
                                   </option>`);
                 })
             });
-                $('#shot_project_select').on('change', function () {
-                    const project = $("#shot_project_select :selected").text().trim();
-                    table.columns(1).search(project).draw();
-                });
-                $('#shot_taskType_select').on('change', function () {
-                    const taskType = $('#shot_taskType_select').val()
-                    table.columns(4).search(taskType).draw();
-                });
-                $('#shot_status_select').on('change', function () {
-                    const status = $('#shot_status_select').val();
-                    table.columns(9).search(status).draw();
-                });
-                $('#shot_location_select').on('change', function () {
-                    const location = $('#shot_location_select').val();
-                    table.columns(16).search(location).draw();
-                });
-                $('#shot_locality_select').on('change', function () {
-                    const locality = $('#shot_locality_select').val();
-                    table.columns(17).search(locality).draw();
-                });
+            $('#shot_project_select').on('change', function () {
+                const project = $("#shot_project_select :selected").text().trim();
+                project_id = $('#shot_project_select option:selected').val();
+                table.columns(1).search(project).draw();
             });
+            $('#shot_taskType_select').on('change', function () {
+                const taskType = $('#shot_taskType_select :selected').text().trim()
+                task_type_id = $('#shot_taskType_select option:selected').val()
+                table.columns(4).search(taskType).draw();
+            });
+            $('#shot_status_select').on('change', function () {
+                const status = $('#shot_status_select :selected').text().trim();
+                status_id = $('#shot_status_select option:selected').val();
+                table.columns(9).search(status).draw();
+            });
+            $('#shot_location_select').on('change', function () {
+                const location = $('#shot_location_select :selected').text().trim();
+                location_id = $('#shot_location_select option:selected').val();
+                table.columns(16).search(location).draw();
+            });
+            $('#shot_locality_select').on('change', function () {
+                const locality = $("#shot_locality_select :selected").text().trim();
+                locality_id = $("#shot_locality_select option:selected").val();
+                table.columns(17).search(locality).draw();
+                const all_clients_json = $.ajax({
+                    type: "GET",
+                    url: "/api/production/clients/?locality=" + locality,
+                    dataType: "application/json",
+                    async: false,
+                    error: function (xhr, status, err) {
+                    },
+                }).responseText;
+                const all_clients = JSON.parse(all_clients_json);
+                $('#shot_client_select').empty()
+                $('#shot_client_select').append(`<option value="0">
+                                       Client
+                                  </option>`);
+                all_clients.forEach(function (client) {
+                    optionText = client['name'];
+                    optionValue = client['id'];
+                    $('#shot_client_select').append(`<option value="${optionValue}">
+                                       ${optionText}
+                                  </option>`);
+                })
+            });
+        });
 
-            function export_to_excel() {
-                window.location = "/production/export_prod_report/"
-            }
+        function export_to_excel() {
+            window.location = "/production/export_prod_report/?client="+client_id+"&project="+project_id+"&statuss="+status_id+"&locality="+locality_id+"&location="+location_id+"&task_type="+task_type_id
+        }
 
     </script>
 {% endblock page_scripts %}

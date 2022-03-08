@@ -1,27 +1,22 @@
-import json
-from itertools import groupby
+import io
 
 from django.http import FileResponse
 from django.shortcuts import render
 
 # Create your views here.
 from hrm.models import Location, Employee
-from production.models import ShotStatus, Clients, Projects, Task_Type, Locality, DayLogs, Shots, TeamLead_Week_Reports
-import io
-import xlsxwriter
-
+from production.models import ShotStatus, Clients, Projects, Task_Type, Locality
 from production.reports.multi_reports import reports_sheet_export
-from production.reports.production_report import create_workbook
+from production.reports.production_report import create_workbook, check_filters
 from production.reports.teamlead_report import teamlead_sheet_export
-from production.serializers import DayLogsSerializer, ShotsSerializer, TeamReportSerializer
 
 
 def production_reports(request):
     """
-        Production Shots View
-        :param request:
-        :return:
-        """
+    Production Shots View
+    :param request:
+    :return:
+    """
     status = ShotStatus.objects.all()
     clients = Clients.objects.all()
     projects = Projects.objects.all()
@@ -40,15 +35,24 @@ def production_reports(request):
 
 
 def export_prod_report(request):
+    client_id = int(request.GET['client'])
+    project_id = int(request.GET['project'])
+    taskType_id = int(request.GET['task_type'])
+    status_id = int(request.GET['statuss'])
+    location_id = int(request.GET['location'])
+    locality_id = int(request.GET['locality'])
+
     buffer = io.BytesIO()
-    create_workbook(buffer)
+    if not client_id or not project_id or not taskType_id or not status_id or not locality_id or not location_id:
+        check_filters(buffer=buffer, client_id=int(client_id), project_id=int(project_id), status_idd=int(status_id), location_id=int(location_id), locality_id=int(locality_id), taskType_id=int(taskType_id))
+    else:
+        create_workbook(buffer)
     buffer.seek(0)
     return FileResponse(buffer, as_attachment=True, filename='live_production_report.xlsx')
 
 
 def teamlead_report(request):
     team_lead = Employee.objects.filter(role__name="TEAM LEAD").select_related('role','department','location','employement_status')
-    print(team_lead)
     context = {
         'team_lead': team_lead
     }

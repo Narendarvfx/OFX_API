@@ -44,7 +44,16 @@ class ComplexityInfo(APIView):
 class ClientDetail(APIView):
 
     def get(self, request, format=None):
-        client = Clients.objects.all()
+        query_params = self.request.query_params
+        if query_params:
+            locality = query_params.get('locality', None)
+            print(locality)
+            if locality:
+                client = Clients.objects.filter(locality__name=locality)
+            else:
+                client = Clients.objects.all()
+        else:
+            client = Clients.objects.all()
         serializer = ClientSerializer(client, many=True, context={"request": request})
         return Response(serializer.data)
 
