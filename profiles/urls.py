@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^api/profile/(?P<profile_id>\d+)$', api.UserProfileAPIView.as_view()),
     url(r'^api/auth/$', api.UserAuthentication.as_view(), name='User Authentication API'),
     url(r'^api/user/password_change/(?P<user_id>\d+)$', api.UpdatePassword.as_view(), name='User Update Password API'),
+    url(r'^profile/password_change/$', views.change_password, name='User Update Password View'),
 ]

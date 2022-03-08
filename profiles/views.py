@@ -34,6 +34,13 @@ def login_view(request):
     else:
         return render(request, 'profile/login.html')
 
+def change_password(request):
+    user = request.user
+    context = {
+        'user': user.id
+    }
+    return render(request, 'profile/password_change.html', context=context)
+
 def logout_view(request):
     """
     Logout View

@@ -1,12 +1,7 @@
 import datetime
-import io
 import json
-import os
 
-import requests
 import xlsxwriter
-from django.http import FileResponse
-from requests import request, Response
 
 from production.models import Shots
 from production.serializers import ShotsSerializer
@@ -25,6 +20,7 @@ def get_data(dept):
     dataa = json.dumps(serializer.data)
     return json.loads(dataa)
 
+
 def create_workbook(buffer):
     workbook = xlsxwriter.Workbook(buffer)
     for dept in ['PAINT', 'ROTO', 'MM']:
@@ -37,6 +33,7 @@ def create_workbook(buffer):
 
 
 def write_to_excel(workbook, worksheet, shots_data):
+    print(shots_data)
     # Add a bold format to use to highlight cells.
     bold = workbook.add_format({'bold': True, 'bg_color': '#43d3f7', 'border': 1, 'border_color': 'black'})
     pending_color = workbook.add_format({'bg_color': 'yellow', 'border': 1, 'border_color': 'black'})
@@ -88,6 +85,7 @@ def write_to_excel(workbook, worksheet, shots_data):
         else:
             bid_days = float(shot_data['bid_days'])
             percentile = shot_data['progress'] / 100
+
         bid_column = 'G{}'.format(row + 2)
         progress_column = 'H{}'.format(row + 2)
         total_frames = shot_data['actual_end_frame'] - shot_data['actual_start_frame'] + 1
@@ -121,11 +119,38 @@ def write_to_excel(workbook, worksheet, shots_data):
         else:
             estimate_date = ""
         worksheet.write(row + 1, col + 16, estimate_date, border)
-        location =""
+        location = ""
         if shot_data['location']:
             location = shot_data['location']
         worksheet.write(row + 1, col + 17, "", border)
         worksheet.write(row + 1, col + 18, "", border)
         worksheet.write(row + 1, col + 19, location, border)
         row += 1
+
+
 # write_to_excel()
+
+
+def check_filters(buffer=None, client_id=None, project_id=None, taskType_id=None, status_idd=None, location_id=None, locality_id=None):
+    shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project', 'sequence__project__client',
+                                        'status', 'complexity', 'team_lead', 'artist').all()
+    if client_id:
+        shot = shot.filter(sequence__project__client_id=client_id)
+    if project_id:
+        shot = shot.filter(sequence__project_id=project_id)
+    if status_idd:
+        shot = shot.filter(status_id=status_idd)
+    if locality_id:
+        shot = shot.filter(sequence__project__client__locality_id=locality_id)
+    if location_id:
+        shot = shot.filter(location_id=location_id)
+    if taskType_id:
+        shot = shot.filter(task_type_id=taskType_id)
+    serializer = ShotsSerializer(shot, many=True)
+    dataa = json.dumps(serializer.data)
+    workbook = xlsxwriter.Workbook(buffer)
+    worksheet = workbook.add_worksheet()
+    write_to_excel(workbook, worksheet, json.loads(dataa))
+
+    workbook.close()
+    return buffer
