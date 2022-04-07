@@ -20,7 +20,7 @@
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <style>
         .form-control {
-            color: #a2a1a1 !important;
+            color: #fffcfc !important;
         }
 
         .card {
@@ -51,7 +51,7 @@
         }
 
         table.dataTable thead {
-            color: #bcbcbc;
+            color: #f6f5f5;
             font-weight: normal;
             font-size: small;
         }
@@ -71,12 +71,12 @@
         }
 
         table.dataTable tfoot th, table.dataTable tfoot td {
-            padding: 2px;
+            padding: 5px;
             border-top: 0px;
         }
 
         .container-fluid {
-            padding: 5px !important;
+            padding: 10px !important;
         }
 
         .page-titles {
@@ -84,12 +84,12 @@
         }
 
         .dataTables_wrapper .dataTables_length select {
-            color: #a2a1a1 !important;
+            color: #ccc8c8 !important;
             background-color: inherit;
         }
 
         .dataTables_wrapper .dataTables_filter input {
-            color: #bcbcbc !important;
+            color: #dad8d8 !important;
         }
 
         table.dataTable tbody tr.selected {
@@ -103,6 +103,9 @@
 
         .multiselect-container > li > a > label {
             padding: 4px 20px 3px 20px;
+        }
+        table.dataTable tbody th, table.dataTable tbody td {
+            padding: 7px;
         }
     </style>
     <div class="row page-titles">
@@ -122,22 +125,22 @@
             <div class="float-right" style="margin-left: 5px">
                 <select id="shot_taskType_select" class="form-control">
                     <option value="0">TaskType</option>
-                    {% for task_type in task_type %}
-                        <option value="{{ task_type.id }}">{{ task_type.name }}</option>
+                    {% for task_ty in task_type %}
+                        <option value="{{ task_ty.id }}">{{ task_ty.name }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class="float-right" style="margin-left: 5px">
                 <select id="shot_status_select" class="form-control">
-                    <option value="">Status</option>
-                    {% for status in status %}
-                        <option value={{ status.id }}>{{ status.code }}</option>
+                    <option value="0">Status</option>
+                    {% for statu in status %}
+                        <option value={{ statu.id }}>{{ statu.code }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class="float-right" style="margin-left: 5px">
                 <select id="shot_project_select" class="form-control">
-                    <option value="">Project</option>
+                    <option value="0">Project</option>
                     {% for project in projects %}
                         <option value={{ project.id }}>{{ project.name }}</option>
                     {% endfor %}
@@ -145,7 +148,7 @@
             </div>
             <div class="float-right" style="margin-left: 5px">
                 <select id="shot_client_select" class="form-control">
-                    <option value="">Client</option>
+                    <option value="0">Client</option>
                     {% for client in clients %}
                         <option value={{ client.id }}>{{ client.name }}</option>
                     {% endfor %}
@@ -153,17 +156,17 @@
             </div>
             <div class="float-right" style="margin-left: 5px">
                 <select id="shot_location_select" class="form-control">
-                    <option value="">Location</option>
-                    {% for location in location %}
-                        <option value={{ location.id }}>{{ location.name }}</option>
+                    <option value="0">Location</option>
+                    {% for locatio in location %}
+                        <option value={{ locatio.id }}>{{ locatio.name }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class="float-right" style="margin-left: 5px">
                 <select id="shot_locality_select" class="form-control">
                     <option value="0">Locality</option>
-                    {% for locality in locality %}
-                        <option value={{ locality.id }}>{{ locality.name }}</option>
+                    {% for localit in locality %}
+                        <option value={{ localit.id }}>{{ localit.name }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -179,7 +182,7 @@
     <div class="container-fluid">
 
         <!-- Shots Table View -->
-        <div id="shots_list_view" class="card">
+        <div id="shots_list_view" class="card" >
             <table id="shots_table" class="table display no-wrap" style="width:100%">
                 <thead>
                 <tr>
@@ -369,10 +372,10 @@
                 <td>${shot.actual_start_frame}</td>
                 <td>${shot.actual_end_frame}</td>
                 <td>0</td>
-                <td ><span class="badge" style="color:white;padding:5px 10px;font-size:1em; background-color:${color}">${shot.status.code}</span></td>
+                <td ><span class="badge" style="color:white;padding:3px 10px;font-size:1em; background-color:${color}">${shot.status.code}</span></td>
                 <td>${shot.bid_days}</td>
                 <td>
-                    <div class="progress" style="height: 20px;">
+                    <div class="progress" style="height: 15px;">
                         <div class="progress-bar" style="width: ${shot.progress}%;background-color:${progress_color};" role="progressbar">${shot.progress}%</div>
                     </div>
                   {#<div id="myBar" style="background-color:${progress_color}; height:20px;width:${shot.progress}%; color:white">${shot.progress}%</div>#}
@@ -391,9 +394,9 @@
         $(document).ready(function () {
             // DataTable
             const table = $('#shots_table').DataTable({
-                "scrollX": true,
                 dom: 'Blfrtip',
-                scrollY: '55vh',
+                scrollResize: true,
+                scrollX: true,
                 scrollCollapse: true,
                 buttons: [],
                 "searching": true,
@@ -414,72 +417,110 @@
             $('#shot_client_select').on('change', function () {
                 const client = $('#shot_client_select option:selected').text().trim();
                 client_id = $('#shot_client_select option:selected').val();
-                table.columns(0).search(client).draw();
-                const all_projects_json = $.ajax({
-                    type: "GET",
-                    url: "/api/production/projects/" + client_id + "/",
-                    dataType: "application/json",
-                    async: false,
-                    error: function (xhr, status, err) {
-                    },
-                }).responseText;
-                const all_projects = JSON.parse(all_projects_json);
-                $('#shot_project_select').empty()
-                $('#shot_project_select').append(`<option value="0">
-                                       Project
-                                  </option>`);
-                all_projects.forEach(function (project) {
-                    optionText = project['name'];
-                    optionValue = project['id'];
-                    $('#shot_project_select').append(`<option value="${optionValue}">
-                                       ${optionText}
-                                  </option>`);
-                })
+                if (client_id != 0){
+                    table.columns(0).search(client).draw();
+                    const all_projects_json = $.ajax({
+                        type: "GET",
+                        url: "/api/production/projects/" + client_id + "/",
+                        dataType: "application/json",
+                        async: false,
+                        error: function (xhr, status, err) {
+                        },
+                    }).responseText;
+                    const all_projects = JSON.parse(all_projects_json);
+                    $('#shot_project_select').empty()
+                    $('#shot_project_select').append(`<option value="0">
+                                           Project
+                                      </option>`);
+                    all_projects.forEach(function (project) {
+                        optionText = project['name'];
+                        optionValue = project['id'];
+                        $('#shot_project_select').append(`<option value="${optionValue}">
+                                           ${optionText}
+                                      </option>`);
+                    })
+                }else{
+                    table.columns(0).search(client).draw();
+                    $('#shot_project_select').empty()
+                    $('#shot_project_select').append(`<option value="0">
+                                           Project
+                                      </option>`);
+                    {% for project in projects %}
+                        $('#shot_project_select').append(`<option value='{{ project.name }}'>
+                                           {{ project.name }}
+                                      </option>`);
+                    {% endfor %}
+                }
             });
             $('#shot_project_select').on('change', function () {
                 const project = $("#shot_project_select :selected").text().trim();
                 project_id = $('#shot_project_select option:selected').val();
+                console.log("project:"+project)
                 table.columns(1).search(project).draw();
             });
             $('#shot_taskType_select').on('change', function () {
-                const taskType = $('#shot_taskType_select :selected').text().trim()
+                let taskType = $('#shot_taskType_select :selected').text().trim()
                 task_type_id = $('#shot_taskType_select option:selected').val()
+                if (task_type_id == 0){
+                    taskType = ""
+                }
                 table.columns(4).search(taskType).draw();
             });
             $('#shot_status_select').on('change', function () {
-                const status = $('#shot_status_select :selected').text().trim();
+                let status = $('#shot_status_select :selected').text().trim();
                 status_id = $('#shot_status_select option:selected').val();
+                if (status_id == 0){
+                    status = ""
+                }
                 table.columns(9).search(status).draw();
             });
             $('#shot_location_select').on('change', function () {
-                const location = $('#shot_location_select :selected').text().trim();
+                let location = $('#shot_location_select :selected').text().trim();
                 location_id = $('#shot_location_select option:selected').val();
+                if (location_id == 0){
+                    location = ""
+                }
                 table.columns(16).search(location).draw();
             });
             $('#shot_locality_select').on('change', function () {
-                const locality = $("#shot_locality_select :selected").text().trim();
+                let locality = $("#shot_locality_select :selected").text().trim();
                 locality_id = $("#shot_locality_select option:selected").val();
-                table.columns(17).search(locality).draw();
-                const all_clients_json = $.ajax({
-                    type: "GET",
-                    url: "/api/production/clients/?locality=" + locality,
-                    dataType: "application/json",
-                    async: false,
-                    error: function (xhr, status, err) {
-                    },
-                }).responseText;
-                const all_clients = JSON.parse(all_clients_json);
-                $('#shot_client_select').empty()
-                $('#shot_client_select').append(`<option value="0">
-                                       Client
-                                  </option>`);
-                all_clients.forEach(function (client) {
-                    optionText = client['name'];
-                    optionValue = client['id'];
-                    $('#shot_client_select').append(`<option value="${optionValue}">
-                                       ${optionText}
-                                  </option>`);
-                })
+                if (locality_id != 0){
+                    table.columns(17).search(locality).draw();
+                    const all_clients_json = $.ajax({
+                        type: "GET",
+                        url: "/api/production/clients/?locality=" + locality,
+                        dataType: "application/json",
+                        async: false,
+                        error: function (xhr, status, err) {
+                        },
+                    }).responseText;
+                    const all_clients = JSON.parse(all_clients_json);
+                    $('#shot_client_select').empty()
+                    $('#shot_client_select').append(`<option value="0">
+                                           Client
+                                      </option>`);
+                    all_clients.forEach(function (client) {
+                        optionText = client['name'];
+                        optionValue = client['id'];
+                        $('#shot_client_select').append(`<option value="${optionValue}">
+                                           ${optionText}
+                                      </option>`);
+                    })
+                }else{
+                    locality = ""
+                    table.columns(17).search(locality).draw();
+                    $('#shot_client_select').empty()
+                    $('#shot_client_select').append(`<option value="0">
+                                           Client
+                                      </option>`);
+                    {% for client in clients %}
+                        $('#shot_client_select').append(`<option value='{{ client.name }}'>
+                                           {{ client.name }}
+                                      </option>`);
+                    {% endfor %}
+                }
+
             });
         });
 
