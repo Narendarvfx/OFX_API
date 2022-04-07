@@ -55,10 +55,10 @@
             <div class="float-right" style="margin-left: 5px">
                 <select id="dep_select" class="form-control">
                     <option value="">Department</option>
-                    <option value="PAINT">Paint</option>
-                    <option value="ROTO">Roto</option>
+                    <option value="PAINT">PAINT</option>
+                    <option value="ROTO">ROTO</option>
                     <option value="MM">MM</option>
-                    <option value="COMP">Comp</option>
+                    <option value="COMP">COMP</option>
                 </select>
             </div>
         </div>
@@ -127,25 +127,25 @@
         {#                </div>#}
         {#            </div>#}
         {#        </div>#}
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex no-block">
-                        <h4 class="card-title">Monthly Analytics</h4>
-                        <div class="ml-auto">
-                            <select class="custom-select">
-                                <option selected>2022</option>
-                                <option>2023</option>
-                                <option>2024</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div>
-                        <canvas id="test_c" height="150"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
+{#        <div class="col-lg-6">#}
+{#            <div class="card">#}
+{#                <div class="card-body">#}
+{#                    <div class="d-flex no-block">#}
+{#                        <h4 class="card-title">Monthly Analytics</h4>#}
+{#                        <div class="ml-auto">#}
+{#                            <select class="custom-select">#}
+{#                                <option selected>2022</option>#}
+{#                                <option>2023</option>#}
+{#                                <option>2024</option>#}
+{#                            </select>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div>#}
+{#                        <canvas id="test_c" height="150"></canvas>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
 {#        <div class="col-lg-6 mb-8">#}
 {#            <div data-label="10%" class="css-bar css-bar-10 css-bar-lg css-bar-default"></div>#}
 {#        </div>#}
@@ -173,7 +173,6 @@
         $(function () {
             $('[data-plugin="knob"]').knob();
         });
-        console.log("Entered")
 
         var startDate;
         let endDate;
@@ -237,33 +236,33 @@
             }
         });
         $('#top_data').hide();
-        const labels = [
-            'Completion Percentage '
-        ];
-
-        const data = {
-            labels: labels,
-            datasets: [{
-                label: 'My First dataset',
-                backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                ],
-                data: [30],
-                hoverOffset: 4
-            }],
-        };
-
-        const config = {
-            type: 'doughnut',
-            data: data,
-            options: {}
-        };
-
-        const myChart = new Chart(
-            document.getElementById('myChart'),
-            config
-        );
+        {#const labels = [#}
+        {#    'Completion Percentage '#}
+        {#];#}
+        {##}
+        {#const data = {#}
+        {#    labels: labels,#}
+        {#    datasets: [{#}
+        {#        label: 'My First dataset',#}
+        {#        backgroundColor: [#}
+        {#            'rgb(255, 99, 132)',#}
+        {#            'rgb(54, 162, 235)',#}
+        {#        ],#}
+        {#        data: [30],#}
+        {#        hoverOffset: 4#}
+        {#    }],#}
+        {#};#}
+        {##}
+        {#const config = {#}
+        {#    type: 'doughnut',#}
+        {#    data: data,#}
+        {#    options: {}#}
+        {#};#}
+        {##}
+        {#const myChart = new Chart(#}
+        {#    document.getElementById('myChart'),#}
+        {#    config#}
+        {#);#}
 
         function tl_export_to_excel() {
             if (lead_id > 0 && startDate > 0) {
@@ -292,42 +291,65 @@
             'November',
             'December'
         ];
-        const datt = {
-            labels: lbl,
-            datasets: [{
-                label: 'Narendar Reddy G',
-                data: [65, 59, 80, 81, 56, 55, 40],
-                backgroundColor: [
-                    'rgba(255, 99, 132,0.5)',
-                    'rgba(255, 159, 64)',
-                    'rgba(255, 205, 86)',
-                    'rgba(75, 192, 192)',
-                    'rgba(54, 162, 235)',
-                    'rgba(153, 102, 255)',
-                    'rgba(201, 203, 207)'
-                ],
-                borderColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(255, 159, 64)',
-                    'rgb(255, 205, 86)',
-                    'rgb(75, 192, 192)',
-                    'rgb(54, 162, 235)',
-                    'rgb(153, 102, 255)',
-                    'rgb(201, 203, 207)'
-                ],
-                borderWidth: 1
-            }]
-        };
-        const conff = new Chart(ctx, {
-            type: 'bar',
-            data: datt,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            },
-        });
+        {#const datt = {#}
+        {#    labels: lbl,#}
+        {#    datasets: [{#}
+        {#        label: 'Narendar Reddy G',#}
+        {#        data: [65, 59, 80, 81, 56, 55, 40],#}
+        {#        backgroundColor: [#}
+        {#            'rgba(255, 99, 132,0.5)',#}
+        {#            'rgba(255, 159, 64)',#}
+        {#            'rgba(255, 205, 86)',#}
+        {#            'rgba(75, 192, 192)',#}
+        {#            'rgba(54, 162, 235)',#}
+        {#            'rgba(153, 102, 255)',#}
+        {#            'rgba(201, 203, 207)'#}
+        {#        ],#}
+        {#        borderColor: [#}
+        {#            'rgb(255, 99, 132)',#}
+        {#            'rgb(255, 159, 64)',#}
+        {#            'rgb(255, 205, 86)',#}
+        {#            'rgb(75, 192, 192)',#}
+        {#            'rgb(54, 162, 235)',#}
+        {#            'rgb(153, 102, 255)',#}
+        {#            'rgb(201, 203, 207)'#}
+        {#        ],#}
+        {#        borderWidth: 1#}
+        {#    }]#}
+        {#};#}
+        {#const conff = new Chart(ctx, {#}
+        {#    type: 'bar',#}
+        {#    data: datt,#}
+        {#    options: {#}
+        {#        scales: {#}
+        {#            y: {#}
+        {#                beginAtZero: true#}
+        {#            }#}
+        {#        }#}
+        {#    },#}
+        {#});#}
+        $(document).ready(function () {
+            $('#dep_select').on('change', function () {
+                const dep = $("#dep_select :selected").text().trim();
+                $('#lead_select').empty()
+                const all_leads_json = $.ajax({
+                    type: "GET",
+                    url: "/api/hrm/employee/?dept=" + dep + "&role=TEAM LEAD",
+                    dataType: "application/json",
+                    async: false,
+                    error: function (xhr, status, err) {
+                    },
+                }).responseText;
+                const all_leads = JSON.parse(all_leads_json);
+                $('#lead_select').append(`<option value="0">
+                                       Team Lead
+                                  </option>`);
+                all_leads.forEach(function (lead) {
+                        $('#lead_select').append(`<option value=${lead.id}>
+                                       ${lead.fullName}
+                                  </option>`);
+                    })
+            });
+        })
     </script>
 {% endblock page_scripts %}

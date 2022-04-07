@@ -8,7 +8,7 @@ import requests
 
 server = "https://shotbuzz.oscarfx.com"
 token = '39bdb2c0347f12746b2fa909c9b48a81247ca120'
-employee_csv = 'data/Employees_data_final.csv'
+employee_csv = r"C:\Users\narendarreddy.g\Documents\TeamChange_Paint\teamlist_paint.csv"
 
 ########################################################################################################################
 
@@ -21,7 +21,6 @@ def update_employee_details(data, row):
     :return:
     """
     user_api_url = "{}/api/hrm/employee/{}/".format(server, data['id'])
-    print(user_api_url)
     data_edit = {
         "employee_id": row['Employee ID'],
         "fullName": row['Full Name'],
@@ -32,7 +31,6 @@ def update_employee_details(data, row):
         "grade": row['Grade'],
     }
     response = requests.put(user_api_url, data=data_edit, headers={'Authorization': 'Token {}'.format(token)})
-    print(response.text)
 
 def import_employee_data():
     """
@@ -55,7 +53,7 @@ def import_employee_data():
                 "is_staff": False,
                 "is_active": True
             }
-            response = requests.post(user_api_url, data=data, headers={'Authorization': 'Token {}'.format(token)})
+            response = requests.post(user_api_url, data=data, headers={'Authorization': 'Token {}'.format(token)}, verify=False)
             print(response.text)
             update_employee_details(response.json(), row)
 
@@ -71,19 +69,20 @@ def generate_default_profile_photo():
                 shutil.copyfile('img/female.png', 'img/default/{}.jpg'.format(row['EMPLOYEE ID']))
 
 def setTeamId():
-    get_user_url = "{}/api/users/".format(server)
-    get_user_id = requests.get(get_user_url, headers={'Authorization': 'Token {}'.format(token)})
+    get_user_url = "{}/api/hrm/employee/".format(server)
+    get_user_id = requests.get(get_user_url, headers={'Authorization': 'Token {}'.format(token)}, verify=False)
     # print(get_user_id.text)
     for user in get_user_id.json():
+        # print(user)
         with open(employee_csv, newline='') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
-                if row['UserName'] == user['username']:
+                if row['EmployeeID'] == user['employee_id']:
                     data = {
-                        "team" : row['Team']
+                        "team_lead" : row['TeamId']
                     }
                     user_api_url = "{}/api/hrm/employee/{}/".format(server, user['id'])
-                    response = requests.put(user_api_url, data=data, headers={'Authorization': 'Token {}'.format(token)})
+                    response = requests.put(user_api_url, data=data, headers={'Authorization': 'Token {}'.format(token)}, verify=False)
                     print(response.text)
                     
                     
