@@ -50,10 +50,10 @@ def calculate_dept_data(dept, start_date, end_date):
 
     act_vs_ach = total_mandays - achieved_mandays
     try:
-        retakes_per = round(total_retakes / uploaded * 100)
         yts_per = round(yts / length * 100)
         wip_per = round(wip / length * 100)
         comp_per = round(completed / length * 100)
+        retakes_per = round(total_retakes / uploaded * 100)
     except ZeroDivisionError:
         retakes_per = "N/A"
 
