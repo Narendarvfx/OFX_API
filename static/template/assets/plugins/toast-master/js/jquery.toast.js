@@ -53,13 +53,13 @@ if ( typeof Object.create !== 'function' ) {
 
             if ( this.options.allowToastClose ) {
                 _toastContent += '<span class="close-jq-toast-single">&times;</span>';
-            };
+            }
 
             if ( this.options.text instanceof Array ) {
 
                 if ( this.options.heading ) {
                     _toastContent +='<h2 class="jq-toast-heading">' + this.options.heading + '</h2>';
-                };
+                }
 
                 _toastContent += '<ul class="jq-toast-ul">';
                 for (var i = 0; i < this.options.text.length; i++) {
@@ -70,7 +70,7 @@ if ( typeof Object.create !== 'function' ) {
             } else {
                 if ( this.options.heading ) {
                     _toastContent +='<h2 class="jq-toast-heading">' + this.options.heading + '</h2>';
-                };
+                }
                 _toastContent += this.options.text;
             }
 
@@ -78,11 +78,11 @@ if ( typeof Object.create !== 'function' ) {
 
             if ( this.options.bgColor !== false ) {
                 this._toastEl.css("background-color", this.options.bgColor);
-            };
+            }
 
             if ( this.options.textColor !== false ) {
                 this._toastEl.css("color", this.options.textColor);
-            };
+            }
 
             if ( this.options.textAlign ) {
                 this._toastEl.css('text-align', this.options.textAlign);
@@ -93,8 +93,8 @@ if ( typeof Object.create !== 'function' ) {
 
                 if ( $.inArray(this.options.icon, this._defaultIcons) !== -1 ) {
                     this._toastEl.addClass('jq-icon-' + this.options.icon);
-                };
-            };
+                }
+            }
         },
 
         position: function () {
@@ -165,25 +165,25 @@ if ( typeof Object.create !== 'function' ) {
                 this._toastEl.on('beforeShow', function () {
                     that.options.beforeShow();
                 });
-            };
+            }
 
             if ( typeof this.options.afterShown == 'function' ) {
                 this._toastEl.on('afterShown', function () {
                     that.options.afterShown();
                 });
-            };
+            }
 
             if ( typeof this.options.beforeHide == 'function' ) {
                 this._toastEl.on('beforeHide', function () {
                     that.options.beforeHide();
                 });
-            };
+            }
 
             if ( typeof this.options.afterHidden == 'function' ) {
                 this._toastEl.on('afterHidden', function () {
                     that.options.afterHidden();
                 });
-            };          
+            }
         },
 
         addToDom: function () {
@@ -213,7 +213,7 @@ if ( typeof Object.create !== 'function' ) {
 
                 if ( _extToastCount > 0 ) {
                     $('.jq-toast-wrap').find('.jq-toast-single').slice(0, _extToastCount).remove();
-                };
+                }
 
             }
 
@@ -295,7 +295,7 @@ if ( typeof Object.create !== 'function' ) {
                     }
 
                 }, this.options.hideAfter);
-            };
+            }
         },
 
         reset: function ( resetWhat ) {

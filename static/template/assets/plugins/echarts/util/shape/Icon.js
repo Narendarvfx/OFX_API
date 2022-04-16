@@ -588,7 +588,7 @@ define(function (require) {
                 ctx.closePath();
             }
 
-            return;
+
         },
 
         /**

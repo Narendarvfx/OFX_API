@@ -30,7 +30,7 @@ function icheckfirstinit() {
         checkboxClass: 'icheckbox_futurico',
         radioClass: 'iradio_futurico'
     });
-};
+}
 
 var iCheckcontrol = function () {
     return {
@@ -58,21 +58,21 @@ var iCheckcontrol = function () {
                         radio_default = 'iradio_square';
                         checkbox = 'icheckbox_square' + ct;
                         radio = 'iradio_square'  + ct;
-                    };
+                    }
 
                     if (skin.hasClass('skin-flat')) {
                         checkbox_default = 'icheckbox_flat';
                         radio_default = 'iradio_flat';
                         checkbox = 'icheckbox_flat' + ct;
                         radio = 'iradio_flat'  + ct;
-                    };
+                    }
 
                     if (skin.hasClass('skin-line')) {
                         checkbox_default = 'icheckbox_line';
                         radio_default = 'iradio_line';
                         checkbox = 'icheckbox_line' + ct;
                         radio = 'iradio_line'  + ct;
-                    };
+                    }
 
                     skin.find('.check').each(function() {
                         var e = $(this).hasClass('state') ? $(this) : $(this).parent();
@@ -82,7 +82,7 @@ var iCheckcontrol = function () {
 
                     skin.data('color', self.attr('class') ? self.attr('class') : 'black');
                     self.addClass('active');
-                };
+                }
             });
         }
     };

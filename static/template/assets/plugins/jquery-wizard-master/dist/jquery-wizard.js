@@ -247,13 +247,13 @@
 
       if (tests.csstransitions()) {
         /*eslint no-new-wrappers: "off"*/
-        support.transition = new String(prefixed('transition'));
+        support.transition = String(prefixed('transition'));
         support.transition.end = events.transition.end[support.transition];
       }
 
       if (tests.cssanimations()) {
         /*eslint no-new-wrappers: "off"*/
-        support.animation = new String(prefixed('animation'));
+        support.animation = String(prefixed('animation'));
         support.animation.end = events.animation.end[support.animation];
       }
     })(support);

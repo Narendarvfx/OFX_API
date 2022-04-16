@@ -8,7 +8,7 @@ from production.serializers import ShotsSerializer
 
 
 def get_data(dept):
-    status_list = "YTA|ATL|YTS|WIP|STC|STQ|IRT|IAP|CRT"
+    status_list = "YTA|ATL|YTS|WIP|STC|STQ|IRT|IAP|CRT|LAP|LRT"
     status = []
     for stat in status_list.split('|'):
         status.append(stat)
@@ -33,7 +33,6 @@ def create_workbook(buffer):
 
 
 def write_to_excel(workbook, worksheet, shots_data):
-    print(shots_data)
     # Add a bold format to use to highlight cells.
     bold = workbook.add_format({'bold': True, 'bg_color': '#43d3f7', 'border': 1, 'border_color': 'black'})
     pending_color = workbook.add_format({'bg_color': 'yellow', 'border': 1, 'border_color': 'black'})
@@ -70,9 +69,9 @@ def write_to_excel(workbook, worksheet, shots_data):
         shot_status = shot_data['status']['code']
         if shot_data['status']['code'] in ['YTA', 'ATL', 'YTS']:
             shot_status = "YTS"
-        elif shot_data['status']['code'] in ['WIP', 'STC']:
+        elif shot_data['status']['code'] in ['WIP', 'STC', 'LRT']:
             shot_status = "WIP"
-        elif shot_data['status']['code'] in ['STQ', 'IRT']:
+        elif shot_data['status']['code'] in ['STQ', 'IRT','LAP']:
             shot_status = "QC"
         elif shot_data['status']['code'] == "IAP":
             shot_status = "IAP"

@@ -311,7 +311,7 @@ $(function () {
     for (var i = 0; i <= 10; i += 1) d2.push([i, parseInt(Math.random() * 40)]);
     var d3 = [];
     for (var i = 0; i <= 10; i += 1) d3.push([i, parseInt(Math.random() * 25)]);
-    var ds = new Array();
+    var ds = [];
     ds.push({
         label: "Data One"
         , data: d1

@@ -110,7 +110,7 @@ export default {
         if (isNaN(data[i])) {
           if (start === null) {
             start = i;
-            continue;
+
           }
         } else if (start) {
           average = (data[i] - data[start - 1]) / (i - start + 1);

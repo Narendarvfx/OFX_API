@@ -32,7 +32,7 @@
             $("body").append($(vModal));
 
             var vFormAvd = createFormAvd(pColumns, searchText, that),
-                timeoutId = 0;;
+                timeoutId = 0;
 
             $('#avdSearchModalContent' + "_" + that.options.idTable).append(vFormAvd.join(''));
 
@@ -151,7 +151,7 @@
         }
 
         if (typeof this.options.idTable === 'undefined') {
-            return;
+
         } else {
             if (!firstLoad) {
                 var height = parseInt($(".bootstrap-table").height());

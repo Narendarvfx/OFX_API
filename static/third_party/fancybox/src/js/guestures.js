@@ -676,7 +676,7 @@
       self.endSwiping(swiping, scrolling);
     }
 
-    return;
+
   };
 
   Guestures.prototype.endSwiping = function (swiping, scrolling) {

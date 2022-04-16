@@ -251,13 +251,15 @@
         {#        data: [30],#}
         {#        hoverOffset: 4#}
         {#    }],#}
-        {#};#}
+        {#}
+            #}
         {##}
         {#const config = {#}
         {#    type: 'doughnut',#}
         {#    data: data,#}
         {#    options: {}#}
-        {#};#}
+        {#}
+            #}
         {##}
         {#const myChart = new Chart(#}
         {#    document.getElementById('myChart'),#}
@@ -316,7 +318,8 @@
         {#        ],#}
         {#        borderWidth: 1#}
         {#    }]#}
-        {#};#}
+        {#}
+            #}
         {#const conff = new Chart(ctx, {#}
         {#    type: 'bar',#}
         {#    data: datt,#}
@@ -327,7 +330,7 @@
         {#            }#}
         {#        }#}
         {#    },#}
-        {#});#}
+        {#})#}
         $(document).ready(function () {
             $('#dep_select').on('change', function () {
                 const dep = $("#dep_select :selected").text().trim();

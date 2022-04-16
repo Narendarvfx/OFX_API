@@ -13,4 +13,4 @@ export function emulateTransitionEnd ($el, duration) {
     }
   };
   setTimeout(callback, duration);
-};
+}

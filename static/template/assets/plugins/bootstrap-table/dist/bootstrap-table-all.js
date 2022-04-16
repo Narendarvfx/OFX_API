@@ -2857,7 +2857,7 @@
                             selectControl.append($("<option></option>")
                                 .attr("value", key)
                                 .text(variableValues[key]));
-                        };
+                        }
                         break;
                 }
             }
@@ -3902,7 +3902,7 @@ function alphanum(a, b) {
         _initSearch.apply(this, Array.prototype.slice.apply(arguments));
 
         if (!this.options.reorderableRows) {
-            return;
+
         }
 
         //Known issue after search if you reorder the rows the data is not display properly
@@ -4094,7 +4094,7 @@ function alphanum(a, b) {
             $("body").append($(vModal));
 
             var vFormAvd = createFormAvd(pColumns, searchText, that),
-                timeoutId = 0;;
+                timeoutId = 0;
 
             $('#avdSearchModalContent').append(vFormAvd.join(''));
 
@@ -4205,7 +4205,7 @@ function alphanum(a, b) {
         _load.apply(this, Array.prototype.slice.apply(arguments));
 
         if (typeof this.options.idTable === 'undefined') {
-            return;
+
         } else {
             if (!firstLoad) {
                 var height = parseInt($(".bootstrap-table").height());

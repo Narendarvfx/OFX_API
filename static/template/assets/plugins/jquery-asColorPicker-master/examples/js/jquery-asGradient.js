@@ -319,7 +319,7 @@
 
               if (start === null) {
                 start = _i;
-                continue;
+
               }
             } else if (start) {
               average = (data[_i] - data[start - 1]) / (_i - start + 1);

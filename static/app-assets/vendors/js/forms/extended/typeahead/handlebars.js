@@ -2233,7 +2233,7 @@ var __module10__ = (function(__dependency1__, __dependency2__, __dependency3__, 
       for(var i=0, l=result.depths.list.length; i<l; i++) {
         depth = result.depths.list[i];
 
-        if(depth < 2) { continue; }
+        if(depth < 2) {  }
         else { this.addDepth(depth - 1); }
       }
 
