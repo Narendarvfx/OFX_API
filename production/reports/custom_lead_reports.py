@@ -46,10 +46,10 @@ def calculate_data(lead_id, start_date, end_date):
     total_shots = len(shots) + assign_data[0]
     act_vs_ach = assign_data[3] - ach_mandays
     try:
-        retakes_per = round(total_retakes/total_uploaded * 100)
         yts_per = round(assign_data[0] / total_shots * 100)
         wip_per = round(assign_data[1] / total_shots * 100)
         comp_per = round(assign_data[2] / total_shots * 100)
+        retakes_per = round(total_retakes / total_uploaded * 100)
     except ZeroDivisionError:
         retakes_per = "N/A"
 
