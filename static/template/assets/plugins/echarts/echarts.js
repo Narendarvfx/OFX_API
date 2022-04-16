@@ -1975,7 +1975,7 @@ define('echarts/echarts', [
                     special: ecData.get(target, 'special')
                 };
             }
-            return;
+
         },
         _noDataCheck: function (magicOption) {
             var series = magicOption.series;
@@ -3570,7 +3570,7 @@ define('zrender/zrender', [
             this.zr.modShape(target.id);
             status.dragIn = true;
             this.isDrop = false;
-            return;
+
         },
         ondragend: function (param, status) {
             var target = param.target;
@@ -3588,7 +3588,7 @@ define('zrender/zrender', [
                 }
             }
             this.isDragend = false;
-            return;
+
         }
     };
     zrUtil.inherits(Island, ChartBase);
@@ -4330,7 +4330,7 @@ define('zrender/zrender', [
                     _d = null;
                 }
             }, 500);
-            return;
+
         },
         __onMagicType: function (param) {
             this._resetMark();
@@ -6205,7 +6205,7 @@ define('zrender/zrender', [
                     curLineIndex++;
                 }
                 if (lineOffsetArray[curLineIndex] === 0) {
-                    continue;
+
                 } else {
                     this.shapeList[i].style.x += lineOffsetArray[curLineIndex];
                 }
@@ -6443,7 +6443,7 @@ define('zrender/zrender', [
         },
         __dispatchHoverLink: function (param) {
             this.messageCenter.dispatch(ecConfig.EVENT.LEGEND_HOVERLINK, param.event, { target: param.target._name }, this.myChart);
-            return;
+
         },
         refresh: function (newOption) {
             if (newOption) {
@@ -6595,7 +6595,7 @@ define('zrender/zrender', [
                 }
                 this._selectedMap[itemName] = legendSelected[itemName];
             }
-            return;
+
         }
     };
     var legendIcon = {
@@ -8152,7 +8152,7 @@ define('zrender/zrender', [
             status.needRefresh = false;
             this.isDragend = false;
             this._syncHandleShape();
-            return;
+
         },
         last: function () {
             this.timelineOption.autoPlay && this.stop();
@@ -8431,7 +8431,7 @@ define('zrender/zrender', [
             addShapeHandle(barShape);
             addShapeHandle(textShape);
             refreshHandle();
-            return;
+
         } else {
             barShape.highlightStyle.width = 0;
             return setInterval(function () {
@@ -10141,7 +10141,7 @@ define('zrender/zrender', [
                     y: Z * (aX * m[0][1] + aY * m[1][1] + m[2][1]) - Z2
                 };
             }
-            ;
+
             contextPrototype.save = function () {
                 var o = {};
                 copyState(this, o);
@@ -10581,7 +10581,7 @@ define('zrender/zrender', [
     var config = require('../config');
     return function () {
         if (config.debugMode === 0) {
-            return;
+
         } else if (config.debugMode == 1) {
             for (var k in arguments) {
                 throw new Error(arguments[k]);
@@ -12805,7 +12805,7 @@ define('zrender/zrender', [
                 y += lineHeight;
             }
             ctx.restore();
-            return;
+
         },
         getRect: function (style) {
             if (style.__rect) {
@@ -12922,7 +12922,7 @@ define('zrender/zrender', [
                 this._buildRadiusPath(ctx, style);
             }
             ctx.closePath();
-            return;
+
         },
         getRect: function (style) {
             if (style.__rect) {
@@ -14873,7 +14873,7 @@ define('zrender/zrender', [
             setTimeout(function () {
                 self.zr.trigger('mousemove', param.event);
             }, 300);
-            return;
+
         },
         ondragend: function (param, status) {
             if (!this.isDragend || !param.target || status.dragOut) {
@@ -14896,7 +14896,7 @@ define('zrender/zrender', [
             status.dragOut = true;
             status.needRefresh = true;
             this.isDragend = false;
-            return;
+
         },
         onlegendSelected: function (param, status) {
             var legendSelected = param.selected;
@@ -14906,7 +14906,7 @@ define('zrender/zrender', [
                 }
                 this.selectedMap[itemName] = legendSelected[itemName];
             }
-            return;
+
         },
         _buildPosition: function () {
             this._symbol = this.option.symbolList;
@@ -15936,7 +15936,7 @@ define('zrender/zrender', [
         buildPath: function (ctx, style) {
             ctx.moveTo(style.x + style.r, style.y);
             ctx.arc(style.x, style.y, style.r, 0, Math.PI * 2, true);
-            return;
+
         },
         getRect: function (style) {
             if (style.__rect) {
@@ -16472,7 +16472,7 @@ define('zrender/zrender', [
                 ctx.lineTo(style.x, style.y);
                 ctx.closePath();
             }
-            return;
+
         },
         getRect: function (style) {
             if (style.__rect) {
@@ -16819,7 +16819,7 @@ define('zrender/zrender', [
                     }
                 }
             }
-            return;
+
         },
         updateControlPoints: function (style) {
             style.controlPointList = smoothBezier(style.pointList, style.smooth, false, style.smoothConstraint);
@@ -18153,7 +18153,7 @@ define('zrender/zrender', [
                 ctx.lineTo(pointList[i][0], pointList[i][1]);
             }
             ctx.closePath();
-            return;
+
         },
         getRect: function (style) {
             if (style.__rect) {
@@ -18200,7 +18200,7 @@ define('zrender/zrender', [
             path.bezierCurveTo(style.x + style.a / 2, style.y - style.b * 2 / 3, style.x + style.a * 2, style.y + style.b / 3, style.x, style.y + style.b);
             path.bezierCurveTo(style.x - style.a * 2, style.y + style.b / 3, style.x - style.a / 2, style.y - style.b * 2 / 3, style.x, style.y);
             path.closePath();
-            return;
+
         },
         getRect: function (style) {
             if (style.__rect) {
@@ -18623,7 +18623,7 @@ define('zrender/zrender', [
                 }
             }
             ctx.closePath();
-            return;
+
         },
         getRect: function (style) {
             if (style.__rect) {
@@ -19500,7 +19500,7 @@ define('zrender/zrender', [
                 ctx.arc(x, y, r0, endAngle, startAngle, clockWise);
             }
             ctx.closePath();
-            return;
+
         },
         getRect: function (style) {
             if (style.__rect) {
@@ -19736,7 +19736,7 @@ define('zrender/zrender', [
             ctx.restore();
             this.brushSymbol(ctx, style);
             ctx.restore();
-            return;
+
         },
         buildLinePath: function (ctx, style) {
             var x = style.x;
@@ -19843,7 +19843,7 @@ define('zrender/zrender', [
             ctx.arc(style.x, style.y, style.r, 0, Math.PI * 2, false);
             ctx.moveTo(style.x + style.r0, style.y);
             ctx.arc(style.x, style.y, style.r0, 0, Math.PI * 2, true);
-            return;
+
         },
         getRect: function (style) {
             if (style.__rect) {
@@ -20690,7 +20690,7 @@ define('zrender/zrender', [
             this._endFrameShape = new RectangleShape(this._endFrameShape);
             this.shapeList.push(this._startFrameShape);
             this.shapeList.push(this._endFrameShape);
-            return;
+
         },
         _syncHandleShape: function () {
             if (this.zoomOption.orient == 'horizontal') {
@@ -20969,11 +20969,11 @@ define('zrender/zrender', [
             }
             status.needRefresh = false;
             this.isDragend = false;
-            return;
+
         },
         ondataZoom: function (param, status) {
             status.needRefresh = true;
-            return;
+
         },
         absoluteZoom: function (param) {
             this._zoom.start = param.start;
@@ -20982,7 +20982,7 @@ define('zrender/zrender', [
             this._zoom.end2 = param.end2;
             this._syncShape();
             this._syncData(true);
-            return;
+
         },
         rectZoom: function (param) {
             if (!param) {

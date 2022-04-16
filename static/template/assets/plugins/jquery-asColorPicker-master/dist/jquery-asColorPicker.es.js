@@ -868,7 +868,7 @@ var info = {
 
 // palettes
 function noop() {
-  return;
+
 }
 if (!window.localStorage) {
   window.localStorage = noop;

@@ -93,7 +93,7 @@ define(function (require) {
                     ctx, style
                 );
             }
-            return;
+
         }
     };
 

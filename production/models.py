@@ -200,6 +200,7 @@ class ClientVersions(models.Model):
     status = models.ForeignKey(ShotStatus, on_delete=models.CASCADE, related_name='+')
     verified_by =models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+', blank=True, null=True)
     verified_date = models.DateTimeField(blank=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.version

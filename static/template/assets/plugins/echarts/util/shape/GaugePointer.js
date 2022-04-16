@@ -64,7 +64,7 @@ define(function (require) {
                 style.y + Math.sin(angle) * width
             );
             ctx.lineTo(x, y);
-            return;
+
         },
 
         /**

@@ -151,7 +151,7 @@
                             selectControl.append($("<option></option>")
                                 .attr("value", key)
                                 .text(variableValues[key]));
-                        };
+                        }
                         break;
                 }
             }

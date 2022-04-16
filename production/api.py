@@ -4,7 +4,11 @@ from rest_framework.views import APIView
 
 from production.models import Clients, Projects, ShotStatus, Shots, Complexity, Sequence, MyTask, Assignments, Channels, \
     Groups, Qc_Assignment, Permission_Groups, ShotVersions, TaskHelp_Main, TaskHelp_Lead, \
-    TaskHelp_Artist, ShotLogs, Locality, DayLogs, TeamLead_Week_Reports, QCVersions
+    TaskHelp_Artist, ShotLogs, Locality, DayLogs, TeamLead_Week_Reports, QCVersions, ClientVersions
+from production.reports.custom_artist_reports import calculate_artist_data
+from production.reports.custom_dep_reports import calculate_dept_data
+from production.reports.custom_lead_reports import calculate_data
+from production.reports.custom_studio_reports import calculate_studio_data
 from production.serializers import ClientSerializer, ProjectSerializer, StatusSerializer, ShotsSerializer, \
     ShotsPostSerializer, ComplexitySerializer, SequenceSerializer, SequencePostSerializer, MyTaskSerializer, \
     MyTaskPostSerializer, MyTaskShotSerializer, AssignmentSerializer, AssignmentPostSerializer, MyTaskArtistSerializer, \
@@ -14,7 +18,8 @@ from production.serializers import ClientSerializer, ProjectSerializer, StatusSe
     TaskHelpMainSerializer, TaskHelpLeadSerializer, \
     TaskHelpArtistSerializer, TaskHelpMainPostSerializer, TaskHelpArtistPostSerializer, TaskHelpArtistUpdateSerializer, \
     TaskHelpArtistStatusSerializer, ShotLogsSerializer, ShotLogsPostSerializer, LocalitySerializer, DayLogsSerializer, \
-    DayLogsPostSerializer, TeamReportSerializer, QcVersionsSerializer, AllShotQcVersionsSerializer
+    DayLogsPostSerializer, TeamReportSerializer, QcVersionsSerializer, AllShotQcVersionsSerializer, \
+    ClientVersionsSerializer, AllShotClientVersionsSerializer
 
 
 class StatusInfo(APIView):
@@ -285,7 +290,7 @@ class ShotUpdate(APIView):
 
     def get(self, request, shotId, format=None):
         shot = Shots.objects.select_related('sequence__project', 'sequence', 'sequence__project__client', 'status',
-                                            'task_type', 'complexity').prefetch_related('task', 'status', 'complexity',
+                                            'task_type', 'complexity').prefetch_related( 'status', 'complexity',
                                                                                         'sequence').get(id=shotId)
         serializer = ShotsSerializer(shot)
         return Response(serializer.data)
@@ -598,6 +603,43 @@ class QcVersionsById(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class ClientVersionsAPI(APIView):
+
+    def get(self, request):
+        data = ClientVersions.objects.select_related('shot','sent_by','verified_by','status').order_by('version')
+        serializer = ClientVersionsSerializer(data, many=True, context={"request": request})
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = ClientVersionsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class LastClientVersionById(APIView):
+
+    def get(self, request, shotId):
+        data = ClientVersions.objects.select_related('status').filter(shot=shotId).last()
+        serializer = ClientVersionsSerializer(data, context={"request": request})
+        return Response(serializer.data)
+
+
+class ClientVersionsById(APIView):
+    def get(self, request, verId):
+        data = ClientVersions.objects.filter(shot=verId).select_related('sent_by', 'status')
+        serializer = AllShotClientVersionsSerializer(data, many=True, context={"request": request})
+        return Response(serializer.data)
+
+    def put(self, request, verId):
+        data = ClientVersions.objects.get(id=verId)
+        serializer = ClientVersionsSerializer(data, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class Perm_Groups(APIView):
 
@@ -744,3 +786,47 @@ class TeamLeadReports(APIView):
         #             serializer.save()
         #             return Response(serializer.data, status=status.HTTP_201_CREATED)
         #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CustomLeadReports(APIView):
+
+    def get(self, request):
+        query_params = self.request.query_params
+        if query_params:
+            lead_id = query_params.get('lead_id', None)
+            start_date = query_params.get('start_date', None)
+            end_date = query_params.get('end_date', None)
+            returned_data = calculate_data(lead_id, start_date, end_date)
+        return Response(returned_data)
+
+class CustomArtistReports(APIView):
+
+    def get(self, request):
+        query_params = self.request.query_params
+        if query_params:
+            artist_id = query_params.get('artist_id', None)
+            start_date = query_params.get('start_date', None)
+            end_date = query_params.get('end_date', None)
+            returned_data = calculate_artist_data(artist_id, start_date, end_date)
+        return Response(returned_data)
+
+class CustomDeptReports(APIView):
+
+    def get(self, request):
+        query_params = self.request.query_params
+        if query_params:
+            dept = query_params.get('dept', None)
+            start_date = query_params.get('start_date', None)
+            end_date = query_params.get('end_date', None)
+            returned_data = calculate_dept_data(dept, start_date, end_date)
+        return Response(returned_data)
+
+class CustomStudioReports(APIView):
+
+    def get(self, request):
+        query_params = self.request.query_params
+        if query_params:
+            start_date = query_params.get('start_date', None)
+            end_date = query_params.get('end_date', None)
+            returned_data = calculate_studio_data(start_date, end_date)
+        return Response(returned_data)

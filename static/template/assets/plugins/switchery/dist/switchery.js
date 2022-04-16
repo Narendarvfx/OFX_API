@@ -44,7 +44,7 @@ require.helper.semVerSort = function(a, b) {
       if (aLex === '' && bLex !== '') return 1;
       if (aLex !== '' && bLex === '') return -1;
       if (aLex !== '' && bLex !== '') return aLex > bLex ? 1 : -1;
-      continue;
+
     } else if (aInt > bInt) {
       return 1;
     } else {

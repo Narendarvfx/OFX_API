@@ -1,0 +1,305 @@
+{% extends 'main/base.html' %}
+
+
+{% block bread_crumb %}
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <!-- Daterange picker plugins css -->
+    <link href="/static/template/assets/plugins/daterangepicker/daterangepicker.css" rel="stylesheet">
+    <div class="row page-titles">
+        <div class="col-md-4 col-6 align-self-center">
+            <h3 class="text-themecolor mb-0 mt-0">Artist Report</h3>
+        </div>
+        <div class="col-md-8 col-8 align-self-center">
+            <div class="float-right" style="margin-left: 5px">
+                <button class="btn float-right hidden-sm-down btn-primary" ><i
+                        class="mdi mdi-cloud-download"></i> Export
+                </button>
+            </div>
+            <div class='float-right input-group col-4'>
+                <input type='text' name="daterange" class="form-control dateranges"/>
+                <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            <span class="ti-calendar"></span>
+                                        </span>
+                </div>
+            </div>
+            <div class="float-right" style="margin-left: 5px">
+                <select id="artist_select" class="form-control">
+                    <option>Artist</option>
+
+                </select>
+            </div>
+            <div class="float-right" style="margin-left: 5px">
+                <select id="dep_select" class="form-control">
+                    <option value="">Department</option>
+                    <option value="PAINT">PAINT</option>
+                    <option value="ROTO">ROTO</option>
+                    <option value="MM">MM</option>
+                    <option value="COMP">COMP</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+{% endblock bread_crumb %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-12 mb-12" id="top_data">
+            <div class="card">
+                <div class="card-body collapse show">
+                    <h3 class="card-title" id="top_title">Statistics Of </h3>
+                    <p class="card-text" id="selected_dates"></p>
+                </div>
+            </div>
+        </div>
+        <!-- Column -->
+        <div class="col-md-6 col-lg-3 col-xlg-3">
+            <div class="card card-inverse card-info">
+                <div class="box bg-info text-center">
+                    <h1 class="font-light text-white" id="total_shots">0</h1>
+                    <h6 class="text-white">Total Shots</h6>
+                </div>
+            </div>
+        </div>
+        <!-- Column -->
+        <div class="col-md-6 col-lg-3 col-xlg-3">
+            <div class="card card-primary card-inverse">
+                <div class="box text-center">
+                    <h1 class="font-light text-white" id="assign_man">0</h1>
+                    <h6 class="text-white">Assigned Man Days</h6>
+                </div>
+            </div>
+        </div>
+        <!-- Column -->
+        <div class="col-md-6 col-lg-3 col-xlg-3">
+            <div class="card card-inverse card-success">
+                <div class="box text-center">
+                    <h1 class="font-light text-white" id="ach_man">0</h1>
+                    <h6 class="text-white">Achieved Man Days</h6>
+                </div>
+            </div>
+        </div>
+        <!-- Column -->
+        <div class="col-md-6 col-lg-3 col-xlg-3">
+            <div class="card card-inverse card-warning">
+                <div class="box text-center">
+                    <h1 class="font-light text-white" id="assgn_vs_ach">0</h1>
+                    <h6 class="text-white">Actual v/s Achieved</h6>
+                </div>
+            </div>
+        </div>
+
+        <!-- Column -->
+        <div class="col-sm-3">
+            <div class="card card-body">
+                <!-- Row -->
+                <div class="row pt-2 pb-2">
+                    <!-- Column -->
+                    <div class="col pr-0">
+                        <h1 class="font-light" id="yts">0</h1>
+                        <h6 class="text-muted">YTS</h6></div>
+                    <!-- Column -->
+                    <div class="col text-right align-self-center">
+                        <div id="yts_per_label" class="css-bar mb-0 css-bar-primary "><i
+                                class="mdi mdi-note-text"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card card-body">
+                <!-- Row -->
+                <div class="row pt-2 pb-2">
+                    <!-- Column -->
+                    <div class="col pr-0">
+                        <h1 class="font-light" id="wip">0</h1>
+                        <h6 class="text-muted">WIP</h6></div>
+                    <!-- Column -->
+                    <div class="col text-right align-self-center">
+                        <div id="wip_per_label" class="css-bar mb-0 css-bar-warning"><i
+                                class="mdi mdi-tooltip-edit"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card card-body">
+                <!-- Row -->
+                <div class="row pt-2 pb-2">
+                    <!-- Column -->
+                    <div class="col pr-0">
+                        <h1 class="font-light" id="completed">0</h1>
+                        <h6 class="text-muted">COMPLETED</h6></div>
+                    <!-- Column -->
+                    <div class="col text-right align-self-center">
+                        <div id="comp_per_label" class="css-bar mb-0 css-bar-success"><i
+                                class="mdi mdi-check"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card card-body">
+                <!-- Row -->
+                <div class="row pt-2 pb-2">
+                    <!-- Column -->
+                    <div class="col pr-0">
+                        <h1 class="font-light" id="retakes">0</h1>
+                        <h6 class="text-muted">RETAKES</h6></div>
+                    <!-- Column -->
+                    <div class="col text-right align-self-center">
+                        <div data-label="10%" class="css-bar mb-0 css-bar-danger css-bar-80"><i
+                                class="mdi mdi-close"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card card-body">
+                <!-- Row -->
+                <div class="row pt-2 pb-2">
+                    <!-- Column -->
+                    <div class="col pr-0">
+                        <h1 class="font-light" id="retakes_per">0 %</h1>
+                        <h6 class="text-muted">RETAKES %</h6></div>
+                    <!-- Column -->
+                    <div class="col text-right align-self-center">
+                        <div data-label="80%" id="retakes_per_label" class="css-bar mb-0 css-bar-danger"><i
+                                class="mdi mdi-close"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block page_scripts %}
+    <!--OFX Core JavaScript -->
+    <script src="/static/ofx/core.js"></script>
+    <!-- chartist chart -->
+    <script src="/static/template/assets/plugins/moment/moment.js"></script>
+    <!-- Date range Plugin JavaScript -->
+    <script src="/static/template/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script type="text/javascript">
+        let artist_id;
+        let s_Date;
+        let e_Date;
+        let artist_name;
+        /*******************************************/
+        // Date Ranges
+        /*******************************************/
+        $('.dateranges').daterangepicker({
+            ranges: {
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            },
+            locale: {
+                format: 'DD/MM/YYYY'
+            },
+        }, function (start, end, label) {
+            date_change_detected(start, end);
+        });
+
+        $('#dep_select').on('change', function () {
+            const dep = $("#dep_select :selected").text().trim();
+            $('#artist_select').empty()
+            const all_employee_json = $.ajax({
+                type: "GET",
+                url: "/api/hrm/employee/?dept=" + dep + "&role=VFX ARTIST",
+                dataType: "application/json",
+                async: false,
+                error: function (xhr, status, err) {
+                },
+            }).responseText;
+            const all_employees = JSON.parse(all_employee_json);
+            $('#artist_select').append(`<option value="0">
+                                   Artist
+                              </option>`);
+            all_employees.forEach(function (artist) {
+                $('#artist_select').append(`<option value=${artist.id}>
+                                   ${artist.fullName}
+                              </option>`);
+            })
+        });
+
+        function date_change_detected(start, end) {
+            var red = "red"
+            var usual = "#747d8a"
+            s_Date = start.format("YYYY-MM-DD");
+            e_Date = end.format("YYYY-MM-DD");
+            artist_id = $('#artist_select').val()
+            const artist_name = $("#artist_select :selected").text().trim();
+            if (artist_id > 0) {
+                const all_shots_json = $.ajax({
+                    type: "GET",
+                    url: "/api/production/custom/artist_reports/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59" + "&artist_id=" + artist_id,
+                    dataType: "application/json",
+                    async: false,
+                    error: function (xhr, status, err) {
+                    },
+                }).responseText;
+                const all_shots = JSON.parse(all_shots_json);
+                if (all_shots.total_shots !== 0) {
+                    document.getElementById("yts_per_label").classList.add('css-bar-' + all_shots.yts_per.toString())
+                    document.getElementById("wip_per_label").classList.add('css-bar-' + all_shots.wip_per.toString())
+                    document.getElementById("comp_per_label").classList.add('css-bar-' + all_shots.comp_per.toString())
+
+                    document.getElementById("total_shots").innerHTML = all_shots.total_shots
+                    document.getElementById("ach_man").innerHTML = all_shots.achieved_mandays
+                    document.getElementById("assign_man").innerHTML = all_shots.total_mandays
+                    document.getElementById("yts").innerHTML = all_shots.yts
+                    document.getElementById("wip").innerHTML = all_shots.wip
+                    document.getElementById("completed").innerHTML = all_shots.completed
+                    document.getElementById("retakes").innerHTML = all_shots.retakes
+                    document.getElementById("retakes_per").innerHTML = all_shots.retakes_per + " %"
+                    document.getElementById("assgn_vs_ach").innerHTML = all_shots.act_vs_ach
+                    document.getElementById("top_title").innerHTML = "Statistics Of  " + artist_name
+                    document.getElementById("selected_dates").innerHTML = start.format("DD-MM-YYYY") + " --- " + end.format("DD-MM-YYYY")
+                    $('#selected_dates').css("color", usual)
+                } else {
+                    document.getElementById("total_shots").innerHTML = "N/A"
+                    document.getElementById("ach_man").innerHTML = "N/A"
+                    document.getElementById("assign_man").innerHTML = "N/A"
+                    document.getElementById("yts").innerHTML = "N/A"
+                    document.getElementById("wip").innerHTML = "N/A"
+                    document.getElementById("completed").innerHTML = "N/A"
+                    document.getElementById("retakes").innerHTML = "N/A"
+                    document.getElementById("retakes_per").innerHTML = "N/A"
+                    document.getElementById("assgn_vs_ach").innerHTML = "N/A"
+                    document.getElementById("top_title").innerHTML = "Statistics Of  " + artist_name
+                    document.getElementById("selected_dates").innerHTML = "No Statistics Found"
+                    $('#selected_dates').css("color", red)
+                }
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please Select Team Lead..',
+                })
+            }
+        }
+
+        function artist_export_to_excel() {
+            if (artist_id > 0 && s_Date.length > 0) {
+                window.location = "/production/teamleadreports_export/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59" + "&artist_id=" + lead_id
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please Select Artist and Date Range....',
+                })
+            }
+        }
+    </script>
+{% endblock page_scripts %}

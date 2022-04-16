@@ -54,7 +54,7 @@ define(function (require) {
             this.brushSymbol(ctx, style);
 
             ctx.restore();
-            return;
+
         },
 
         /**

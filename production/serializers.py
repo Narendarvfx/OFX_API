@@ -5,7 +5,7 @@ from hrm.models import Employee, Department, Location
 from production.models import Clients, Projects, ShotStatus, Complexity, Shots, Sequence, Task_Type, MyTask, \
     Assignments, Channels, Groups, Qc_Assignment, Folder_Permissions, Permission_Groups, \
     ShotVersions, TaskHelp_Main, TaskHelp_Lead, TaskHelp_Artist, ShotLogs, Locality, DayLogs, TeamLead_Week_Reports, \
-    QCVersions
+    QCVersions, ClientVersions
 
 
 class StatusSerializer(serializers.ModelSerializer):
@@ -340,6 +340,20 @@ class AllShotQcVersionsSerializer(serializers.ModelSerializer):
     status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=True)
     class Meta:
         model = QCVersions
+        fields ='__all__'
+
+class ClientVersionsSerializer(serializers.ModelSerializer):
+    status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=True)
+    class Meta:
+        model = ClientVersions
+        fields ='__all__'
+
+class AllShotClientVersionsSerializer(serializers.ModelSerializer):
+    sent_by = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=True)
+    verified_by = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=True)
+    status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=True)
+    class Meta:
+        model = ClientVersions
         fields ='__all__'
 
 class PGSerializer(serializers.ModelSerializer):

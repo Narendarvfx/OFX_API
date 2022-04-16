@@ -672,7 +672,7 @@
               var otherOp = otherIter.next(length);
               if (thisOp["delete"]) {
                 // Our delete either makes their delete redundant or removes their retain
-                continue;
+
               } else if (otherOp["delete"]) {
                 delta.push(otherOp);
               } else {
@@ -5058,7 +5058,7 @@
                   var child = makeBlot(node);
                   _this.insertBefore(child, _this.children.head || undefined);
                 } catch (err) {
-                  if (err instanceof Registry.ParchmentError) return;
+                  if (err instanceof Registry.ParchmentError)
                   else throw err;
                 }
               });
@@ -11017,7 +11017,7 @@
           };
           BlockBlot.prototype.format = function (name, value) {
             if (Registry.query(name, Registry.Scope.BLOCK) == null) {
-              return;
+
             } else if (name === this.statics.blotName && !value) {
               this.replaceWith(BlockBlot.blotName);
             } else {

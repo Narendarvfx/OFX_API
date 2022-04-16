@@ -2,7 +2,7 @@ import AsColor from 'jquery-asColor';
 
 // palettes
 function noop() {
-  return;
+
 }
 if (!window.localStorage) {
   window.localStorage = noop;

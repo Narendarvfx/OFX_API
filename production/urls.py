@@ -6,8 +6,13 @@ urlpatterns = [
     url(r'^production/production_report/$', views.production_reports, name='reports'),
     url(r'^production/export_prod_report/$', views.export_prod_report, name='reports'),
     url(r'^production/teamleadreports$', views.teamlead_report, name="Team Lead Reports"),
+    url(r'^production/studio_reports$', views.studio_report, name="Studio Reports"),
+    url(r'^production/department_reports$', views.department_report, name="Team Lead Reports"),
+    url(r'^production/artist_reports$', views.artist_report, name="Artist Reports"),
     url(r'^production/teamleadreports_export/$', views.export_teamlead_report, name='TeamLeadReports'),
-    url(r'^production/reports/$', views.reports, name="Multi Reports"),
+    url(r'^production/dept_reports_export/$', views.export_dept_report, name='TeamLeadReports'),
+    url(r'^production/studio_reports_export/$', views.export_studio_report, name='StudioReports'),
+    url(r'^production/client_report/$', views.reports, name="Multi Reports"),
     url(r'^production/reports/multi_export/$', views.reports_export, name="Multi Reports"),
 
     ########## API URLS #################
@@ -71,6 +76,11 @@ urlpatterns = [
     url(r'^api/production/qcversions/(?P<shotId>\d+)/$', api.LastQcVersionById.as_view(), name="Qc Versions"),
     url(r'^api/production/allqcversions/(?P<verId>\d+)/$', api.QcVersionsById.as_view(), name="Qc Versions"),
 
+    # Client Version urls
+    url(r'^api/production/client_versions/$', api.ClientVersionsAPI.as_view(), name="Client Versions"),
+    url(r'^api/production/client_versions/(?P<shotId>\d+)/$', api.LastClientVersionById.as_view(), name="Client Versions"),
+    url(r'^api/production/all_client_versions/(?P<verId>\d+)/$', api.ClientVersionsById.as_view(), name="Client Versions"),
+
     #Task Help Urls
     url(r'^api/production/taskhelp_main/$', api.TaskHelp_Main_API.as_view(), name="Task Help Main"),
     url(r'^api/production/taskhelp_main/(?P<parentId>\d+)/$', api.TaskHelpMainUpdate.as_view(), name='Task Help Main Update API'),
@@ -85,5 +95,20 @@ urlpatterns = [
     # url(r'^api/production/daylogs/(?P<shotId>\d+)/$', api.DayLogsByShot.as_view(), name='DayLogs API'),
 
     #Teamlead Report Urls
-    url(r'^api/production/teamleadreports/$', api.TeamLeadReports.as_view(), name='TeamLeadReports')
+    url(r'^api/production/teamleadreports/$', api.TeamLeadReports.as_view(), name='TeamLeadReports'),
+
+    #Department Report Urls
+    url(r'^api/production/teamleadreports/$', api.TeamLeadReports.as_view(), name='TeamLeadReports'),
+
+    ## Team Lead Urls
+    url(r'api/production/custom/teamleadreports/$', api.CustomLeadReports.as_view(), name="Custom Lead Reports"),
+
+    ## Artist Urls
+    url(r'api/production/custom/artist_reports/$', api.CustomArtistReports.as_view(), name="Custom Lead Reports"),
+
+    #Department Urls
+    url(r'api/production/custom/dep_reports/$', api.CustomDeptReports.as_view(), name="Custom Dept Reports"),
+
+    #Studio Urls
+    url(r'api/production/custom/studio_reports/$', api.CustomStudioReports.as_view(), name="Custom Studio Reports")
 ]

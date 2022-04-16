@@ -14,7 +14,7 @@ $.fn.numericInputExample = function () {
 					total += parseFloat(row.children().eq(column).text());
 				});
 				footer.children().eq(column).text(total);
-			};
+			}
 		};
 	element.find('td').on('change', function (evt) {
 		var cell = $(this),

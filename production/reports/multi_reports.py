@@ -40,6 +40,9 @@ def write_to_excel(workbook, worksheet, shots_data):
     worksheet.write('G1', 'SUBMISSION DATE', bold)
     worksheet.write('H1', 'DELIVERY DATE', bold)
     worksheet.write('I1', 'VENDOR NOTES', bold)
+    worksheet.write('J1', 'SUPERVISOR', bold)
+    worksheet.write('K1', 'TEAM LEAD', bold)
+    worksheet.write('L1', 'ARTIST', bold)
 
     # # Start from the first cell below the headers.
     col = 0

@@ -114,7 +114,7 @@
         _initTable.apply(this, Array.prototype.slice.apply(arguments));
 
         if (!this.options.clickEdit) {
-            return;
+
         }
 
     };
