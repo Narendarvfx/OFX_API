@@ -66,7 +66,7 @@ def write_to_excel(workbook, worksheet, shots_data):
     col = 0
     row = 0
     for shot_data in shots_data:
-        shot_status = shot_data['status']['code']
+        shot_status = ''
         if shot_data['status']['code'] in ['YTA', 'ATL', 'YTS']:
             shot_status = "YTS"
         elif shot_data['status']['code'] in ['WIP', 'STC', 'LRT']:

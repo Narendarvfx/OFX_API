@@ -58,7 +58,26 @@ class ShotLogsFields(admin.ModelAdmin):
 class DayLogsFields(admin.ModelAdmin):
     list_display = [f.name for f in DayLogs._meta.fields]
     list_per_page = 15
-    search_fields = ['name']
+    list_filter = ['updated_date','artist__department__name']
+    search_fields = ['shot__name', 'updated_by__fullName', 'artist__fullName']
+
+class ClientVersionsFields(admin.ModelAdmin):
+    list_display = [f.name for f in ClientVersions._meta.fields]
+    list_per_page = 15
+    list_filter = ['sent_date','verified_date', 'sent_by__department__name']
+    search_fields = ['shot__name', 'verified_by__fullName', 'sent_by__fullName']
+
+class QcVersionsFields(admin.ModelAdmin):
+    list_display = [f.name for f in QCVersions._meta.fields]
+    list_per_page = 15
+    list_filter = ['sent_date','verified_date', 'sent_by__department__name']
+    search_fields = ['shot__name', 'verified_by__fullName', 'sent_by__fullName']
+
+class ShotVersionsFields(admin.ModelAdmin):
+    list_display = [f.name for f in ShotVersions._meta.fields]
+    list_per_page = 15
+    list_filter = ['sent_date','verified_date', 'sent_by__department__name']
+    search_fields = ['shot__name', 'verified_by__fullName', 'sent_by__fullName']
 
 admin.site.register(ShotStatus, ShotStatusFields)
 admin.site.register(Complexity)
@@ -74,9 +93,9 @@ admin.site.register(Groups)
 admin.site.register(Channels)
 admin.site.register(Permission_Groups)
 admin.site.register(Folder_Permissions)
-admin.site.register(ShotVersions)
-admin.site.register(QCVersions)
-admin.site.register(ClientVersions)
+admin.site.register(ShotVersions, ShotVersionsFields)
+admin.site.register(QCVersions, QcVersionsFields)
+admin.site.register(ClientVersions, ClientVersionsFields)
 admin.site.register(TaskHelp_Main)
 admin.site.register(TaskHelp_Lead)
 admin.site.register(TaskHelp_Artist)

@@ -35,6 +35,7 @@ urlpatterns = [
 
     # Shots Urls
     url(r'^api/production/shots/$', api.ShotsData.as_view(), name='Shots API'),
+    url(r'^api/production/shots_filter/$', api.ShotsDataFilter.as_view(), name='Shots API'),
     url(r'^api/production/projects/sequence/shots/(?P<sequenceId>\d+)/$', api.ProjectShotsData.as_view(), name='Projects Shots API'),
     url(r'^api/production/shots/(?P<shotId>\d+)/$', api.ShotUpdate.as_view(), name='Shot Update API'),
 
@@ -49,6 +50,7 @@ urlpatterns = [
 
     # Lead Urls
     url(r'^api/production/leads/shots/$', api.LeadShotsData.as_view(), name='Projects Shots API'),
+    url(r'^api/production/shots/leads_filter/$', api.LeadsData.as_view(), name='Leads Shots API'),
 
     # Channel Urls
     url(r'^api/production/channels/(?P<shotId>\d+)/$', api.ChannelsData.as_view(), name='Channels API'),
