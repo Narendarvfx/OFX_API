@@ -1,4 +1,5 @@
 from rest_framework import status
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -154,6 +155,7 @@ class ShotsData(APIView):
 
     def get(self, request, format=None):
         query_params = self.request.query_params
+
         if query_params:
             project_id = query_params.get('project_id', None)
             client_id = query_params.get('client_id', None)
@@ -185,7 +187,7 @@ class ShotsData(APIView):
         else:
             shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
                                                 'sequence__project__client', 'status', 'complexity', 'team_lead',
-                                                'artist', 'location')
+                                                'artist', 'location').all()
 
         serializer = ShotsSerializer(shot, many=True, context={"request": request})
         return Response(serializer.data)
@@ -197,6 +199,45 @@ class ShotsData(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class ShotsDataFilter(ListAPIView):
+
+    def get(self, request, format=None):
+        query_params = self.request.query_params
+        argumentos = {}
+        if query_params.get('client_id'):
+            clients = []
+            for client in query_params.get('client_id').split('|'):
+                clients.append(client)
+            argumentos['sequence__project__client_id__in'] = clients
+        if query_params.get('project_id'):
+            projects = []
+            for project in query_params.get('project_id').split('|'):
+                projects.append(project)
+            argumentos['sequence__project_id__in'] = projects
+        if query_params.get('status'):
+            status = []
+            for stat in query_params.get('status').split('|'):
+                status.append(stat)
+            argumentos['status_id__in'] = status
+        if query_params.get('dept'):
+            depts = []
+            for dept in query_params.get('dept').split('|'):
+                depts.append(dept)
+            argumentos['task_type__name__in'] = depts
+        if len(argumentos) > 0:
+            shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
+                                                'sequence__project__client', 'status', 'complexity',
+                                                'team_lead', 'artist', 'location').filter(
+                **argumentos)
+        else:
+            shot =[]
+            # shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
+            #                                     'sequence__project__client', 'status', 'complexity', 'team_lead',
+            #                                     'artist', 'location').all()
+
+        serializer = ShotsSerializer(shot, many=True, context={"request": request})
+        return Response(serializer.data)
 
 class ShotLogsData(APIView):
 
@@ -421,8 +462,7 @@ class LeadShotsData(APIView):
                                                                                                                  'shot__team_lead')
             else:
                 if start_date is not None and end_date is not None:
-                    lead = Assignments.objects.filter(lead_id=leadId, assigned_date__range=[start_date, end_date
-                                                                                                                        ]).select_related('lead',
+                    lead = Assignments.objects.filter(lead_id=leadId, assigned_date__range=[start_date, end_date]).select_related('lead',
                                                                                                                  'shot',
                                                                                                                  'shot__sequence',
                                                                                                                  'shot__sequence__project',
@@ -440,6 +480,51 @@ class LeadShotsData(APIView):
         serializer = AssignmentSerializer(lead, many=True, context={"request": request})
         return Response(serializer.data)
 
+class LeadsData(ListAPIView):
+    def get(self, request, format=None):
+        query_params = self.request.query_params
+        argumentos = {}
+        if query_params.get('client_id'):
+            clients = []
+            for client in query_params.get('client_id').split('|'):
+                clients.append(client)
+            argumentos['shot__sequence__project__client_id__in'] = clients
+        if query_params.get('project_id'):
+            projects = []
+            for project in query_params.get('project_id').split('|'):
+                projects.append(project)
+            argumentos['shot__sequence__project_id__in'] = projects
+        if query_params.get('status'):
+            status = []
+            for stat in query_params.get('status').split('|'):
+                status.append(stat)
+            argumentos['shot__status_id__in'] = status
+        if query_params.get('dept'):
+            depts = []
+            for dept in query_params.get('dept').split('|'):
+                depts.append(dept)
+            argumentos['shot__task_type__name__in'] = depts
+        if query_params.get('lead'):
+            argumentos['lead_id'] = query_params.get('lead')
+        if len(argumentos) > 0:
+            lead_shot = Assignments.objects.select_related('lead',
+                                                     'shot',
+                                                     'shot__sequence',
+                                                     'shot__sequence__project',
+                                                     'shot__sequence__project__client',
+                                                     'shot__status',
+                                                     'shot__task_type',
+                                                     'assigned_by',
+                                                     'shot__artist',
+                                                     'shot__team_lead').filter(**argumentos)
+        else:
+            lead_shot =[]
+            # shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
+            #                                     'sequence__project__client', 'status', 'complexity', 'team_lead',
+            #                                     'artist', 'location').all()
+
+        serializer = AssignmentSerializer(lead_shot, many=True, context={"request": request})
+        return Response(serializer.data)
 
 class ChannelsData(APIView):
 
