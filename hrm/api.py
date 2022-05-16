@@ -4,8 +4,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from hrm.models import Employee, ProductionTeam, Role_Permissions
-from hrm.serializers import EmployeeSerializer, TeamSerializer, PermissionSerializer, EmployeePutSerializer
+from hrm.models import Employee, ProductionTeam, Role_Permissions, Grade
+from hrm.serializers import EmployeeSerializer, TeamSerializer, PermissionSerializer, EmployeePutSerializer, \
+    GradeSerializer
 
 
 class EmployeeDetail(APIView):
@@ -27,6 +28,15 @@ class EmployeeDetail(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class AllGrades(APIView):
+    """
+    This is for edit employee detail
+    """
+    def get(self, request, format=None):
+        grades = Grade.objects.all()
+        serializer = GradeSerializer(grades, many=True, context={"request":request})
+        return Response(serializer.data)
+
 class AllEmployeeDetail(APIView):
     """
     This is for edit employee detail
@@ -37,7 +47,7 @@ class AllEmployeeDetail(APIView):
         role = request.GET.get('role')
         if employment_status is not None:
             employee = Employee.objects.select_related('department', 'role', 'employement_status', 'grade').filter(employement_status__name=employment_status)
-        elif department and role is not None:
+        elif department is not None and role is not None:
             employee = Employee.objects.select_related('department', 'role', 'employement_status', 'grade').filter(
                 department__name=department, role__name=role, employement_status__name="Active")
         else:

@@ -2,7 +2,6 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from django.contrib.auth.models import User
 
-from hrm.models import Employee
 from profiles.models import Profile
 
 class UserProfileSerializer(serializers.ModelSerializer):
@@ -31,8 +30,6 @@ class ChangePasswordSerializer(serializers.Serializer):
     """
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
-    print(new_password)
     def validate_new_password(self, value):
         validate_password(value)
-        print(value)
         return value

@@ -192,6 +192,7 @@
                     <th>SHOT</th>
                     <th>TASK TYPE</th>
                     <th>TYPE</th>
+                    <th>COMPLEXITY</th>
                     <th>FRAME IN</th>
                     <th>FRAME OUT</th>
                     <th>DURATION</th>
@@ -260,7 +261,7 @@
         let task_type_id = 0
 
         //  Load Shots Information
-        status_list = "YTA|ATL|YTS|STQ|WIP|IRT|QIP|CRT|IAP|DTC"
+        status_list = "YTA|ATL|YTS|STQ|WIP|IRT|QIP|CRT|IAP|LAP|LRT|HLD|OMT"
         const all_shots_json = $.ajax({
             type: "GET",
             url: "/api/production/shots/?status=" + status_list,
@@ -369,6 +370,7 @@
                 <td>${shot.name}</td>
                 <td>${shot.task_type}</td>
                 <td>${shot.type}</td>
+                <td>${shot.complexity}</td>
                 <td>${shot.actual_start_frame}</td>
                 <td>${shot.actual_end_frame}</td>
                 <td>0</td>
@@ -455,7 +457,6 @@
             $('#shot_project_select').on('change', function () {
                 const project = $("#shot_project_select :selected").text().trim();
                 project_id = $('#shot_project_select option:selected').val();
-                console.log("project:"+project)
                 table.columns(1).search(project).draw();
             });
             $('#shot_taskType_select').on('change', function () {

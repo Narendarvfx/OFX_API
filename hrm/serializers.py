@@ -4,7 +4,7 @@ from hrm.models import Department, Role, Grade, EmployementStatus, Employee, Pro
 from profiles.models import Profile
 
 
-class GradeCompactSerializer(serializers.ModelSerializer):
+class GradeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Grade
