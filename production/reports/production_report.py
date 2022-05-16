@@ -134,12 +134,18 @@ def write_to_excel(workbook, worksheet, shots_data):
 def check_filters(buffer=None, client_id=None, project_id=None, taskType_id=None, status_idd=None, location_id=None, locality_id=None):
     shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project', 'sequence__project__client',
                                         'status', 'complexity', 'team_lead', 'artist').all()
+    status_list = "YTA|ATL|YTS|WIP|STC|STQ|IRT|IAP|CRT|LAP|LRT"
+    status = []
+    for stat in status_list.split('|'):
+        status.append(stat)
     if client_id:
         shot = shot.filter(sequence__project__client_id=client_id)
     if project_id:
         shot = shot.filter(sequence__project_id=project_id)
     if status_idd:
         shot = shot.filter(status_id=status_idd)
+    else:
+        shot = shot.filter(status__code__in=status)
     if locality_id:
         shot = shot.filter(sequence__project__client__locality_id=locality_id)
     if location_id:
