@@ -88,8 +88,8 @@ def write_to_excel(workbook, worksheet, shots_data):
             bid_days = float(shot_data['bid_days'])
             percentile = shot_data['progress'] / 100
 
-        bid_column = 'G{}'.format(row + 2)
-        progress_column = 'H{}'.format(row + 2)
+        bid_column = 'H{}'.format(row + 2)
+        progress_column = 'I{}'.format(row + 2)
         total_frames = shot_data['actual_end_frame'] - shot_data['actual_start_frame'] + 1
         if shot_data['eta']:
             due_date = datetime.datetime.strptime(shot_data['eta'], '%Y-%m-%dT%H:%M:%S')
