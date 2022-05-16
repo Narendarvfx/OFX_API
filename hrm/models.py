@@ -5,7 +5,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.safestring import mark_safe
 from imagekit.models import ProcessedImageField
-from imagekit.processors import ResizeToFill
+
+
 
 from profiles.models import Profile
 

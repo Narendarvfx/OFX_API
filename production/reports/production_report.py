@@ -36,7 +36,7 @@ def write_to_excel(workbook, worksheet, shots_data):
     # Add a bold format to use to highlight cells.
     bold = workbook.add_format({'bold': True, 'bg_color': '#43d3f7', 'border': 1, 'border_color': 'black'})
     pending_color = workbook.add_format({'bg_color': 'yellow', 'border': 1, 'border_color': 'black'})
-    border = workbook.add_format({'border': 1, 'border_color': 'black'})
+    border = workbook.add_format({'border': 1, 'border_color': 'black', })
     # Add a number format for cells with percentage.
     percent = workbook.add_format({'num_format': '0.0%', 'border': 1, 'border_color': 'black'})
 
@@ -46,21 +46,24 @@ def write_to_excel(workbook, worksheet, shots_data):
     worksheet.write('C1', 'SHOT CODE', bold)
     worksheet.write('D1', 'TOTAL FRAMES', bold)
     worksheet.write('E1', 'TASK', bold)
-    worksheet.write('F1', 'STATUS', bold)
-    worksheet.write('G1', 'BID DAYS', bold)
-    worksheet.write('H1', 'WIP%', bold)
-    worksheet.write('I1', 'DUE MANDAYS', bold)
-    worksheet.write('J1', 'DUE DATE', bold)
-    worksheet.write('K1', 'NOTES', bold)
-    worksheet.write('L1', 'TEAM', bold)
-    worksheet.write('M1', 'ARTIST NAME', bold)
-    worksheet.write('N1', 'IN DATE', bold)
-    worksheet.write('O1', 'PACKAGE ID', bold)
-    worksheet.write('P1', 'ESTIMATE ID', bold)
-    worksheet.write('Q1', 'ESTIMATE DATE', bold)
-    worksheet.write('R1', 'INTERNAL VERSION', bold)
-    worksheet.write('S1', 'CLIENT VERSION', bold)
-    worksheet.write('T1', 'LOCATION', bold)
+    worksheet.write('F1', 'COMPLEXITY', bold)
+    worksheet.write('G1', 'STATUS', bold)
+    worksheet.write('H1', 'BID DAYS', bold)
+    worksheet.write('I1', 'WIP%', bold)
+    worksheet.write('J1', 'DUE MANDAYS', bold)
+    worksheet.write('K1', 'DUE DATE', bold)
+    worksheet.write('L1', 'NOTES', bold)
+    worksheet.write('M1', 'TEAM', bold)
+    worksheet.write('N1', 'ARTIST NAME', bold)
+    worksheet.write('O1', 'IN DATE', bold)
+    worksheet.write('P1', 'PACKAGE ID', bold)
+    worksheet.write('Q1', 'ESTIMATE ID', bold)
+    worksheet.write('R1', 'ESTIMATE DATE', bold)
+    worksheet.write('S1', 'INTERNAL VERSION', bold)
+    worksheet.write('T1', 'CLIENT VERSION', bold)
+    worksheet.write('U1', 'LOCATION', bold)
+
+    date_format = workbook.add_format({'border': 1, 'border_color': 'black', 'num_format': 'dd/mm/yyyy'})
 
     # # Start from the first cell below the headers.
     col = 0
@@ -89,8 +92,7 @@ def write_to_excel(workbook, worksheet, shots_data):
         progress_column = 'H{}'.format(row + 2)
         total_frames = shot_data['actual_end_frame'] - shot_data['actual_start_frame'] + 1
         if shot_data['eta']:
-            due_date = datetime.datetime.strptime(shot_data['eta'], '%Y-%m-%dT%H:%M:%S').strftime(
-                "%d-%m-%Y")
+            due_date = datetime.datetime.strptime(shot_data['eta'], '%Y-%m-%dT%H:%M:%S')
         else:
             due_date = ""
         worksheet.write(row + 1, col, shot_data['sequence']['project']['client']['name'], border)
@@ -98,32 +100,31 @@ def write_to_excel(workbook, worksheet, shots_data):
         worksheet.write(row + 1, col + 2, shot_data['name'], border)
         worksheet.write(row + 1, col + 3, str(total_frames), border)
         worksheet.write(row + 1, col + 4, shot_data['task_type'], border)
-        worksheet.write(row + 1, col + 5, shot_status, border)
-        worksheet.write(row + 1, col + 6, bid_days, border)
-        worksheet.write(row + 1, col + 7, percentile, percent)
-        worksheet.write(row + 1, col + 8,
+        worksheet.write(row + 1, col + 5, shot_data['complexity'], border)
+        worksheet.write(row + 1, col + 6, shot_status, border)
+        worksheet.write(row + 1, col + 7, bid_days, border)
+        worksheet.write(row + 1, col + 8, percentile, percent)
+        worksheet.write(row + 1, col + 9,
                         '=ROUND(({}-{}*{}),1)'.format(bid_column, bid_column, progress_column), pending_color)
-        worksheet.write(row + 1, col + 9, due_date, border)
-        worksheet.write(row + 1, col + 10, " ", border)
-        worksheet.write(row + 1, col + 11, shot_data['team_lead'], border)
-        worksheet.write(row + 1, col + 12, shot_data['artist'], border)
-        in_date = datetime.datetime.strptime(shot_data['creation_date'], '%Y-%m-%dT%H:%M:%S.%f').strftime(
-            "%d-%m-%Y")
-        worksheet.write(row + 1, col + 13, in_date, border)
-        worksheet.write(row + 1, col + 14, shot_data['package_id'], border)
-        worksheet.write(row + 1, col + 15, shot_data['estimate_id'], border)
+        worksheet.write(row + 1, col + 10, due_date, date_format)
+        worksheet.write(row + 1, col + 11, " ", border)
+        worksheet.write(row + 1, col + 12, shot_data['team_lead'], border)
+        worksheet.write(row + 1, col + 13, shot_data['artist'], border)
+        in_date = datetime.datetime.strptime(shot_data['creation_date'], '%Y-%m-%dT%H:%M:%S.%f')
+        worksheet.write(row + 1, col + 14, in_date, date_format)
+        worksheet.write(row + 1, col + 15, shot_data['package_id'], border)
+        worksheet.write(row + 1, col + 16, shot_data['estimate_id'], border)
         if shot_data['estimate_date']:
-            estimate_date = datetime.datetime.strptime(shot_data['estimate_date'], '%Y-%m-%dT%H:%M:%S').strftime(
-                "%d-%m-%Y")
+            estimate_date = datetime.datetime.strptime(shot_data['estimate_date'], '%Y-%m-%dT%H:%M:%S')
         else:
             estimate_date = ""
-        worksheet.write(row + 1, col + 16, estimate_date, border)
+        worksheet.write(row + 1, col + 17, estimate_date, date_format)
         location = ""
         if shot_data['location']:
             location = shot_data['location']
-        worksheet.write(row + 1, col + 17, "", border)
         worksheet.write(row + 1, col + 18, "", border)
-        worksheet.write(row + 1, col + 19, location, border)
+        worksheet.write(row + 1, col + 19, "", border)
+        worksheet.write(row + 1, col + 20, location, border)
         row += 1
 
 
