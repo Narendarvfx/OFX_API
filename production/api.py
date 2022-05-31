@@ -1,3 +1,7 @@
+import datetime
+from operator import itemgetter
+from itertools import groupby
+
 from rest_framework import status
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
@@ -5,7 +9,7 @@ from rest_framework.views import APIView
 
 from production.models import Clients, Projects, ShotStatus, Shots, Complexity, Sequence, MyTask, Assignments, Channels, \
     Groups, Qc_Assignment, Permission_Groups, ShotVersions, TaskHelp_Main, TaskHelp_Lead, \
-    TaskHelp_Artist, ShotLogs, Locality, DayLogs, TeamLead_Week_Reports, QCVersions, ClientVersions
+    TaskHelp_Artist, ShotLogs, Locality, DayLogs, TeamLead_Week_Reports, QCVersions, ClientVersions, TimeLogs
 from production.reports.custom_artist_reports import calculate_artist_data
 from production.reports.custom_dep_reports import calculate_dept_data
 from production.reports.custom_lead_reports import calculate_data
@@ -20,7 +24,8 @@ from production.serializers import ClientSerializer, ProjectSerializer, StatusSe
     TaskHelpArtistSerializer, TaskHelpMainPostSerializer, TaskHelpArtistPostSerializer, TaskHelpArtistUpdateSerializer, \
     TaskHelpArtistStatusSerializer, ShotLogsSerializer, ShotLogsPostSerializer, LocalitySerializer, DayLogsSerializer, \
     DayLogsPostSerializer, TeamReportSerializer, QcVersionsSerializer, AllShotQcVersionsSerializer, \
-    ClientVersionsSerializer, AllShotClientVersionsSerializer
+    ClientVersionsSerializer, AllShotClientVersionsSerializer, TimeLogsSerializer, TimeLogsPostSerializer, \
+    TimeCardSerializer, LightDataSerializer
 
 
 class StatusInfo(APIView):
@@ -309,6 +314,114 @@ class DayLogsData(APIView):
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class TimeLogsData(APIView):
+
+    def get(self, request, format=None):
+        '''
+        [::-1] reverse order
+        [:2] last two records
+        '''
+        query_params = self.request.query_params
+        if query_params:
+            shot_id = query_params.get('shot_id', None)
+            log_id = query_params.get('log_id', None)
+            start_date = query_params.get('start_date', None)
+            end_date = query_params.get('end_date', None)
+            lead_id = query_params.get('lead_id', None)
+            if shot_id:
+                daylogs = DayLogs.objects.filter(shot_id=shot_id).select_related('shot', 'approved_by', 'updated_by')[::-1][
+                          :2]
+                serializer = DayLogsSerializer(daylogs, many=True, context={"request": request})
+            elif log_id:
+                daylogs = DayLogs.objects.get(id=log_id).select_related('shot','artist','updated_by', 'shot__sequence',
+                                                                                                                       'shot__sequence__project','shot__status',
+                                                                                                                       'shot__task_type', 'shot__location', 'shot__team_lead','shot__artist',
+                                                                                                                       'shot__sequence__project__client', 'shot__sequence__project__client__locality')
+                serializer = DayLogsSerializer(daylogs, context={"request": request})
+            elif start_date is not None and end_date is not None and lead_id is not None:
+                daylogs = DayLogs.objects.filter(updated_date__range=[start_date, end_date], shot__team_lead__profile_id = lead_id).select_related('shot','artist','updated_by', 'shot__sequence',
+                                                                                                                        'shot__sequence__project', 'shot__status',
+                                                                                                                       'shot__task_type', 'shot__location','shot__team_lead','shot__artist',
+                                                                                                                       'shot__sequence__project__client', 'shot__sequence__project__client__locality')
+                serializer = DayLogsSerializer(daylogs, many=True, context={"request": request})
+        else:
+            timelogs = TimeLogs.objects.all().select_related('shot', 'approved_by', 'updated_by')
+            serializer = TimeLogsSerializer(timelogs, many=True, context={"request": request})
+
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = TimeLogsPostSerializer(data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request):
+        query_params = self.request.query_params
+        if query_params:
+            log_id = query_params.get('log_id', None)
+            if log_id:
+                day_logs = DayLogs.objects.get(id=log_id)
+                serializer = DayLogsSerializer(day_logs, data=request.data, partial=True)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TimeCardData(APIView):
+
+    def get(self, request, format=None):
+        '''
+        [::-1] reverse order
+        [:2] last two records
+        '''
+
+        timelogs = TimeLogs.objects.all().select_related('shot', 'approved_by', 'updated_by')
+        serializer = TimeCardSerializer(timelogs, many=True, context={"request": request})
+        grouper = itemgetter("updated_by", "creation_date")
+        result = []
+        for key, grp in groupby(sorted(serializer.data, key=grouper), grouper):
+            temp_dict = dict(zip(["updated_by", "creation_date"], key))
+            temp_dict["total_hours"] = 0
+            Approved = True
+            for item in grp:
+                temp_dict["total_hours"] += item["total_hours"]
+                if item['approved'] and Approved:
+                    Approved = True
+                else:
+                    Approved = False
+
+            temp_dict['approved'] = Approved
+
+            result.append(temp_dict)
+
+        return Response(result)
+
+    def put(self, request):
+        _data = request.data
+        _date = datetime.datetime.strptime(_data['date'], '%d-%m-%Y').date()
+        filter_data = TimeLogs.objects.filter(updated_by=_data['employee_id'], creation_date__gte=_date)
+        serializer = TimeCardSerializer(filter_data, many=True, context={"request": request})
+        for _dat in serializer.data:
+            approve_data = {
+                'approved':True
+            }
+            timelog = TimeLogs.objects.get(id=_dat['id'])
+            _serializer = TimeCardSerializer(timelog, data=approve_data, partial=True)
+            if _serializer.is_valid():
+                _serializer.save()
+        return Response(status=status.HTTP_201_CREATED)
+
+class LightBoxData(APIView):
+    def get(self, request):
+        query_params = self.request.query_params
+        _employee_id = query_params.get('employee_id', None)
+        _creation_date = query_params.get('_date', None)
+        _date = datetime.datetime.strptime(_creation_date, '%d-%m-%Y').date()
+        filter_data = TimeLogs.objects.filter(updated_by=_employee_id, creation_date__gte=_date)
+        serializer = LightDataSerializer(filter_data, many=True, context={"request": request})
+        return Response(serializer.data)
 
 class ProjectShotsData(APIView):
 

@@ -52,6 +52,9 @@ def export_prod_report(request):
     buffer.seek(0)
     return FileResponse(buffer, as_attachment=True, filename='live_production_report.xlsx')
 
+def time_card(request):
+    return render(request, 'production/time_card.html')
+
 
 def teamlead_report(request):
     team_lead = Employee.objects.filter(role__name="TEAM LEAD").select_related('role','department','location','employement_status')

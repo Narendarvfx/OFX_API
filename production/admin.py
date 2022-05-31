@@ -2,7 +2,7 @@ from django.contrib import admin
 from production.models import Clients, Projects, ShotStatus, Complexity, Shots, Sequence, Task_Type, MyTask, \
     Assignments, Channels, Qc_Assignment, Groups, Permission_Groups, Folder_Permissions, \
     ShotVersions, ClientVersions, TaskHelp_Main, TaskHelp_Lead, TaskHelp_Artist, ShotLogs, TeamLead_Week_Reports, \
-    Locality, DayLogs, QCVersions
+    Locality, DayLogs, QCVersions, TimeLogs
 
 
 # Register your models here.
@@ -61,6 +61,12 @@ class DayLogsFields(admin.ModelAdmin):
     list_filter = ['updated_date','artist__department__name']
     search_fields = ['shot__name', 'updated_by__fullName', 'artist__fullName']
 
+class TimeLogsFields(admin.ModelAdmin):
+    list_display = [f.name for f in TimeLogs._meta.fields]
+    list_per_page = 15
+    list_filter = ['creation_date','updated_by__department__name']
+    search_fields = ['shot__name', 'updated_by__fullName', 'approved_by__fullName']
+
 class ClientVersionsFields(admin.ModelAdmin):
     list_display = [f.name for f in ClientVersions._meta.fields]
     list_per_page = 15
@@ -103,3 +109,4 @@ admin.site.register(ShotLogs, ShotLogsFields)
 admin.site.register(TeamLead_Week_Reports)
 admin.site.register(Locality)
 admin.site.register(DayLogs, DayLogsFields)
+admin.site.register(TimeLogs, TimeLogsFields)

@@ -431,6 +431,24 @@ class TeamLead_Week_Reports(models.Model):
 #     instance.save()
 #     post_save.connect(on_updating_progress, sender=Shots)
 
+class TimeLogs(models.Model):
+    shot = models.ForeignKey(Shots, on_delete=models.CASCADE, related_name='+')
+    spent_hours = models.FloatField(default=0)
+    others_hours = models.FloatField(default=0)
+    total_hours = models.FloatField(default=0)
+    comments = models.CharField(max_length=150, blank=True, null=True)
+    approved = models.BooleanField(default=False)
+    updated_by = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+', blank=True, null=True)
+    approved_by = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+', blank=True, null=True)
+    creation_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.shot.name
+
+    class Meta:
+        verbose_name_plural = "Time Logs"
+
 @receiver(post_save, sender=Assignments)
 def on_assigning_to_tl(sender,instance,**kwargs):
     shot_instance = Shots.objects.get(pk=instance.shot.id)
