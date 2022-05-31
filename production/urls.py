@@ -15,6 +15,8 @@ urlpatterns = [
     url(r'^production/client_report/$', views.reports, name="Multi Reports"),
     url(r'^production/reports/multi_export/$', views.reports_export, name="Multi Reports"),
 
+    url(r'^production/time_card/$',views.time_card, name="Time Card"),
+
     ########## API URLS #################
     url(r'^api/production/status/$', api.StatusInfo.as_view(), name='Status API'),
     url(r'^api/production/localities/$', api.LocalityInfo.as_view(), name='Locality API'),
@@ -94,6 +96,9 @@ urlpatterns = [
     #ShotLogs url
     url(r'^api/production/shotlogs/$', api.ShotLogsData.as_view(), name='Shots API'),
     url(r'^api/production/daylogs/$', api.DayLogsData.as_view(), name='DayLogs API'),
+    url(r'^api/production/timelogs/$', api.TimeLogsData.as_view(), name='TimeLogs API'),
+    url(r'^api/production/timecards/$', api.TimeCardData.as_view(), name='TimeLogs API'),
+    url(r'^api/production/lightboxdata/$', api.LightBoxData.as_view(), name='TimeLogs API'),
     # url(r'^api/production/daylogs/(?P<shotId>\d+)/$', api.DayLogsByShot.as_view(), name='DayLogs API'),
 
     #Teamlead Report Urls

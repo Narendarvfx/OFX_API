@@ -1,0 +1,492 @@
+{% extends 'main/base.html' %}
+
+
+{% block bread_crumb %}
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <link rel="stylesheet" href="http://cdn.dhtmlx.com/gantt/edge/skins/dhtmlxgantt_broadway.css"
+        type="text/css"/>
+
+
+{% endblock bread_crumb %}
+
+
+{% block content %}
+    <style>
+        html, body{
+          margin:0;
+          padding:0;
+
+        }
+        #gantt_here{
+          height: 80vh;
+        }
+
+        .gantt-sub-header > div:first-child{
+          border-bottom: 1px solid #cecece;
+        }
+        .gantt_last_cell .gantt_tree_content{
+            background-color: #654c30;
+            color: white;
+            text-align: center;
+            width: 100px;
+            border:2px solid #654c30;
+            border-radius: 5px;
+            margin-left: 20px;
+        }
+
+        .gantt_task_row.gantt_selected .gantt_task_cell {
+            background-color: rgba(0, 199, 181, .2);
+        }
+
+        .gantt_control {
+            background-color: #272c33;
+            font-family: "Rubik", sans-serif;
+            border: 1px solid;
+            border-color: #050505 !important;
+        }
+
+        .filters_wrapper {
+            font: 600 14px Roboto;
+            text-align: left;
+        }
+
+        .filters_wrapper span {
+            font-weight: bold;
+            padding: 5px;
+            margin:5px
+        }
+
+        .filters_wrapper label {
+            padding-right: 3px;
+            color: white !important;
+        }
+
+        .gantt_data_area {
+            color: #747d8a !important;
+            font-family: "Rubik", sans-serif !important;
+            background-color: #272c33;
+        }
+
+        .gantt_task {
+            color: #747d8a !important;
+            background-color: #272c33;
+            font-family: "Rubik", sans-serif !important;
+        }
+
+        .gantt_task_scale {
+            color: #747d8a !important;
+            background-color: #272c33;
+            font-family: "Rubik", sans-serif !important;
+            border-color: #050505 !important;
+        }
+
+        .gantt_task_cell {
+            background-color: #272c33;
+            font-family: "Rubik", sans-serif !important;
+            color: #747d8a !important;
+            border-color: #050505 !important;
+        }
+
+        .gantt_grid_scale {
+            color: #747d8a !important;
+            background-color: #272c33;
+            font-family: "Rubik", sans-serif !important;
+            border-color: #050505 !important;
+            height: 50px !important;
+            line-height: 50px !important;
+        }
+
+        .gantt_row {
+            font-family: "Rubik", sans-serif !important;
+            color: #747d8a !important;
+            background-color: #272c33;
+            border-color: #050505 !important;
+        }
+
+        .gantt_row.odd {
+            font-family: "Rubik", sans-serif !important;
+            color: #747d8a !important;
+            background-color: #272c33;
+        }
+
+        .gantt_scale_line {
+            color: #747d8a !important;
+            font-family: "Rubik", sans-serif !important;
+            border-color: #050505 !important;
+        }
+
+        .gantt_container {
+            color: #747d8a !important;
+            background-color: #272c33;
+            font-family: "Rubik", sans-serif !important;
+            border-color: #050505 !important;
+        }
+
+        .gantt_scale_cell {
+            color: #e2e4e8 !important;
+            border-color: #050505 !important;
+        }
+
+        .gantt_grid_head_cell {
+            color: #e2e4e8 !important;
+        }
+
+        .gantt_cell {
+            font-family: "Rubik", sans-serif !important;
+            color: #747d8a !important;
+        }
+
+        .gantt_row {
+            background-color: #2a2e33 !important;
+            color: white;
+        }
+        .gantt_grid_data{
+            background-color: #2a2e33 !important;
+        }
+        .gantt_tree_content{
+            color: #d3d0d0;
+        }
+        .gantt_task_row {
+            border-bottom-color: #050505 !important;
+        }
+        .gantt_grid_data .gantt_row, .gantt_grid_data .gantt_row.odd {
+            border-top:0px !important;
+        }
+        .app-search #search_box{
+            color: white !important;
+        }
+
+    </style>
+    <div class="container-fluid">
+        <div id="body">
+            <h4>Employee Time Logs</h4>
+            <div class="gantt_control">
+                <div class="btn-group filters_wrapper" data-toggle="buttons" id="filters_wrapper">
+                    <label class="btn btn-info active">
+                        <div class="custom-control custom-checkbox mr-sm-2 ">
+{#                            <input type="checkbox" class="gantt_radio" name="4" value="1" checked/>#}
+                            <input type="checkbox" class="custom-control-input" name="PAINT" value="1" checked>
+                            <label class="custom-control-label" for="checkbox0">Paint</label>
+                        </div>
+                    </label>
+                    <label class="btn btn-info">
+                        <div class="custom-control custom-checkbox mr-sm-2">
+                            <input type="checkbox" class="custom-control-input" name="ROTO" value="2" checked>
+                            <label class="custom-control-label" for="checkbox1">Roto</label>
+                        </div>
+                    </label>
+                    <label class="btn btn-info">
+                        <div class="custom-control custom-checkbox mr-sm-2 ">
+                            <input type="checkbox" class="custom-control-input" name="MM" value="3" checked>
+                            <label class="custom-control-label" for="checkbox2">MM</label>
+                        </div>
+                    </label>
+                    <label class="btn btn-info">
+                        <div class="custom-control custom-checkbox mr-sm-2 ">
+                            <input type="checkbox" class="custom-control-input" name="COMP" value="4" checked>
+{#                            <input type="checkbox" class="custom-control-input" id="checkbox3">#}
+                            <label class="custom-control-label" for="checkbox3">COMP</label>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            <!-- Shots Table View -->
+            <div id="gantt_here" >
+
+            </div>
+        </div>
+    </div>
+    <div id="responsive-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Time Log Details</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-body" id="dynamic_data">
+
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" name="save" class="btn btn-success waves-effect waves-light">Approve</button>
+                    <button type="button" name="close" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+
+
+{% block page_scripts %}
+
+    <script src="http://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.js"></script>
+    <script>
+        // Validation script
+        !function (window, document, $) {
+            "use strict";
+            $("input,select,textarea").not("[type=submit]").jqBootstrapValidation()
+        }(window, document, jQuery);
+    </script>
+    <script>
+        var _tasks = []
+        const all_employees_json = $.ajax({
+            type: "GET",
+            url: "/api/hrm/employee/",
+            dataType: "application/json",
+            async: false,
+            error: function (xhr, status, errorThrown) {
+            }
+        }).responseText;
+
+        const all_employees = JSON.parse(all_employees_json);
+        all_employees.forEach(function (employee) {
+            if (employee['department'] == "PAINT" || employee['department'] == "ROTO" || employee['department'] == "MM" || employee['department'] == "COMP") {
+                dat = {
+                    "id": employee['id'],
+                    "fullName": employee['fullName'],
+                    "dept": employee['department']
+                }
+                _tasks.push(dat)
+            }
+
+        });
+
+        // Adding filters by status
+        var filter_inputs = document.getElementById("filters_wrapper").getElementsByTagName("input");
+
+        function hasPriority(parent, leave_status) {
+            if (gantt.getTask(parent).dept == leave_status)
+
+                return true;
+
+            var child = gantt.getChildren(parent);
+            for (var i = 0; i < child.length; i++) {
+                if (hasPriority(child[i], leave_status.id))
+
+                    return true;
+            }
+            return false;
+        }
+
+        gantt.attachEvent("onBeforeTaskDisplay", function (id, task) {
+            for (var i = 0; i < filter_inputs.length; i++) {
+                var filter_input = filter_inputs[i];
+                if (filter_input.checked) {
+                    if (hasPriority(id, filter_input.name)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        });
+
+        const all_timelogs_json = $.ajax({
+            type: "GET",
+            url: "/api/production/timecards/",
+            dataType: "application/json",
+            async: false,
+            error: function (xhr, status, errorThrown) {
+            }
+        }).responseText;
+
+        const all_timelogs = JSON.parse(all_timelogs_json);
+        all_timelogs.forEach(function (timelog) {
+            var col = ''
+            if (timelog['approved'] === true){
+                col = "green"
+            }else{
+                col = "red"
+            }
+            _dat = {
+                "text": timelog['total_hours'],
+                "start_date": timelog['creation_date'],
+                "duration":1,
+                "parent":timelog['updated_by'],
+                "color": col,
+            }
+            _tasks.push(_dat)
+        });
+
+        var data = {
+          tasks:_tasks
+        };
+        gantt.config.scales = [
+             {unit: "month", step: 1, format: "%F, %Y"},
+             {unit: "day", step: 1, format: "%j"}
+        ];
+
+        gantt.config.layout = {
+            css: "gantt_container",
+            rows:[
+                {
+                   cols: [
+                    {
+                      // the default grid view
+                      view: "grid",
+                      scrollX:"scrollHor",
+                      scrollY:"scrollVer"
+                    },
+                    { resizer: true, width: 1 },
+                    {
+                      // the default timeline view
+                      view: "timeline",
+                      scrollX:"scrollHor",
+                      scrollY:"scrollVer"
+                    },
+                    {
+                      view: "scrollbar",
+                      id:"scrollVer"
+                    }
+                ]},
+                {
+                    view: "scrollbar",
+                    id:"scrollHor"
+                }
+            ]
+        }
+        gantt.config.show_errors = false;
+
+        gantt.config.show_grid = true;
+
+        gantt.config.show_tasks_outside_timescale = true;
+        gantt.config.fit_tasks = true;
+        gantt.config.grid_resize = true;
+        gantt.config.buttons_left = ["gantt_save_btn", "gantt_cancel_btn"];
+        gantt.config.buttons_right = ["gantt_delete_btn"];
+        gantt.config.drag_links = false;
+        gantt.config.drag_move = false;
+        gantt.config.drag_progress = false;
+        gantt.config.scale_height = 50;
+        {#gantt.config.autosize = "xy";#}
+
+        // Adding filters by status
+        var filter_inputs = document.getElementById("filters_wrapper").getElementsByTagName("input");
+        for (var i = 0; i < filter_inputs.length; i++) {
+            var filter_input = filter_inputs[i];
+            // attach event handler to update filters object and refresh data (so filters will be applied)
+            filter_input.onchange = function () {
+                gantt.refreshData();
+            }
+        }
+        gantt.showLightbox = function(id) {
+            $("#dynamic_data").empty()
+            taskId = id;
+            var task = gantt.getTask(id);
+            var myDate = new Date(task['start_date']);
+            let ye = new Intl.DateTimeFormat('en', {year: 'numeric'}).format(myDate);
+            let mo = new Intl.DateTimeFormat('en', {month: 'numeric'}).format(myDate);
+            let da = new Intl.DateTimeFormat('en', {day: '2-digit'}).format(myDate);
+            var _d = da+'-'+mo+'-'+ye
+            var lightbox_data = $.ajax({
+                type: "GET",
+                url: "/api/production/lightboxdata/?_date="+_d+'&employee_id='+task['parent'],
+                dataType: "application/json",
+                async: false,
+                error: function (xhr, status, errorThrown) {
+                }
+            }).responseText;
+            const light_data = JSON.parse(lightbox_data);
+            light_data.forEach(function (light) {
+                $('#dynamic_data').append($('<div class="row"> <div class="col-lg-12 "> <div class="form-group row"> <label class="control-label col-md-12" name="description" style="color:#d9d6d0">'+light.shot.name+' :  '+light.total_hours+' Hours</label> </div> </div> </div>'))
+            });
+            var form = getForm();
+            form.querySelector("[name='save']").onclick = task_save;
+            form.querySelector("[name='close']").onclick = cancel;
+
+        };
+        function getForm() {
+            $('#responsive-modal').modal('show');
+            return document.getElementById("responsive-modal");
+        };
+
+        function task_save() {
+            var task = gantt.getTask(taskId);
+
+            $('#responsive-modal').modal('hide');
+            var myDate = new Date(task['start_date']);
+            let ye = new Intl.DateTimeFormat('en', {year: 'numeric'}).format(myDate);
+            let mo = new Intl.DateTimeFormat('en', {month: 'numeric'}).format(myDate);
+            let da = new Intl.DateTimeFormat('en', {day: '2-digit'}).format(myDate);
+            _data = {
+                'employee_id':task['parent'],
+                'date': da+'-'+mo+'-'+ye,
+            }
+            $.ajax({
+                type: "PUT",
+                url: "/api/production/timecards/",
+                data: _data,
+                dataType: "application/json",
+                async: false,
+                error: function (xhr, status, errorThrown) {
+                }
+            }).responseText;
+            task.color = "green"
+            gantt.render()
+        }
+        function cancel() {
+            var task = gantt.getTask(taskId);
+
+            if(task.$new)
+            gantt.deleteTask(task.id);
+            gantt.hideLightbox();
+        }
+
+        gantt.attachEvent("onTaskClick", function(id,e){
+            gantt.showLightbox(id)
+
+        });
+        var scaleHeight = gantt.config.scale_height;
+      var employeeFilter = [
+            "<div class='gantt-sub-header' style='line-height:20px'>",
+            "<div>Employee Name</div>",
+            "<div><input id='data_text_filter' type='text' placeholder='Search Employee' oninput='gantt.$doFilter(this.value)'></div>",
+            "</div>"
+        ].join("");
+        gantt.config.columns =  [
+            {name:"fullName", label:employeeFilter, align:"center", width:"*"},
+            {name:"dept", label:"Dept",  width:"*"},
+        ];
+
+        var filterValue = "";
+      var delay;
+      gantt.$doFilter = function(value){
+        filterValue = value;
+        gantt.render();
+        console.log(scaleHeight)
+        clearTimeout(delay);
+        delay = setTimeout(function(){
+          gantt.render();
+          gantt.$root.querySelector("[id='data_text_filter']").focus();
+        }, 100)
+      }
+      gantt.attachEvent("onBeforeTaskDisplay", function(id, task){
+       if(!filterValue) return true;
+        try {
+            var normalizedText = task.fullName.toLowerCase();
+            var normalizedValue = filterValue.toLowerCase();
+            return normalizedText.indexOf(normalizedValue) > -1;
+        }catch{
+            console.log("Error")
+        }
+      });
+    gantt.attachEvent("onGanttRender", function(){
+		gantt.$root.querySelector("[id='data_text_filter']").value = filterValue;
+	})
+
+
+        gantt.init("gantt_here");
+        gantt.parse(data);
+        all_employees.forEach(function (employee) {
+            if (employee['department'] == "PAINT" || employee['department'] == "ROTO" || employee['department'] == "MM" || employee['department'] == "COMP") {
+                var task = gantt.getTask(employee['id'])
+                task.render = "split"
+            }
+        });
+
+    </script>
+{% endblock page_scripts %}

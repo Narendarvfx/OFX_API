@@ -276,37 +276,38 @@
             render_shots_list(shot);
         });
 
-        // Department Filter
-        function shot_project_filter() {
-            $('#shots_tbody_view').html('');
-            all_shots.forEach(function (shot) {
-                var project = 'Project';
-                if (shot.sequence.project) {
-                    var project = shot.sequence.project.name;
-                }
-                if (project == $('#shot_project_select').val()) {
-                    render_shots_list(shot);
-                } else if ($('#shot_project_select').val() == '') {
-                    render_shots_list(shot);
-                }
-            })
-        }
-
-        // Status Filter
-        function shot_status_filter() {
-            $('#shots_tbody_view').html('');
-            all_shots.forEach(function (shot) {
-                var status = 'Status';
-                if (shot.status) {
-                    var status = shot.status.code;
-                }
-                if (status == $('#shot_status_select').val()) {
-                    render_shots_list(shot);
-                } else if ($('#shot_status_select').val() == 'Status') {
-                    render_shots_list(shot);
-                }
-            })
-        }
+        {#// Project Filter#}
+        {#function shot_project_filter() {#}
+        {#    $('#shots_tbody_view').html('');#}
+        {#    all_shots.forEach(function (shot) {#}
+        {#        var project = 'Project';#}
+        {#        if (shot.sequence.project) {#}
+        {#            project = shot.sequence.project.name;#}
+        {#        }#}
+        {#        if (project == $('#shot_project_select').val()) {#}
+        {#            render_shots_list(shot);#}
+        {#        } else if ($('#shot_project_select').val() == '') {#}
+        {#            render_shots_list(shot);#}
+        {#        }#}
+        {#    })#}
+        {#}#}
+        {##}
+        {#// Status Filter#}
+        {#function shot_status_filter() {#}
+        {#    $('#shots_tbody_view').html('');#}
+        {#    all_shots.forEach(function (shot) {#}
+        {#        console.log(shot.status)#}
+        {#        var status = 'Status';#}
+        {#        if (shot.status) {#}
+        {#            status = shot.status.code;#}
+        {#        }#}
+        {#        if (status == $('#shot_status_select').val()) {#}
+        {#            render_shots_list(shot);#}
+        {#        } else if ($('#shot_status_select').val() == 'Status') {#}
+        {#            render_shots_list(shot);#}
+        {#        }#}
+        {#    })#}
+        {#}#}
 
         // Name Search
         function employee_search(search_text) {
@@ -470,10 +471,11 @@
             $('#shot_status_select').on('change', function () {
                 let status = $('#shot_status_select :selected').text().trim();
                 status_id = $('#shot_status_select option:selected').val();
+                console.log(status_id)
                 if (status_id == 0){
                     status = ""
                 }
-                table.columns(9).search(status).draw();
+                table.columns(10).search(status).draw();
             });
             $('#shot_location_select').on('change', function () {
                 let location = $('#shot_location_select :selected').text().trim();
@@ -481,13 +483,13 @@
                 if (location_id == 0){
                     location = ""
                 }
-                table.columns(16).search(location).draw();
+                table.columns(17).search(location).draw();
             });
             $('#shot_locality_select').on('change', function () {
                 let locality = $("#shot_locality_select :selected").text().trim();
                 locality_id = $("#shot_locality_select option:selected").val();
                 if (locality_id != 0){
-                    table.columns(17).search(locality).draw();
+                    table.columns(18).search(locality).draw();
                     const all_clients_json = $.ajax({
                         type: "GET",
                         url: "/api/production/clients/?locality=" + locality,
@@ -510,7 +512,7 @@
                     })
                 }else{
                     locality = ""
-                    table.columns(17).search(locality).draw();
+                    table.columns(18).search(locality).draw();
                     $('#shot_client_select').empty()
                     $('#shot_client_select').append(`<option value="0">
                                            Client
