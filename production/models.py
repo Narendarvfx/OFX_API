@@ -432,7 +432,7 @@ class TeamLead_Week_Reports(models.Model):
 #     post_save.connect(on_updating_progress, sender=Shots)
 
 class TimeLogs(models.Model):
-    shot = models.ForeignKey(Shots, on_delete=models.CASCADE, related_name='+')
+    shot = models.ForeignKey(Shots, on_delete=models.CASCADE, related_name='+', blank=True, null=True)
     spent_hours = models.FloatField(default=0)
     others_hours = models.FloatField(default=0)
     total_hours = models.FloatField(default=0)

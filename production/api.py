@@ -419,7 +419,7 @@ class LightBoxData(APIView):
         _employee_id = query_params.get('employee_id', None)
         _creation_date = query_params.get('_date', None)
         _date = datetime.datetime.strptime(_creation_date, '%d-%m-%Y').date()
-        filter_data = TimeLogs.objects.filter(updated_by=_employee_id, creation_date__gte=_date)
+        filter_data = TimeLogs.objects.filter(updated_by=_employee_id, creation_date__date=_date)
         serializer = LightDataSerializer(filter_data, many=True, context={"request": request})
         return Response(serializer.data)
 
