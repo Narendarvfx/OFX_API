@@ -1,9 +1,16 @@
 {% extends 'main/base.html' %}
+
 {% block content %}
 
     <h3>Hello {{ user.profile.employee.full_name }}</h3>
     <h1>Welcome to OSCARFX</h1>
-
+    <div class="container-fluid">
+        <div class="card" style="max-width:600px">
+            <div class="card-body">
+                <canvas id="myChart" style="width:50%;max-width:600px;height: 200px"></canvas>
+            </div>
+        </div>
+    </div>
     
 {% endblock content %}
 
@@ -12,10 +19,7 @@
         <!-- This page plugins -->
         <!-- ============================================================== -->
         <!-- chartist chart -->
-        <script src="/static/template/assets/plugins/chartist-js/dist/chartist.min.js"></script>
-        <script src="/static/template/assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js"></script>
-        <!-- Chart JS -->
-        <script src="/static/template/assets/plugins/echarts/echarts-all.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js">
 
         <!-- Chart JS -->
         <script src="/static/template/main/js/dashboard1.js"></script>
@@ -23,4 +27,50 @@
         <!-- Style switcher -->
         <!-- ============================================================== -->
         <script src="/static/template/assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
+        <script>
+            var xValues = ["YTS", "WIP", "Omit", "Hold", "Delivered", "Retake"];
+            var yValues = [50, 49, 44, 24, 27, 38];
+            var barColors = ["red", "green","blue","orange","brown", "yellow"];
+
+            new Chart("myChart", {
+              type: "bar",
+              data: {
+                labels: xValues,
+                datasets: [{
+                  backgroundColor: barColors,
+                  data: yValues
+                }]
+              },
+              options: {
+                legend: {display: false},
+                title: {
+                  display: true,
+                  text: "Status Chart"
+                },
+                transitions: {
+                    show: {
+                        animations: {
+                            x: {
+                                from: 0
+                            },
+                            y: {
+                                from: 0
+                            }
+                        }
+                    },
+                    hide: {
+                        animations: {
+                            x: {
+                                to: 0
+                            },
+                            y: {
+                                to: 0
+                            }
+                        }
+                    }
+                }
+              }
+            });
+            Chart.defaults.global.defaultFontColor = "#fff";
+        </script>
 {% endblock page_scripts %}

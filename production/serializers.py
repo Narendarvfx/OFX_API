@@ -461,3 +461,28 @@ class TaskHelpArtistStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = TaskHelp_Artist
         fields = '__all__'
+
+## Parent Child Process
+class TimeLogSerializer(serializers.HyperlinkedModelSerializer):
+    shot = serializers.PrimaryKeyRelatedField(queryset=Shots.objects.all(), source='shot.id')
+
+    class Meta:
+        model = TimeLogs
+        fields = ('spent_hours', 'shot')
+
+## Parent Child Process
+class ShotTimeLogSerializer(serializers.ModelSerializer):
+    timelogs = TimeLogSerializer(many=True, read_only=True)
+    sequence = SequenceCompactSerializer(read_only=True)
+    status = StatusSerializer(read_only=True)
+    # status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=False)
+    complexity = serializers.SlugRelatedField(queryset=Complexity.objects.all(), slug_field='name', required=False)
+    task_type = serializers.SlugRelatedField(queryset=Task_Type.objects.all(), slug_field='name', required=False)
+    imageSrc = serializers.ImageField(max_length=None, use_url=True, allow_null=True, required=False)
+    team_lead = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
+    artist = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
+    location = serializers.SlugRelatedField(queryset=Location.objects.all(), slug_field='name', required=False)
+
+    class Meta:
+        model = Shots
+        fields = '__all__'

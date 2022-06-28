@@ -1,5 +1,6 @@
 from django.conf.urls import url
 from . import api, views
+from .api import ShotsDataFilter
 
 urlpatterns = [
     ################## Web Urls ######################
@@ -37,7 +38,8 @@ urlpatterns = [
 
     # Shots Urls
     url(r'^api/production/shots/$', api.ShotsData.as_view(), name='Shots API'),
-    url(r'^api/production/shots_filter/$', api.ShotsDataFilter.as_view(), name='Shots API'),
+    url(r'^api/production/production_sheet/$', api.ProductSheet.as_view(), name='Production Shots API'),
+    url(r'^api/production/shots_filter/$', ShotsDataFilter.as_view(), name='Shots Filters API'),
     url(r'^api/production/projects/sequence/shots/(?P<sequenceId>\d+)/$', api.ProjectShotsData.as_view(), name='Projects Shots API'),
     url(r'^api/production/shots/(?P<shotId>\d+)/$', api.ShotUpdate.as_view(), name='Shot Update API'),
 

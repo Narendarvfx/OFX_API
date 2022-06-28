@@ -67,7 +67,7 @@ SECURE_HSTS_SECONDS = 15768000
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 
-## that requests over HTTP are redirected to HTTPS. aslo can config in webserver
+## that requests over HTTP are redirected to HTTPS. also can config in webserver
 SECURE_SSL_REDIRECT = True
 
 # for more security
@@ -100,6 +100,9 @@ INSTALLED_APPS = [
     'colorfield',
     'channels',
     'notifications',
+    'coreapi', # Coreapi for coreapi documentation
+    'drf_yasg', # drf_yasg fro Swagger documentation
+    "log_viewer"
 ]
 
 {
@@ -177,16 +180,6 @@ if DEBUG:
         }
     }
 else:
-    # DATABASES = {
-    #     'default': {
-    #         'ENGINE': 'django.db.backends.mysql',
-    #         'NAME': 'ofx_api',
-    #         'USER': 'data_admin',
-    #         'PASSWORD': 'Ofx_data_Admin#5262',
-    #         'HOST': '192.168.5.21',
-    #         'PORT': '3306'
-    #     },
-    # }
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
@@ -235,7 +228,7 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 if sys.platform == 'linux':
     STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
@@ -280,7 +273,7 @@ REST_FRAMEWORK = {
 
 LOGIN_REDIRECT_URL = r'^home'
 LOGIN_URL = '/login/'
-LOGIN_EXEMPT_URLS = (r'^admin/', r'^api/*', r'^media/', r'^profile/login_custom')
+LOGIN_EXEMPT_URLS = (r'^admin/', r'^api/*', r'^media/', r'^profile/login_custom', r'^accounts/')
 
 if DEBUG:
     DEBUG_TOOLBAR_CONFIG = {
@@ -303,6 +296,22 @@ CACHES = {
 }
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
-LOGIN_REDIRECT_URL = r'^home'
-LOGIN_URL = '/login/'
-LOGIN_EXEMPT_URLS = (r'^admin/', r'^api/*', r'^media/')
+
+LOG_VIEWER_FILES = ['logfile1', 'logfile2', ...]
+LOG_VIEWER_FILES_PATTERN = '*.log*'
+LOG_VIEWER_FILES_DIR = 'logs/'
+LOG_VIEWER_PAGE_LENGTH = 25       # total log lines per-page
+LOG_VIEWER_MAX_READ_LINES = 1000  # total log lines will be read
+LOG_VIEWER_FILE_LIST_MAX_ITEMS_PER_PAGE = 25 # Max log files loaded in Datatable per page
+LOG_VIEWER_PATTERNS = ['[INFO]', '[DEBUG]', '[WARNING]', '[ERROR]', '[CRITICAL]']
+
+# Optionally you can set the next variables in order to customize the admin:
+LOG_VIEWER_FILE_LIST_TITLE = "OFX API LOGS"
+LOG_VIEWER_FILE_LIST_STYLES = "/static/css/my-custom.css"
+
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = '192.168.5.10'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'narendarreddy.g@oscarfx.com'
+EMAIL_HOST_PASSWORD = 'Temple@5262'
