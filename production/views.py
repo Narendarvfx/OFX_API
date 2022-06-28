@@ -25,13 +25,15 @@ def production_reports(request):
     task_type = Task_Type.objects.all()
     location = Location.objects.all()
     locality = Locality.objects.all()
+    leads = Employee.objects.filter(role__name="TEAM LEAD").all()
     context = {
         'status': status,
         'clients': clients,
         'projects': projects,
         'task_type': task_type,
         'location': location,
-        'locality': locality
+        'locality': locality,
+        'leads':leads
     }
     return render(request, 'production/production_report.html', context)
 

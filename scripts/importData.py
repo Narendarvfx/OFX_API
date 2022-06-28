@@ -90,7 +90,5 @@ def setTeamId():
 if __name__ == '__main__':
     #generate_default_profile_photo()
     #update_username()
-    # import_employee_data()
-    # update_employee_pan_details()
-    # update_el_data()
-    setTeamId()
+    import_employee_data()
+    #setTeamId()

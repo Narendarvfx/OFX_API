@@ -1,7 +1,9 @@
 import datetime
+import logging
 from operator import itemgetter
 from itertools import groupby
 
+from django.db.models import Prefetch, Sum
 from rest_framework import status
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
@@ -25,7 +27,7 @@ from production.serializers import ClientSerializer, ProjectSerializer, StatusSe
     TaskHelpArtistStatusSerializer, ShotLogsSerializer, ShotLogsPostSerializer, LocalitySerializer, DayLogsSerializer, \
     DayLogsPostSerializer, TeamReportSerializer, QcVersionsSerializer, AllShotQcVersionsSerializer, \
     ClientVersionsSerializer, AllShotClientVersionsSerializer, TimeLogsSerializer, TimeLogsPostSerializer, \
-    TimeCardSerializer, LightDataSerializer
+    TimeCardSerializer, LightDataSerializer, ShotTimeLogSerializer
 
 
 class StatusInfo(APIView):
@@ -56,9 +58,9 @@ class ClientDetail(APIView):
 
     def get(self, request, format=None):
         query_params = self.request.query_params
+        logging.error("Quering:{query_params}")
         if query_params:
             locality = query_params.get('locality', None)
-            print(locality)
             if locality:
                 client = Clients.objects.filter(locality__name=locality)
             else:
@@ -79,6 +81,9 @@ class ClientDetail(APIView):
 class ClientUpdate(APIView):
 
     def get(self, request, client_id, format=None):
+        '''
+        Pass the clientid to update the client
+        '''
         client = Clients.objects.get(id=client_id)
         serializer = ClientSerializer(client)
         return Response(serializer.data)
@@ -167,11 +172,11 @@ class ShotsData(APIView):
             if project_id:
                 shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
                                                     'sequence__project__client', 'status', 'complexity', 'team_lead',
-                                                'artist', 'location').filter(sequence__project_id=project_id)
+                                                'artist', 'location','sequence__project__client__locality').filter(sequence__project_id=project_id)
             elif client_id:
                 shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
                                                 'sequence__project__client', 'status', 'complexity', 'team_lead',
-                                                'artist', 'location').filter(sequence__project__client_id=client_id)
+                                                'artist', 'location','sequence__project__client__locality').filter(sequence__project__client_id=client_id)
             else:
                 status_list = query_params.get('status', None)
                 dept = query_params.get('dept', None)
@@ -182,17 +187,17 @@ class ShotsData(APIView):
                 if dept is not None:
                     shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
                                                         'sequence__project__client', 'status', 'complexity',
-                                                        'team_lead', 'artist', 'location').filter(
+                                                        'team_lead', 'artist', 'location','sequence__project__client__locality').filter(
                         status__code__in=status, task_type__name=dept)
                 else:
                     shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
                                                         'sequence__project__client', 'status', 'complexity',
-                                                        'team_lead', 'artist', 'location').filter(
+                                                        'team_lead', 'artist', 'location','sequence__project__client__locality').filter(
                         status__code__in=status)
         else:
             shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
                                                 'sequence__project__client', 'status', 'complexity', 'team_lead',
-                                                'artist', 'location').all()
+                                                'artist', 'location','sequence__project__client__locality').all()
 
         serializer = ShotsSerializer(shot, many=True, context={"request": request})
         return Response(serializer.data)
@@ -204,8 +209,57 @@ class ShotsData(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class ProductSheet(APIView):
 
-class ShotsDataFilter(ListAPIView):
+    def get(self, request, format=None):
+        query_params = self.request.query_params
+        argumentos = {}
+        if query_params.get('client_id'):
+            clients = []
+            for client in query_params.get('client_id').split('|'):
+                clients.append(client)
+            argumentos['sequence__project__client_id__in'] = clients
+        if query_params.get('project_id'):
+            projects = []
+            for project in query_params.get('project_id').split('|'):
+                projects.append(project)
+            argumentos['sequence__project_id__in'] = projects
+        if query_params.get('status'):
+            status = []
+            for stat in query_params.get('status').split('|'):
+                status.append(stat)
+            argumentos['status__code__in'] = status
+        if query_params.get('dept'):
+            depts = []
+            for dept in query_params.get('dept').split('|'):
+                depts.append(dept)
+            argumentos['task_type__name__in'] = depts
+        if len(argumentos) > 0:
+            queryset = Shots.objects.prefetch_related('timelogs').select_related('sequence', 'task_type', 'sequence__project',
+                                                'sequence__project__client', 'status', 'complexity',
+                                                'team_lead', 'artist', 'location', 'sequence__project__client__locality').filter(
+                **argumentos)
+        else:
+            # queryset = Shots.objects.all()
+            queryset = Shots.objects.prefetch_related('timelogs').select_related('sequence', 'task_type', 'sequence__project',
+                                                'sequence__project__client', 'status', 'complexity', 'team_lead',
+                                                'artist', 'location','sequence__project__client__locality').all()
+
+        serializer = ShotTimeLogSerializer(instance=queryset, many=True)
+        shots_data = []
+        for _shotdata in serializer.data:
+            total_spent = 0
+            for spent in _shotdata['timelogs']:
+                total_spent += spent['spent_hours']
+            _tim = {
+                'total_spent' : total_spent/8
+            }
+            _shotdata.update(_tim)
+            shots_data.append(_shotdata)
+
+        return Response(shots_data)
+
+class ShotsDataFilter(APIView):
 
     def get(self, request, format=None):
         query_params = self.request.query_params
@@ -231,12 +285,13 @@ class ShotsDataFilter(ListAPIView):
                 depts.append(dept)
             argumentos['task_type__name__in'] = depts
         if len(argumentos) > 0:
+
             shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
                                                 'sequence__project__client', 'status', 'complexity',
-                                                'team_lead', 'artist', 'location').filter(
-                **argumentos)
+                                                'team_lead', 'artist', 'location','sequence__project__client__locality').filter(
+                **argumentos).all()
         else:
-            shot =[]
+            shot = []
             # shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
             #                                     'sequence__project__client', 'status', 'complexity', 'team_lead',
             #                                     'artist', 'location').all()
@@ -431,14 +486,12 @@ class ProjectShotsData(APIView):
         serializer = ShotsSerializer(shot, many=True, context={"request": request})
         return Response(serializer.data)
 
-
 class ProjectSequenceData(APIView):
 
     def get(self, request, projectId, format=None):
         sequence = Sequence.objects.filter(project=projectId)
         serializer = SequenceSerializer(sequence, many=True, context={"request": request})
         return Response(serializer.data)
-
 
 class ShotUpdate(APIView):
 
@@ -515,7 +568,6 @@ class MyTaskDetail(APIView):
 class MyTaskArtistData(APIView):
 
     def get(self, request, artistid):
-        print(artistid)
         mytask = MyTask.objects.select_related('assigned_by', 'shot', 'shot__task_type', 'shot__sequence__project',
                                                'shot__status', 'task_status', 'artist', 'shot__sequence',
                                                'shot__sequence__project__client').filter(artist=artistid).all()

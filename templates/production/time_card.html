@@ -382,7 +382,7 @@
             let mo = new Intl.DateTimeFormat('en', {month: 'numeric'}).format(myDate);
             let da = new Intl.DateTimeFormat('en', {day: '2-digit'}).format(myDate);
             var _d = da+'-'+mo+'-'+ye
-            console.log(_d)
+
             var lightbox_data = $.ajax({
                 type: "GET",
                 url: "/api/production/lightboxdata/?_date="+_d+'&employee_id='+task['parent'],
