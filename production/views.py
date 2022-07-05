@@ -26,6 +26,7 @@ def production_reports(request):
     location = Location.objects.all()
     locality = Locality.objects.all()
     leads = Employee.objects.filter(role__name="TEAM LEAD").all()
+
     context = {
         'status': status,
         'clients': clients,
@@ -33,10 +34,10 @@ def production_reports(request):
         'task_type': task_type,
         'location': location,
         'locality': locality,
-        'leads':leads
+        'leads':leads,
+        'user': request.user
     }
     return render(request, 'production/production_report.html', context)
-
 
 def export_prod_report(request):
     client_id = int(request.GET['client'])
@@ -55,8 +56,10 @@ def export_prod_report(request):
     return FileResponse(buffer, as_attachment=True, filename='live_production_report.xlsx')
 
 def time_card(request):
-    return render(request, 'production/time_card.html')
-
+    context = {
+        'user': request.user
+    }
+    return render(request, 'production/time_card.html', context)
 
 def teamlead_report(request):
     team_lead = Employee.objects.filter(role__name="TEAM LEAD").select_related('role','department','location','employement_status')

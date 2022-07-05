@@ -1,76 +1,98 @@
 {% extends 'main/base.html' %}
-
+{% block bread_crumb %}
+    <link href="/static/template/assets/plugins/timepicker/bootstrap-timepicker.min.css" rel="stylesheet">
+    <link href="/static/template/assets/plugins/daterangepicker/daterangepicker.css" rel="stylesheet">
+{% endblock bread_crumb %}
 {% block content %}
 
-    <h3>Hello {{ user.profile.employee.full_name }}</h3>
-    <h1>Welcome to OSCARFX</h1>
+    <h3>Hello {{ user.profile.employee.fullName }}</h3>
     <div class="container-fluid">
-        <div class="card" style="max-width:600px">
-            <div class="card-body">
-                <canvas id="myChart" style="width:50%;max-width:600px;height: 200px"></canvas>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card" style="max-width: 600px; max-height: 100%">
+                    <div class="card-body">
+                        <div class="d-flex no-block">
+                            <h4 class="card-title">Status Chart</h4>
+                            <div class="ml-auto">
+                                <select id="shot_client_select" class="custom-select">
+                                    <option value="0">Client</option>
+                                    {% for client in clients %}
+                                        <option value={{ client.id }}>{{ client.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="ml-auto">
+                                <select id="shot_project_select" class="custom-select">
+                                    <option value="0">Project</option>
+                                    {% for project in projects %}
+                                        <option value={{ project.id }}>{{ project.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Row -->
+                        <div class="row mt-4">
+                            <canvas id="statChart" style="width:50%;max-width:700px"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card" style="max-width: 600px; max-height: 100%">
+                    <div class="card-body">
+                        <div class="d-flex no-block">
+                            <h4 class="card-title">Bid
+                                Chart</h4>
+                            <div class="ml-auto">
+                                <select id="shot_client_select" class="custom-select">
+                                    <option value="0">Client</option>
+                                    {% for client in clients %}
+                                        <option value={{ client.id }}>{{ client.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="ml-auto">
+                                <select id="shot_project_select" class="custom-select">
+                                    <option value="0">Project</option>
+                                    {% for project in projects %}
+                                        <option value={{ project.id }}>{{ project.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Row -->
+                        <div class="row mt-4">
+                            <canvas id="bidChart" style="width:50%;max-width:700px"></canvas>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    
+
 {% endblock content %}
 
 {% block page_scripts %}
-        <!-- ============================================================== -->
-        <!-- This page plugins -->
-        <!-- ============================================================== -->
-        <!-- chartist chart -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js">
+    <!--OFX Core JavaScript -->
+    <script src="/static/ofx/core.js"></script>
+    <!-- ============================================================== -->
+    <!-- This page plugins -->
+    <!-- ============================================================== -->
+    <!-- chartist chart -->
+    <script src="/static/third_party/ChartJs/Chart.min.js"></script>
 
-        <!-- Chart JS -->
-        <script src="/static/template/main/js/dashboard1.js"></script>
-        <!-- ============================================================== -->
-        <!-- Style switcher -->
-        <!-- ============================================================== -->
-        <script src="/static/template/assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
-        <script>
-            var xValues = ["YTS", "WIP", "Omit", "Hold", "Delivered", "Retake"];
-            var yValues = [50, 49, 44, 24, 27, 38];
-            var barColors = ["red", "green","blue","orange","brown", "yellow"];
+    <!-- Date range Plugin JavaScript -->
+    <script src="/static/template/assets/plugins/moment/moment.js"></script>
+    <script src="/static/template/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- ============================================================== -->
+    <!-- Style switcher -->
+    <!-- ============================================================== -->
+    <script src="/static/template/assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
 
-            new Chart("myChart", {
-              type: "bar",
-              data: {
-                labels: xValues,
-                datasets: [{
-                  backgroundColor: barColors,
-                  data: yValues
-                }]
-              },
-              options: {
-                legend: {display: false},
-                title: {
-                  display: true,
-                  text: "Status Chart"
-                },
-                transitions: {
-                    show: {
-                        animations: {
-                            x: {
-                                from: 0
-                            },
-                            y: {
-                                from: 0
-                            }
-                        }
-                    },
-                    hide: {
-                        animations: {
-                            x: {
-                                to: 0
-                            },
-                            y: {
-                                to: 0
-                            }
-                        }
-                    }
-                }
-              }
-            });
-            Chart.defaults.global.defaultFontColor = "#fff";
-        </script>
+    <!-- OFX Status Chart Javascript -->
+    <script src="/static/ofx/status_chart.js"></script>
+    <script src="/static/ofx/bid_chart.js"></script>
+    <script>
+
+    </script>
 {% endblock page_scripts %}

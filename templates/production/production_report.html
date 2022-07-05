@@ -2,7 +2,8 @@
 
 
 {% block bread_crumb %}
-    <link rel='stylesheet' href='/static/third_party/DataTables/DataTables-1.12.1/css/jquery.dataTables.min.css' type="text/css"/>
+    <link rel='stylesheet' href='/static/third_party/DataTables/DataTables-1.12.1/css/jquery.dataTables.min.css'
+          type="text/css"/>
     <link rel='stylesheet' href='/static/third_party/DataTables/Responsive-2.3.0/css/responsive.dataTables.min.css'
           type="text/css"/>
     <link rel='stylesheet' href='/static/third_party/DataTables/Responsive-2.3.0/css/responsive.bootstrap5.min.css'
@@ -17,6 +18,10 @@
           href="https://cdn.datatables.net/searchpanes/2.0.2/css/searchPanes.dataTables.min.css" type="text/css"/>
     <link rel="stylesheet"
           href="/static/third_party/DataTables/Select-1.4.0/css/select.dataTables.min.css" type="text/css"/>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/south-street/jquery-ui.min.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="//cdn.datatables.net/plug-ins/725b2a2115b/integration/jqueryui/dataTables.jqueryui.css" rel="stylesheet"
+          type="text/css"/>
     <style>
         .form-control {
             color: #fffcfc !important;
@@ -28,6 +33,13 @@
 
         .row {
             margin: 0px !important;
+        }
+
+        /* An ugly trick to use a filter icon */
+        .ui-icon-volume-off.ui-icon-filter {
+            -ms-transform: rotate(270deg);
+            -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
         }
 
         .card {
@@ -93,7 +105,8 @@
 
         tfoot input {
             width: 100% !important;
-            padding: 3px !important; box-sizing: border-box !important;
+            padding: 3px !important;
+            box-sizing: border-box !important;
         }
 
         table.dataTable tfoot th, table.dataTable tfoot td {
@@ -180,12 +193,12 @@
                         class="mdi mdi-cloud-download"></i> Export
                 </button>
             </div>
-        <!--- Filter button --->
-{#            <div class="float-right" style="margin-left: 5px">#}
-{#                <button class="column_filter btn float-right btn-success"><i#}
-{#                        class="mdi mdi-filter"></i>#}
-{#                </button>#}
-{#            </div>#}
+            <!--- Filter button --->
+            {#            <div class="float-right" style="margin-left: 5px">#}
+            {#                <button class="column_filter btn float-right btn-success"><i#}
+            {#                        class="mdi mdi-filter"></i>#}
+            {#                </button>#}
+            {#            </div>#}
             <div class="float-right" style="margin-left: 5px">
                 <button type="button" class="assign_leads btn float-right btn-warning"><i
                         class="mdi mdi-plus"></i>
@@ -371,6 +384,7 @@
                 </div>
                 <div class="modal-body">
                     <form class="form-horizontal" role="form">
+                        {% csrf_token %}
                         <div class="form-body" id="select_lead">
                             <select id="shot_lead_select" class="form-control">
                                 <option value="0">Select Team Lead</option>
@@ -385,33 +399,38 @@
                     <button type="button" name="save" class="btn btn-success waves-effect waves-light"
                             onclick="assign_lead()">Assign
                     </button>
-                    <button type="button" name="close" class="btn btn-default waves-effect" data-dismiss="modal">Close
+                    <button type="button" name="close" class="btn btn-default waves-effect" data-dismiss="modal"
+                            onclick="close_assign_modal()">Close
                     </button>
                 </div>
             </div>
         </div>
     </div>
-    <div class="custom_preloader" style="display: inline-block;position: fixed;top: 0;bottom: 0;left: 0;right: 0;width: 200px;height: 100px;margin: auto;">
-        <svg version="1.1" id="L2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-  viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+    <div class="custom_preloader"
+         style="display: inline-block;position: fixed;top: 0;bottom: 0;left: 0;right: 0;width: 200px;height: 100px;margin: auto;">
+        <svg version="1.1" id="L2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+             y="0px"
+             viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
 <circle fill="none" stroke="#fff" stroke-width="4" stroke-miterlimit="10" cx="50" cy="50" r="48"/>
-<line fill="none" stroke-linecap="round" stroke="#fff" stroke-width="4" stroke-miterlimit="10" x1="50" y1="50" x2="85" y2="50.5">
+            <line fill="none" stroke-linecap="round" stroke="#fff" stroke-width="4" stroke-miterlimit="10" x1="50"
+                  y1="50" x2="85" y2="50.5">
   <animateTransform
-       attributeName="transform"
-       dur="2s"
-       type="rotate"
-       from="0 50 50"
-       to="360 50 50"
-       repeatCount="indefinite" />
+          attributeName="transform"
+          dur="2s"
+          type="rotate"
+          from="0 50 50"
+          to="360 50 50"
+          repeatCount="indefinite"/>
 </line>
-<line fill="none" stroke-linecap="round" stroke="#fff" stroke-width="4" stroke-miterlimit="10" x1="50" y1="50" x2="49.5" y2="74">
+            <line fill="none" stroke-linecap="round" stroke="#fff" stroke-width="4" stroke-miterlimit="10" x1="50"
+                  y1="50" x2="49.5" y2="74">
   <animateTransform
-       attributeName="transform"
-       dur="15s"
-       type="rotate"
-       from="0 50 50"
-       to="360 50 50"
-       repeatCount="indefinite" />
+          attributeName="transform"
+          dur="15s"
+          type="rotate"
+          from="0 50 50"
+          to="360 50 50"
+          repeatCount="indefinite"/>
 </line>
 </svg>
     </div>
@@ -433,6 +452,8 @@
     <script src="/static/template/assets/plugins/toast-master/js/jquery.toast.js"></script>
     <script src="https://cdn.datatables.net/searchpanes/2.0.2/js/dataTables.searchPanes.min.js"></script>
     <script src="/static/third_party/DataTables/Select-1.4.0/js/dataTables.select.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+    <script src="//cdn.jsdelivr.net/jquery.ui-contextmenu/1.7.0/jquery.ui-contextmenu.min.js"></script>
 
     <script>
         $(".column_filter").click(function (e) {
@@ -568,6 +589,8 @@
                     cascadePanes: true
                 },
                 dom: 'Plfrtip',
+                "jQueryUI": true,
+                "dom": 'l<"H"Rf>t<"F"ip>',
                 "searching": true,
                 "ajax": {
                     "processing": true,
@@ -625,12 +648,13 @@
                 "paging": true,
                 "pageLength": 25,
                 "bSortClasses": false,
-                stateSave: true,
+                stateSave: false,
                 deferLoading: 10,
             });
 
             $(".dtsp-panesContainer").hide()
             $(".assign_leads").click(function (e) {
+                shotId_arr.length = 0
                 $("input:checkbox[class=shot_checkbox]:checked").each(function () {
                     shotId_arr.push($(this).val());
                 });
@@ -769,7 +793,7 @@
                     'shot': shotId_arr[i],
                     'lead': $('#shot_lead_select option:selected').val(),
                     'status': 11,
-                    'assigned_by': 6
+                    'assigned_by': {{ user.profile.employee.id }}
                 }
                 $.post("/api/production/shot/assignments/", shotData,
                     function (data, status) {
@@ -784,11 +808,11 @@
                             success: function (result) {
                                 ++post_count;
                                 if (post_count == shotId_arr.length) {
-                                    $(".custom_preloader").hide()
                                     table.ajax.reload(null, false)
+                                    $(".custom_preloader").hide()
                                     $.toast({
                                         heading: 'Success',
-                                        text: 'Assigned to'+$('#shot_lead_select option:selected').text()+'.',
+                                        text: 'Assigned to' + $('#shot_lead_select option:selected').text() + '.',
                                         position: 'top-right',
                                         loaderBg: '#49ffbf',
                                         icon: 'success',
@@ -798,12 +822,15 @@
                                 }
                             }
                         });
-
                     }
                 )
             }
             $('#select_lead_modal').modal('hide');
 
+        }
+
+        function close_assign_modal() {
+            $('#select_lead_modal').modal('hide');
         }
 
         function export_to_excel() {

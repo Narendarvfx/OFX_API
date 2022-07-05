@@ -468,6 +468,43 @@ class TimeCardData(APIView):
                 _serializer.save()
         return Response(status=status.HTTP_201_CREATED)
 
+class UpdateTimeCard(APIView):
+
+    def get(self, request, format=None):
+        '''
+        [::-1] reverse order
+        [:2] last two records
+        '''
+
+        timelogs = TimeLogs.objects.all().select_related('shot', 'approved_by', 'updated_by')
+        serializer = TimeCardSerializer(timelogs, many=True, context={"request": request})
+        grouper = itemgetter("updated_by", "creation_date")
+        result = []
+        for key, grp in groupby(sorted(serializer.data, key=grouper), grouper):
+            temp_dict = dict(zip(["updated_by", "creation_date"], key))
+            temp_dict["total_hours"] = 0
+            Approved = True
+            for item in grp:
+                temp_dict["total_hours"] += item["total_hours"]
+                if item['approved'] and Approved:
+                    Approved = True
+                else:
+                    Approved = False
+
+            temp_dict['approved'] = Approved
+
+            result.append(temp_dict)
+
+        return Response(result)
+
+    def put(self, request, taskId):
+        timelog = TimeLogs.objects.get(id=taskId)
+        serializer = TimeCardSerializer(timelog, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class LightBoxData(APIView):
     def get(self, request):
         query_params = self.request.query_params
@@ -1080,3 +1117,62 @@ class CustomStudioReports(APIView):
             end_date = query_params.get('end_date', None)
             returned_data = calculate_studio_data(start_date, end_date)
         return Response(returned_data)
+
+
+class StatusCount(APIView):
+
+    def get(self, request):
+        query_params = self.request.query_params
+        argumentos = {}
+        if query_params.get('client_id'):
+            clients = []
+            for client in query_params.get('client_id').split('|'):
+                clients.append(client)
+            argumentos['sequence__project__client_id__in'] = clients
+        if query_params.get('project_id'):
+            projects = []
+            for project in query_params.get('project_id').split('|'):
+                projects.append(project)
+            argumentos['sequence__project_id__in'] = projects
+        if len(argumentos) > 0:
+            yts_count = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
+                                                'sequence__project__client', 'status', 'complexity',
+                                                'team_lead', 'artist', 'location','sequence__project__client__locality').filter(
+                **argumentos).filter(status__code__in=['ATL', 'YTS', 'YTA']).count()
+            wip_count = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
+                                                'sequence__project__client', 'status', 'complexity',
+                                                'team_lead', 'artist', 'location','sequence__project__client__locality').filter(
+                **argumentos).filter(status__code__in=['WIP', 'LAP', 'LRT', 'STQ', 'STC', 'IRT']).count()
+            hold_count = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
+                                                'sequence__project__client', 'status', 'complexity',
+                                                'team_lead', 'artist', 'location','sequence__project__client__locality').filter(
+                **argumentos).filter(status__code__in=['HLD']).count()
+            omit_count = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
+                                                'sequence__project__client', 'status', 'complexity',
+                                                'team_lead', 'artist', 'location','sequence__project__client__locality').filter(
+                **argumentos).filter(status__code__in=['OMT']).count()
+            del_count = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
+                                                'sequence__project__client', 'status', 'complexity',
+                                                'team_lead', 'artist', 'location','sequence__project__client__locality').filter(
+                **argumentos).filter(status__code__in=['DTC']).count()
+            retake_count = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
+                                                'sequence__project__client', 'status', 'complexity',
+                                                'team_lead', 'artist', 'location','sequence__project__client__locality').filter(
+                **argumentos).filter(type__in=['RETAKE']).count()
+        else:
+            yts_count = Shots.objects.filter(status__code__in=['ATL', 'YTS', 'YTA']).count()
+            wip_count = Shots.objects.filter(status__code__in=['WIP', 'LAP', 'LRT', 'STQ', 'STC', 'IRT']).count()
+            hold_count = Shots.objects.filter(status__code__in=['HLD']).count()
+            omit_count = Shots.objects.filter(status__code__in=['OMT']).count()
+            del_count = Shots.objects.filter(status__code__in=['DTC']).count()
+            retake_count = Shots.objects.filter(type__in=['RETAKE']).count()
+        _dat = {
+            'yts_count': yts_count,
+            'wip_count': wip_count,
+            'hold_count': hold_count,
+            'omit_count': omit_count,
+            'del_count': del_count,
+            'retake_count': retake_count
+        }
+        # serializer = TaskHelpArtistSerializer(task)
+        return Response(_dat)

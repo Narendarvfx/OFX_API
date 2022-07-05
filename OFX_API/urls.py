@@ -7,7 +7,9 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 from rest_framework.documentation import include_docs_urls
-
+from django.conf.urls import (
+handler400, handler403, handler404, handler500
+)
 from OFX_API import views
 
 schema_view = get_schema_view(
@@ -40,6 +42,10 @@ urlpatterns = [
     path('logs/', include('log_viewer.urls')),
 
 ]
+handler400 = views.bad_request
+handler403 = views.permission_denied
+handler404 = views.page_not_found
+handler500 = views.server_error
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
@@ -51,6 +57,6 @@ if settings.DEBUG:
     ] + urlpatterns
 
 # Admin Site Config
-admin.sites.AdminSite.site_header = 'OFX API'
-admin.sites.AdminSite.site_title = 'OFX API'
-admin.sites.AdminSite.index_title = 'OFX A Complete Studio Pipeline'
+admin.sites.AdminSite.site_header = 'ShotBuzz Admin Portal'
+admin.sites.AdminSite.site_title = 'ShotBuzz Admin Portal'
+admin.sites.AdminSite.index_title = 'ShotBuzz -- Ease of Production'
