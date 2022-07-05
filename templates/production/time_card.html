@@ -6,7 +6,9 @@
     <!-- Bread crumb and right sidebar toggle -->
     <!-- ============================================================== -->
     <link rel="stylesheet" href="/static/third_party/dhtmlx/dhtmlxGantt/dhtmlxgantt_broadway.css"
-        type="text/css"/>
+          type="text/css"/>
+    <link rel="stylesheet"
+          href="/static/template/assets/plugins/toast-master/css/jquery.toast.css" type="text/css"/>
 
 
 {% endblock bread_crumb %}
@@ -14,25 +16,27 @@
 
 {% block content %}
     <style>
-        html, body{
-          margin:0;
-          padding:0;
+        html, body {
+            margin: 0;
+            padding: 0;
 
         }
-        #gantt_here{
-          height: 80vh;
+
+        .container-fluid {
+            padding: 5px 5px 0px 5px;
         }
 
-        .gantt-sub-header > div:first-child{
-          border-bottom: 1px solid #cecece;
+        #gantt_here {
+            height: 80vh;
         }
-        .gantt_last_cell .gantt_tree_content{
-            background-color: #654c30;
-            color: white;
+
+        .gantt-sub-header > div:first-child {
+            border-bottom: 1px solid #cecece;
+        }
+
+        .gantt_last_cell .gantt_tree_content {
             text-align: center;
             width: 100px;
-            border:2px solid #654c30;
-            border-radius: 5px;
             margin-left: 20px;
         }
 
@@ -44,7 +48,11 @@
             background-color: #272c33;
             font-family: "Rubik", sans-serif;
             border: 1px solid;
-            border-color: #050505 !important;
+            border-color: #383f48 !important;
+        }
+
+        .gantt_task_line .gantt_task_content {
+            text-align: center;
         }
 
         .filters_wrapper {
@@ -55,7 +63,7 @@
         .filters_wrapper span {
             font-weight: bold;
             padding: 5px;
-            margin:5px
+            margin: 5px
         }
 
         .filters_wrapper label {
@@ -79,21 +87,21 @@
             color: #747d8a !important;
             background-color: #272c33;
             font-family: "Rubik", sans-serif !important;
-            border-color: #050505 !important;
+            border-color: #383f48 !important;
         }
 
         .gantt_task_cell {
             background-color: #272c33;
             font-family: "Rubik", sans-serif !important;
             color: #747d8a !important;
-            border-color: #050505 !important;
+            border-color: #383f48 !important;
         }
 
         .gantt_grid_scale {
             color: #747d8a !important;
             background-color: #272c33;
             font-family: "Rubik", sans-serif !important;
-            border-color: #050505 !important;
+            border-color: #383f48 !important;
             height: 50px !important;
             line-height: 50px !important;
         }
@@ -102,7 +110,7 @@
             font-family: "Rubik", sans-serif !important;
             color: #747d8a !important;
             background-color: #272c33;
-            border-color: #050505 !important;
+            border-color: #383f48 !important;
         }
 
         .gantt_row.odd {
@@ -114,19 +122,19 @@
         .gantt_scale_line {
             color: #747d8a !important;
             font-family: "Rubik", sans-serif !important;
-            border-color: #050505 !important;
+            border-color: #383f48 !important;
         }
 
         .gantt_container {
             color: #747d8a !important;
             background-color: #272c33;
             font-family: "Rubik", sans-serif !important;
-            border-color: #050505 !important;
+            border-color: #383f48 !important;
         }
 
         .gantt_scale_cell {
             color: #e2e4e8 !important;
-            border-color: #050505 !important;
+            border-color: #383f48 !important;
         }
 
         .gantt_grid_head_cell {
@@ -142,20 +150,76 @@
             background-color: #2a2e33 !important;
             color: white;
         }
-        .gantt_grid_data{
+        .gantt_layout_cell{
+            border-right: #0A0A0A;
+        }
+
+        .gantt_grid_data {
             background-color: #2a2e33 !important;
         }
-        .gantt_tree_content{
+
+        .gantt_tree_content {
             color: #d3d0d0;
         }
+
         .gantt_task_row {
-            border-bottom-color: #050505 !important;
+            border-bottom-color: rgb(56, 63, 72) !important;
         }
+
         .gantt_grid_data .gantt_row, .gantt_grid_data .gantt_row.odd {
-            border-top:0px !important;
+            border-top: 0px !important;
         }
-        .app-search #search_box{
+
+        .gantt_grid_scale .gantt_grid_head_cell {
+            background-color: #272c33;
+        }
+
+        .app-search #search_box {
             color: white !important;
+        }
+
+        .modal.right .modal-dialog {
+            position: fixed;
+            margin: auto;
+            width: 500px;
+            height: 100%;
+            -webkit-transform: translate3d(0%, 0, 0) !important;
+            -ms-transform: translate3d(0%, 0, 0) !important;
+            -o-transform: translate3d(0%, 0, 0) !important;
+            transform: translate3d(0%, 0, 0) !important;
+        }
+
+        .modal.right .modal-content {
+            height: 100%;
+            overflow-y: auto;
+        }
+
+
+        .modal.right .modal-body {
+            padding: 15px 15px 80px;
+        }
+
+        /*Right*/
+        .modal.right .modal-dialog {
+            right: 0px;
+            -webkit-transition: opacity 0.3s linear, right 0.5s ease-in-out !important;
+            -moz-transition: opacity 0.3s linear, right 0.3s ease-in-out !important;
+            -o-transition: opacity 0.3s linear, right 0.3s ease-in-out !important;
+            transition: opacity 0.3s linear, right 0.3s ease-in-out !important;
+        }
+
+
+        /* ----- MODAL STYLE ----- */
+        .modal-content {
+            border-radius: 0;
+            border: none;
+        }
+
+        .form-group {
+            margin-bottom: 5px !important;
+        }
+        .fa-window-close{
+            cursor: pointer;
         }
 
     </style>
@@ -165,8 +229,7 @@
             <div class="gantt_control">
                 <div class="btn-group filters_wrapper" data-toggle="buttons" id="filters_wrapper">
                     <label class="btn btn-info active">
-                        <div class="custom-control custom-checkbox mr-sm-2 ">
-{#                            <input type="checkbox" class="gantt_radio" name="4" value="1" checked/>#}
+                        <div class="custom-control custom-checkbox mr-sm-2">
                             <input type="checkbox" class="custom-control-input" name="PAINT" value="1" checked>
                             <label class="custom-control-label" for="checkbox0">Paint</label>
                         </div>
@@ -186,23 +249,24 @@
                     <label class="btn btn-info">
                         <div class="custom-control custom-checkbox mr-sm-2 ">
                             <input type="checkbox" class="custom-control-input" name="COMP" value="4" checked>
-{#                            <input type="checkbox" class="custom-control-input" id="checkbox3">#}
                             <label class="custom-control-label" for="checkbox3">COMP</label>
                         </div>
                     </label>
                 </div>
             </div>
             <!-- Shots Table View -->
-            <div id="gantt_here" >
+            <div id="gantt_here">
 
             </div>
         </div>
     </div>
-    <div id="responsive-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog">
+    <div id="responsive-modal" class="modal right" tabindex="-1" role="document" aria-labelledby="myModalLabel"
+         aria-hidden="true" style="display: none;">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Time Log Details</h4>
+                    <i class="fa fa-window-close" style="font-size:26px" onclick="cancel()"></i>
                 </div>
                 <div class="modal-body">
                     <form class="form-horizontal" role="form">
@@ -212,8 +276,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" name="save" class="btn btn-success waves-effect waves-light">Approve</button>
-                    <button type="button" name="close" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+
                 </div>
             </div>
         </div>
@@ -225,6 +288,8 @@
 {% block page_scripts %}
 
     <script src="/static/third_party/dhtmlx/dhtmlxGantt/edge/dhtmlxgantt.js"></script>
+    <script src="/static/template/assets/plugins/popper/popper.min.js"></script>
+    <script src="/static/template/assets/plugins/toast-master/js/jquery.toast.js"></script>
     <script>
         // Validation script
         !function (window, document, $) {
@@ -297,55 +362,57 @@
         const all_timelogs = JSON.parse(all_timelogs_json);
         all_timelogs.forEach(function (timelog) {
             var col = ''
-            if (timelog['approved'] === true){
+            if (timelog['approved'] === true) {
                 col = "green"
-            }else{
+            } else {
                 col = "red"
             }
             _dat = {
                 "text": timelog['total_hours'],
                 "start_date": timelog['creation_date'],
-                "duration":1,
-                "parent":timelog['updated_by'],
-                "color": col,
+                "duration": 1,
+                "parent": timelog['updated_by'],
+                "color": col
             }
             _tasks.push(_dat)
         });
 
         var data = {
-          tasks:_tasks
+            tasks: _tasks
         };
+        console.log(data)
         gantt.config.scales = [
-             {unit: "month", step: 1, format: "%F, %Y"},
-             {unit: "day", step: 1, format: "%j"}
+            {unit: "month", step: 1, format: "%F, %Y"},
+            {unit: "day", step: 1, format: "%j"}
         ];
 
         gantt.config.layout = {
             css: "gantt_container",
-            rows:[
+            rows: [
                 {
-                   cols: [
-                    {
-                      // the default grid view
-                      view: "grid",
-                      scrollX:"scrollHor",
-                      scrollY:"scrollVer"
-                    },
-                    { resizer: true, width: 1 },
-                    {
-                      // the default timeline view
-                      view: "timeline",
-                      scrollX:"scrollHor",
-                      scrollY:"scrollVer"
-                    },
-                    {
-                      view: "scrollbar",
-                      id:"scrollVer"
-                    }
-                ]},
+                    cols: [
+                        {
+                            // the default grid view
+                            view: "grid",
+                            scrollX: "scrollHor",
+                            scrollY: "scrollVer"
+                        },
+                        {resizer: true, width: 1},
+                        {
+                            // the default timeline view
+                            view: "timeline",
+                            scrollX: "scrollHor",
+                            scrollY: "scrollVer"
+                        },
+                        {
+                            view: "scrollbar",
+                            id: "scrollVer"
+                        }
+                    ]
+                },
                 {
                     view: "scrollbar",
-                    id:"scrollHor"
+                    id: "scrollHor"
                 }
             ]
         }
@@ -356,8 +423,6 @@
         gantt.config.show_tasks_outside_timescale = true;
         gantt.config.fit_tasks = true;
         gantt.config.grid_resize = true;
-        gantt.config.buttons_left = ["gantt_save_btn", "gantt_cancel_btn"];
-        gantt.config.buttons_right = ["gantt_delete_btn"];
         gantt.config.drag_links = false;
         gantt.config.drag_move = false;
         gantt.config.drag_progress = false;
@@ -373,7 +438,7 @@
                 gantt.refreshData();
             }
         }
-        gantt.showLightbox = function(id) {
+        gantt.showLightbox = function (id) {
             $("#dynamic_data").empty()
             taskId = id;
             var task = gantt.getTask(id);
@@ -381,11 +446,11 @@
             let ye = new Intl.DateTimeFormat('en', {year: 'numeric'}).format(myDate);
             let mo = new Intl.DateTimeFormat('en', {month: 'numeric'}).format(myDate);
             let da = new Intl.DateTimeFormat('en', {day: '2-digit'}).format(myDate);
-            var _d = da+'-'+mo+'-'+ye
+            var _d = da + '-' + mo + '-' + ye
 
             var lightbox_data = $.ajax({
                 type: "GET",
-                url: "/api/production/lightboxdata/?_date="+_d+'&employee_id='+task['parent'],
+                url: "/api/production/lightboxdata/?_date=" + _d + '&employee_id=' + task['parent'],
                 dataType: "application/json",
                 async: false,
                 error: function (xhr, status, errorThrown) {
@@ -393,92 +458,153 @@
             }).responseText;
             const light_data = JSON.parse(lightbox_data);
             light_data.forEach(function (light) {
-                $('#dynamic_data').append($('<div class="row"> <div class="col-lg-12 "> <div class="form-group row"> <label class="control-label col-md-12" name="description" style="color:#d9d6d0">'+light.shot.name+' :  '+light.total_hours+' Hours     ' +light.comments+'</label> </div> </div> </div>'))
-            });
-            var form = getForm();
-            form.querySelector("[name='save']").onclick = task_save;
-            form.querySelector("[name='close']").onclick = cancel;
+                str = ""
+                if (light.approved){
+                    label_str = `<span class="badge badge-pill badge-success float-right" id="approved">Approved</span>`
+                }else{
+                    label_str = '<span class="badge badge-pill badge-danger float-right" id="pending">pending</span>'
+                }
+                $('#dynamic_data').append($(`<div class="card">
+                                <div class="col-lg-12 ">
+                                    <h4 class="card-title" style="margin-top: 10px;">` + light.shot.name +label_str+`</h4>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group row">
+                                                <label class="control-label text-left col-md-5">Spent Hours:</label>
+                                                <div class="col-md-7">
+                                                    <input type="number" id="spent_hours_val" class="form-control" value=` + light.spent_hours + `>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group row">
+                                                <label class="control-label text-left col-md-5">Other Hours:</label>
+                                                <div class="col-md-7">
+                                                    <input type="number" id="other_hours_val" class="form-control" value=` + light.others_hours + `>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group row">
+                                                <label class="control-label text-left col-md-5">Comments:</label>
+                                                <div class="col-md-7">
+                                                    <textarea rows="3" class="form-control">` + light.comments + `</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions">
+                                        <div class="card-body" style="padding: 3px">
+                                            <button type="button" name='save' onclick="task_save(` + light.id + `)"class="btn btn-success"> <i class="fa fa-check"></i> Save</button>
 
-        };
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>`))
+            })
+            var form = getForm();
+            {#form.querySelector("[name='save']").onclick = task_save(light);#}
+            {#form.querySelector("[name='close']").onclick = cancel;#}
+
+        }
+        ;
+
         function getForm() {
             $('#responsive-modal').modal('show');
             return document.getElementById("responsive-modal");
         };
 
-        function task_save() {
+        function task_save(task_id) {
             var task = gantt.getTask(taskId);
-
-            $('#responsive-modal').modal('hide');
             var myDate = new Date(task['start_date']);
             let ye = new Intl.DateTimeFormat('en', {year: 'numeric'}).format(myDate);
             let mo = new Intl.DateTimeFormat('en', {month: 'numeric'}).format(myDate);
             let da = new Intl.DateTimeFormat('en', {day: '2-digit'}).format(myDate);
             _data = {
-                'employee_id':task['parent'],
-                'date': da+'-'+mo+'-'+ye,
+                'approved': true,
+                'spent_hours': parseFloat(document.getElementById("spent_hours_val").value),
+                'others_hours': parseFloat(document.getElementById("other_hours_val").value),
+                'total_hours': parseFloat(document.getElementById("spent_hours_val").value) + parseFloat(document.getElementById("other_hours_val").value),
+                'approved_by': "{{ user.profile.employee.fullName }}"
             }
             $.ajax({
                 type: "PUT",
-                url: "/api/production/timecards/",
+                url: "/api/production/timecards/" + task_id,
                 data: _data,
-                dataType: "application/json",
+                dataType: "json",
                 async: false,
+                success: function (xhr, status) {
+                    $('#pending').text("Approved")
+                    $('#pending').removeClass('badge-warning').addClass('badge-success');
+                    $.toast({
+                        heading: 'Success',
+                        text: 'Succesfully Updated',
+                        position: 'top-right',
+                        loaderBg: '#49ffbf',
+                        icon: 'success',
+                        hideAfter: 3000,
+                        stack: 6
+                    });
+                },
                 error: function (xhr, status, errorThrown) {
+                    console.log(errorThrown)
                 }
             }).responseText;
             task.color = "green"
             gantt.render()
         }
-        function cancel() {
-            var task = gantt.getTask(taskId);
 
-            if(task.$new)
-            gantt.deleteTask(task.id);
-            gantt.hideLightbox();
+        function cancel() {
+            $('#responsive-modal').modal('hide');
+
         }
 
-        gantt.attachEvent("onTaskClick", function(id,e){
+        gantt.attachEvent("onTaskClick", function (id, e) {
             gantt.showLightbox(id)
 
         });
         var scaleHeight = gantt.config.scale_height;
-      var employeeFilter = [
+        var employeeFilter = [
             "<div class='gantt-sub-header' style='line-height:20px'>",
             "<div>Employee Name</div>",
             "<div><input id='data_text_filter' type='text' placeholder='Search Employee' oninput='gantt.$doFilter(this.value)'></div>",
             "</div>"
         ].join("");
-        gantt.config.columns =  [
-            {name:"fullName", label:employeeFilter, align:"center", width:"*"},
-            {name:"dept", label:"Dept",  width:"*"},
+        gantt.config.columns = [
+            {name: "fullName", label: employeeFilter, align: "center", width: "*"},
+            {name: "dept", label: "Dept", width: "*"},
         ];
 
         var filterValue = "";
-      var delay;
-      gantt.$doFilter = function(value){
-        filterValue = value;
-        gantt.render();
-        console.log(scaleHeight)
-        clearTimeout(delay);
-        delay = setTimeout(function(){
-          gantt.render();
-          gantt.$root.querySelector("[id='data_text_filter']").focus();
-        }, 100)
-      }
-      gantt.attachEvent("onBeforeTaskDisplay", function(id, task){
-       if(!filterValue) return true;
-        try {
-            var normalizedText = task.fullName.toLowerCase();
-            var normalizedValue = filterValue.toLowerCase();
-            return normalizedText.indexOf(normalizedValue) > -1;
-        }catch{
-            console.log("Error")
+        var delay;
+        gantt.$doFilter = function (value) {
+            filterValue = value;
+            gantt.render();
+            clearTimeout(delay);
+            delay = setTimeout(function () {
+                gantt.render();
+                gantt.$root.querySelector("[id='data_text_filter']").focus();
+            }, 100)
         }
-      });
-    gantt.attachEvent("onGanttRender", function(){
-		gantt.$root.querySelector("[id='data_text_filter']").value = filterValue;
-	})
-
+        gantt.attachEvent("onBeforeTaskDisplay", function (id, task) {
+            if (!filterValue) return true;
+            try {
+                var normalizedText = task.fullName.toLowerCase();
+                var normalizedValue = filterValue.toLowerCase();
+                return normalizedText.indexOf(normalizedValue) > -1;
+            } catch {
+                console.log("Error")
+            }
+        });
+        gantt.attachEvent("onGanttRender", function () {
+            gantt.$root.querySelector("[id='data_text_filter']").value = filterValue;
+        })
 
         gantt.init("gantt_here");
         gantt.parse(data);
