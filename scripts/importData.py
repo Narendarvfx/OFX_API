@@ -8,7 +8,7 @@ import requests
 
 server = "https://shotbuzz.oscarfx.com"
 token = '39bdb2c0347f12746b2fa909c9b48a81247ca120'
-employee_csv = r"C:\Users\narendarreddy.g\Documents\TeamChange_Paint\teamlist_paint.csv"
+employee_csv = r"C:\Users\narendarreddy.g\Documents\TeamChange_Paint\roto_team_list_updated.csv"
 
 ########################################################################################################################
 
@@ -43,7 +43,6 @@ def import_employee_data():
     with open(employee_csv, newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            print(row['UserName'])
             data = {
                 "password": default_password,
                 "is_superuser": False,
@@ -54,7 +53,6 @@ def import_employee_data():
                 "is_active": True
             }
             response = requests.post(user_api_url, data=data, headers={'Authorization': 'Token {}'.format(token)}, verify=False)
-            print(response.text)
             update_employee_details(response.json(), row)
 
 
@@ -79,16 +77,19 @@ def setTeamId():
             for row in reader:
                 if row['EmployeeID'] == user['employee_id']:
                     data = {
-                        "team_lead" : row['TeamId']
+                        "team_lead" : row['TeamId'],
+                        "role": row['Role']
                     }
                     user_api_url = "{}/api/hrm/employee/{}/".format(server, user['id'])
-                    response = requests.put(user_api_url, data=data, headers={'Authorization': 'Token {}'.format(token)}, verify=False)
-                    print(response.text)
+                    try:
+                        response = requests.put(user_api_url, data=data, headers={'Authorization': 'Token {}'.format(token)}, verify=False)
+                    except Exception as e:
+                        print("Not Updated: ", row['EmployeeID'])
                     
                     
 
 if __name__ == '__main__':
     #generate_default_profile_photo()
     #update_username()
-    import_employee_data()
-    #setTeamId()
+    # import_employee_data()
+    setTeamId()

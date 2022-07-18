@@ -541,7 +541,7 @@
                 async: false,
                 success: function (xhr, status) {
                     $('#pending').text("Approved")
-                    $('#pending').removeClass('badge-warning').addClass('badge-success');
+                    $('#pending').removeClass('badge-danger').addClass('badge-success');
                     $.toast({
                         heading: 'Success',
                         text: 'Succesfully Updated',
@@ -590,7 +590,7 @@
             delay = setTimeout(function () {
                 gantt.render();
                 gantt.$root.querySelector("[id='data_text_filter']").focus();
-            }, 100)
+            }, 1000)
         }
         gantt.attachEvent("onBeforeTaskDisplay", function (id, task) {
             if (!filterValue) return true;

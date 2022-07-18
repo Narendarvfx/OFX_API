@@ -248,6 +248,7 @@ class ProductSheet(APIView):
         serializer = ShotTimeLogSerializer(instance=queryset, many=True)
         shots_data = []
         for _shotdata in serializer.data:
+            print(_shotdata)
             total_spent = 0
             for spent in _shotdata['timelogs']:
                 total_spent += spent['spent_hours']

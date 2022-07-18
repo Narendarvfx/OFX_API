@@ -6,8 +6,6 @@ from django.dispatch import receiver
 from django.utils.safestring import mark_safe
 from imagekit.models import ProcessedImageField
 
-
-
 from profiles.models import Profile
 
 # Create your models here.

@@ -15,7 +15,7 @@
     <link rel="stylesheet"
           href="/static/template/assets/plugins/toast-master/css/jquery.toast.css" type="text/css"/>
     <link rel="stylesheet"
-          href="https://cdn.datatables.net/searchpanes/2.0.2/css/searchPanes.dataTables.min.css" type="text/css"/>
+          href="/static/third_party/DataTables/custom_css/datables_searchpane.css" type="text/css"/>
     <link rel="stylesheet"
           href="/static/third_party/DataTables/Select-1.4.0/css/select.dataTables.min.css" type="text/css"/>
     <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/south-street/jquery-ui.min.css" rel="stylesheet"
@@ -178,14 +178,68 @@
             background-color: #0A0A0A;
         }
 
+        div.dtsp-verticalContainer {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-content: flex-start;
+            align-items: flex-start;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes,
+        div.dtsp-verticalContainer div.container {
+            width: 20%;
+            flex-grow: 0;
+            flex-shrink: 0;
+            flex-basis: 0;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes {
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: 26%;
+        }
+
+        div.dtsp-verticalPanes {
+            margin-right: 10px;
+        }
+
+        div.dtsp-title {
+            margin-right: 0px !important;
+            margin-top: 13px !important;
+        }
+
+        input.dtsp-search {
+            min-width: 0px !important;
+            padding-left: 0px !important;
+            margin: 0px !important;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes div.dtsp-searchPanes {
+            flex-direction: column;
+            flex-basis: 0px;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes div.dtsp-searchPanes div.dtsp-searchPane {
+            flex-basis: 0px;
+        }
+
+        div.dtsp-verticalContainer div.container {
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: 80%;
+        }
+
+        div.dtsp-panesContainer {
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 5px;
+        }
     </style>
     <div class="row page-titles">
         <div class="col-md-4 col-6 align-self-center">
             <h3 class="text-themecolor mb-0 mt-0">Live Production Report</h3>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Reports</a></li>
-                <li class="breadcrumb-item active">Production Report</li>
-            </ol>
         </div>
         <div class="col-md-8 col-8 align-self-center">
             <div class="float-right" style="margin-left: 5px">
@@ -193,12 +247,13 @@
                         class="mdi mdi-cloud-download"></i> Export
                 </button>
             </div>
-            <!--- Filter button --->
-            {#            <div class="float-right" style="margin-left: 5px">#}
-            {#                <button class="column_filter btn float-right btn-success"><i#}
-            {#                        class="mdi mdi-filter"></i>#}
-            {#                </button>#}
-            {#            </div>#}
+{#        TODO: Enable to work on filters #}
+{#            <!--- Filter button --->#}
+{#            <div class="float-right" style="margin-left: 5px">#}
+{#                <button class="column_filter btn float-right btn-success"><i#}
+{#                        class="mdi mdi-filter"></i>#}
+{#                </button>#}
+{#            </div>#}
             <div class="float-right" style="margin-left: 5px">
                 <button type="button" class="assign_leads btn float-right btn-warning"><i
                         class="mdi mdi-plus"></i>
@@ -266,42 +321,39 @@
         <!-- Shots Table View -->
         <div class="col-lg-12" id="shots_list_view">
             <div class="card">
-                <table id="shots_table" class="table display no-wrap" style="width:100%">
+
+                        <table id="shots_table" class="table display no-wrap" style="width:100%">
 
 
-                </table>
+                        </table>
+
             </div>
         </div>
-        <div class="col-lg-2 card" id="filter_div" style="display: none">
+        <div class="col-lg-2 card" id="filter_div" style="display: none;height:1000px;overflow-y: auto">
             <h6><i onclick="header_vis(this)" class="ti-angle-right"></i> Header Visibility</h6>
             <div class="card" id="header_filter" style="display: none; height:200px; overflow-y: scroll">
                 <div class="card-body">
                     <input type="text" class="form-control column_vis" id="search_header" onkeyup="search_column()"
                            placeholder="Search for...">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox0" data-column="0"
-                               value="check" checked>
-                        <label class="custom-control-label" for="checkbox0">CLIENT</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox1" data-column="1"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox1">PROJECT</label>
+                        <label class="custom-control-label" for="checkbox1">CLIENT</label>
                     </div>
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox2" data-column="2"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox2">SEQUENCE</label>
+                        <label class="custom-control-label" for="checkbox2">PROJECT</label>
                     </div>
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox3" data-column="3"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox3">SHOT</label>
+                        <label class="custom-control-label" for="checkbox3">SEQUENCE</label>
                     </div>
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox4" data-column="4"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox4">TASK TYPE</label>
+                        <label class="custom-control-label" for="checkbox4">SHOT</label>
                     </div>
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox5" data-column="5"
@@ -311,47 +363,67 @@
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox6" data-column="6"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox6">COMPLEXITY</label>
+                        <label class="custom-control-label" for="checkbox6">TASK TYPE</label>
                     </div>
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox7" data-column="7"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox7">FRAME IN</label>
+                        <label class="custom-control-label" for="checkbox7">COMPLEXITY</label>
                     </div>
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox8" data-column="8"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox8">FRAME OUT</label>
+                        <label class="custom-control-label" for="checkbox8">STATUS</label>
                     </div>
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox9" data-column="9"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox9">DURATION</label>
+                        <label class="custom-control-label" for="checkbox9">PROGRESS</label>
                     </div>
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox10" data-column="10"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox10">STATUS</label>
+                        <label class="custom-control-label" for="checkbox10">ACTUAL BIDS</label>
                     </div>
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox11" data-column="11"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox11">BIDS</label>
+                        <label class="custom-control-label" for="checkbox11">CONSUMED BIDS</label>
                     </div>
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox12" data-column="12"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox12">CONSUMED BIDS</label>
+                        <label class="custom-control-label" for="checkbox12">ETA</label>
                     </div>
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox13" data-column="13"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox13">PROGRESS</label>
+                        <label class="custom-control-label" for="checkbox13">FRAME IN</label>
                     </div>
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox14" data-column="14"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox14">PENDING BID DAYS</label>
+                        <label class="custom-control-label" for="checkbox14">FRAME OUT</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox15" data-column="15"
+                               value="check" checked>
+                        <label class="custom-control-label" for="checkbox15">DURATION</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox16" data-column="16"
+                               value="check" checked>
+                        <label class="custom-control-label" for="checkbox16">TEAM LEAD</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox17" data-column="17"
+                               value="check" checked>
+                        <label class="custom-control-label" for="checkbox17">LOCATION</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox18" data-column="18"
+                               value="check" checked>
+                        <label class="custom-control-label" for="checkbox18">LOCALITY</label>
                     </div>
                 </div>
             </div>
@@ -369,10 +441,14 @@
                                    for="checkbox{{ forloop.counter0 }}">{{ client.name }}</label>
                         </div>
                     {% endfor %}
-
-
                 </div>
             </div>
+        <div class="dtsp-verticalContainer">
+                    <div class="dtsp-verticalPanes"></div>
+                    <div class="container">
+                    </div>
+        </div>
+
         </div>
     </div>
     <div id="select_lead_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -454,6 +530,7 @@
     <script src="/static/third_party/DataTables/Select-1.4.0/js/dataTables.select.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
     <script src="//cdn.jsdelivr.net/jquery.ui-contextmenu/1.7.0/jquery.ui-contextmenu.min.js"></script>
+    <script src="/static/template/assets/plugins/moment/moment.js"></script>
 
     <script>
         $(".column_filter").click(function (e) {
@@ -482,7 +559,6 @@
         }
 
         function client_vis(x) {
-            console.log(x)
             x.classList.toggle("ti-angle-down");
             var s = document.getElementById("client_filter");
             if (s.style.display === "none") {
@@ -491,6 +567,7 @@
                 s.style.display = "none";
             }
         }
+
 
         function search_column() {
             var input = document.getElementById("search_header");
@@ -582,15 +659,12 @@
                         },
                         targets: [15]
                     },
-
-
                 ],
                 searchPanes: {
-                    cascadePanes: true
+                    cascadePanes: true,
+                    layout: 'columns-1'
                 },
-                dom: 'Plfrtip',
-                "jQueryUI": true,
-                "dom": 'l<"H"Rf>t<"F"ip>',
+                dom: '<"dtsp-dataTable"frtip>',
                 "searching": true,
                 "ajax": {
                     "processing": true,
@@ -620,9 +694,6 @@
                     {title: "TASK TYPE", data: 'task_type'},
                     {title: "TYPE", data: 'type'},
                     {title: "COMPLEXITY", data: 'complexity'},
-                    {title: "START FRAME", data: 'actual_start_frame'},
-                    {title: "END FRAME", data: 'actual_end_frame'},
-                    {title: "DURATION", data: null, "defaultContent": ""},
                     {
                         title: "STATUS", data: 'status',
                         render: function (data, type, row, meta) {
@@ -631,11 +702,35 @@
                             );
                         },
                     },
-                    {title: "BID DAYS", data: 'bid_days'},
-                    {title: "ACTUALS", data: 'total_spent'},
-                    {title: "PROGRESS", data: 'progress'},
-                    {title: "ETA", data: 'eta'},
+                    {
+                        title: "PROGRESS", data: 'progress',
+                        render: function (data, type, row, meta) {
+                            return (
+                                `<div class="progress" style="height: 15px;">
+                        <div class="progress-bar" style="width:` + data + `%;background-color:red;color: white;font-weight: bold" role="progressbar">` + data + `%</div>
+                    </div>`
+                            )
+                        }
+                    },
+                    {title: "ACTUAL BIDS", data: 'bid_days'},
+                    {
+                        title: "CONSUMED BIDS", data: 'total_spent',
+                        render: function (data, type, row, meta) {
+                            return data.toFixed(2)
+                        }
+                    },
+                    {
+                        title: "ETA", data: 'eta',
+                        render: function (data, type, row, meta) {
+                            return moment(data).format("DD-MM-YYYY");
+                        }
+                    },
+                    {title: "START FRAME", data: 'actual_start_frame'},
+                    {title: "END FRAME", data: 'actual_end_frame'},
+                    {title: "DURATION", data: null, "defaultContent": ""},
                     {title: "TEAM LEAD", data: 'team_lead'},
+                    {title: "ARTIST", data: 'artist'},
+                    {title: "VERSION", data: 'version'},
                     {title: "LOCATION", data: 'location'},
                     {title: "LOCALITY", data: 'sequence.project.client.locality'},
                 ],
@@ -648,11 +743,13 @@
                 "paging": true,
                 "pageLength": 25,
                 "bSortClasses": false,
-                stateSave: false,
+                stateSave: true,
                 deferLoading: 10,
             });
 
-            $(".dtsp-panesContainer").hide()
+            table.searchPanes()
+            $("div.dtsp-verticalPanes").append(table.searchPanes.container());
+            {#$(".dtsp-panesContainer").show()#}
             $(".assign_leads").click(function (e) {
                 shotId_arr.length = 0
                 $("input:checkbox[class=shot_checkbox]:checked").each(function () {

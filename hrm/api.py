@@ -62,6 +62,13 @@ class AllTeams(APIView):
         serializer = TeamSerializer(team, many=True, context={"request":request})
         return Response(serializer.data)
 
+class DeptLeads(APIView):
+
+    def get(self, request, format=None):
+        team= Employee.objects.filter()
+        serializer = TeamSerializer(team, many=True, context={"request":request})
+        return Response(serializer.data)
+
 class TeamById(APIView):
 
     def get(self, request,id, format=None):

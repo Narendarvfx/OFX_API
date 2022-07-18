@@ -7,7 +7,7 @@ from production.serializers import ShotsSerializer
 
 class DepartmentTestCase(TestCase):
     def test_dept_version(self):
-        client_version = Shots.objects.filter(task_type__name="PAINT",creation_date__range=["2022-03-04T00:00:00",
+        client_version = Shots.objects.filter(task_type__name="PAINT", creation_date__range=["2022-03-04T00:00:00",
                                                                                                       "2022-04-25T23:59:59"])
         client_version_serializer = ShotsSerializer(client_version, many=True)
         assign_data = client_version_serializer.data
