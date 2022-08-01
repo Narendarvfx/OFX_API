@@ -105,7 +105,7 @@ class ClientUpdate(APIView):
 class ProjectDetail(APIView):
 
     def get(self, request, format=None):
-        project = Projects.objects.all().select_related('client', 'status')
+        project = Projects.objects.all().select_related('client', 'status').exclude(status="ARCHIVED")
         serializer = ProjectSerializer(project, many=True, context={"request": request})
         return Response(serializer.data)
 
@@ -120,7 +120,7 @@ class ProjectDetail(APIView):
 class ProjectByClient(APIView):
 
     def get(self, request, client_id, format=None):
-        project = Projects.objects.filter(client__id=client_id).select_related('client', 'status')
+        project = Projects.objects.filter(client__id=client_id).select_related('client', 'org_status').exclude(status="ARCHIVED")
         serializer = ProjectClientSerializer(project, many=True, context={"request": request})
         return Response(serializer.data)
 
@@ -176,7 +176,7 @@ class ShotsData(APIView):
             elif client_id:
                 shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
                                                 'sequence__project__client', 'status', 'complexity', 'team_lead',
-                                                'artist', 'location','sequence__project__client__locality').filter(sequence__project__client_id=client_id)
+                                                'artist', 'location','sequence__project__client__locality').filter(sequence__project__client_id=client_id).exclude(sequence__project__status="ARCHIVED")
             else:
                 status_list = query_params.get('status', None)
                 dept = query_params.get('dept', None)
@@ -188,16 +188,16 @@ class ShotsData(APIView):
                     shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
                                                         'sequence__project__client', 'status', 'complexity',
                                                         'team_lead', 'artist', 'location','sequence__project__client__locality').filter(
-                        status__code__in=status, task_type__name=dept)
+                        status__code__in=status, task_type__name=dept).exclude(sequence__project__status="ARCHIVED")
                 else:
                     shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
                                                         'sequence__project__client', 'status', 'complexity',
                                                         'team_lead', 'artist', 'location','sequence__project__client__locality').filter(
-                        status__code__in=status)
+                        status__code__in=status).exclude(sequence__project__status="ARCHIVED")
         else:
             shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
                                                 'sequence__project__client', 'status', 'complexity', 'team_lead',
-                                                'artist', 'location','sequence__project__client__locality').all()
+                                                'artist', 'location','sequence__project__client__locality').all().exclude(sequence__project__status="ARCHIVED")
 
         serializer = ShotsSerializer(shot, many=True, context={"request": request})
         return Response(serializer.data)
@@ -238,12 +238,12 @@ class ProductSheet(APIView):
             queryset = Shots.objects.prefetch_related('timelogs').select_related('sequence', 'task_type', 'sequence__project',
                                                 'sequence__project__client', 'status', 'complexity',
                                                 'team_lead', 'artist', 'location', 'sequence__project__client__locality').filter(
-                **argumentos)
+                **argumentos).exclude(sequence__project__status="ARCHIVED")
         else:
             # queryset = Shots.objects.all()
             queryset = Shots.objects.prefetch_related('timelogs').select_related('sequence', 'task_type', 'sequence__project',
                                                 'sequence__project__client', 'status', 'complexity', 'team_lead',
-                                                'artist', 'location','sequence__project__client__locality').all()
+                                                'artist', 'location','sequence__project__client__locality').all().exclude(sequence__project__status="ARCHIVED")
 
         serializer = ShotTimeLogSerializer(instance=queryset, many=True)
         shots_data = []
@@ -290,7 +290,7 @@ class ShotsDataFilter(APIView):
             shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
                                                 'sequence__project__client', 'status', 'complexity',
                                                 'team_lead', 'artist', 'location','sequence__project__client__locality').filter(
-                **argumentos).all()
+                **argumentos).all().exclude(sequence__project__status="ARCHIVED")
         else:
             shot = []
             # shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
@@ -303,7 +303,7 @@ class ShotsDataFilter(APIView):
 class ShotLogsData(APIView):
 
     def get(self, request, format=None):
-        shotlogs = ShotLogs.objects.all()
+        shotlogs = ShotLogs.objects.all().exclude(sequence__project__status="ARCHIVED")
         serializer = ShotLogsSerializer(shotlogs, many=True, context={"request": request})
         return Response(serializer.data)
 
@@ -719,7 +719,7 @@ class LeadsData(ListAPIView):
                                                      'shot__task_type',
                                                      'assigned_by',
                                                      'shot__artist',
-                                                     'shot__team_lead').filter(**argumentos)
+                                                     'shot__team_lead').filter(**argumentos).exclude(shot__sequence__project__status="ARCHIVED")
         else:
             lead_shot =[]
             # shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
@@ -815,7 +815,6 @@ class QCDataById(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class ShotVersionsAPI(APIView):
 
@@ -1139,34 +1138,34 @@ class StatusCount(APIView):
             yts_count = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
                                                 'sequence__project__client', 'status', 'complexity',
                                                 'team_lead', 'artist', 'location','sequence__project__client__locality').filter(
-                **argumentos).filter(status__code__in=['ATL', 'YTS', 'YTA']).count()
+                **argumentos).filter(status__code__in=['ATL', 'YTS', 'YTA']).exclude(sequence__project__status="ARCHIVED").count()
             wip_count = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
                                                 'sequence__project__client', 'status', 'complexity',
                                                 'team_lead', 'artist', 'location','sequence__project__client__locality').filter(
-                **argumentos).filter(status__code__in=['WIP', 'LAP', 'LRT', 'STQ', 'STC', 'IRT']).count()
+                **argumentos).filter(status__code__in=['WIP', 'LAP', 'LRT', 'STQ', 'STC', 'IRT']).exclude(sequence__project__status="ARCHIVED").count()
             hold_count = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
                                                 'sequence__project__client', 'status', 'complexity',
                                                 'team_lead', 'artist', 'location','sequence__project__client__locality').filter(
-                **argumentos).filter(status__code__in=['HLD']).count()
+                **argumentos).filter(status__code__in=['HLD']).exclude(sequence__project__status="ARCHIVED").count()
             omit_count = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
                                                 'sequence__project__client', 'status', 'complexity',
                                                 'team_lead', 'artist', 'location','sequence__project__client__locality').filter(
-                **argumentos).filter(status__code__in=['OMT']).count()
+                **argumentos).filter(status__code__in=['OMT']).exclude(sequence__project__status="ARCHIVED").count()
             del_count = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
                                                 'sequence__project__client', 'status', 'complexity',
                                                 'team_lead', 'artist', 'location','sequence__project__client__locality').filter(
-                **argumentos).filter(status__code__in=['DTC']).count()
+                **argumentos).filter(status__code__in=['DTC']).exclude(sequence__project__status="ARCHIVED").count()
             retake_count = Shots.objects.select_related('sequence', 'task_type', 'sequence__project',
                                                 'sequence__project__client', 'status', 'complexity',
                                                 'team_lead', 'artist', 'location','sequence__project__client__locality').filter(
-                **argumentos).filter(type__in=['RETAKE']).count()
+                **argumentos).filter(type__in=['RETAKE']).exclude(sequence__project__status="ARCHIVED").count()
         else:
-            yts_count = Shots.objects.filter(status__code__in=['ATL', 'YTS', 'YTA']).count()
-            wip_count = Shots.objects.filter(status__code__in=['WIP', 'LAP', 'LRT', 'STQ', 'STC', 'IRT']).count()
-            hold_count = Shots.objects.filter(status__code__in=['HLD']).count()
-            omit_count = Shots.objects.filter(status__code__in=['OMT']).count()
-            del_count = Shots.objects.filter(status__code__in=['DTC']).count()
-            retake_count = Shots.objects.filter(type__in=['RETAKE']).count()
+            yts_count = Shots.objects.filter(status__code__in=['ATL', 'YTS', 'YTA']).exclude(sequence__project__status="ARCHIVED").count()
+            wip_count = Shots.objects.filter(status__code__in=['WIP', 'LAP', 'LRT', 'STQ', 'STC', 'IRT']).exclude(sequence__project__status="ARCHIVED").count()
+            hold_count = Shots.objects.filter(status__code__in=['HLD']).exclude(sequence__project__status="ARCHIVED").count()
+            omit_count = Shots.objects.filter(status__code__in=['OMT']).exclude(sequence__project__status="ARCHIVED").count()
+            del_count = Shots.objects.filter(status__code__in=['DTC']).exclude(sequence__project__status="ARCHIVED").count()
+            retake_count = Shots.objects.filter(type__in=['RETAKE']).exclude(sequence__project__status="ARCHIVED").count()
         _dat = {
             'yts_count': yts_count,
             'wip_count': wip_count,

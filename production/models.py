@@ -1,3 +1,5 @@
+import datetime
+
 from colorfield.fields import ColorField
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -60,11 +62,16 @@ class Clients(models.Model):
         verbose_name_plural = "Clients"
 
 class Projects(models.Model):
+    Status = (
+        ("IN PROGRESS", "IN PROGRESS"),
+        ("ARCHIVED", "ARCHIVED")
+    )
     client = models.ForeignKey(Clients, on_delete=models.CASCADE, related_name='+')
     name = models.CharField(max_length=100, unique=False)
-    status = models.ForeignKey(ShotStatus, on_delete=models.CASCADE, related_name='+')
+    org_status = models.ForeignKey(ShotStatus, on_delete=models.CASCADE, related_name='+',blank=True, null=True)
     start_date = models.DateTimeField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
+    status = models.CharField(max_length=300, null=True, blank=True, choices=Status, default=Status[0][1])
 
     def upload_photo_dir(self, filename):
         ext = filename.split('.')[-1]
@@ -81,14 +88,14 @@ class Projects(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
-    def validate_unique(self, exclude=None):
-        qs = Projects.objects.filter(name=self.name)
-        if qs.filter(client=self.client).exists():
-            logger.error('Project Name must be unique per Client')
-            raise ValidationError('Project Name must be unique per Client')
+    # def validate_unique(self, exclude=None):
+    #     qs = Projects.objects.filter(name=self.name)
+    #     if qs.filter(client=self.client).exists():
+    #         logger.error('Project Name must be unique per Client')
+    #         raise ValidationError('Project Name must be unique per Client')
 
     def save(self, *args, **kwargs):
-        self.validate_unique()
+        # self.validate_unique()
 
         super(Projects, self).save(*args, **kwargs)
 
@@ -159,6 +166,7 @@ class Shots(models.Model):
     duplicate = models.BooleanField(default=False)
     team_lead = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
     artist = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
+    qc_name = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+', null=True, blank=True)
     pending_mandays = models.FloatField(default=0)
     achieved_mandays = models.FloatField(default=0)
     package_id = models.CharField(max_length=30, blank=True, null=True)
@@ -459,4 +467,12 @@ def on_assigning_to_tl(sender,instance,**kwargs):
 def on_assigning_to_artist(sender,instance,**kwargs):
     shot_instance = Shots.objects.get(pk=instance.shot.id)
     shot_instance.artist = instance.artist
+    shot_instance.save()
+
+@receiver(post_save, sender=ClientVersions)
+def on_internal_approve(sender,instance,**kwargs):
+    shot_instance = Shots.objects.get(pk=instance.shot.id)
+    shot_instance.version = instance.version
+    shot_instance.submitted_date = datetime.datetime.now()
+    shot_instance.qc_name = instance.approved_by
     shot_instance.save()

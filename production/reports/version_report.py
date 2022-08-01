@@ -13,23 +13,12 @@ def get_data(dept):
     for stat in status_list.split('|'):
         status.append(stat)
     shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project', 'sequence__project__client',
-                                        'status', 'complexity', 'team_lead', 'artist').filter(status__code__in=status,
-                                                                                              task_type__name=dept)
+                                        'status', 'complexity', 'team_lead', 'artist', 'qc_name').filter(status__code__in=status,
+                                                                                              task_type__name=dept).exclude(sequence__project__status="ARCHIVED")
     serializer = ShotsSerializer(shot, many=True)
     # print(json.dumps(serializer.data))
     dataa = json.dumps(serializer.data)
     return json.loads(dataa)
-
-
-def create_workbook(buffer):
-    workbook = xlsxwriter.Workbook(buffer)
-    for dept in ['PAINT', 'ROTO', 'MM', 'COMP']:
-        shots_data = get_data(dept)
-        worksheet = workbook.add_worksheet(dept)
-        write_to_excel(workbook, worksheet, shots_data)
-
-    workbook.close()
-    return buffer
 
 
 def write_to_excel(workbook, worksheet, shots_data):
@@ -44,24 +33,18 @@ def write_to_excel(workbook, worksheet, shots_data):
     worksheet.write('A1', 'CLIENT', bold)
     worksheet.write('B1', 'PROJECT', bold)
     worksheet.write('C1', 'SHOT CODE', bold)
-    worksheet.write('D1', 'TOTAL FRAMES', bold)
-    worksheet.write('E1', 'TASK', bold)
-    worksheet.write('F1', 'COMPLEXITY', bold)
-    worksheet.write('G1', 'STATUS', bold)
-    worksheet.write('H1', 'BID DAYS', bold)
-    worksheet.write('I1', 'WIP%', bold)
-    worksheet.write('J1', 'DUE MANDAYS', bold)
-    worksheet.write('K1', 'DUE DATE', bold)
-    worksheet.write('L1', 'NOTES', bold)
-    worksheet.write('M1', 'TEAM', bold)
-    worksheet.write('N1', 'ARTIST NAME', bold)
-    worksheet.write('O1', 'IN DATE', bold)
-    worksheet.write('P1', 'PACKAGE ID', bold)
-    worksheet.write('Q1', 'ESTIMATE ID', bold)
-    worksheet.write('R1', 'ESTIMATE DATE', bold)
-    worksheet.write('S1', 'INTERNAL VERSION', bold)
-    worksheet.write('T1', 'CLIENT VERSION', bold)
-    worksheet.write('U1', 'LOCATION', bold)
+    worksheet.write('D1', 'TASK', bold)
+    worksheet.write('E1', 'COMPLEXITY', bold)
+    worksheet.write('F1', 'STATUS', bold)
+    worksheet.write('G1', 'BID DAYS', bold)
+    worksheet.write('H1', 'PROGRESS', bold)
+    worksheet.write('I1', 'DUE DATE', bold)
+    worksheet.write('J1', 'QC', bold)
+    worksheet.write('K1', 'TEAM', bold)
+    worksheet.write('L1', 'ARTIST NAME', bold)
+    worksheet.write('M1', 'IN DATE', bold)
+    worksheet.write('N1', 'CLIENT VERSION', bold)
+    worksheet.write('O1', 'SUBMITTED DATE', bold)
 
     date_format = workbook.add_format({'border': 1, 'border_color': 'black', 'num_format': 'dd/mm/yyyy'})
 
@@ -98,42 +81,42 @@ def write_to_excel(workbook, worksheet, shots_data):
         worksheet.write(row + 1, col, shot_data['sequence']['project']['client']['name'], border)
         worksheet.write(row + 1, col + 1, shot_data['sequence']['project']['name'], border)
         worksheet.write(row + 1, col + 2, shot_data['name'], border)
-        worksheet.write(row + 1, col + 3, str(total_frames), border)
-        worksheet.write(row + 1, col + 4, shot_data['task_type'], border)
-        worksheet.write(row + 1, col + 5, shot_data['complexity'], border)
-        worksheet.write(row + 1, col + 6, shot_status, border)
-        worksheet.write(row + 1, col + 7, bid_days, border)
-        worksheet.write(row + 1, col + 8, percentile, percent)
-        worksheet.write(row + 1, col + 9,
-                        '=ROUND(({}-{}*{}),1)'.format(bid_column, bid_column, progress_column), pending_color)
-        worksheet.write(row + 1, col + 10, due_date, date_format)
-        worksheet.write(row + 1, col + 11, " ", border)
-        worksheet.write(row + 1, col + 12, shot_data['team_lead'], border)
-        worksheet.write(row + 1, col + 13, shot_data['artist'], border)
+        worksheet.write(row + 1, col + 3, shot_data['task_type'], border)
+        worksheet.write(row + 1, col + 4, shot_data['complexity'], border)
+        worksheet.write(row + 1, col + 5, shot_status, border)
+        worksheet.write(row + 1, col + 6, bid_days, border)
+        worksheet.write(row + 1, col + 7, percentile, percent)
+        worksheet.write(row + 1, col + 8, due_date, date_format)
+        worksheet.write(row + 1, col + 9, shot_data['qc_name'], border)
+        worksheet.write(row + 1, col + 10, shot_data['team_lead'], border)
+        worksheet.write(row + 1, col + 11, shot_data['artist'], border)
         in_date = datetime.datetime.strptime(shot_data['creation_date'], '%Y-%m-%dT%H:%M:%S.%f')
-        worksheet.write(row + 1, col + 14, in_date, date_format)
-        worksheet.write(row + 1, col + 15, shot_data['package_id'], border)
-        worksheet.write(row + 1, col + 16, shot_data['estimate_id'], border)
-        if shot_data['estimate_date']:
-            estimate_date = datetime.datetime.strptime(shot_data['estimate_date'], '%Y-%m-%dT%H:%M:%S')
+        worksheet.write(row + 1, col + 12, in_date, date_format)
+        if shot_data['submitted_date']:
+            submitted_date = datetime.datetime.strptime(shot_data['submitted_date'], '%Y-%m-%dT%H:%M:%S.%f')
         else:
-            estimate_date = ""
-        worksheet.write(row + 1, col + 17, estimate_date, date_format)
-        location = ""
-        if shot_data['location']:
-            location = shot_data['location']
-        worksheet.write(row + 1, col + 18, "", border)
-        worksheet.write(row + 1, col + 19, shot_data['version'], border)
-        worksheet.write(row + 1, col + 20, location, border)
+            submitted_date = ""
+
+        worksheet.write(row + 1, col + 13, shot_data['version'], border)
+        worksheet.write(row + 1, col + 14, submitted_date, border)
+
         row += 1
 
 
 # write_to_excel()
+def create_ver_workbook(buffer):
+    workbook = xlsxwriter.Workbook(buffer)
+    for dept in ['PAINT', 'ROTO', 'MM', 'COMP']:
+        shots_data = get_data(dept)
+        worksheet = workbook.add_worksheet(dept)
+        write_to_excel(workbook, worksheet, shots_data)
 
+    workbook.close()
+    return buffer
 
-def check_filters(buffer=None, client_id=None, project_id=None, taskType_id=None, status_idd=None, location_id=None, locality_id=None):
+def check_ver_filters(buffer=None, client_id=None, project_id=None, taskType_id=None, status_idd=None, location_id=None, locality_id=None):
     shot = Shots.objects.select_related('sequence', 'task_type', 'sequence__project', 'sequence__project__client',
-                                        'status', 'complexity', 'team_lead', 'artist').all()
+'status', 'complexity', 'team_lead', 'artist', 'qc_name').all().exclude(sequence__project__status='ARCHIVED')
     status_list = "YTA|ATL|YTS|WIP|STC|STQ|IRT|IAP|CRT|LAP|LRT"
     status = []
     for stat in status_list.split('|'):
@@ -146,10 +129,6 @@ def check_filters(buffer=None, client_id=None, project_id=None, taskType_id=None
         shot = shot.filter(status_id=status_idd)
     else:
         shot = shot.filter(status__code__in=status)
-    if locality_id:
-        shot = shot.filter(sequence__project__client__locality_id=locality_id)
-    if location_id:
-        shot = shot.filter(location_id=location_id)
     if taskType_id:
         shot = shot.filter(task_type_id=taskType_id)
     serializer = ShotsSerializer(shot, many=True)
