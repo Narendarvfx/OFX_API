@@ -105,7 +105,7 @@ class ClientUpdate(APIView):
 class ProjectDetail(APIView):
 
     def get(self, request, format=None):
-        project = Projects.objects.all().select_related('client', 'status').exclude(status="ARCHIVED")
+        project = Projects.objects.all().select_related('client', 'org_status').exclude(status="ARCHIVED")
         serializer = ProjectSerializer(project, many=True, context={"request": request})
         return Response(serializer.data)
 

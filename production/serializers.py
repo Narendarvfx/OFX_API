@@ -34,7 +34,7 @@ class ClientSerializer(serializers.ModelSerializer):
 
 class ProjectSerializer(serializers.ModelSerializer):
     client = serializers.SlugRelatedField(queryset=Clients.objects.all(), slug_field='name', required=False)
-    status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='name', required=False)
+    org_status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='name', required=False)
     imageSrc = serializers.ImageField(max_length=None, use_url=True, allow_null=True, required=False)
 
     class Meta:
@@ -43,7 +43,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 class ProjectPostSerializer(serializers.ModelSerializer):
     # client = serializers.SlugRelatedField(queryset=Clients.objects.all(), slug_field='name', required=False)
-    status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=False)
+    org_status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=False)
     # imageSrc = serializers.ImageField(max_length=None, use_url=True, allow_null=True, required=False)
 
     class Meta:
