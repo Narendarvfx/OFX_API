@@ -52,7 +52,7 @@ class ProjectPostSerializer(serializers.ModelSerializer):
 
 class ProjectClientSerializer(serializers.ModelSerializer):
     client = ClientSerializer(read_only=True)
-    status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=False)
+    org_status = serializers.SlugRelatedField(queryset=ShotStatus.objects.all(), slug_field='code', required=False)
     imageSrc = serializers.ImageField(max_length=None, use_url=True, allow_null=True, required=False)
 
     class Meta:
@@ -153,6 +153,7 @@ class ShotsSerializer(serializers.ModelSerializer):
     imageSrc = serializers.ImageField(max_length=None, use_url=True, allow_null=True, required=False)
     team_lead = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
     artist = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
+    qc_name = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
     location = serializers.SlugRelatedField(queryset=Location.objects.all(), slug_field='name', required=False)
 
     class Meta:

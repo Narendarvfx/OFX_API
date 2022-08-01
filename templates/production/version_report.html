@@ -20,6 +20,9 @@
           href="/static/third_party/DataTables/Select-1.4.0/css/select.dataTables.min.css" type="text/css"/>
     <link href="/static/third_party/DataTables/DataTables-1.12.1/css/dataTables.jqueryui.css" rel="stylesheet"
           type="text/css"/>
+    <link href="https://cdn.datatables.net/colreorder/1.5.6/css/colReorder.dataTables.min.css" rel="stylesheet"
+          type="text/css"/>
+
     <style>
         .form-control {
             color: #fffcfc !important;
@@ -92,7 +95,7 @@
             font-size: small;
         }
 
-        #shots_table_length, #shots_table_info, #shots_table_filter {
+        #versions_table_length, #versions_table_info, #versions_table_filter {
             color: #a2a1a1 !important;
         }
 
@@ -237,7 +240,7 @@
     </style>
     <div class="row page-titles">
         <div class="col-md-4 col-6 align-self-center">
-            <h3 class="text-themecolor mb-0 mt-0">Live Production Report</h3>
+            <h3 class="text-themecolor mb-0 mt-0">Version Report</h3>
         </div>
         <div class="col-md-8 col-8 align-self-center">
             <div class="float-right" style="margin-left: 5px">
@@ -253,23 +256,10 @@
 {#                </button>#}
 {#            </div>#}
             <div class="float-right" style="margin-left: 5px">
-                <button type="button" class="assign_leads btn float-right btn-warning"><i
-                        class="mdi mdi-plus"></i>
-                </button>
-            </div>
-            <div class="float-right" style="margin-left: 5px">
                 <select id="shot_taskType_select" class="form-control">
                     <option value="0">TaskType</option>
                     {% for task_ty in task_type %}
                         <option value="{{ task_ty.id }}">{{ task_ty.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="float-right" style="margin-left: 5px">
-                <select id="shot_status_select" class="form-control">
-                    <option value="0">Status</option>
-                    {% for statu in status %}
-                        <option value={{ statu.id }}>{{ statu.code }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -289,22 +279,6 @@
                     {% endfor %}
                 </select>
             </div>
-            <div class="float-right" style="margin-left: 5px">
-                <select id="shot_location_select" class="form-control">
-                    <option value="0">Location</option>
-                    {% for locatio in location %}
-                        <option value={{ locatio.id }}>{{ locatio.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="float-right" style="margin-left: 5px">
-                <select id="shot_locality_select" class="form-control">
-                    <option value="0">Locality</option>
-                    {% for localit in locality %}
-                        <option value={{ localit.id }}>{{ localit.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
         </div>
     </div>
     <!-- ============================================================== -->
@@ -317,13 +291,12 @@
     <div class="container-fluid row">
 
         <!-- Shots Table View -->
-        <div class="col-lg-12" id="shots_list_view">
+        <div class="col-lg-12" id="versions_list_view">
             <div class="card">
 
-                        <table id="shots_table" class="table display no-wrap" style="width:100%">
+                <table id="versions_table" class="table display no-wrap" style="width:100%">
 
-
-                        </table>
+                </table>
 
             </div>
         </div>
@@ -392,21 +365,6 @@
                         <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox12" data-column="12"
                                value="check" checked>
                         <label class="custom-control-label" for="checkbox12">ETA</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox13" data-column="13"
-                               value="check" checked>
-                        <label class="custom-control-label" for="checkbox13">FRAME IN</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox14" data-column="14"
-                               value="check" checked>
-                        <label class="custom-control-label" for="checkbox14">FRAME OUT</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox15" data-column="15"
-                               value="check" checked>
-                        <label class="custom-control-label" for="checkbox15">DURATION</label>
                     </div>
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox16" data-column="16"
@@ -527,9 +485,9 @@
     <script src="/static/third_party/DataTables/custom_js/datatables_searchPane.js"></script>
     <script src="/static/third_party/DataTables/Select-1.4.0/js/dataTables.select.min.js"></script>
     <script src="/static/template/assets/plugins/moment/moment.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.6/js/dataTables.colReorder.min.js"></script>
 
     <script>
-
         $(".column_filter").click(function (e) {
             var x = document.getElementById("filter_div");
             if (x.style.display === "none") {
@@ -549,7 +507,6 @@
             var s = document.getElementById("header_filter");
             if (s.style.display === "none") {
                 s.style.display = "block";
-
             } else {
                 s.style.display = "none";
             }
@@ -564,7 +521,6 @@
                 s.style.display = "none";
             }
         }
-
 
         function search_column() {
             var input = document.getElementById("search_header");
@@ -594,7 +550,7 @@
         var table = ""
         $(document).ready(function () {
             $(".custom_preloader").hide()
-            table = $('#shots_table').DataTable({
+            table = $('#versions_table').DataTable({
                 columnDefs: [
                     {
                         searchPanes: {
@@ -661,7 +617,10 @@
                     cascadePanes: true,
                     layout: 'columns-1'
                 },
+
                 dom: '<"dtsp-dataTable"frtip>',
+                responsive: false,
+                colReorder: true,
                 "searching": true,
                 "ajax": {
                     "processing": true,
@@ -699,6 +658,12 @@
                             );
                         },
                     },
+                    {title: "VERSION", data: 'version'},
+                    {title: "SUBMITTED DATE",
+                    render: function (data, type, row, meta) {
+                            return moment(data).format("DD-MM-YYYY");
+                        },
+                    },
                     {
                         title: "PROGRESS", data: 'progress',
                         render: function (data, type, row, meta) {
@@ -722,14 +687,9 @@
                             return moment(data).format("DD-MM-YYYY");
                         }
                     },
-                    {title: "START FRAME", data: 'actual_start_frame'},
-                    {title: "END FRAME", data: 'actual_end_frame'},
-                    {title: "DURATION", data: null, "defaultContent": ""},
                     {title: "TEAM LEAD", data: 'team_lead'},
                     {title: "ARTIST", data: 'artist'},
-                    {title: "VERSION", data: 'version'},
                     {title: "LOCATION", data: 'location'},
-                    {title: "LOCALITY", data: 'sequence.project.client.locality'},
                 ],
                 select: true,
                 order: [[1, 'asc']],
@@ -928,7 +888,7 @@
         }
 
         function export_to_excel() {
-            window.location = "/production/export_prod_report/?client=" + client_id + "&project=" + project_id + "&statuss=" + status_id + "&locality=" + locality_id + "&location=" + location_id + "&task_type=" + task_type_id
+            window.location = "/production/export_ver_report/?client=" + client_id + "&project=" + project_id + "&task_type=" + task_type_id
         }
     </script>
 {% endblock page_scripts %}

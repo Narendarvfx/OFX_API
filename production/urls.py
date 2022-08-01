@@ -4,17 +4,21 @@ from .api import ShotsDataFilter
 
 urlpatterns = [
     ################## Web Urls ######################
-    url(r'^production/production_report/$', views.production_reports, name='reports'),
-    url(r'^production/export_prod_report/$', views.export_prod_report, name='reports'),
+    url(r'^production/production_report/$', views.production_reports, name='Client reports'),
+    url(r'^production/export_prod_report/$', views.export_prod_report, name='Client reports'),
+    url(r'^production/export_ver_report/$', views.export_ver_report, name='Version reports'),
     url(r'^production/teamleadreports$', views.teamlead_report, name="Team Lead Reports"),
     url(r'^production/studio_reports$', views.studio_report, name="Studio Reports"),
     url(r'^production/department_reports$', views.department_report, name="Team Lead Reports"),
     url(r'^production/artist_reports$', views.artist_report, name="Artist Reports"),
+    url(r'^production/version_reports$', views.version_report, name="Version Reports"),
     url(r'^production/teamleadreports_export/$', views.export_teamlead_report, name='TeamLeadReports'),
     url(r'^production/dept_reports_export/$', views.export_dept_report, name='TeamLeadReports'),
     url(r'^production/studio_reports_export/$', views.export_studio_report, name='StudioReports'),
     url(r'^production/client_report/$', views.reports, name="Multi Reports"),
     url(r'^production/reports/multi_export/$', views.reports_export, name="Multi Reports"),
+
+    url(r'^production/projects/', views.projects, name="Projects"),
 
     url(r'^production/time_card/$',views.time_card, name="Time Card"),
 

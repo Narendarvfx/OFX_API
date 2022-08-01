@@ -11,6 +11,7 @@ from production.reports.multi_reports import reports_sheet_export
 from production.reports.production_report import create_workbook, check_filters
 from production.reports.studio_report import studio_sheet_download
 from production.reports.teamlead_report import teamlead_sheet_download
+from production.reports.version_report import check_ver_filters, create_ver_workbook
 
 
 def production_reports(request):
@@ -21,7 +22,7 @@ def production_reports(request):
     """
     status = ShotStatus.objects.all()
     clients = Clients.objects.all()
-    projects = Projects.objects.all()
+    projects = Projects.objects.exclude(status="ARCHIVED").all()
     task_type = Task_Type.objects.all()
     location = Location.objects.all()
     locality = Locality.objects.all()
@@ -55,6 +56,19 @@ def export_prod_report(request):
     buffer.seek(0)
     return FileResponse(buffer, as_attachment=True, filename='live_production_report.xlsx')
 
+def export_ver_report(request):
+    client_id = int(request.GET['client'])
+    project_id = int(request.GET['project'])
+    taskType_id = int(request.GET['task_type'])
+
+    buffer = io.BytesIO()
+    if not client_id or not project_id or not taskType_id :
+        check_ver_filters(buffer=buffer, client_id=int(client_id), project_id=int(project_id), taskType_id=int(taskType_id))
+    else:
+        create_ver_workbook(buffer)
+    buffer.seek(0)
+    return FileResponse(buffer, as_attachment=True, filename='version_report.xlsx')
+
 def time_card(request):
     context = {
         'user': request.user
@@ -79,6 +93,28 @@ def department_report(request):
 def artist_report(request):
 
     return render(request, 'production/artist_report.html')
+
+def version_report(request):
+    status = ShotStatus.objects.all()
+    clients = Clients.objects.all()
+    projects = Projects.objects.exclude(status="ARCHIVED").all()
+    task_type = Task_Type.objects.all()
+    location = Location.objects.all()
+    locality = Locality.objects.all()
+    leads = Employee.objects.filter(role__name="TEAM LEAD").all()
+
+    context = {
+        'status': status,
+        'clients': clients,
+        'projects': projects,
+        'task_type': task_type,
+        'location': location,
+        'locality': locality,
+        'leads': leads,
+        'user': request.user
+    }
+
+    return render(request, 'production/version_report.html', context)
 
 def export_teamlead_report(request):
     start_date = request.GET['start_date']
@@ -109,8 +145,10 @@ def export_studio_report(request):
 def reports(request):
 
     clients = Clients.objects.all()
+    projects = Projects.objects.all().exclude(status="ARCHIVED")
     context = {
-        'clients':clients
+        'clients':clients,
+        'projects': projects
     }
     return render(request, 'production/reports.html', context)
 
@@ -124,3 +162,6 @@ def reports_export(request):
     reports_sheet_export(buffer, client_id, project_id, task_type=task_type)
     buffer.seek(0)
     return FileResponse(buffer, as_attachment=True, filename='Client_Report.xlsx')
+
+def projects(request):
+    return render(request, 'production/projects.html')
