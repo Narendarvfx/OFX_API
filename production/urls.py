@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^production/artist_reports$', views.artist_report, name="Artist Reports"),
     url(r'^production/version_reports$', views.version_report, name="Version Reports"),
     url(r'^production/teamleadreports_export/$', views.export_teamlead_report, name='TeamLeadReports'),
+    url(r'^production/artistreports_export/$', views.export_artist_report, name='Artist Reports'),
     url(r'^production/dept_reports_export/$', views.export_dept_report, name='TeamLeadReports'),
     url(r'^production/studio_reports_export/$', views.export_studio_report, name='StudioReports'),
     url(r'^production/client_report/$', views.reports, name="Multi Reports"),
