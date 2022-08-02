@@ -37,14 +37,12 @@ class StatusInfo(APIView):
         serializer = StatusSerializer(status, many=True, context={"request": request})
         return Response(serializer.data)
 
-
 class LocalityInfo(APIView):
 
     def get(self, request, format=None):
         locality = Locality.objects.all()
         serializer = LocalitySerializer(locality, many=True, context={"request": request})
         return Response(serializer.data)
-
 
 class ComplexityInfo(APIView):
 

@@ -6,6 +6,7 @@ from django.shortcuts import render
 # Create your views here.
 from hrm.models import Location, Employee
 from production.models import ShotStatus, Clients, Projects, Task_Type, Locality
+from production.reports.custom_artist_reports import artist_sheet_download
 from production.reports.dept_report import dept_sheet_download
 from production.reports.multi_reports import reports_sheet_export
 from production.reports.production_report import create_workbook, check_filters
@@ -124,6 +125,15 @@ def export_teamlead_report(request):
     teamlead_sheet_download(buffer, start_date, end_date, lead_id)
     buffer.seek(0)
     return FileResponse(buffer, as_attachment=True, filename='TeamLead_Report.xlsx')
+
+def export_artist_report(request):
+    start_date = request.GET['start_date']
+    end_date = request.GET['end_date']
+    artist_id = request.GET['artist_id']
+    buffer = io.BytesIO()
+    artist_sheet_download(buffer, start_date, end_date, artist_id)
+    buffer.seek(0)
+    return FileResponse(buffer, as_attachment=True, filename='Artist_Report.xlsx')
 
 def export_dept_report(request):
     start_date = request.GET['start_date']

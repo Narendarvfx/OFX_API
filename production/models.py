@@ -473,6 +473,6 @@ def on_assigning_to_artist(sender,instance,**kwargs):
 def on_internal_approve(sender,instance,**kwargs):
     shot_instance = Shots.objects.get(pk=instance.shot.id)
     shot_instance.version = instance.version
-    shot_instance.submitted_date = datetime.datetime.now()
+    shot_instance.submitted_date = instance.sent_date
     shot_instance.qc_name = instance.approved_by
     shot_instance.save()

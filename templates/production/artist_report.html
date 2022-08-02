@@ -7,13 +7,246 @@
     <!-- ============================================================== -->
     <!-- Daterange picker plugins css -->
     <link href="/static/template/assets/plugins/daterangepicker/daterangepicker.css" rel="stylesheet">
+    <link rel='stylesheet' href='/static/third_party/DataTables/DataTables-1.12.1/css/jquery.dataTables.min.css'
+          type="text/css"/>
+    <link rel='stylesheet' href='/static/third_party/DataTables/Responsive-2.3.0/css/responsive.dataTables.min.css'
+          type="text/css"/>
+    <link rel='stylesheet' href='/static/third_party/DataTables/Responsive-2.3.0/css/responsive.bootstrap5.min.css'
+          type="text/css"/>
+    <link rel='stylesheet' href='/static/third_party/DataTables/Buttons-2.2.3/css/buttons.dataTables.min.css'
+          type="text/css"/>
+    <link rel='stylesheet' href='/static/template/assets/plugins/multiselect/css/multi-select.css'
+          type="text/css"/>
+    <link rel="stylesheet"
+          href="/static/template/assets/plugins/toast-master/css/jquery.toast.css" type="text/css"/>
+    <link rel="stylesheet"
+          href="/static/third_party/DataTables/custom_css/datables_searchpane.css" type="text/css"/>
+    <link rel="stylesheet"
+          href="/static/third_party/DataTables/Select-1.4.0/css/select.dataTables.min.css" type="text/css"/>
+    <link href="/static/third_party/DataTables/DataTables-1.12.1/css/dataTables.jqueryui.css" rel="stylesheet"
+          type="text/css"/>
+    <style>
+        .form-control {
+            color: #fffcfc !important;
+        }
+
+        .container-fluid {
+            padding: 10px !important;
+        }
+
+        .row {
+            margin: 0px !important;
+        }
+
+        /* An ugly trick to use a filter icon */
+        .ui-icon-volume-off.ui-icon-filter {
+            -ms-transform: rotate(270deg);
+            -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+        }
+
+        .card {
+            padding: 10px;
+            background: #272c33 !important;
+            color: white;
+            margin-bottom: 10px !important;
+        }
+
+        #filter_div {
+            padding: 10px;
+            background: #0f0f10 !important;
+            color: white;
+        }
+
+        .col-lg-12 {
+            padding: 0px !important;
+        }
+
+        .col-lg-10 {
+            padding: 0px !important;
+        }
+
+        .card-body {
+            padding: 0rem !important;
+        }
+
+        .dt-buttons .dt-button {
+            border-radius: 4px;
+            background: orange;
+            color: #ffffff
+        }
+
+        table.dataTable tbody tr {
+            background-color: #272c33 !important;
+            font-size: small;
+            font-weight: normal;
+        }
+
+        table.dataTable tr.odd {
+            background-color: #2b3038 !important;
+        }
+
+        table.dataTable td {
+            border-bottom: 0.2px !important;
+            border-color: grey !important;
+        }
+
+        table.dataTable thead {
+            color: #f6f5f5;
+            font-weight: normal;
+            font-size: small;
+        }
+
+        #shots_table_length, #shots_table_info, #shots_table_filter {
+            color: #a2a1a1 !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 2px;
+            background: white;
+        }
+
+        tfoot input {
+            width: 100% !important;
+            padding: 3px !important;
+            box-sizing: border-box !important;
+        }
+
+        table.dataTable tfoot th, table.dataTable tfoot td {
+            padding: 5px;
+            border-top: 0px;
+        }
+
+        .page-titles {
+            padding-bottom: 0px;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            color: #ccc8c8 !important;
+            background-color: inherit;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            color: #dad8d8 !important;
+        }
+
+        table.dataTable tbody tr.selected {
+            background-color: #315eb1 !important;
+            color: white !important;
+        }
+
+        label {
+            margin-bottom: 0px !important;
+        }
+
+        .multiselect-container > li > a > label {
+            padding: 4px 20px 3px 20px;
+        }
+
+        table.dataTable tbody th, table.dataTable tbody td {
+            padding: 7px;
+        }
+
+        .column_vis {
+            height: 20px;
+        }
+
+        /* width */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #383f48;
+            border-radius: 5px;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #2965b9;
+            border-radius: 5px;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        svg {
+            width: 100px;
+            height: 100px;
+            margin: 20px;
+            display: inline-block;
+            background-color: #0A0A0A;
+        }
+
+        div.dtsp-verticalContainer {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-content: flex-start;
+            align-items: flex-start;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes,
+        div.dtsp-verticalContainer div.container {
+            width: 20%;
+            flex-grow: 0;
+            flex-shrink: 0;
+            flex-basis: 0;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes {
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: 26%;
+        }
+
+        div.dtsp-verticalPanes {
+            margin-right: 10px;
+        }
+
+        div.dtsp-title {
+            margin-right: 0px !important;
+            margin-top: 13px !important;
+        }
+
+        input.dtsp-search {
+            min-width: 0px !important;
+            padding-left: 0px !important;
+            margin: 0px !important;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes div.dtsp-searchPanes {
+            flex-direction: column;
+            flex-basis: 0px;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes div.dtsp-searchPanes div.dtsp-searchPane {
+            flex-basis: 0px;
+        }
+
+        div.dtsp-verticalContainer div.container {
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: 80%;
+        }
+
+        div.dtsp-panesContainer {
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 5px;
+        }
+    </style>
     <div class="row page-titles">
         <div class="col-md-4 col-6 align-self-center">
             <h3 class="text-themecolor mb-0 mt-0">Artist Report</h3>
         </div>
         <div class="col-md-8 col-8 align-self-center">
             <div class="float-right" style="margin-left: 5px">
-                <button class="btn float-right hidden-sm-down btn-primary" ><i
+                <button class="btn float-right hidden-sm-down btn-primary" onclick="artist_export_to_excel()"><i
                         class="mdi mdi-cloud-download"></i> Export
                 </button>
             </div>
@@ -49,131 +282,17 @@
 
 
 {% block content %}
-    <div class="row">
-        <div class="col-12 mb-12" id="top_data">
-            <div class="card">
-                <div class="card-body collapse show">
-                    <h3 class="card-title" id="top_title">Statistics Of </h3>
-                    <p class="card-text" id="selected_dates"></p>
-                </div>
-            </div>
-        </div>
-        <!-- Column -->
-        <div class="col-md-6 col-lg-3 col-xlg-3">
-            <div class="card card-inverse card-info">
-                <div class="box bg-info text-center">
-                    <h1 class="font-light text-white" id="total_shots">0</h1>
-                    <h6 class="text-white">Total Shots</h6>
-                </div>
-            </div>
-        </div>
-        <!-- Column -->
-        <div class="col-md-6 col-lg-3 col-xlg-3">
-            <div class="card card-primary card-inverse">
-                <div class="box text-center">
-                    <h1 class="font-light text-white" id="assign_man">0</h1>
-                    <h6 class="text-white">Assigned Man Days</h6>
-                </div>
-            </div>
-        </div>
-        <!-- Column -->
-        <div class="col-md-6 col-lg-3 col-xlg-3">
-            <div class="card card-inverse card-success">
-                <div class="box text-center">
-                    <h1 class="font-light text-white" id="ach_man">0</h1>
-                    <h6 class="text-white">Achieved Man Days</h6>
-                </div>
-            </div>
-        </div>
-        <!-- Column -->
-        <div class="col-md-6 col-lg-3 col-xlg-3">
-            <div class="card card-inverse card-warning">
-                <div class="box text-center">
-                    <h1 class="font-light text-white" id="assgn_vs_ach">0</h1>
-                    <h6 class="text-white">Actual v/s Achieved</h6>
-                </div>
-            </div>
-        </div>
+    <div class="container-fluid row">
 
-        <!-- Column -->
-        <div class="col-sm-3">
-            <div class="card card-body">
-                <!-- Row -->
-                <div class="row pt-2 pb-2">
-                    <!-- Column -->
-                    <div class="col pr-0">
-                        <h1 class="font-light" id="yts">0</h1>
-                        <h6 class="text-muted">YTS</h6></div>
-                    <!-- Column -->
-                    <div class="col text-right align-self-center">
-                        <div id="yts_per_label" class="css-bar mb-0 css-bar-primary "><i
-                                class="mdi mdi-note-text"></i></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="card card-body">
-                <!-- Row -->
-                <div class="row pt-2 pb-2">
-                    <!-- Column -->
-                    <div class="col pr-0">
-                        <h1 class="font-light" id="wip">0</h1>
-                        <h6 class="text-muted">WIP</h6></div>
-                    <!-- Column -->
-                    <div class="col text-right align-self-center">
-                        <div id="wip_per_label" class="css-bar mb-0 css-bar-warning"><i
-                                class="mdi mdi-tooltip-edit"></i></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="card card-body">
-                <!-- Row -->
-                <div class="row pt-2 pb-2">
-                    <!-- Column -->
-                    <div class="col pr-0">
-                        <h1 class="font-light" id="completed">0</h1>
-                        <h6 class="text-muted">COMPLETED</h6></div>
-                    <!-- Column -->
-                    <div class="col text-right align-self-center">
-                        <div id="comp_per_label" class="css-bar mb-0 css-bar-success"><i
-                                class="mdi mdi-check"></i></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="card card-body">
-                <!-- Row -->
-                <div class="row pt-2 pb-2">
-                    <!-- Column -->
-                    <div class="col pr-0">
-                        <h1 class="font-light" id="retakes">0</h1>
-                        <h6 class="text-muted">RETAKES</h6></div>
-                    <!-- Column -->
-                    <div class="col text-right align-self-center">
-                        <div data-label="10%" class="css-bar mb-0 css-bar-danger css-bar-80"><i
-                                class="mdi mdi-close"></i></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="card card-body">
-                <!-- Row -->
-                <div class="row pt-2 pb-2">
-                    <!-- Column -->
-                    <div class="col pr-0">
-                        <h1 class="font-light" id="retakes_per">0 %</h1>
-                        <h6 class="text-muted">RETAKES %</h6></div>
-                    <!-- Column -->
-                    <div class="col text-right align-self-center">
-                        <div data-label="80%" id="retakes_per_label" class="css-bar mb-0 css-bar-danger"><i
-                                class="mdi mdi-close"></i></div>
-                    </div>
-                </div>
+        <!-- Shots Table View -->
+        <div class="col-lg-12" id="task_list_view">
+            <div class="card">
+
+                <table id="task_table" class="table display no-wrap" style="width:100%">
+
+
+                </table>
+
             </div>
         </div>
     </div>
@@ -187,6 +306,14 @@
     <!-- Date range Plugin JavaScript -->
     <script src="/static/template/assets/plugins/daterangepicker/daterangepicker.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="/static/third_party/DataTables/DataTables-1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="/static/third_party/DataTables/Responsive-2.3.0/js/dataTables.responsive.min.js"></script>
+    <script src="/static/third_party/DataTables/Responsive-2.3.0/js/responsive.bootstrap5.min.js"></script>
+    <script src="/static/third_party/DataTables/Buttons-2.2.3/js/dataTables.buttons.min.js"></script>
+    <script src="/static/third_party/DataTables/Buttons-2.2.3/js/buttons.html5.min.js"></script>
+    <script src="/static/third_party/DataTables/Bootstrap-5-5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/third_party/DataTables/custom_js/datatables_searchPane.js"></script>
+    <script src="/static/third_party/DataTables/Select-1.4.0/js/dataTables.select.min.js"></script>
     <!-- Bootstrap tether Core JavaScript -->
     <script type="text/javascript">
         let artist_id;
@@ -241,58 +368,98 @@
             artist_id = $('#artist_select').val()
             const artist_name = $("#artist_select :selected").text().trim();
             if (artist_id > 0) {
-                const all_shots_json = $.ajax({
-                    type: "GET",
-                    url: "/api/production/custom/artist_reports/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59" + "&artist_id=" + artist_id,
-                    dataType: "application/json",
-                    async: false,
-                    error: function (xhr, status, err) {
-                    },
-                }).responseText;
-                const all_shots = JSON.parse(all_shots_json);
-                if (all_shots.total_shots !== 0) {
-                    document.getElementById("yts_per_label").classList.add('css-bar-' + all_shots.yts_per.toString())
-                    document.getElementById("wip_per_label").classList.add('css-bar-' + all_shots.wip_per.toString())
-                    document.getElementById("comp_per_label").classList.add('css-bar-' + all_shots.comp_per.toString())
+                task_table.ajax.url("/api/production/custom/artist_reports/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59" + "&artist_id=" + artist_id,)
+                task_table.load()
 
-                    document.getElementById("total_shots").innerHTML = all_shots.total_shots
-                    document.getElementById("ach_man").innerHTML = all_shots.achieved_mandays
-                    document.getElementById("assign_man").innerHTML = all_shots.total_mandays
-                    document.getElementById("yts").innerHTML = all_shots.yts
-                    document.getElementById("wip").innerHTML = all_shots.wip
-                    document.getElementById("completed").innerHTML = all_shots.completed
-                    document.getElementById("retakes").innerHTML = all_shots.retakes
-                    document.getElementById("retakes_per").innerHTML = all_shots.retakes_per + " %"
-                    document.getElementById("assgn_vs_ach").innerHTML = all_shots.act_vs_ach
-                    document.getElementById("top_title").innerHTML = "Statistics Of  " + artist_name
-                    document.getElementById("selected_dates").innerHTML = start.format("DD-MM-YYYY") + " --- " + end.format("DD-MM-YYYY")
-                    $('#selected_dates').css("color", usual)
-                } else {
-                    document.getElementById("total_shots").innerHTML = "N/A"
-                    document.getElementById("ach_man").innerHTML = "N/A"
-                    document.getElementById("assign_man").innerHTML = "N/A"
-                    document.getElementById("yts").innerHTML = "N/A"
-                    document.getElementById("wip").innerHTML = "N/A"
-                    document.getElementById("completed").innerHTML = "N/A"
-                    document.getElementById("retakes").innerHTML = "N/A"
-                    document.getElementById("retakes_per").innerHTML = "N/A"
-                    document.getElementById("assgn_vs_ach").innerHTML = "N/A"
-                    document.getElementById("top_title").innerHTML = "Statistics Of  " + artist_name
-                    document.getElementById("selected_dates").innerHTML = "No Statistics Found"
-                    $('#selected_dates').css("color", red)
-                }
+                {#const all_shots = JSON.parse(all_shots_json);#}
+
             } else {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'Please Select Team Lead..',
+                    text: 'Please Select Artist..',
                 })
             }
         }
 
+        var task_table = ""
+        $(document).ready(function () {
+            $(".custom_preloader").hide()
+            task_table = $('#task_table').DataTable({
+                dom: '<"dtsp-dataTable"frtip>',
+                "searching": true,
+                "ajax": {
+                    "processing": true,
+                    "url": "/api/production/custom/artist_reports/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59" + "&artist_id=" + artist_id,
+                    "type": "GET",
+                    "dataSrc": "",
+                    error: function (xhr, error, code) {
+                        console.log(xhr, code);
+                    }
+                },
+                'language': {
+                    'loadingRecords': '&nbsp;',
+                    'processing': 'Loading...'
+                },
+                columns: [
+                    {title: "CLIENT", data: 'shot.sequence.project.client.name'},
+                    {title: "PROJECT", data: 'shot.sequence.project.name'},
+                    {title: "SHOT CODE", data: 'shot.name'},
+                    {title: "TASK TYPE", data: 'shot.task_type'},
+                    {title: "TYPE", data: 'shot.type'},
+                    {title: "COMPLEXITY", data: 'shot.complexity'},
+                    {
+                        title: "STATUS", data: 'task_status',
+                        render: function (data, type, row, meta) {
+                            return (
+                                '<span class="badge" style="color:white;padding:3px 10px;font-size:1em; background-color:' + data.color + '">' + data.code + '</span>'
+                            );
+                        },
+                    },
+                    {
+                        title: "PROGRESS", data: 'art_percentage',
+                        render: function (data, type, row, meta) {
+                            return (
+                                `<div class="progress" style="height: 15px;">
+                        <div class="progress-bar" style="width:` + data + `%;background-color:red;color: white;font-weight: bold" role="progressbar">` + data + `%</div>
+                    </div>`
+                            )
+                        }
+                    },
+                    {title: "ACTUAL BIDS", data: 'assigned_bids'},
+                    {
+                        title: "ETA", data: 'eta',
+                        render: function (data, type, row, meta) {
+                            return moment(data).format("DD-MM-YYYY");
+                        }
+                    },
+                    {title: "TEAM LEAD", data: 'shot.team_lead'},
+                    {title: "VERSION", data: 'shot.version'},
+                    {title: "SUBMISSION DATE", data: 'shot.submitted_date',
+                        render: function (data, type, row, meta) {
+                            return moment(data).format("DD-MM-YYYY");
+                        }
+                    }
+                ],
+                select: true,
+                order: [[1, 'asc']],
+                scrollResize: true,
+                scrollX: true,
+                scrollCollapse: true,
+                buttons: [],
+                "paging": true,
+                "pageLength": 25,
+                "bSortClasses": false,
+                stateSave: false,
+                deferLoading: 10,
+            });
+
+            task_table.searchPanes()
+        });
+
         function artist_export_to_excel() {
             if (artist_id > 0 && s_Date.length > 0) {
-                window.location = "/production/teamleadreports_export/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59" + "&artist_id=" + lead_id
+                window.location = "/production/artistreports_export/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59" + "&artist_id=" + artist_id
             } else {
                 Swal.fire({
                     icon: 'error',
