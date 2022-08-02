@@ -152,7 +152,7 @@ def artist_sheet_download(buffer, start_date, end_date, artist_id):
     # Merge 3 cells.
 
     artist_data = get_employee(artist_id)
-    worksheet.merge_range('A1:I1', str(artist_data['fullName']), merge_format)
+    worksheet.merge_range('A1:I1', str(artist_data['fullName'] + "  Level: "+artist_data['grade']), merge_format)
     worksheet.merge_range('A2:I3', str(convert_date(start_date))+ "  ---  " + str(convert_date(end_date)), merge_format)
     # worksheet.merge_range('A4:D6', "Total Shots : " + str(total_shots), fmerge_format)
     # worksheet.merge_range('E4:G6', "Actual ManDays : " + str(round(assign_data[3])), fmerge_format)
