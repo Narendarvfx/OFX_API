@@ -313,6 +313,7 @@
             if (employee['department'] == "PAINT" || employee['department'] == "ROTO" || employee['department'] == "MM" || employee['department'] == "COMP") {
                 dat = {
                     "id": employee['id'],
+                    "employee_id": employee['employee_id'],
                     "fullName": employee['fullName'],
                     "dept": employee['department']
                 }
@@ -342,7 +343,7 @@
             for (var i = 0; i < filter_inputs.length; i++) {
                 var filter_input = filter_inputs[i];
                 if (filter_input.checked) {
-                    if (hasPriority(id, filter_input.name)) {
+                    if (filter_input.name == task.dept) {
                         return true;
                     }
                 }
@@ -573,24 +574,42 @@
         var employeeFilter = [
             "<div class='gantt-sub-header' style='line-height:20px'>",
             "<div>Employee Name</div>",
-            "<div><input id='data_text_filter' type='text' placeholder='Search Employee' oninput='gantt.$doFilter(this.value)'></div>",
+            "<div><input id='data_text_filter' type='text' placeholder='Search Employee' oninput='gantt.$doEmployeeFilter(this.value)'></div>",
+            "</div>"
+        ].join("");
+        var employee_IdFilter = [
+            "<div class='gantt-sub-header' style='line-height:20px'>",
+            "<div>Employee Id</div>",
+            "<div><input id='data_id_filter' type='text' placeholder='Employee Id' oninput='gantt.$doEmployeeIdFilter(this.value)'></div>",
             "</div>"
         ].join("");
         gantt.config.columns = [
+            {name: "employee_id", label: employee_IdFilter, align: "center", width: "*"},
             {name: "fullName", label: employeeFilter, align: "center", width: "*"},
             {name: "dept", label: "Dept", width: "*"},
         ];
 
         var filterValue = "";
+        var filterIdValue = "";
         var delay;
-        gantt.$doFilter = function (value) {
+        var delayId;
+        gantt.$doEmployeeFilter = function (value) {
             filterValue = value;
             gantt.render();
             clearTimeout(delay);
             delay = setTimeout(function () {
                 gantt.render();
                 gantt.$root.querySelector("[id='data_text_filter']").focus();
-            }, 1000)
+            }, 100)
+        }
+        gantt.$doEmployeeIdFilter = function (value) {
+            filterIdValue = value;
+            gantt.render();
+            clearTimeout(delayId);
+            delayId = setTimeout(function () {
+                gantt.render();
+                gantt.$root.querySelector("[id='data_id_filter']").focus();
+            }, 100)
         }
         gantt.attachEvent("onBeforeTaskDisplay", function (id, task) {
             if (!filterValue) return true;
@@ -602,8 +621,23 @@
                 console.log("Error")
             }
         });
+        gantt.attachEvent("onBeforeTaskDisplay", function (id, task) {
+
+            if (!filterIdValue) return true;
+            try {
+                var normalizedId = task.employee_id.toLowerCase();
+                var normalizedIdValue = filterIdValue.toLowerCase();
+                return normalizedId.indexOf(normalizedIdValue) > -1;
+            } catch {
+                console.log("Error")
+            }
+        });
         gantt.attachEvent("onGanttRender", function () {
+
             gantt.$root.querySelector("[id='data_text_filter']").value = filterValue;
+        })
+        gantt.attachEvent("onGanttRender", function () {
+            gantt.$root.querySelector("[id='data_id_filter']").value = filterIdValue;
         })
 
         gantt.init("gantt_here");
