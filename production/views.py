@@ -130,8 +130,9 @@ def export_artist_report(request):
     start_date = request.GET['start_date']
     end_date = request.GET['end_date']
     artist_id = request.GET.get('artist_id', None)
+    dept = request.GET.get('dept', None)
     buffer = io.BytesIO()
-    artist_sheet_download(buffer=buffer, start_date=start_date, end_date=end_date, artist_id=artist_id)
+    artist_sheet_download(buffer=buffer, start_date=start_date, end_date=end_date, artist_id=artist_id, dept=dept)
     buffer.seek(0)
     return FileResponse(buffer, as_attachment=True, filename='Artist_Report.xlsx')
 

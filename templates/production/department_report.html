@@ -203,15 +203,13 @@
                 format: 'DD/MM/YYYY'
             },
         }, function (start, end, label) {
-            date_change_detected(start, end);
-        });
-
-        function date_change_detected(start, end) {
-            var red = "red"
-            var usual = "#747d8a"
             s_Date = start.format("YYYY-MM-DD");
             e_Date = end.format("YYYY-MM-DD");
+        });
 
+        $('.dateranges').on('apply.daterangepicker', function(ev, picker) {
+                        var red = "red"
+            var usual = "#747d8a"
             dept = $("#dep_select :selected").text().trim();
             if (dept !== "Department") {
                 const all_shots_json = $.ajax({
@@ -261,7 +259,7 @@
                     text: 'Please Select Department..',
                 })
             }
-        }
+        })
 
         function dep_export_to_excel() {
             if (dept !== "Department" && s_Date.length >0) {

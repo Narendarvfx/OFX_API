@@ -212,14 +212,14 @@
                 format: 'DD/MM/YYYY'
             },
         }, function (start, end, label) {
-            date_change_detected(start, end);
-        });
-
-        function date_change_detected(start, end) {
-            var red = "red"
-            var usual = "#747d8a"
             s_Date = start.format("YYYY-MM-DD");
             e_Date = end.format("YYYY-MM-DD");
+        });
+
+        $('.dateranges').on('apply.daterangepicker', function(ev, picker) {
+            var red = "red"
+            var usual = "#747d8a"
+
             lead_id = $('#lead_select').val()
             const all_shots_json = $.ajax({
                 type: "GET",
@@ -259,7 +259,7 @@
                 document.getElementById("selected_dates").innerHTML = "No Statistics Found"
                 $('#selected_dates').css("color", red)
             }
-        }
+        })
 
         function studio_export_to_excel() {
             if (s_Date.length > 0) {
