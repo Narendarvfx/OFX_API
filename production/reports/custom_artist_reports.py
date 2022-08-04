@@ -66,6 +66,15 @@ def convert_date(conversion_date):
     _date = datetime.datetime.strptime(conversion_date, '%Y-%m-%dT%H:%M:%S').strftime(
         "%d-%m-%Y")
     return _date
+def creation_convert_date(conversion_date):
+    '''
+    Converts Date Time Object to date
+    params: datetime
+    returns: converted date
+    '''
+    _date = datetime.datetime.strptime(conversion_date, '%Y-%m-%dT%H:%M:%S.%f').strftime(
+        "%d-%m-%Y")
+    return _date
 
 def artist_sheet_download(buffer=None, start_date=None, end_date=None, artist_id=None, dept=None):
     workbook = xlsxwriter.Workbook(buffer)
@@ -90,9 +99,12 @@ def artist_sheet_download(buffer=None, start_date=None, end_date=None, artist_id
     worksheet.write('E4', 'STATUS', bold)
     worksheet.write('F4', 'BID DAYS', bold)
     worksheet.write('G4', 'PROGRESS', bold)
-    worksheet.write('H4', 'ETA', bold)
-    worksheet.write('I4', 'ARTIST', bold)
-    worksheet.write('J4', 'TEAM LEAD', bold)
+    worksheet.write('H4', 'CONSUMED BID DAYS', bold)
+    worksheet.write('I4', 'PENDING BID DAYS', bold)
+    worksheet.write('J4', 'ASSIGNED DATE', bold)
+    worksheet.write('K4', 'ETA', bold)
+    worksheet.write('L4', 'ARTIST', bold)
+    worksheet.write('M4', 'TEAM LEAD', bold)
 
     col = 0
     row = 3
@@ -113,9 +125,16 @@ def artist_sheet_download(buffer=None, start_date=None, end_date=None, artist_id
             bid_days = float(shot_id['assigned_bids'])
             percentile = shot_id['shot']['progress'] / 100
 
+            bid_column = 'F{}'.format(row + 2)
+            progress_column = 'G{}'.format(row + 2)
+            pending_column = 'I{}'.format(row+2)
             due_date = ""
             if shot_id['eta']:
                 due_date = convert_date(shot_id['eta'])
+
+            assigned_date = ""
+            if shot_id['creation_date']:
+                assigned_date = creation_convert_date(shot_id['creation_date'])
 
             worksheet.write(row + 1, col, shot_id['shot']['sequence']['project']['client']['name'], border)
             worksheet.write(row + 1, col + 1, shot_id['shot']['sequence']['project']['name'], border)
@@ -124,12 +143,17 @@ def artist_sheet_download(buffer=None, start_date=None, end_date=None, artist_id
             worksheet.write(row + 1, col + 4, shot_status, border)
             worksheet.write(row + 1, col + 5, bid_days, border)
             worksheet.write(row + 1, col + 6, percentile, percent)
-            worksheet.write(row + 1, col + 7, due_date, border)
-            worksheet.write(row + 1, col + 8, shot_id['artist'], border)
-            worksheet.write(row + 1, col + 9, shot_id['shot']['team_lead'], border)
+            worksheet.write(row + 1, col + 7, '=ROUND(({}-{}),1)'.format(bid_column, pending_column), pending_color)
+            worksheet.write(row + 1, col + 8, '=ROUND(({}-{}*{}),1)'.format(bid_column, bid_column, progress_column), pending_color)
+            worksheet.write(row + 1, col + 9, assigned_date, border)
+            worksheet.write(row + 1, col + 10, due_date, border)
+            worksheet.write(row + 1, col + 11, shot_id['artist'], border)
+            worksheet.write(row + 1, col + 12, shot_id['shot']['team_lead'], border)
 
         except Exception as e:
             print(e)
+            pass
+
         row += 1
     merge_format = workbook.add_format({
         'bold': 1,
@@ -148,12 +172,12 @@ def artist_sheet_download(buffer=None, start_date=None, end_date=None, artist_id
 
     if artist_id:
         artist_data = get_employee(artist_id)
-        worksheet.merge_range('A1:J1', str(artist_data['fullName'] + "  Level: "+artist_data['grade']), merge_format)
+        worksheet.merge_range('A1:M1', str(artist_data['fullName'] + "  Level: "+artist_data['grade']), merge_format)
     elif dept:
-        worksheet.merge_range('A1:J1', dept+" Artist Report", merge_format)
+        worksheet.merge_range('A1:M1', dept+" Artist Report", merge_format)
     else:
-        worksheet.merge_range('A1:J1', "Artist Report" , merge_format)
-    worksheet.merge_range('A2:J3', str(convert_date(start_date))+ "  ---  " + str(convert_date(end_date)), merge_format)
+        worksheet.merge_range('A1:M1', "Artist Report" , merge_format)
+    worksheet.merge_range('A2:M3', str(convert_date(start_date))+ "  ---  " + str(convert_date(end_date)), merge_format)
 
     workbook.close()
     return buffer
