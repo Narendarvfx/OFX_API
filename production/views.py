@@ -129,9 +129,9 @@ def export_teamlead_report(request):
 def export_artist_report(request):
     start_date = request.GET['start_date']
     end_date = request.GET['end_date']
-    artist_id = request.GET['artist_id']
+    artist_id = request.GET.get('artist_id', None)
     buffer = io.BytesIO()
-    artist_sheet_download(buffer, start_date, end_date, artist_id)
+    artist_sheet_download(buffer=buffer, start_date=start_date, end_date=end_date, artist_id=artist_id)
     buffer.seek(0)
     return FileResponse(buffer, as_attachment=True, filename='Artist_Report.xlsx')
 

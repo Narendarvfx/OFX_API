@@ -1092,7 +1092,14 @@ class CustomArtistReports(APIView):
             artist_id = query_params.get('artist_id', None)
             start_date = query_params.get('start_date', None)
             end_date = query_params.get('end_date', None)
-            returned_data = calculate_artist_data(artist_id, start_date, end_date)
+            dept = query_params.get('dept',None)
+            print(dept)
+            if artist_id:
+                returned_data = calculate_artist_data(artist_id=artist_id, start_date=start_date, end_date=end_date)
+            elif dept:
+                returned_data = calculate_artist_data(dept=dept,start_date=start_date, end_date=end_date)
+            else:
+                returned_data = calculate_artist_data(start_date=start_date, end_date=end_date)
         return Response(returned_data)
 
 class CustomDeptReports(APIView):
