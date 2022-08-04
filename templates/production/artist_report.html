@@ -366,19 +366,21 @@
             s_Date = start.format("YYYY-MM-DD");
             e_Date = end.format("YYYY-MM-DD");
             artist_id = $('#artist_select').val()
+            dept = $("#dep_select :selected").text().trim();
             const artist_name = $("#artist_select :selected").text().trim();
             if (artist_id > 0) {
                 task_table.ajax.url("/api/production/custom/artist_reports/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59" + "&artist_id=" + artist_id,)
+                console.log("/api/production/custom/artist_reports/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59" + "&artist_id=" + artist_id)
                 task_table.load()
 
-                {#const all_shots = JSON.parse(all_shots_json);#}
-
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Please Select Artist..',
-                })
+            } else if(dept !== "") {
+                task_table.ajax.url("/api/production/custom/artist_reports/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59"+"&dept="+dept)
+                console.log(task_table.ajax.url())
+                task_table.load()
+            }
+            else{
+                task_table.ajax.url("/api/production/custom/artist_reports/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59")
+                task_table.load()
             }
         }
 
@@ -426,7 +428,12 @@
                             )
                         }
                     },
-                    {title: "ACTUAL BIDS", data: 'assigned_bids'},
+                    {title: "ASSIGNED BIDS", data: 'assigned_bids'},
+                    {title: "ASSIGNED DATE", data: 'creation_date',
+                        render: function (data, type, row, meta) {
+                            return moment(data).format("DD-MM-YYYY");
+                        }
+                    },
                     {
                         title: "ETA", data: 'eta',
                         render: function (data, type, row, meta) {
@@ -458,13 +465,21 @@
         });
 
         function artist_export_to_excel() {
-            if (artist_id > 0 && s_Date.length > 0) {
-                window.location = "/production/artistreports_export/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59" + "&artist_id=" + artist_id
+            if (s_Date.length > 0) {
+                if (artist_id > 0){
+                    window.location = "/production/artistreports_export/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59" + "&artist_id=" + artist_id
+                }
+                else if(dept !== ""){
+                    window.location = "/production/artistreports_export/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59"+"&dept="+dept
+                }
+                else{
+                    window.location = "/production/artistreports_export/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59"
+                }
             } else {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'Please Select Artist and Date Range....',
+                    text: 'Please Date Range....',
                 })
             }
         }
