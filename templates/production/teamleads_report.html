@@ -229,7 +229,8 @@
                 format: 'DD/MM/YYYY'
             },
         }, function (start, end, label) {
-            date_change_detected(start, end);
+            s_Date = start.format("YYYY-MM-DD");
+            e_Date = end.format("YYYY-MM-DD");
         });
 
         $(document).ready(function () {
@@ -256,11 +257,9 @@
             });
         })
 
-        function date_change_detected(start, end) {
+        $('.dateranges').on('apply.daterangepicker', function(ev, picker) {
             var red = "red"
             var usual = "#747d8a"
-            s_Date = start.format("YYYY-MM-DD");
-            e_Date = end.format("YYYY-MM-DD");
             lead_id = $('#lead_select').val()
             if (lead_id > 0) {
                 const all_shots_json = $.ajax({
@@ -310,7 +309,7 @@
                     text: 'Please Select Team Lead..',
                 })
             }
-        }
+        })
 
         function tl_export_to_excel() {
             if (lead_id > 0 && s_Date.length > 0) {

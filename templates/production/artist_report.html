@@ -320,6 +320,7 @@
         let s_Date;
         let e_Date;
         let artist_name;
+        let dept;
         /*******************************************/
         // Date Ranges
         /*******************************************/
@@ -334,8 +335,10 @@
             locale: {
                 format: 'DD/MM/YYYY'
             },
+            autoApply:false
         }, function (start, end, label) {
-            date_change_detected(start, end);
+            s_Date = start.format("YYYY-MM-DD");
+            e_Date = end.format("YYYY-MM-DD");
         });
 
         $('#dep_select').on('change', function () {
@@ -360,9 +363,25 @@
             })
         });
 
+        $('.dateranges').on('apply.daterangepicker', function(ev, picker) {
+            artist_id = $('#artist_select').val()
+            dept = $("#dep_select :selected").text().trim();
+            const artist_name = $("#artist_select :selected").text().trim();
+            if (artist_id > 0) {
+                task_table.ajax.url("/api/production/custom/artist_reports/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59" + "&artist_id=" + artist_id,)
+                task_table.load()
+
+            } else if(dept !== "") {
+                task_table.ajax.url("/api/production/custom/artist_reports/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59"+"&dept="+dept)
+                console.log(task_table.ajax.url())
+                task_table.load()
+            }
+            else{
+                task_table.ajax.url("/api/production/custom/artist_reports/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59")
+                task_table.load()
+            }
+        });
         function date_change_detected(start, end) {
-            var red = "red"
-            var usual = "#747d8a"
             s_Date = start.format("YYYY-MM-DD");
             e_Date = end.format("YYYY-MM-DD");
             artist_id = $('#artist_select').val()
@@ -370,7 +389,6 @@
             const artist_name = $("#artist_select :selected").text().trim();
             if (artist_id > 0) {
                 task_table.ajax.url("/api/production/custom/artist_reports/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59" + "&artist_id=" + artist_id,)
-                console.log("/api/production/custom/artist_reports/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59" + "&artist_id=" + artist_id)
                 task_table.load()
 
             } else if(dept !== "") {
@@ -469,7 +487,7 @@
                 if (artist_id > 0){
                     window.location = "/production/artistreports_export/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59" + "&artist_id=" + artist_id
                 }
-                else if(dept !== ""){
+                else if(dept.length > 0){
                     window.location = "/production/artistreports_export/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59"+"&dept="+dept
                 }
                 else{
