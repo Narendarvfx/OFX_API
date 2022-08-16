@@ -51,7 +51,7 @@ AUTHENTICATION_BACKENDS = (
 SECRET_KEY = '$qk=xmf1nr6xy)4-!w2g5!wh=)$e6^8@v^z%w@i8n44pjf5lg2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1','*']
 
@@ -102,7 +102,8 @@ INSTALLED_APPS = [
     'notifications',
     'coreapi', # Coreapi for coreapi documentation
     'drf_yasg', # drf_yasg fro Swagger documentation
-    "log_viewer"
+    "log_viewer",
+    'track_actions',
 ]
 
 {
@@ -125,6 +126,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'drf_api_logger.middleware.api_logger_middleware.APILoggerMiddleware',
+    'track_actions.requestMiddleware.RequestMiddleware',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -172,24 +174,31 @@ CHANNEL_LAYERS = {
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-if DEBUG:
-    DATABASES = {
+DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'ofx_api',
-            'USER': 'root',
-            'PASSWORD': 'VggGa6Kwq4bq',
-            'HOST': '127.0.0.1',
-            'PORT': '3306'
-        },
-    }
+#
+# if DEBUG:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#         }
+#     }
+# else:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.mysql',
+#             'NAME': 'ofx_api',
+#             'USER': 'root',
+#             'PASSWORD': 'VggGa6Kwq4bq',
+#             'HOST': '127.0.0.1',
+#             'PORT': '3306'
+#         },
+#     }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -309,3 +318,10 @@ LOG_VIEWER_PATTERNS = ['[INFO]', '[DEBUG]', '[WARNING]', '[ERROR]', '[CRITICAL]'
 # Optionally you can set the next variables in order to customize the admin:
 LOG_VIEWER_FILE_LIST_TITLE = "OFX API LOGS"
 LOG_VIEWER_FILE_LIST_STYLES = "/static/css/my-custom.css"
+
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = '192.168.5.10'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'narendarreddy.g@oscarfx.com'
+EMAIL_HOST_PASSWORD = 'Temple@5262'

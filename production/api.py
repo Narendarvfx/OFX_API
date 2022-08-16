@@ -27,7 +27,7 @@ from production.serializers import ClientSerializer, ProjectSerializer, StatusSe
     TaskHelpArtistStatusSerializer, ShotLogsSerializer, ShotLogsPostSerializer, LocalitySerializer, DayLogsSerializer, \
     DayLogsPostSerializer, TeamReportSerializer, QcVersionsSerializer, AllShotQcVersionsSerializer, \
     ClientVersionsSerializer, AllShotClientVersionsSerializer, TimeLogsSerializer, TimeLogsPostSerializer, \
-    TimeCardSerializer, LightDataSerializer, ShotTimeLogSerializer
+    TimeCardSerializer, LightDataSerializer, ShotTimeLogSerializer, ShotTimeCardSerializer
 
 
 class StatusInfo(APIView):
@@ -466,6 +466,19 @@ class TimeCardData(APIView):
             if _serializer.is_valid():
                 _serializer.save()
         return Response(status=status.HTTP_201_CREATED)
+
+class ShotTimeCardData(APIView):
+
+    def get(self, request, shotId):
+        '''
+        [::-1] reverse order
+        [:2] last two records
+        '''
+
+        timelogs = TimeLogs.objects.all().select_related('shot', 'approved_by', 'updated_by').filter(shot=shotId)
+        serializer = ShotTimeCardSerializer(timelogs, many=True, context={"request": request})
+        return Response(serializer.data)
+
 
 class UpdateTimeCard(APIView):
 

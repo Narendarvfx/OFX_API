@@ -204,6 +204,15 @@ class TimeCardSerializer(serializers.ModelSerializer):
         model = TimeLogs
         fields = ('__all__')
 
+class ShotTimeCardSerializer(serializers.ModelSerializer):
+    updated_by = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
+    approved_by = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
+    creation_date = serializers.DateTimeField(read_only=True, format="%d-%m-%Y")
+
+    class Meta:
+        model = TimeLogs
+        fields = ('__all__')
+
 class LightDataSerializer(serializers.ModelSerializer):
     shot = ShotCompactSerializer(read_only=True)
     approved_by = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
