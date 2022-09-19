@@ -38,7 +38,6 @@ class Department(models.Model):
     class Meta:
         verbose_name_plural = "Department"
 
-
 class Role(models.Model):
     name = models.CharField(max_length=100, unique=True)
 

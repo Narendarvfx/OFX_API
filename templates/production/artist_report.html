@@ -335,7 +335,7 @@
             locale: {
                 format: 'DD/MM/YYYY'
             },
-            autoApply:false
+            autoApply: false
         }, function (start, end, label) {
             s_Date = start.format("YYYY-MM-DD");
             e_Date = end.format("YYYY-MM-DD");
@@ -363,7 +363,7 @@
             })
         });
 
-        $('.dateranges').on('apply.daterangepicker', function(ev, picker) {
+        $('.dateranges').on('apply.daterangepicker', function (ev, picker) {
             artist_id = $('#artist_select').val()
             dept = $("#dep_select :selected").text().trim();
             const artist_name = $("#artist_select :selected").text().trim();
@@ -371,16 +371,16 @@
                 task_table.ajax.url("/api/production/custom/artist_reports/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59" + "&artist_id=" + artist_id,)
                 task_table.load()
 
-            } else if(dept !== "") {
-                task_table.ajax.url("/api/production/custom/artist_reports/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59"+"&dept="+dept)
+            } else if (dept !== "") {
+                task_table.ajax.url("/api/production/custom/artist_reports/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59" + "&dept=" + dept)
                 console.log(task_table.ajax.url())
                 task_table.load()
-            }
-            else{
+            } else {
                 task_table.ajax.url("/api/production/custom/artist_reports/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59")
                 task_table.load()
             }
         });
+
         function date_change_detected(start, end) {
             s_Date = start.format("YYYY-MM-DD");
             e_Date = end.format("YYYY-MM-DD");
@@ -391,12 +391,11 @@
                 task_table.ajax.url("/api/production/custom/artist_reports/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59" + "&artist_id=" + artist_id,)
                 task_table.load()
 
-            } else if(dept !== "") {
-                task_table.ajax.url("/api/production/custom/artist_reports/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59"+"&dept="+dept)
+            } else if (dept !== "") {
+                task_table.ajax.url("/api/production/custom/artist_reports/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59" + "&dept=" + dept)
                 console.log(task_table.ajax.url())
                 task_table.load()
-            }
-            else{
+            } else {
                 task_table.ajax.url("/api/production/custom/artist_reports/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59")
                 task_table.load()
             }
@@ -448,7 +447,8 @@
                         }
                     },
                     {title: "ASSIGNED BIDS", data: 'assigned_bids'},
-                    {title: "ASSIGNED DATE", data: 'creation_date',
+                    {
+                        title: "ASSIGNED DATE", data: 'creation_date',
                         render: function (data, type, row, meta) {
                             return moment(data).format("DD-MM-YYYY");
                         }
@@ -461,7 +461,8 @@
                     },
                     {title: "TEAM LEAD", data: 'shot.team_lead'},
                     {title: "VERSION", data: 'shot.version'},
-                    {title: "SUBMISSION DATE", data: 'shot.submitted_date',
+                    {
+                        title: "SUBMISSION DATE", data: 'shot.submitted_date',
                         render: function (data, type, row, meta) {
                             return moment(data).format("DD-MM-YYYY");
                         }
@@ -485,13 +486,11 @@
 
         function artist_export_to_excel() {
             if (s_Date.length > 0) {
-                if (artist_id > 0){
+                if (artist_id > 0) {
                     window.location = "/production/artistreports_export/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59" + "&artist_id=" + artist_id
-                }
-                else if(dept.length > 0){
-                    window.location = "/production/artistreports_export/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59"+"&dept="+dept
-                }
-                else{
+                } else if (dept.length > 0) {
+                    window.location = "/production/artistreports_export/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59" + "&dept=" + dept
+                } else {
                     window.location = "/production/artistreports_export/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59"
                 }
             } else {

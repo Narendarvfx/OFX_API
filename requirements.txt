@@ -12,8 +12,6 @@ django-log-viewer==1.1.2
 django-model-utils==3.1.2
 djangorestframework==3.11.0
 drf-api-logger==1.0.6
-mysqlclient==2.0.3
-PySide2==5.15.2
 python-dateutil==2.8.2
 python-decouple==3.3
 python-memcached==1.59
@@ -21,3 +19,7 @@ redis==3.5.3
 requests==2.21.0
 urllib3==1.24.3
 XlsxWriter==3.0.1
+pillow==8.4.0
+coreapi==2.3.3
+drf-yasg==1.21.3
+drf-history==1.0.1
