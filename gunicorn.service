@@ -1,0 +1,12 @@
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=narendar
+Group=www-data
+WorkingDirectory=/var/lib/jenkins/workspace/django-cicd
+ExecStart=/var/lib/jenkins/workspace/django-cicd/env/bin/gunicorn --access-logfile - --workers 3 --bind unix:/var/lib/jenkins/workspace/django-cicd/myproject.sock myproject.wsgi:application
+
+[Install]
+WantedBy=multi-user.target

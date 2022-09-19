@@ -1,6 +1,5 @@
 {% extends 'main/base.html' %}
 
-
 {% block bread_crumb %}
     <link rel='stylesheet' href='/static/third_party/DataTables/DataTables-1.12.1/css/jquery.dataTables.min.css'
           type="text/css"/>
@@ -49,7 +48,7 @@
 
         #filter_div {
             padding: 10px;
-            background: #0f0f10 !important;
+            background: #272c33 !important;
             color: white;
         }
 
@@ -78,7 +77,7 @@
         }
 
         table.dataTable tr.odd {
-            background-color: #2b3038 !important;
+            background-color: #343a40 !important;
         }
 
         table.dataTable td {
@@ -98,7 +97,7 @@
 
         .dataTables_wrapper .dataTables_paginate .paginate_button {
             padding: 2px;
-            background: white;
+            background: transparent;
         }
 
         tfoot input {
@@ -230,81 +229,112 @@
         }
 
         div.dtsp-panesContainer {
-            border: 1px solid #ccc;
+            border: 1px solid transparent;
             border-radius: 6px;
             padding: 5px;
         }
+
+        select {
+            -webkit-appearance: none;
+        }
+
+        div.dtsp-narrow {
+            flex-direction: column !important;
+            background-color: #343a40;
+        }
+
+        div.dtsp-panesContainer button.dtsp-clearAll, div.dtsp-panesContainer button.dtsp-collapseAll, div.dtsp-panesContainer button.dtsp-showAll {
+            border: none;
+            background-color: #343a40;
+            padding: 3px;
+            border-radius: 5px;
+        }
+
+        div.dtsp-panesContainer button.dtsp-disabledButton {
+            cursor: default !important;
+            background-color: #343a40;
+            padding: 3px;
+            border-radius: 10px;
+            color: white;
+        }
+
+        div.dtsp-panesContainer div.dataTables_wrapper div.dataTables_scrollBody {
+            background: #343a40 !important;
+            border-bottom: none;
+        }
+
     </style>
     <div class="row page-titles">
-        <div class="col-md-4 col-6 align-self-center">
-            <h3 class="text-themecolor mb-0 mt-0">Live Production Report</h3>
+        <div class="col-md-10 col-2 float-left">
+            <h3 class="text-themecolor mb-0 mt-2">Live Production Report</h3>
         </div>
-        <div class="col-md-8 col-8 align-self-center">
+        <div class="float-right" style="background-color: #e5711d;border-radius: 10px">
             <div class="float-right" style="margin-left: 5px">
-                <button class="btn float-right btn-primary" onclick="export_to_excel()"><i
-                        class="mdi mdi-cloud-download"></i> Export
+                <button class="btn float-right" title="Export to Excel" onclick="export_to_excel()"><i
+                        class="mdi mdi-cloud-download" style="color: white;font-size: large"></i>
                 </button>
             </div>
-{#        TODO: Enable to work on filters #}
-{#            <!--- Filter button --->#}
-{#            <div class="float-right" style="margin-left: 5px">#}
-{#                <button class="column_filter btn float-right btn-success"><i#}
-{#                        class="mdi mdi-filter"></i>#}
-{#                </button>#}
-{#            </div>#}
+            {#        TODO: Enable to work on filters #}
+            <!--- Filter button --->
             <div class="float-right" style="margin-left: 5px">
-                <button type="button" class="assign_leads btn float-right btn-warning"><i
-                        class="mdi mdi-plus"></i>
+
+                <button class="column_filter btn float-right" title="Filters" data-toggle="button" aria-pressed="true"><i
+                        class="mdi mdi-filter" style="color:white;font-size: large"></i>
                 </button>
             </div>
             <div class="float-right" style="margin-left: 5px">
-                <select id="shot_taskType_select" class="form-control">
-                    <option value="0">TaskType</option>
-                    {% for task_ty in task_type %}
-                        <option value="{{ task_ty.id }}">{{ task_ty.name }}</option>
-                    {% endfor %}
-                </select>
+                <button type="button" class="assign_leads btn float-right" title="Assign to Team Leads"><i
+                        class="mdi mdi-account-plus" style="color:white;font-size: large"></i>
+                </button>
             </div>
-            <div class="float-right" style="margin-left: 5px">
-                <select id="shot_status_select" class="form-control">
-                    <option value="0">Status</option>
-                    {% for statu in status %}
-                        <option value={{ statu.id }}>{{ statu.code }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="float-right" style="margin-left: 5px">
-                <select id="shot_project_select" class="form-control">
-                    <option value="0">Project</option>
-                    {% for project in projects %}
-                        <option value={{ project.id }}>{{ project.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="float-right" style="margin-left: 5px">
-                <select id="shot_client_select" class="form-control">
-                    <option value="0">Client</option>
-                    {% for client in clients %}
-                        <option value={{ client.id }}>{{ client.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="float-right" style="margin-left: 5px">
-                <select id="shot_location_select" class="form-control">
-                    <option value="0">Location</option>
-                    {% for locatio in location %}
-                        <option value={{ locatio.id }}>{{ locatio.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="float-right" style="margin-left: 5px">
-                <select id="shot_locality_select" class="form-control">
-                    <option value="0">Locality</option>
-                    {% for localit in locality %}
-                        <option value={{ localit.id }}>{{ localit.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
+            {#            <div class="float-right" style="margin-left: 5px;margin-top: 3px">#}
+            {#                <select id="shot_taskType_select" class="form-control">#}
+            {#                    <option value="0">TaskType</option>#}
+            {#                    {% for task_ty in task_type %}#}
+            {#                        <option value="{{ task_ty.id }}">{{ task_ty.name }}</option>#}
+            {#                    {% endfor %}#}
+            {#                </select>#}
+            {#            </div>#}
+            {#            <div class="float-right" style="margin-left: 5px;margin-top: 3px">#}
+            {#                <select id="shot_status_select" class="form-control">#}
+            {#                    <option value="0">Status</option>#}
+            {#                    {% for statu in status %}#}
+            {#                        <option value={{ statu.id }}>{{ statu.code }}</option>#}
+            {#                    {% endfor %}#}
+            {#                </select>#}
+            {#            </div>#}
+            {#            <div class="float-right" style="margin-left: 5px;margin-top: 3px">#}
+            {#                <select id="shot_project_select" class="form-control">#}
+            {#                    <option value="0">Project</option>#}
+            {#                    {% for project in projects %}#}
+            {#                        <option value={{ project.id }}>{{ project.name }}</option>#}
+            {#                    {% endfor %}#}
+            {#                </select>#}
+            {#            </div>#}
+            {#            <div class="float-right" style="margin-left: 5px">#}
+            {#                <select id="shot_client_select" class="form-control">#}
+            {#                    <option value="0">Client</option>#}
+            {#                    {% for client in clients %}#}
+            {#                        <option value={{ client.id }}>{{ client.name }}</option>#}
+            {#                    {% endfor %}#}
+            {#                </select>#}
+            {#            </div>#}
+            {#            <div class="float-right" style="margin-left: 5px">#}
+            {#                <select id="shot_location_select" class="form-control">#}
+            {#                    <option value="0">Location</option>#}
+            {#                    {% for locatio in location %}#}
+            {#                        <option value={{ locatio.id }}>{{ locatio.name }}</option>#}
+            {#                    {% endfor %}#}
+            {#                </select>#}
+            {#            </div>#}
+            {#            <div class="float-right" style="margin-left: 5px">#}
+            {#                <select id="shot_locality_select" class="form-control">#}
+            {#                    <option value="0">Locality</option>#}
+            {#                    {% for localit in locality %}#}
+            {#                        <option value={{ localit.id }}>{{ localit.name }}</option>#}
+            {#                    {% endfor %}#}
+            {#                </select>#}
+            {#            </div>#}
         </div>
     </div>
     <!-- ============================================================== -->
@@ -320,16 +350,17 @@
         <div class="col-lg-12" id="shots_list_view">
             <div class="card">
 
-                        <table id="shots_table" class="table display no-wrap" style="width:100%">
+                <table id="shots_table" class="table display no-wrap" style="width:100%">
 
 
-                        </table>
+                </table>
 
             </div>
         </div>
-        <div class="col-lg-2 card" id="filter_div" style="display: none;height:1000px;overflow-y: auto">
+        <div class="col-md-3 col-2 card" id="filter_div"
+             style="display: none;height:1000px;overflow-y: auto;margin: 0px;">
             <h6><i onclick="header_vis(this)" class="ti-angle-right"></i> Header Visibility</h6>
-            <div class="card" id="header_filter" style="display: none; height:200px; overflow-y: scroll">
+            <div class="card" id="header_filter" style="display: none; height:200px; overflow-y: scroll; border-bottom: 1px solid #494848;border-radius: 0px">
                 <div class="card-body">
                     <input type="text" class="form-control column_vis" id="search_header" onkeyup="search_column()"
                            placeholder="Search for...">
@@ -356,12 +387,12 @@
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox5" data-column="5"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox5">TYPE</label>
+                        <label class="custom-control-label" for="checkbox5">TASK TYPE</label>
                     </div>
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox6" data-column="6"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox6">TASK TYPE</label>
+                        <label class="custom-control-label" for="checkbox6">TYPE</label>
                     </div>
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox7" data-column="7"
@@ -416,36 +447,35 @@
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox17" data-column="17"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox17">LOCATION</label>
+                        <label class="custom-control-label" for="checkbox17">ARTIST</label>
                     </div>
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox18" data-column="18"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox18">LOCALITY</label>
+                        <label class="custom-control-label" for="checkbox18">VERSION</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox19" data-column="19"
+                               value="check" checked>
+                        <label class="custom-control-label" for="checkbox19">LOCATION</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox20" data-column="20"
+                               value="check" checked>
+                        <label class="custom-control-label" for="checkbox20">LOCALITY</label>
                     </div>
                 </div>
             </div>
-            <h6><i onclick="client_vis(this)" class="ti-angle-right"></i> Client Filter</h6>
-            <div class="card" id="client_filter" style="display: none; height:200px; overflow-y: scroll">
+            <div class="card">
                 <div class="card-body">
-                    <input type="text" class="form-control column_vis" id="search_header" onkeyup="search_column()"
-                           placeholder="Search for...">
-                    {% for client in clients %}
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input toggle-vis"
-                                   id="checkbox{{ forloop.counter0 }}"
-                                   data-column={{ forloop.counter0 }} value={{ client.id }} checked>
-                            <label class="custom-control-label"
-                                   for="checkbox{{ forloop.counter0 }}">{{ client.name }}</label>
+                    <div class="dtsp-verticalContainer">
+                        <div class="dtsp-verticalPanes">
                         </div>
-                    {% endfor %}
+                        <div class="container">
+                        </div>
+                    </div>
                 </div>
             </div>
-        <div class="dtsp-verticalContainer">
-                    <div class="dtsp-verticalPanes"></div>
-                    <div class="container">
-                    </div>
-        </div>
 
         </div>
     </div>
@@ -533,11 +563,11 @@
         $(".column_filter").click(function (e) {
             var x = document.getElementById("filter_div");
             if (x.style.display === "none") {
-                $('.col-lg-12').addClass('col-lg-10').removeClass('col-lg-12')
+                $('.col-lg-12').addClass('col-lg-9').removeClass('col-lg-12')
                 x.style.display = "block";
             } else {
                 x.style.display = "none";
-                $('.col-lg-10').addClass('col-lg-12').removeClass('col-lg-10')
+                $('.col-lg-9').addClass('col-lg-12').removeClass('col-lg-9')
             }
         });
         $(window).click(function (e) {
@@ -600,66 +630,14 @@
                         searchPanes: {
                             show: false
                         },
-                        targets: [0]
-                    },
-                    {
-                        searchPanes: {
-                            show: false
-                        },
-                        targets: [3]
-                    },
-                    {
-                        searchPanes: {
-                            show: false
-                        },
-                        targets: [4]
-                    },
-                    {
-                        searchPanes: {
-                            show: false
-                        },
-                        targets: [8]
-                    },
-                    {
-                        searchPanes: {
-                            show: false
-                        },
-                        targets: [9]
-                    },
-                    {
-                        searchPanes: {
-                            show: false
-                        },
-                        targets: [10]
-                    },
-                    {
-                        searchPanes: {
-                            show: false
-                        },
-                        targets: [12]
-                    },
-                    {
-                        searchPanes: {
-                            show: false
-                        },
-                        targets: [13]
-                    },
-                    {
-                        searchPanes: {
-                            show: false
-                        },
-                        targets: [14]
-                    },
-                    {
-                        searchPanes: {
-                            show: false
-                        },
-                        targets: [15]
-                    },
+                        targets: [3,4,9,10,11,12,13,14,15,18]
+                    }
                 ],
                 searchPanes: {
                     cascadePanes: true,
-                    layout: 'columns-1'
+                    layout: 'columns-1',
+                    controls: false,
+
                 },
                 dom: '<"dtsp-dataTable"frtip>',
                 "searching": true,
@@ -877,7 +855,11 @@
                 }
 
             });
+            $('#shots_table').on('click', 'tbody tr', function() {
+          console.log('API row values : ', table.row(this).data());
+        })
         });
+
 
         function assign_lead() {
             $(".custom_preloader").show()

@@ -9,7 +9,6 @@ from production.models import DayLogs, Assignments, ClientVersions, MyTask, Shot
 from production.serializers import DayLogsSerializer, AssignmentSerializer, ClientVersionsSerializer, MyTaskSerializer, \
     MyTaskArtistSerializer, ShotVersionsSerializer, QcVersionsSerializer
 
-
 def calculate_artist_data(artist_id=None, start_date=None, end_date=None, dept=None):
     if artist_id:
         tasks = MyTask.objects.filter(creation_date__range=[start_date,end_date],artist=artist_id).select_related('shot', 'artist',
@@ -66,6 +65,7 @@ def convert_date(conversion_date):
     _date = datetime.datetime.strptime(conversion_date, '%Y-%m-%dT%H:%M:%S').strftime(
         "%d-%m-%Y")
     return _date
+
 def creation_convert_date(conversion_date):
     '''
     Converts Date Time Object to date
@@ -172,7 +172,11 @@ def artist_sheet_download(buffer=None, start_date=None, end_date=None, artist_id
 
     if artist_id:
         artist_data = get_employee(artist_id)
-        worksheet.merge_range('A1:M1', str(artist_data['fullName'] + "  Level: "+artist_data['grade']), merge_format)
+        if artist_data['grade']:
+            grade = artist_data['grade']
+        else:
+            grade = "N/A"
+        worksheet.merge_range('A1:M1', str(artist_data['fullName'] + "  Level: "+grade), merge_format)
     elif dept:
         worksheet.merge_range('A1:M1', dept+" Artist Report", merge_format)
     else:

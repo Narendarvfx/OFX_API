@@ -105,6 +105,7 @@ urlpatterns = [
     url(r'^api/production/daylogs/$', api.DayLogsData.as_view(), name='DayLogs API'),
     url(r'^api/production/timelogs/$', api.TimeLogsData.as_view(), name='TimeLogs API'),
     url(r'^api/production/timecards/$', api.TimeCardData.as_view(), name='TimeLogs API'),
+    url(r'^api/production/shot/timecards/(?P<shotId>\d+)$', api.ShotTimeCardData.as_view(), name='Get Shot TimeLogs API'),
     url(r'^api/production/timecards/(?P<taskId>\d+)$', api.UpdateTimeCard.as_view(), name='Update TimeLogs API'),
     url(r'^api/production/lightboxdata/$', api.LightBoxData.as_view(), name='TimeLogs API'),
     # url(r'^api/production/daylogs/(?P<shotId>\d+)/$', api.DayLogsByShot.as_view(), name='DayLogs API'),
