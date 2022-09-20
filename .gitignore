@@ -12,6 +12,9 @@ static/admin/
 static/admin/css/autocomplete.css
 *.map
 *.bak
+*.DS_Store
+*.log
+/production/_trial_temp/
 
 
 # Byte-compiled / optimized / DLL files
