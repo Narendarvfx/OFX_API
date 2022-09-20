@@ -19,6 +19,12 @@
           href="/static/third_party/DataTables/Select-1.4.0/css/select.dataTables.min.css" type="text/css"/>
     <link href="/static/third_party/DataTables/DataTables-1.12.1/css/dataTables.jqueryui.css" rel="stylesheet"
           type="text/css"/>
+    <link href="/static/third_party/DataTables/DateTime-1.1.2/css/dataTables.dateTime.min.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/south-street/jquery-ui.min.css"
+          rel="stylesheet" type="text/css"/>
+    <link href="https://cdn.datatables.net/plug-ins/725b2a2115b/integration/jqueryui/dataTables.jqueryui.css"
+          rel="stylesheet" type="text/css"/>
     <style>
         .form-control {
             color: #fffcfc !important;
@@ -167,13 +173,6 @@
             background: #555;
         }
 
-        svg {
-            width: 100px;
-            height: 100px;
-            margin: 20px;
-            display: inline-block;
-            background-color: #0A0A0A;
-        }
 
         div.dtsp-verticalContainer {
             display: flex;
@@ -263,79 +262,89 @@
             border-bottom: none;
         }
 
+        /* An ugly trick to use a filter icon */
+        .ui-icon-volume-off.ui-icon-filter {
+            -ms-transform: rotate(270deg);
+            -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+        }
+
+        .modal.right .modal-dialog {
+            position: fixed;
+            margin: auto;
+            width: 700px;
+            height: 100%;
+            -webkit-transform: translate3d(0%, 0, 0);
+            -ms-transform: translate3d(0%, 0, 0);
+            -o-transform: translate3d(0%, 0, 0);
+            transform: translate3d(0%, 0, 0);
+        }
+
+        .modal.right .modal-content {
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .modal.right .modal-body {
+            padding: 15px 15px 80px;
+        }
+
+        .modal.right.fade .modal-dialog {
+            right: 0px;
+            -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+            -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+            -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+            transition: opacity 0.3s linear, right 0.3s ease-out;
+        }
+
+        .modal.right.fade.in .modal-dialog {
+            right: 0;
+        }
+
+        /* ----- MODAL STYLE ----- */
+        .modal-content {
+            border-radius: 0;
+            border: none;
+        }
+
+        .modal-header {
+            border-bottom-color: #EEEEEE;
+            background-color: #756e6e;
+        }
+
+
     </style>
     <div class="row page-titles">
         <div class="col-md-10 col-2 float-left">
             <h3 class="text-themecolor mb-0 mt-2">Live Production Report</h3>
         </div>
+    </div>
+    <div>
         <div class="float-right" style="background-color: #e5711d;border-radius: 10px">
             <div class="float-right" style="margin-left: 5px">
-                <button class="btn float-right" title="Export to Excel" onclick="export_to_excel()"><i
-                        class="mdi mdi-cloud-download" style="color: white;font-size: large"></i>
+                <button class="btn waves-effect waves-lightfloat-right" title="Export to Excel"
+                        onclick="export_to_excel()"><i
+                        class="mdi mdi-cloud-download" style="color: white;font-size: large"></i> EXPORT TO EXCEL
                 </button>
             </div>
             {#        TODO: Enable to work on filters #}
             <!--- Filter button --->
             <div class="float-right" style="margin-left: 5px">
 
-                <button class="column_filter btn float-right" title="Filters" data-toggle="button" aria-pressed="true"><i
-                        class="mdi mdi-filter" style="color:white;font-size: large"></i>
+                <button class="column_filter btn waves-effect waves-lightfloat-right" title="Filters"
+                        data-toggle="button" aria-pressed="true">
+                    <i
+                            class="mdi mdi-filter" style="color:white;font-size: large"></i> FILTERS
                 </button>
             </div>
             <div class="float-right" style="margin-left: 5px">
-                <button type="button" class="assign_leads btn float-right" title="Assign to Team Leads"><i
-                        class="mdi mdi-account-plus" style="color:white;font-size: large"></i>
+                <button type="button" class="assign_leads btn waves-effect waves-light float-right"
+                        title="Assign to Team Leads"><i
+                        class="mdi mdi-account-plus" style="color:white;font-size: large"></i> ASSIGN TO LEADS
                 </button>
             </div>
-            {#            <div class="float-right" style="margin-left: 5px;margin-top: 3px">#}
-            {#                <select id="shot_taskType_select" class="form-control">#}
-            {#                    <option value="0">TaskType</option>#}
-            {#                    {% for task_ty in task_type %}#}
-            {#                        <option value="{{ task_ty.id }}">{{ task_ty.name }}</option>#}
-            {#                    {% endfor %}#}
-            {#                </select>#}
-            {#            </div>#}
-            {#            <div class="float-right" style="margin-left: 5px;margin-top: 3px">#}
-            {#                <select id="shot_status_select" class="form-control">#}
-            {#                    <option value="0">Status</option>#}
-            {#                    {% for statu in status %}#}
-            {#                        <option value={{ statu.id }}>{{ statu.code }}</option>#}
-            {#                    {% endfor %}#}
-            {#                </select>#}
-            {#            </div>#}
-            {#            <div class="float-right" style="margin-left: 5px;margin-top: 3px">#}
-            {#                <select id="shot_project_select" class="form-control">#}
-            {#                    <option value="0">Project</option>#}
-            {#                    {% for project in projects %}#}
-            {#                        <option value={{ project.id }}>{{ project.name }}</option>#}
-            {#                    {% endfor %}#}
-            {#                </select>#}
-            {#            </div>#}
-            {#            <div class="float-right" style="margin-left: 5px">#}
-            {#                <select id="shot_client_select" class="form-control">#}
-            {#                    <option value="0">Client</option>#}
-            {#                    {% for client in clients %}#}
-            {#                        <option value={{ client.id }}>{{ client.name }}</option>#}
-            {#                    {% endfor %}#}
-            {#                </select>#}
-            {#            </div>#}
-            {#            <div class="float-right" style="margin-left: 5px">#}
-            {#                <select id="shot_location_select" class="form-control">#}
-            {#                    <option value="0">Location</option>#}
-            {#                    {% for locatio in location %}#}
-            {#                        <option value={{ locatio.id }}>{{ locatio.name }}</option>#}
-            {#                    {% endfor %}#}
-            {#                </select>#}
-            {#            </div>#}
-            {#            <div class="float-right" style="margin-left: 5px">#}
-            {#                <select id="shot_locality_select" class="form-control">#}
-            {#                    <option value="0">Locality</option>#}
-            {#                    {% for localit in locality %}#}
-            {#                        <option value={{ localit.id }}>{{ localit.name }}</option>#}
-            {#                    {% endfor %}#}
-            {#                </select>#}
-            {#            </div>#}
         </div>
+    </div>
     </div>
     <!-- ============================================================== -->
     <!-- End Bread crumb and right sidebar toggle -->
@@ -360,114 +369,128 @@
         <div class="col-md-3 col-2 card" id="filter_div"
              style="display: none;height:1000px;overflow-y: auto;margin: 0px;">
             <h6><i onclick="header_vis(this)" class="ti-angle-right"></i> Header Visibility</h6>
-            <div class="card" id="header_filter" style="display: none; height:200px; overflow-y: scroll; border-bottom: 1px solid #494848;border-radius: 0px">
+            <div class="card" id="header_filter"
+                 style="display: none; height:200px; overflow-y: scroll; border-bottom: 1px solid #494848;border-radius: 0px">
                 <div class="card-body">
                     <input type="text" class="form-control column_vis" id="search_header" onkeyup="search_column()"
                            placeholder="Search for...">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox1" data-column="1"
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="client" data-column="1"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox1">CLIENT</label>
+                        <label class="custom-control-label" for="client">CLIENT</label>
                     </div>
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox2" data-column="2"
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="project" data-column="2"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox2">PROJECT</label>
+                        <label class="custom-control-label" for="project">PROJECT</label>
                     </div>
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox3" data-column="3"
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="seq" data-column="3"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox3">SEQUENCE</label>
+                        <label class="custom-control-label" for="seq">SEQUENCE</label>
                     </div>
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox4" data-column="4"
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="shot" data-column="4"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox4">SHOT</label>
+                        <label class="custom-control-label" for="shot">SHOT</label>
                     </div>
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox5" data-column="5"
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="task_type" data-column="5"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox5">TASK TYPE</label>
+                        <label class="custom-control-label" for="task_type">TASK TYPE</label>
                     </div>
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox6" data-column="6"
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="type" data-column="6"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox6">TYPE</label>
+                        <label class="custom-control-label" for="type">TYPE</label>
                     </div>
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox7" data-column="7"
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="complexity" data-column="7"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox7">COMPLEXITY</label>
+                        <label class="custom-control-label" for="complexity">COMPLEXITY</label>
                     </div>
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox8" data-column="8"
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="status" data-column="8"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox8">STATUS</label>
+                        <label class="custom-control-label" for="status">STATUS</label>
                     </div>
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox9" data-column="9"
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="progress" data-column="9"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox9">PROGRESS</label>
+                        <label class="custom-control-label" for="progress">PROGRESS</label>
                     </div>
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox10" data-column="10"
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="actual_bids" data-column="10"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox10">ACTUAL BIDS</label>
+                        <label class="custom-control-label" for="actual_bids">ACTUAL BIDS</label>
                     </div>
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox11" data-column="11"
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="consumed_bids"
+                               data-column="11"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox11">CONSUMED BIDS</label>
+                        <label class="custom-control-label" for="consumed_bids">CONSUMED BIDS</label>
                     </div>
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox12" data-column="12"
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="eta" data-column="12"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox12">ETA</label>
+                        <label class="custom-control-label" for="eta">ETA</label>
                     </div>
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox13" data-column="13"
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="frame_in" data-column="13"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox13">FRAME IN</label>
+                        <label class="custom-control-label" for="frame_in">FRAME IN</label>
                     </div>
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox14" data-column="14"
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="frame_out" data-column="14"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox14">FRAME OUT</label>
+                        <label class="custom-control-label" for="frame_out">FRAME OUT</label>
                     </div>
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox15" data-column="15"
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="duration" data-column="15"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox15">DURATION</label>
+                        <label class="custom-control-label" for="duration">DURATION</label>
                     </div>
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox16" data-column="16"
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="team_lead" data-column="16"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox16">TEAM LEAD</label>
+                        <label class="custom-control-label" for="team_lead">TEAM LEAD</label>
                     </div>
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox17" data-column="17"
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="artist" data-column="17"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox17">ARTIST</label>
+                        <label class="custom-control-label" for="artist">ARTIST</label>
                     </div>
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox18" data-column="18"
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="version" data-column="18"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox18">VERSION</label>
+                        <label class="custom-control-label" for="version">VERSION</label>
                     </div>
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox19" data-column="19"
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="location" data-column="19"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox19">LOCATION</label>
+                        <label class="custom-control-label" for="location">LOCATION</label>
                     </div>
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox20" data-column="20"
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="locality" data-column="20"
                                value="check" checked>
-                        <label class="custom-control-label" for="checkbox20">LOCALITY</label>
+                        <label class="custom-control-label" for="locality">LOCALITY</label>
                     </div>
                 </div>
             </div>
             <div class="card">
                 <div class="card-body">
+                    <div class="form-group row">
+                        <label for="min" class="col-4 col-form-label">ETA FROM</label>
+                        <div class="col-8">
+                            <input class="form-control" type="text" id="min" name="min">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="max" class="col-4 col-form-label">ETA TO</label>
+                        <div class="col-8">
+                            <input class="form-control" type="text" id="max" name="max">
+                        </div>
+                    </div>
                     <div class="dtsp-verticalContainer">
                         <div class="dtsp-verticalPanes">
                         </div>
@@ -510,34 +533,62 @@
             </div>
         </div>
     </div>
-    <div class="custom_preloader"
-         style="display: inline-block;position: fixed;top: 0;bottom: 0;left: 0;right: 0;width: 200px;height: 100px;margin: auto;">
-        <svg version="1.1" id="L2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-             y="0px"
-             viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
-<circle fill="none" stroke="#fff" stroke-width="4" stroke-miterlimit="10" cx="50" cy="50" r="48"/>
-            <line fill="none" stroke-linecap="round" stroke="#fff" stroke-width="4" stroke-miterlimit="10" x1="50"
-                  y1="50" x2="85" y2="50.5">
-  <animateTransform
-          attributeName="transform"
-          dur="2s"
-          type="rotate"
-          from="0 50 50"
-          to="360 50 50"
-          repeatCount="indefinite"/>
-</line>
-            <line fill="none" stroke-linecap="round" stroke="#fff" stroke-width="4" stroke-miterlimit="10" x1="50"
-                  y1="50" x2="49.5" y2="74">
-  <animateTransform
-          attributeName="transform"
-          dur="15s"
-          type="rotate"
-          from="0 50 50"
-          to="360 50 50"
-          repeatCount="indefinite"/>
-</line>
-</svg>
-    </div>
+    <div class="modal right fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel2">Right Sidebar</h4>
+                </div>
+
+                <div class="modal-body">
+
+                    <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3
+                        wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt
+                        laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin
+                        coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes
+                        anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings
+                        occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard
+                        of them accusamus labore sustainable VHS.
+                    </p>
+                </div>
+
+            </div><!-- modal-content -->
+        </div><!-- modal-dialog -->
+    </div><!-- modal -->
+{#    <div class="custom_preloader"#}
+{#         style="display: inline-block;position: fixed;top: 0;bottom: 0;left: 0;right: 0;width: 200px;height: 100px;margin: auto;">#}
+{#        <svg version="1.1" id="L2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"#}
+{#             y="0px"#}
+{#             viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">#}
+{#<circle fill="none" stroke="#fff" stroke-width="4" stroke-miterlimit="10" cx="50" cy="50" r="48"/>#}
+{#            <line fill="none" stroke-linecap="round" stroke="#fff" stroke-width="4" stroke-miterlimit="10" x1="50"#}
+{#                  y1="50" x2="85" y2="50.5">#}
+{#  <animateTransform#}
+{#          attributeName="transform"#}
+{#          dur="2s"#}
+{#          type="rotate"#}
+{#          from="0 50 50"#}
+{#          to="360 50 50"#}
+{#          repeatCount="indefinite"/>#}
+{#</line>#}
+{#            <line fill="none" stroke-linecap="round" stroke="#fff" stroke-width="4" stroke-miterlimit="10" x1="50"#}
+{#                  y1="50" x2="49.5" y2="74">#}
+{#  <animateTransform#}
+{#          attributeName="transform"#}
+{#          dur="15s"#}
+{#          type="rotate"#}
+{#          from="0 50 50"#}
+{#          to="360 50 50"#}
+{#          repeatCount="indefinite"/>#}
+{#</line>#}
+{#</svg>#}
+{#    </div>#}
+    <div class="custom_preloader spinner-grow text-warning" role="status">
+                                  <span class="sr-only">Loading...</span>
+                                </div>
 
 {% endblock content %}
 
@@ -557,8 +608,31 @@
     <script src="/static/third_party/DataTables/custom_js/datatables_searchPane.js"></script>
     <script src="/static/third_party/DataTables/Select-1.4.0/js/dataTables.select.min.js"></script>
     <script src="/static/template/assets/plugins/moment/moment.js"></script>
+    <script src="/static/third_party/DataTables/DateTime-1.1.2/js/dataTables.dateTime.min.js"></script>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.ui-contextmenu/1.7.0/jquery.ui-contextmenu.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.1.2/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/725b2a2115b/api/fnFilterClear.js"></script>
     <script>
+        // Custom filtering function which will search data in column tweleve between two values
+        $.fn.dataTable.ext.search.push(
+            function (settings, data, dataIndex) {
+                var min = minDate.val();
+                var max = maxDate.val();
+                var date = new Date(data[12]);
+
+                if (
+                    (min === null && max === null) ||
+                    (min === null && date <= max) ||
+                    (min <= date && max === null) ||
+                    (min <= date && date <= max)
+                ) {
+                    return true;
+                }
+                return false;
+            }
+        );
 
         $(".column_filter").click(function (e) {
             var x = document.getElementById("filter_div");
@@ -570,6 +644,7 @@
                 $('.col-lg-9').addClass('col-lg-12').removeClass('col-lg-9')
             }
         });
+
         $(window).click(function (e) {
             $("#filters-modal").modal('hide');
         });
@@ -577,17 +652,6 @@
         function header_vis(x) {
             x.classList.toggle("ti-angle-down");
             var s = document.getElementById("header_filter");
-            if (s.style.display === "none") {
-                s.style.display = "block";
-
-            } else {
-                s.style.display = "none";
-            }
-        }
-
-        function client_vis(x) {
-            x.classList.toggle("ti-angle-down");
-            var s = document.getElementById("client_filter");
             if (s.style.display === "none") {
                 s.style.display = "block";
             } else {
@@ -622,16 +686,28 @@
 
         var shotId_arr = [];
         var table = ""
+
         $(document).ready(function () {
+            // Create date inputs
+            minDate = new DateTime($('#min'), {
+                format: 'MMMM Do YYYY'
+            });
+            maxDate = new DateTime($('#max'), {
+                format: 'MMMM Do YYYY'
+            });
+
             $(".custom_preloader").hide()
+
+
             table = $('#shots_table').DataTable({
                 columnDefs: [
                     {
                         searchPanes: {
                             show: false
                         },
-                        targets: [3,4,9,10,11,12,13,14,15,18]
-                    }
+                        targets: [3, 4, 9, 10, 11, 12, 13, 14, 15, 18]
+                    },
+                    { className: "shot_class", "targets": [4] }
                 ],
                 searchPanes: {
                     cascadePanes: true,
@@ -651,6 +727,7 @@
                     'loadingRecords': '&nbsp;',
                     'processing': 'Loading...'
                 },
+
                 columns: [
                     {
                         data: "id",
@@ -662,14 +739,15 @@
                             );
                         },
                     },
-                    {title: "CLIENT", data: 'sequence.project.client.name'},
-                    {title: "PROJECT", data: 'sequence.project.name'},
-                    {title: "SEQUENCE", data: 'sequence.name'},
-                    {title: "SHOT CODE", data: 'name'},
-                    {title: "TASK TYPE", data: 'task_type'},
-                    {title: "TYPE", data: 'type'},
-                    {title: "COMPLEXITY", data: 'complexity'},
+                    {name: "client", title: "CLIENT", data: 'sequence.project.client.name'},
+                    {name: "project", title: "PROJECT", data: 'sequence.project.name'},
+                    {name: "seq", title: "SEQUENCE", data: 'sequence.name'},
+                    {name: "shot", title: "SHOT CODE", data: 'name'},
+                    {name: "task_type", title: "TASK TYPE", data: 'task_type'},
+                    {name: "type", title: "TYPE", data: 'type'},
+                    {name: "complexity", title: "COMPLEXITY", data: 'complexity'},
                     {
+                        name: "status",
                         title: "STATUS", data: 'status',
                         render: function (data, type, row, meta) {
                             return (
@@ -678,6 +756,7 @@
                         },
                     },
                     {
+                        name: "progress",
                         title: "PROGRESS", data: 'progress',
                         render: function (data, type, row, meta) {
                             return (
@@ -687,27 +766,29 @@
                             )
                         }
                     },
-                    {title: "ACTUAL BIDS", data: 'bid_days'},
+                    {name: "actual_bids", title: "ACTUAL BIDS", data: 'bid_days'},
                     {
+                        name: "consumed_bids",
                         title: "CONSUMED BIDS", data: 'total_spent',
                         render: function (data, type, row, meta) {
                             return data.toFixed(2)
                         }
                     },
                     {
+                        name: "eta",
                         title: "ETA", data: 'eta',
                         render: function (data, type, row, meta) {
-                            return moment(data).format("DD-MM-YYYY");
+                            return moment(data).format("YYYY-MM-DD");
                         }
                     },
-                    {title: "START FRAME", data: 'actual_start_frame'},
-                    {title: "END FRAME", data: 'actual_end_frame'},
-                    {title: "DURATION", data: null, "defaultContent": ""},
-                    {title: "TEAM LEAD", data: 'team_lead'},
-                    {title: "ARTIST", data: 'artist'},
-                    {title: "VERSION", data: 'version'},
-                    {title: "LOCATION", data: 'location'},
-                    {title: "LOCALITY", data: 'sequence.project.client.locality'},
+                    {name: "frame_in", title: "START FRAME", data: 'actual_start_frame'},
+                    {name: "frame_out", title: "END FRAME", data: 'actual_end_frame'},
+                    {name: "duration", title: "DURATION", data: null, "defaultContent": ""},
+                    {name: "team_lead", title: "TEAM LEAD", data: 'team_lead'},
+                    {name: "artist", title: "ARTIST", data: 'artist'},
+                    {name: "version", title: "VERSION", data: 'version'},
+                    {name: "location", title: "LOCATION", data: 'location'},
+                    {name: "locality", title: "LOCALITY", data: 'sequence.project.client.locality'},
                 ],
                 select: true,
                 order: [[1, 'asc']],
@@ -718,25 +799,59 @@
                 "paging": true,
                 "pageLength": 25,
                 "bSortClasses": false,
-                stateSave: false,
+                stateSave: true,
                 deferLoading: 10,
-            });
 
+            });
             table.searchPanes()
-            $("div.dtsp-verticalPanes").append(table.searchPanes.container());
-            {#$(".dtsp-panesContainer").show()#}
-            $(".assign_leads").click(function (e) {
-                shotId_arr.length = 0
-                $("input:checkbox[class=shot_checkbox]:checked").each(function () {
-                    shotId_arr.push($(this).val());
-                });
 
-                if (shotId_arr.length > 0) {
-                    $('#select_lead_modal').modal('show');
-                } else {
-                    alert("No Shots are Selected")
-                }
+            // Refilter the table to apply ETA Filters
+            $('#min, #max').on('change', function () {
+                table.draw();
             });
+
+            {#$(document).contextmenu({#}
+            {#    delegate: ".dataTable td",#}
+            {#    menu: [#}
+            {#        {title: "Filter", cmd: "filter", uiIcon: "ui-icon-volume-off ui-icon-filter"},#}
+            {#        {title: "Remove filter", cmd: "nofilter", uiIcon: "ui-icon-volume-off ui-icon-filter"}#}
+            {#    ],#}
+            {#    select: function (event, ui) {#}
+            {#        var coltext = ui.target.text();#}
+            {#        var colvindex = ui.target.parent().children().index(ui.target);#}
+            {#        var colindex = $('table thead tr th:eq(' + colvindex + ')').data('column-index');#}
+            {#        switch (ui.cmd) {#}
+            {#            case "filter":#}
+            {#                table.fnFilter('^' + coltext + '$', colindex, true);#}
+            {#                break;#}
+            {#            case "nofilter":#}
+            {#                table.fnFilterClear();#}
+            {#                break;#}
+            {#        }#}
+            {#    },#}
+            {#    beforeOpen: function (event, ui) {#}
+            {#        var $menu = ui.menu,#}
+            {#            $target = ui.target,#}
+            {#            extraData = ui.extraData;#}
+            {#        ui.menu.zIndex(9999);#}
+            {#    }#}
+            {#});#}
+
+            // Below code saves boolean type  in localstorage for header visibility
+            var all_columns = table.settings().init().columns;
+            var visible_columns = [];
+            for (var i in all_columns) {
+                if (table.column(all_columns[i].name + ':name').visible()) {
+                    localStorage.setItem(all_columns[i].name, true)
+                    $('#' + all_columns[i].name).prop('checked', true)
+                    visible_columns.push(all_columns[i].name);
+                } else {
+                    localStorage.setItem(all_columns[i].name, false)
+                    $('#' + all_columns[i].name).prop('checked', false)
+                }
+            }
+
+            // Toggles header visibility
 
             $('input.toggle-vis').on('click', function (e) {
                 {#e.preventDefault();#}
@@ -748,119 +863,26 @@
                 column.visible(!column.visible());
             });
 
-            $('#shot_client_select').on('change', function () {
-                const client = $('#shot_client_select option:selected').text().trim();
-                client_id = $('#shot_client_select option:selected').val();
-                if (client_id != 0) {
-                    table.columns(1).search(client).draw();
-                    const all_projects_json = $.ajax({
-                        type: "GET",
-                        url: "/api/production/projects/" + client_id + "/",
-                        dataType: "application/json",
-                        async: false,
-                        error: function (xhr, status, err) {
-                        },
-                    }).responseText;
-                    const all_projects = JSON.parse(all_projects_json);
-                    $('#shot_project_select').empty()
-                    $('#shot_project_select').append(`<option value="0">
-                                               Project
-                                          </option>`);
-                    all_projects.forEach(function (project) {
-                        optionText = project['name'];
-                        optionValue = project['id'];
-                        $('#shot_project_select').append(`<option value="${optionValue}">
-                                               ${optionText}
-                                          </option>`);
-                    })
-                } else {
-                    table.columns(1).search(client).draw();
-                    $('#shot_project_select').empty()
-                    $('#shot_project_select').append(`<option value="0">
-                                               Project
-                                          </option>`);
-                    {% for project in projects %}
-                        $('#shot_project_select').append(`<option value='{{ project.name }}'>
-                                               {{ project.name }}
-                                          </option>`);
-                    {% endfor %}
-                }
-            });
-            $('#shot_project_select').on('change', function () {
-                const project = $("#shot_project_select :selected").text().trim();
-                project_id = $('#shot_project_select option:selected').val();
-                table.columns(2).search(project).draw();
-            });
-            $('#shot_taskType_select').on('change', function () {
-                let taskType = $('#shot_taskType_select :selected').text().trim()
-                task_type_id = $('#shot_taskType_select option:selected').val()
-                if (task_type_id == 0) {
-                    taskType = ""
-                }
-                table.columns(5).search(taskType).draw();
-            });
-            $('#shot_status_select').on('change', function () {
-                let status = $('#shot_status_select :selected').text().trim();
-                status_id = $('#shot_status_select option:selected').val();
-                if (status_id == 0) {
-                    status = ""
-                }
-                table.columns(8).search(status).draw();
-            });
-            $('#shot_location_select').on('change', function () {
-                let location = $('#shot_location_select :selected').text().trim();
-                location_id = $('#shot_location_select option:selected').val();
-                if (location_id == 0) {
-                    location = ""
-                }
-                table.columns(19).search(location).draw();
-            });
-            $('#shot_locality_select').on('change', function () {
-                let locality = $("#shot_locality_select :selected").text().trim();
-                locality_id = $("#shot_locality_select option:selected").val();
-                if (locality_id != 0) {
-                    table.columns(20).search(locality).draw();
-                    const all_clients_json = $.ajax({
-                        type: "GET",
-                        url: "/api/production/clients/?locality=" + locality,
-                        dataType: "application/json",
-                        async: false,
-                        error: function (xhr, status, err) {
-                        },
-                    }).responseText;
-                    const all_clients = JSON.parse(all_clients_json);
-                    $('#shot_client_select').empty()
-                    $('#shot_client_select').append(`<option value="0">
-                                               Client
-                                          </option>`);
-                    all_clients.forEach(function (client) {
-                        optionText = client['name'];
-                        optionValue = client['id'];
-                        $('#shot_client_select').append(`<option value="${optionValue}">
-                                               ${optionText}
-                                          </option>`);
-                    })
-                } else {
-                    locality = ""
-                    table.columns(20).search(locality).draw();
-                    $('#shot_client_select').empty()
-                    $('#shot_client_select').append(`<option value="0">
-                                               Client
-                                          </option>`);
-                    {% for client in clients %}
-                        $('#shot_client_select').append(`<option value='{{ client.name }}'>
-                                               {{ client.name }}
-                                          </option>`);
-                    {% endfor %}
-                }
 
-            });
-            $('#shots_table').on('click', 'tbody tr', function() {
-          console.log('API row values : ', table.row(this).data());
-        })
+            $("div.dtsp-verticalPanes").append(table.searchPanes.container());
+
         });
 
+        //TeamLead Assignments Modal Show
+        $(".assign_leads").click(function (e) {
+            shotId_arr.length = 0
+            $("input:checkbox[class=shot_checkbox]:checked").each(function () {
+                shotId_arr.push($(this).val());
+            });
 
+            if (shotId_arr.length > 0) {
+                $('#select_lead_modal').modal('show');
+            } else {
+                alert("No Shots are Selected")
+            }
+        });
+
+        // TeamLead Assignments Post Data Function
         function assign_lead() {
             $(".custom_preloader").show()
             var post_count = 0;
@@ -902,13 +924,21 @@
                 )
             }
             $('#select_lead_modal').modal('hide');
-
         }
 
+        // TeamLead Assignments Modal Close
         function close_assign_modal() {
             $('#select_lead_modal').modal('hide');
         }
 
+        // Table On Row Click
+        $('#shots_table').on('click', 'td.shot_class', function () {
+            console.log('API row values : ', table.row(this).data());
+            $("#myModal2").modal('show');
+        })
+
+
+        // Export Production sheet to Excel
         function export_to_excel() {
             window.location = "/production/export_prod_report/?client=" + client_id + "&project=" + project_id + "&statuss=" + status_id + "&locality=" + locality_id + "&location=" + location_id + "&task_type=" + task_type_id
         }
