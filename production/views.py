@@ -28,7 +28,8 @@ def production_reports(request):
     location = Location.objects.all()
     locality = Locality.objects.all()
     leads = Employee.objects.filter(role__name="TEAM LEAD").all()
-
+    role = str(Employee.objects.get(profile=request.user.id).role)
+    print(role)
     context = {
         'status': status,
         'clients': clients,
@@ -37,7 +38,8 @@ def production_reports(request):
         'location': location,
         'locality': locality,
         'leads':leads,
-        'user': request.user
+        'user': request.user,
+        'role':role
     }
     return render(request, 'production/production_report.html', context)
 
