@@ -272,6 +272,7 @@
         .modal.right .modal-dialog {
             position: fixed;
             margin: auto;
+            width: 700px;
             height: 100%;
             -webkit-transform: translate3d(0%, 0, 0);
             -ms-transform: translate3d(0%, 0, 0);
@@ -308,7 +309,7 @@
 
         .modal-header {
             border-bottom-color: #EEEEEE;
-            background-color: #e88c11;
+            background-color: #756e6e;
         }
 
 
@@ -336,17 +337,14 @@
                             class="mdi mdi-filter" style="color:white;font-size: large"></i> FILTERS
                 </button>
             </div>
-
-            <div class="float-right" style="margin-left: 5px" class="ass_tl_butt">
-                {% if role == "SUPERVISOR" %}
-                    <button type="button" class="assign_leads btn waves-effect waves-light float-right"
-                            title="Assign to Team Leads"><i
-                            class="mdi mdi-account-plus" style="color:white;font-size: large"></i> ASSIGN TO LEADS
-                    </button>
-                {% endif %}
+            <div class="float-right" style="margin-left: 5px">
+                <button type="button" class="assign_leads btn waves-effect waves-light float-right"
+                        title="Assign to Team Leads"><i
+                        class="mdi mdi-account-plus" style="color:white;font-size: large"></i> ASSIGN TO LEADS
+                </button>
             </div>
-
         </div>
+    </div>
     </div>
     <!-- ============================================================== -->
     <!-- End Bread crumb and right sidebar toggle -->
@@ -535,263 +533,62 @@
             </div>
         </div>
     </div>
-    <div class="modal right fade" id="myModal2" role="dialog" aria-labelledby="myModalLabel2">
-        <div class="modal-dialog" style="max-width: 40% !important; width: 40% !important;" role="document">
+    <div class="modal right fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel2"></h4>
-
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel2">Right Sidebar</h4>
                 </div>
+
                 <div class="modal-body">
-                    <div class="card ">
-                        <div style="border-radius: 10px" class="col-lg-14">
-                            <div class="float-left" class="ass_art_butt">
-                                <button type="button" class="assign_artist btn waves-effect waves-light float-right"
-                                        title="ASSIGN ARTIST" style="color: white"><i
-                                        class="mdi mdi-account-plus" style="color:orange;"></i>
-                                    ASSIGN TO ARTIST
-                                </button>
-                            </div>
-                            <div class="float-left" >
 
-                                <button class="shot_approve btn waves-effect waves-light float-right" title="APPROVE"
-                                        style="color: white">
-                                    <i class="mdi mdi-checkbox-marked-circle" style="color:green;padding-top: 5px"></i>
-                                    APPROVE
-                                </button>
-                            </div>
-                            <div class="float-left" >
-                                <button class="shot_reject btn waves-effect waves-light float-right" title="REJECT"
-                                        style="color: white"><i
-                                        class="mdi mdi-close-circle" style="color: red;"></i> REJECT
-                                </button>
-                            </div>
-                            <div class="float-left">
-                                <button class="shot_reject btn waves-effect waves-light float-right" title="PUBLISH"
-                                        style="color: white"><i
-                                        class="mdi mdi-arrow-up-bold-circle" style="color: #006fff"></i> PUBLISH
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body pb-0">
-                            <ul class="nav nav-tabs customtab" role="tablist">
-                                <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#shot_details"
-                                                        role="tab" aria-selected="false"><span class="hidden-sm-up"><i
-                                        class="ti-home"></i></span> <span class="hidden-xs-down">DETAILS</span></a></li>
-                                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#shot_notes" role="tab"
-                                                        aria-selected="true"><span class="hidden-sm-up"><i
-                                        class="ti-user"></i></span> <span class="hidden-xs-down">NOTES</span></a></li>
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="shot_details" role="tabpanel">
-                                    <div class="p-3">
-                                        <div class="row">
-                                            <div class="float-left col-6">
-                                                <small class="text-muted">CLIENT:</small>
-                                                <h5 id="clientt"></h5>
-                                            </div>
-                                            <div class="float-right col-6">
-                                                <small class="text-muted">PROJECT:</small>
-                                                <h5 id="projectt"></h5>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="float-left col-6">
-                                                <small class="text-muted">SEQUENCE:</small>
-                                                <h5 id="sequencee"></h5>
-                                            </div>
-                                            <div class="float-right col-6">
-                                                <small class="text-muted">TASK TYPE:</small>
-                                                <h5 id="task_typee"></h5>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="float-left col-6">
-                                                <small class="text-muted">TYPE:</small>
-                                                <h5 id="typee"></h5>
-                                            </div>
-                                            <div class="float-right col-6">
-                                                <small class="text-muted">STATUS:</small>
-                                                <h5 id="statuss"></h5>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="float-left col-6">
-                                                <small class="text-muted">CLIENT ETA: <i
-                                                        class="mdi mdi-check-circle-outline"
-                                                        style="color: #ec680b;"></i></small>
-                                                <h5 id="etaa"></h5>
-                                            </div>
-                                            <div class="float-right col-6">
-                                                <small class="text-muted">INTERNAL ETA:</small>
-                                                <h5><input type="date" class="form-control" id="int_etaa"></h5>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="float-left col-6">
-                                                <small class="text-muted"> CLIENT BIDS: <i
-                                                        class="mdi mdi-check-circle-outline"
-                                                        style="color: #ec680b;"></i></small>
-                                                <h5 id="bidss"></h5>
-                                            </div>
-                                            <div class="float-right col-6">
-                                                <small class="text-muted">INTERNAL BIDS: </small>
-                                                <h5><input type="number" class="form-control" value="" id="int_bidss">
-                                                </h5>
-                                            </div>
-
-                                        </div>
-                                        <div class="row">
-                                            <div class="float-left col-6">
-                                                <small class="text-muted">VERSION:</small>
-                                                <h5 id="versionn"></h5>
-                                            </div>
-                                            <div class="float-right col-6">
-                                                <small class="text-muted">PROGRESS:</small>
-                                                <h5 id="progresss"></h5>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="float-left col-6">
-                                                <small class="text-muted">TEAM LEAD:</small>
-                                                <h5 id="team_leadd"></h5>
-                                            </div>
-                                            <div class="float-right col-6">
-                                                <small class="text-muted">ARTISTS:</small>
-                                                <h5 id="artists"></h5>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="float-left col-6">
-                                                <small class="text-muted">SCOPE OF WORK:</small>
-                                                <h5 id="scope_wrk"></h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane p-3 show" id="shot_notes" role="tabpanel">
-                                    <div class="slimScrollDiv"
-                                         style="position: relative; overflow: visible hidden; width: auto; height: 470px;">
-                                        <div class="chat-box" style="overflow: hidden; width: auto; height: 470px;">
-                                            <!--chat Row -->
-                                            <ul class="chat-list">
-                                                <!--chat Row -->
-                                                <li>
-                                                    <div class="chat-img"><img src="../assets/images/users/1.jpg"
-                                                                               alt="user"></div>
-                                                    <div class="chat-content">
-                                                        <h5>James Anderson</h5>
-                                                        <div class="box" style="background-color: #858383">Lorem Ipsum
-                                                            is simply dummy text
-                                                            of the printing &amp; type setting industry.
-                                                        </div>
-                                                    </div>
-                                                    <div class="chat-time">10:56 am</div>
-                                                </li>
-                                                <!--chat Row -->
-                                                <li>
-                                                    <div class="chat-img"><img src="../assets/images/users/2.jpg"
-                                                                               alt="user"></div>
-                                                    <div class="chat-content">
-                                                        <h5>Bianca Doe</h5>
-                                                        <div class="box" style="background-color: #858383">It’s Great
-                                                            opportunity to
-                                                            work.
-                                                        </div>
-                                                    </div>
-                                                    <div class="chat-time">10:57 am</div>
-                                                </li>
-                                                <!--chat Row -->
-                                                <li class="odd">
-                                                    <div class="chat-content">
-                                                        <div class="box" style="background-color: #0A0A0A">I would love
-                                                            to join the
-                                                            team.
-                                                        </div>
-                                                        <br>
-                                                    </div>
-                                                    <div class="chat-time">10:58 am</div>
-                                                </li>
-                                                <!--chat Row -->
-                                                <li class="odd">
-                                                    <div class="chat-content">
-                                                        <div class="box" style="background-color: #0A0A0A">Whats budget
-                                                            of the new
-                                                            project.
-                                                        </div>
-                                                        <br>
-                                                    </div>
-                                                    <div class="chat-time">10:59 am</div>
-                                                </li>
-                                                <!--chat Row -->
-                                                <li>
-                                                    <div class="chat-img"><img src="../assets/images/users/3.jpg"
-                                                                               alt="user"></div>
-                                                    <div class="chat-content">
-                                                        <h5>Angelina Rhodes</h5>
-                                                        <div class="box" style="background-color: #858383">Well we have
-                                                            good budget for
-                                                            the project
-                                                        </div>
-                                                    </div>
-                                                    <div class="chat-time">11:00 am</div>
-                                                </li>
-                                                <!--chat Row -->
-                                                <li>
-                                                    <div class="chat-img"><img src="../assets/images/users/3.jpg"
-                                                                               alt="user"></div>
-                                                    <div class="chat-content">
-                                                        <h5>Angelina Rhodes</h5>
-                                                        <div class="box" style="background-color: #858383">Well we have
-                                                            good budget for
-                                                            the project
-                                                        </div>
-                                                    </div>
-                                                    <div class="chat-time">11:00 am</div>
-                                                </li>
-                                                <!--chat Row -->
-                                                <li>
-                                                    <div class="chat-img"><img src="../assets/images/users/3.jpg"
-                                                                               alt="user"></div>
-                                                    <div class="chat-content">
-                                                        <h5>Angelina</h5>
-                                                        <div class="box" style="background-color: #858383">Well we have
-                                                            good budget for
-                                                            the project
-                                                        </div>
-                                                    </div>
-                                                    <div class="chat-time">11:00 am</div>
-                                                </li>
-                                            </ul>
-                                            <!--chat Row -->
-                                        </div>
-                                        <div class="slimScrollBar"
-                                             style="background: rgb(220, 220, 220); width: 5px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 448.984px;"></div>
-                                        <div class="slimScrollRail"
-                                             style="width: 5px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                        </div>
-
-                    </div>
-
+                    <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3
+                        wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt
+                        laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin
+                        coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes
+                        anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings
+                        occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard
+                        of them accusamus labore sustainable VHS.
+                    </p>
                 </div>
 
             </div><!-- modal-content -->
         </div><!-- modal-dialog -->
     </div><!-- modal -->
-
+{#    <div class="custom_preloader"#}
+{#         style="display: inline-block;position: fixed;top: 0;bottom: 0;left: 0;right: 0;width: 200px;height: 100px;margin: auto;">#}
+{#        <svg version="1.1" id="L2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"#}
+{#             y="0px"#}
+{#             viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">#}
+{#<circle fill="none" stroke="#fff" stroke-width="4" stroke-miterlimit="10" cx="50" cy="50" r="48"/>#}
+{#            <line fill="none" stroke-linecap="round" stroke="#fff" stroke-width="4" stroke-miterlimit="10" x1="50"#}
+{#                  y1="50" x2="85" y2="50.5">#}
+{#  <animateTransform#}
+{#          attributeName="transform"#}
+{#          dur="2s"#}
+{#          type="rotate"#}
+{#          from="0 50 50"#}
+{#          to="360 50 50"#}
+{#          repeatCount="indefinite"/>#}
+{#</line>#}
+{#            <line fill="none" stroke-linecap="round" stroke="#fff" stroke-width="4" stroke-miterlimit="10" x1="50"#}
+{#                  y1="50" x2="49.5" y2="74">#}
+{#  <animateTransform#}
+{#          attributeName="transform"#}
+{#          dur="15s"#}
+{#          type="rotate"#}
+{#          from="0 50 50"#}
+{#          to="360 50 50"#}
+{#          repeatCount="indefinite"/>#}
+{#</line>#}
+{#</svg>#}
+{#    </div>#}
     <div class="custom_preloader spinner-grow text-warning" role="status">
-        <span class="sr-only">Loading...</span>
-    </div>
+                                  <span class="sr-only">Loading...</span>
+                                </div>
 
 {% endblock content %}
 
@@ -813,6 +610,10 @@
     <script src="/static/template/assets/plugins/moment/moment.js"></script>
     <script src="/static/third_party/DataTables/DateTime-1.1.2/js/dataTables.dateTime.min.js"></script>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.ui-contextmenu/1.7.0/jquery.ui-contextmenu.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.1.2/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/725b2a2115b/api/fnFilterClear.js"></script>
     <script>
         // Custom filtering function which will search data in column tweleve between two values
         $.fn.dataTable.ext.search.push(
@@ -887,162 +688,185 @@
         var table = ""
 
         $(document).ready(function () {
+            // Create date inputs
+            minDate = new DateTime($('#min'), {
+                format: 'MMMM Do YYYY'
+            });
+            maxDate = new DateTime($('#max'), {
+                format: 'MMMM Do YYYY'
+            });
 
-                // Create date inputs
-                minDate = new DateTime($('#min'), {
-                    format: 'MMMM Do YYYY'
-                });
-                maxDate = new DateTime($('#max'), {
-                    format: 'MMMM Do YYYY'
-                });
-
-                $(".custom_preloader").hide()
+            $(".custom_preloader").hide()
 
 
-                table = $('#shots_table').DataTable({
-                    columnDefs: [
-                        {
-                            searchPanes: {
-                                show: false
-                            },
-                            targets: [3, 4, 9, 10, 11, 12, 13, 14, 15, 18]
+            table = $('#shots_table').DataTable({
+                columnDefs: [
+                    {
+                        searchPanes: {
+                            show: false
                         },
-                        {className: "shot_class", "targets": [4]}
-                    ],
-                    searchPanes: {
-                        cascadePanes: true,
-                        layout: 'columns-1',
-                        controls: false,
+                        targets: [3, 4, 9, 10, 11, 12, 13, 14, 15, 18]
+                    },
+                    { className: "shot_class", "targets": [4] }
+                ],
+                searchPanes: {
+                    cascadePanes: true,
+                    layout: 'columns-1',
+                    controls: false,
 
-                    },
-                    dom: '<"dtsp-dataTable"frtip>',
-                    "searching": true,
-                    "ajax": {
-                        "processing": true,
-                        "url": "/api/production/production_sheet/?status=" + status_list + "/",
-                        "type": "GET",
-                        "dataSrc": ""
-                    },
-                    'language': {
-                        'loadingRecords': '&nbsp;',
-                        'processing': 'Loading...'
-                    },
+                },
+                dom: '<"dtsp-dataTable"frtip>',
+                "searching": true,
+                "ajax": {
+                    "processing": true,
+                    "url": "/api/production/production_sheet/?status=" + status_list + "/",
+                    "type": "GET",
+                    "dataSrc": ""
+                },
+                'language': {
+                    'loadingRecords': '&nbsp;',
+                    'processing': 'Loading...'
+                },
 
-                    columns: [
-                        {
-                            data: "id",
-                            render: function (data, type, row, meta) {
-                                return (
-                                    '<input type="checkbox" name="shotCheckbox" class="shot_checkbox"  value="' +
-                                    data +
-                                    '">'
-                                );
-                            },
+                columns: [
+                    {
+                        data: "id",
+                        render: function (data, type, row, meta) {
+                            return (
+                                '<input type="checkbox" name="shotCheckbox" class="shot_checkbox"  value="' +
+                                data +
+                                '">'
+                            );
                         },
-                        {name: "client", title: "CLIENT", data: 'sequence.project.client.name'},
-                        {name: "project", title: "PROJECT", data: 'sequence.project.name'},
-                        {name: "seq", title: "SEQUENCE", data: 'sequence.name'},
-                        {name: "shot", title: "SHOT CODE", data: 'name'},
-                        {name: "task_type", title: "TASK TYPE", data: 'task_type'},
-                        {name: "type", title: "TYPE", data: 'type'},
-                        {name: "complexity", title: "COMPLEXITY", data: 'complexity'},
-                        {
-                            name: "status",
-                            title: "STATUS", data: 'status',
-                            render: function (data, type, row, meta) {
-                                return (
-                                    '<span class="badge" style="color:white;padding:3px 10px;font-size:1em; background-color:' + data.color + '">' + data.code + '</span>'
-                                );
-                            },
+                    },
+                    {name: "client", title: "CLIENT", data: 'sequence.project.client.name'},
+                    {name: "project", title: "PROJECT", data: 'sequence.project.name'},
+                    {name: "seq", title: "SEQUENCE", data: 'sequence.name'},
+                    {name: "shot", title: "SHOT CODE", data: 'name'},
+                    {name: "task_type", title: "TASK TYPE", data: 'task_type'},
+                    {name: "type", title: "TYPE", data: 'type'},
+                    {name: "complexity", title: "COMPLEXITY", data: 'complexity'},
+                    {
+                        name: "status",
+                        title: "STATUS", data: 'status',
+                        render: function (data, type, row, meta) {
+                            return (
+                                '<span class="badge" style="color:white;padding:3px 10px;font-size:1em; background-color:' + data.color + '">' + data.code + '</span>'
+                            );
                         },
-                        {
-                            name: "progress",
-                            title: "PROGRESS", data: 'progress',
-                            render: function (data, type, row, meta) {
-                                return (
-                                    `<div class="progress" style="height: 15px;">
+                    },
+                    {
+                        name: "progress",
+                        title: "PROGRESS", data: 'progress',
+                        render: function (data, type, row, meta) {
+                            return (
+                                `<div class="progress" style="height: 15px;">
                         <div class="progress-bar" style="width:` + data + `%;background-color:red;color: white;font-weight: bold" role="progressbar">` + data + `%</div>
                     </div>`
-                                )
-                            }
-                        },
-                        {name: "actual_bids", title: "ACTUAL BIDS", data: 'bid_days'},
-                        {
-                            name: "consumed_bids",
-                            title: "CONSUMED BIDS", data: 'total_spent',
-                            render: function (data, type, row, meta) {
-                                return data.toFixed(2)
-                            }
-                        },
-                        {
-                            name: "eta",
-                            title: "ETA", data: 'eta',
-                            render: function (data, type, row, meta) {
-                                return moment(data).format("YYYY-MM-DD");
-                            }
-                        },
-                        {name: "frame_in", title: "START FRAME", data: 'actual_start_frame'},
-                        {name: "frame_out", title: "END FRAME", data: 'actual_end_frame'},
-                        {name: "duration", title: "DURATION", data: null, "defaultContent": ""},
-                        {name: "team_lead", title: "TEAM LEAD", data: 'team_lead'},
-                        {name: "artist", title: "ARTIST", data: 'artist'},
-                        {name: "version", title: "VERSION", data: 'version'},
-                        {name: "location", title: "LOCATION", data: 'location'},
-                        {name: "locality", title: "LOCALITY", data: 'sequence.project.client.locality'},
-                    ],
-                    select: true,
-                    order: [[1, 'asc']],
-                    scrollResize: true,
-                    scrollX: true,
-                    scrollCollapse: true,
-                    buttons: [],
-                    "paging": true,
-                    "pageLength": 25,
-                    "bSortClasses": false,
-                    stateSave: true,
-                    deferLoading: 10,
+                            )
+                        }
+                    },
+                    {name: "actual_bids", title: "ACTUAL BIDS", data: 'bid_days'},
+                    {
+                        name: "consumed_bids",
+                        title: "CONSUMED BIDS", data: 'total_spent',
+                        render: function (data, type, row, meta) {
+                            return data.toFixed(2)
+                        }
+                    },
+                    {
+                        name: "eta",
+                        title: "ETA", data: 'eta',
+                        render: function (data, type, row, meta) {
+                            return moment(data).format("YYYY-MM-DD");
+                        }
+                    },
+                    {name: "frame_in", title: "START FRAME", data: 'actual_start_frame'},
+                    {name: "frame_out", title: "END FRAME", data: 'actual_end_frame'},
+                    {name: "duration", title: "DURATION", data: null, "defaultContent": ""},
+                    {name: "team_lead", title: "TEAM LEAD", data: 'team_lead'},
+                    {name: "artist", title: "ARTIST", data: 'artist'},
+                    {name: "version", title: "VERSION", data: 'version'},
+                    {name: "location", title: "LOCATION", data: 'location'},
+                    {name: "locality", title: "LOCALITY", data: 'sequence.project.client.locality'},
+                ],
+                select: true,
+                order: [[1, 'asc']],
+                scrollResize: true,
+                scrollX: true,
+                scrollCollapse: true,
+                buttons: [],
+                "paging": true,
+                "pageLength": 25,
+                "bSortClasses": false,
+                stateSave: true,
+                deferLoading: 10,
 
-                });
-                table.searchPanes()
+            });
+            table.searchPanes()
 
-                // Refilter the table to apply ETA Filters
-                $('#min, #max').on('change', function () {
-                    table.draw();
-                });
+            // Refilter the table to apply ETA Filters
+            $('#min, #max').on('change', function () {
+                table.draw();
+            });
 
+            {#$(document).contextmenu({#}
+            {#    delegate: ".dataTable td",#}
+            {#    menu: [#}
+            {#        {title: "Filter", cmd: "filter", uiIcon: "ui-icon-volume-off ui-icon-filter"},#}
+            {#        {title: "Remove filter", cmd: "nofilter", uiIcon: "ui-icon-volume-off ui-icon-filter"}#}
+            {#    ],#}
+            {#    select: function (event, ui) {#}
+            {#        var coltext = ui.target.text();#}
+            {#        var colvindex = ui.target.parent().children().index(ui.target);#}
+            {#        var colindex = $('table thead tr th:eq(' + colvindex + ')').data('column-index');#}
+            {#        switch (ui.cmd) {#}
+            {#            case "filter":#}
+            {#                table.fnFilter('^' + coltext + '$', colindex, true);#}
+            {#                break;#}
+            {#            case "nofilter":#}
+            {#                table.fnFilterClear();#}
+            {#                break;#}
+            {#        }#}
+            {#    },#}
+            {#    beforeOpen: function (event, ui) {#}
+            {#        var $menu = ui.menu,#}
+            {#            $target = ui.target,#}
+            {#            extraData = ui.extraData;#}
+            {#        ui.menu.zIndex(9999);#}
+            {#    }#}
+            {#});#}
 
-                // Below code saves boolean type  in localstorage for header visibility
-                var all_columns = table.settings().init().columns;
-                var visible_columns = [];
-                for (var i in all_columns) {
-                    if (table.column(all_columns[i].name + ':name').visible()) {
-                        localStorage.setItem(all_columns[i].name, true)
-                        $('#' + all_columns[i].name).prop('checked', true)
-                        visible_columns.push(all_columns[i].name);
-                    } else {
-                        localStorage.setItem(all_columns[i].name, false)
-                        $('#' + all_columns[i].name).prop('checked', false)
-                    }
+            // Below code saves boolean type  in localstorage for header visibility
+            var all_columns = table.settings().init().columns;
+            var visible_columns = [];
+            for (var i in all_columns) {
+                if (table.column(all_columns[i].name + ':name').visible()) {
+                    localStorage.setItem(all_columns[i].name, true)
+                    $('#' + all_columns[i].name).prop('checked', true)
+                    visible_columns.push(all_columns[i].name);
+                } else {
+                    localStorage.setItem(all_columns[i].name, false)
+                    $('#' + all_columns[i].name).prop('checked', false)
                 }
-
-                // Toggles header visibility
-
-                $('input.toggle-vis').on('click', function (e) {
-                    {#e.preventDefault();#}
-
-                    // Get the column API object
-                    var column = table.column($(this).attr('data-column'));
-
-                    // Toggle the visibility
-                    column.visible(!column.visible());
-                });
-
-
-                $("div.dtsp-verticalPanes").append(table.searchPanes.container());
-
             }
-        )
-        ;
+
+            // Toggles header visibility
+
+            $('input.toggle-vis').on('click', function (e) {
+                {#e.preventDefault();#}
+
+                // Get the column API object
+                var column = table.column($(this).attr('data-column'));
+
+                // Toggle the visibility
+                column.visible(!column.visible());
+            });
+
+
+            $("div.dtsp-verticalPanes").append(table.searchPanes.container());
+
+        });
 
         //TeamLead Assignments Modal Show
         $(".assign_leads").click(function (e) {
@@ -1111,25 +935,6 @@
         $('#shots_table').on('click', 'td.shot_class', function () {
             console.log('API row values : ', table.row(this).data());
             $("#myModal2").modal('show');
-            $("#myModalLabel2").text(table.row(this).data().name)
-            $("#clientt").text(table.row(this).data().sequence.project.client.name)
-            $("#projectt").text(table.row(this).data().sequence.project.name)
-            $("#sequencee").text(table.row(this).data().sequence.name)
-            $("#task_typee").text(table.row(this).data().task_type)
-            $("#typee").text(table.row(this).data().type)
-            $("#etaa").text(table.row(this).data().eta)
-            $("#bidss").text(table.row(this).data().bid_days)
-            $("#team_leadd").text(table.row(this).data().team_lead)
-            var now = new Date(table.row(this).data().eta);
-            var day = ("0" + now.getDate()).slice(-2);
-            var month = ("0" + (now.getMonth() + 1)).slice(-2);
-            var eta_date = now.getFullYear() + "-" + (month) + "-" + (day);
-            $("#int_etaa").val(eta_date)
-            $("#int_bidss").val(table.row(this).data().bid_days)
-            $("#statuss").html(`<span class="badge" style="color:white;padding:3px 10px;font-size:1em; background-color:` + table.row(this).data().status.color + `">` + table.row(this).data().status.code + `</span>`)
-            $("#progresss").html(`<div class="progress" style="height: 15px;">
-                        <div class="progress-bar" style="width:` + table.row(this).data().progress + `%;background-color:red;color: white;font-weight: bold" role="progressbar">` + table.row(this).data().progress + `%</div>
-                    </div>`)
         })
 
 
