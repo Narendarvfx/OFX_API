@@ -41,5 +41,3 @@ def server_error(request, *args, **argv):
 
     return render(request, 'error_pages/pages-error-500.html', status=500)
 
-def profile_view(request):
-    return render(request, 'profile/profile.html')
