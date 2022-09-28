@@ -6,9 +6,9 @@ import datetime
 import csv
 import requests
 
-server = "https://shotbuzz.oscarfx.com"
-token = '39bdb2c0347f12746b2fa909c9b48a81247ca120'
-employee_csv = r"C:\Users\narendarreddy.g\Documents\TeamChange_Paint\roto_team_list_updated.csv"
+server = "http://192.168.5.14"
+token = '70e563f1062d898b1fa8bce26daf6aa83e55126d'
+employee_csv = r"/Users/ofxlap-28/Documents/OFX/OFX_API/scripts/data/training_employees_final.csv"
 
 ########################################################################################################################
 
@@ -29,8 +29,10 @@ def update_employee_details(data, row):
         "department": row['Department'],
         "role": row['Role'],
         "grade": row['Grade'],
+        "team_lead": row['Team Lead']
     }
     response = requests.put(user_api_url, data=data_edit, headers={'Authorization': 'Token {}'.format(token)})
+    print(response.text)
 
 def import_employee_data():
     """
@@ -40,8 +42,9 @@ def import_employee_data():
     default_password = "Ofx@12345"
     user_api_url = "{}/api/users/".format(server)
 
-    with open(employee_csv, newline='') as csvfile:
+    with open(employee_csv, 'r', newline='', encoding="utf-8") as csvfile:
         reader = csv.DictReader(csvfile)
+        print(reader)
         for row in reader:
             data = {
                 "password": default_password,
@@ -91,5 +94,5 @@ def setTeamId():
 if __name__ == '__main__':
     #generate_default_profile_photo()
     #update_username()
-    # import_employee_data()
-    setTeamId()
+    import_employee_data()
+    #setTeamId()
