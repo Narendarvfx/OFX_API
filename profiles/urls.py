@@ -10,5 +10,5 @@ urlpatterns = [
     url(r'^api/auth/$', api.UserAuthentication.as_view(), name='User Authentication API'),
     url(r'^api/user/password_change/(?P<user_id>\d+)$', api.UpdatePassword.as_view(), name='User Update Password API'),
     url(r'^profile/password_change/$', views.change_password, name='User Update Password View'),
-    path('profile/', views.profile_view, name='profile'),
+    url(r'^profile/', views.profile_view, name='profile'),
 ]
