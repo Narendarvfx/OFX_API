@@ -40,7 +40,7 @@ urlpatterns = [
     url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('logs/', include('log_viewer.urls')),
-    path('profileview/',views.profile_view, name='profileview'),
+
 
 ]
 handler400 = views.bad_request
