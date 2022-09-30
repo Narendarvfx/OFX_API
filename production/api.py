@@ -11,7 +11,7 @@ from rest_framework.views import APIView
 
 from production.models import Clients, Projects, ShotStatus, Shots, Complexity, Sequence, MyTask, Assignments, Channels, \
     Groups, Qc_Assignment, Permission_Groups, ShotVersions, TaskHelp_Main, TaskHelp_Lead, \
-    TaskHelp_Artist, ShotLogs, Locality, DayLogs, TeamLead_Week_Reports, QCVersions, ClientVersions, TimeLogs
+    TaskHelp_Artist, ShotLogs, Locality, DayLogs, TeamLead_Week_Reports, QCVersions, ClientVersions, TimeLogs, TaskDayLogs
 from production.reports.custom_artist_reports import calculate_artist_data
 from production.reports.custom_dep_reports import calculate_dept_data
 from production.reports.custom_lead_reports import calculate_data
@@ -27,7 +27,8 @@ from production.serializers import ClientSerializer, ProjectSerializer, StatusSe
     TaskHelpArtistStatusSerializer, ShotLogsSerializer, ShotLogsPostSerializer, LocalitySerializer, DayLogsSerializer, \
     DayLogsPostSerializer, TeamReportSerializer, QcVersionsSerializer, AllShotQcVersionsSerializer, \
     ClientVersionsSerializer, AllShotClientVersionsSerializer, TimeLogsSerializer, TimeLogsPostSerializer, \
-    TimeCardSerializer, LightDataSerializer, ShotTimeLogSerializer, ShotTimeCardSerializer
+    TimeCardSerializer, LightDataSerializer, ShotTimeLogSerializer, ShotTimeCardSerializer, TaskDayLogsSerializer, \
+    TaskDayLogsPostSerializer
 
 
 class StatusInfo(APIView):
@@ -363,6 +364,60 @@ class DayLogsData(APIView):
             if log_id:
                 day_logs = DayLogs.objects.get(id=log_id)
                 serializer = DayLogsSerializer(day_logs, data=request.data, partial=True)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class TaskDayLogsData(APIView):
+
+    def get(self, request, format=None):
+        '''
+        [::-1] reverse order
+        [:2] last two records
+        '''
+        query_params = self.request.query_params
+        if query_params:
+            task_id = query_params.get('task_id', None)
+            log_id = query_params.get('log_id', None)
+            start_date = query_params.get('start_date', None)
+            end_date = query_params.get('end_date', None)
+            lead_id = query_params.get('lead_id', None)
+            if task_id:
+                taskdaylogs = TaskDayLogs.objects.filter(task_id=task_id).select_related('task', 'artist', 'updated_by')[::-1][
+                          :2]
+                serializer = TaskDayLogsSerializer(taskdaylogs, many=True, context={"request": request})
+            elif log_id:
+                taskdaylogs = TaskDayLogs.objects.get(id=log_id).select_related('task','artist','updated_by', 'task__shot__sequence',
+                                                                                                                       'task__shot__sequence__project', 'task__shot__status',
+                                                                                                                       'task__shot__task_type', 'task__shot__location', 'task__shot__team_lead','task__shot__artist',
+                                                                                                                       'task__shot__sequence__project__client', 'task__shot__sequence__project__client__locality')
+                serializer = TaskDayLogsSerializer(taskdaylogs, context={"request": request})
+            elif start_date is not None and end_date is not None and lead_id is not None:
+                taskdaylogs = TaskDayLogs.objects.filter(updated_date__range=[start_date, end_date], task__shot__team_lead__profile_id = lead_id).select_related('task','artist','updated_by', 'task__shot__sequence',
+                                                                                                                        'task__shot__sequence__project', 'task__shot__status',
+                                                                                                                       'task__shot__task_type', 'task__shot__location','task__shot__team_lead','task__shot__artist',
+                                                                                                                       'task__shot__sequence__project__client', 'task__shot__sequence__project__client__locality')
+                serializer = TaskDayLogsSerializer(taskdaylogs, many=True, context={"request": request})
+        else:
+            taskdaylogs = TaskDayLogs.objects.all().select_related('task', 'artist', 'updated_by')
+            serializer = TaskDayLogsSerializer(taskdaylogs, many=True, context={"request": request})
+
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = TaskDayLogsPostSerializer(data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request):
+        query_params = self.request.query_params
+        if query_params:
+            log_id = query_params.get('log_id', None)
+            if log_id:
+                task_day_logs = TaskDayLogs.objects.get(id=log_id)
+                serializer = TaskDayLogsSerializer(task_day_logs, data=request.data, partial=True)
                 if serializer.is_valid():
                     serializer.save()
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
