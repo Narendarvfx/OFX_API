@@ -1,0 +1,43 @@
+{% extends 'main/base.html' %}
+
+
+{% block bread_crumb %}
+
+{% endblock bread_crumb %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row el-element-overlay">
+        <div class="col-md-12">
+            <h4 class="card-title">Clients</h4>
+        </div>
+
+        {% for client in clients %}
+        <div class="card" style="margin-left:10px">
+            <div class="el-card-item">
+                <div class="el-card-avatar el-overlay-1"><img src="/static/template/assets/images/ofx_logo1.png"
+                                                              alt="user"/>
+                    <div class="el-overlay">
+                        <ul class="el-info">
+                            <li><a class="btn default btn-outline" href="javascript:void(0);"><i
+                                    class="icon-link"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="el-card-content">
+                    <div class="progress" style="height: 15px;width: 30%">
+                        <div class="progress-bar"
+                             style="width:70%;background-color:#806c44;color: white;font-weight: bold"
+                             role="progressbar">70%
+                        </div>
+                    </div>
+                    <h3 class="box-title">{{client.name}}</h3> <small>Total Shots: 117</small>
+                    <br/>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+{% endblock content %}>
