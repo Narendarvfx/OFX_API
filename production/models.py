@@ -411,6 +411,21 @@ class DayLogs(models.Model):
     class Meta:
         verbose_name_plural = "DayLogs"
 
+class TaskDayLogs(models.Model):
+    task = models.ForeignKey(MyTask, on_delete=models.CASCADE, related_name='+')
+    percentage = models.FloatField(default=0, blank= True, null= True)
+    day_percentage = models.FloatField(default=0, blank=True, null=True)
+    consumed_man_day = models.FloatField(default=0, blank=True, null=True)
+    artist = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+')
+    updated_by = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True)
+    updated_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.task.shot.name
+
+    class Meta:
+        verbose_name_plural = "TaskDayLogs"
+
 class TeamLead_Week_Reports(models.Model):
     team_lead = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+')
     week = models.IntegerField(blank=True, null=True)

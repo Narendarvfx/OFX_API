@@ -28,8 +28,7 @@ def production_reports(request):
     location = Location.objects.all()
     locality = Locality.objects.all()
     leads = Employee.objects.filter(role__name="TEAM LEAD").all()
-    role = str(Employee.objects.get(profile=request.user.id).role)
-    print(role)
+
     context = {
         'status': status,
         'clients': clients,
@@ -38,8 +37,7 @@ def production_reports(request):
         'location': location,
         'locality': locality,
         'leads':leads,
-        'user': request.user,
-        'role':role
+        'user': request.user
     }
     return render(request, 'production/production_report.html', context)
 
@@ -160,7 +158,7 @@ def reports(request):
     clients = Clients.objects.all()
     projects = Projects.objects.all().exclude(status="ARCHIVED")
     context = {
-        'clients':clients,
+        'clients': clients,
         'projects': projects
     }
     return render(request, 'production/reports.html', context)
@@ -177,4 +175,17 @@ def reports_export(request):
     return FileResponse(buffer, as_attachment=True, filename='Client_Report.xlsx')
 
 def projects(request):
-    return render(request, 'production/projects.html')
+    project = Projects.objects.all()
+    context = {
+        'projects': project
+    }
+    return render(request, 'production/projects.html', context)
+
+def clients(request):
+    client = Clients.objects.all()
+    context = {
+        'clients': client
+    }
+    return render(request, 'production/clients.html', context)
+
+

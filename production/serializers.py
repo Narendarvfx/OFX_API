@@ -5,7 +5,7 @@ from hrm.models import Employee, Department, Location
 from production.models import Clients, Projects, ShotStatus, Complexity, Shots, Sequence, Task_Type, MyTask, \
     Assignments, Channels, Groups, Qc_Assignment, Folder_Permissions, Permission_Groups, \
     ShotVersions, TaskHelp_Main, TaskHelp_Lead, TaskHelp_Artist, ShotLogs, Locality, DayLogs, TeamLead_Week_Reports, \
-    QCVersions, ClientVersions, TimeLogs
+    QCVersions, ClientVersions, TimeLogs, TaskDayLogs
 
 
 class StatusSerializer(serializers.ModelSerializer):
@@ -187,6 +187,15 @@ class DayLogsSerializer(serializers.ModelSerializer):
         model = DayLogs
         fields = ('__all__')
 
+class TaskDayLogsSerializer(serializers.ModelSerializer):
+    # shot = ShotCompactSerializer(read_only=True)
+    artist = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
+    updated_by = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
+
+    class Meta:
+        model = TaskDayLogs
+        fields = ('__all__')
+
 class TimeLogsSerializer(serializers.ModelSerializer):
     # shot = ShotCompactSerializer(read_only=True)
     approved_by = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
@@ -228,6 +237,14 @@ class DayLogsPostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DayLogs
+        fields = ('__all__')
+
+class TaskDayLogsPostSerializer(serializers.ModelSerializer):
+    # shot = serializers.SlugRelatedField(queryset=Shots.objects.all(), slug_field='name', required=False)
+    # updated_by = serializers.SlugRelatedField(queryset=Employee.objects.all(), slug_field='fullName', required=False)
+
+    class Meta:
+        model = TaskDayLogs
         fields = ('__all__')
 
 class TimeLogsPostSerializer(serializers.ModelSerializer):
