@@ -39,7 +39,7 @@ def production_reports(request):
         'leads':leads,
         'user': request.user
     }
-    return render(request, 'production/production_report.html', context)
+    return render(request, 'production/shots.html', context)
 
 def export_prod_report(request):
     client_id = int(request.GET['client'])
