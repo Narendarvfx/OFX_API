@@ -247,6 +247,7 @@ class ProductSheet(APIView):
         serializer = ShotTimeLogSerializer(instance=queryset, many=True)
         shots_data = []
         for _shotdata in serializer.data:
+            print(_shotdata)
             total_spent = 0
             for spent in _shotdata['timelogs']:
                 total_spent += spent['spent_hours']
@@ -1160,6 +1161,7 @@ class CustomArtistReports(APIView):
             start_date = query_params.get('start_date', None)
             end_date = query_params.get('end_date', None)
             dept = query_params.get('dept',None)
+            print(dept)
             if artist_id:
                 returned_data = calculate_artist_data(artist_id=artist_id, start_date=start_date, end_date=end_date)
             elif dept:

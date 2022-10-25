@@ -107,14 +107,10 @@
         }
         .dataTables_wrapper .dataTables_paginate .paginate_button.current {
             color: #fff5f5 !important;
-            background-color: #e5711d !important;
+            background-color: rgb(230 137 6) !important;
         }
         .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
             background-color: rgb(183, 110, 5) !important;
-        }
-
-        .dataTables_wrapper .dataTables_paginate .ellipsis {
-            color: white;
         }
         tfoot input {
             width: 100% !important;
@@ -139,7 +135,6 @@
         .dataTables_wrapper .dataTables_filter input {
             color: #dad8d8 !important;
         }
-
 
         table.dataTable tbody tr.selected {
             background-color: #315eb1 !important;
@@ -541,254 +536,26 @@
             </div>
         </div>
     </div>
-    <div class="modal right fade" id="myModal2" role="dialog" aria-labelledby="myModalLabel2">
-        <div class="modal-dialog" style="max-width: 40% !important; width: 40% !important;" role="document">
+    <div class="modal right fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel2"></h4>
-
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel2">Right Sidebar</h4>
                 </div>
+
                 <div class="modal-body">
-                    <div class="card ">
-                        <div style="border-radius: 10px" class="col-lg-14">
-                            <div class="float-left" class="ass_art_butt">
-                                <button type="button" class="assign_artist btn waves-effect waves-light float-right"
-                                        title="ASSIGN ARTIST" style="color: white"><i
-                                        class="mdi mdi-account-plus" style="color:orange;"></i>
-                                    ASSIGN TO ARTIST
-                                </button>
-                            </div>
-                            <div class="float-left" >
 
-                                <button class="shot_approve btn waves-effect waves-light float-right" title="APPROVE"
-                                        style="color: white">
-                                    <i class="mdi mdi-checkbox-marked-circle" style="color:green;padding-top: 5px"></i>
-                                    APPROVE
-                                </button>
-                            </div>
-                            <div class="float-left" >
-                                <button class="shot_reject btn waves-effect waves-light float-right" title="REJECT"
-                                        style="color: white"><i
-                                        class="mdi mdi-close-circle" style="color: red;"></i> REJECT
-                                </button>
-                            </div>
-                            <div class="float-left">
-                                <button class="shot_reject btn waves-effect waves-light float-right" title="PUBLISH"
-                                        style="color: white"><i
-                                        class="mdi mdi-arrow-up-bold-circle" style="color: #006fff"></i> PUBLISH
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body pb-0">
-                            <ul class="nav nav-tabs customtab" role="tablist">
-                                <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#shot_details"
-                                                        role="tab" aria-selected="false"><span class="hidden-sm-up"><i
-                                        class="ti-home"></i></span> <span class="hidden-xs-down">DETAILS</span></a></li>
-                                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#shot_notes" role="tab"
-                                                        aria-selected="true"><span class="hidden-sm-up"><i
-                                        class="ti-user"></i></span> <span class="hidden-xs-down">NOTES</span></a></li>
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="shot_details" role="tabpanel">
-                                    <div class="p-3">
-                                        <div class="row">
-                                            <div class="float-left col-6">
-                                                <small class="text-muted">CLIENT:</small>
-                                                <h5 id="clientt"></h5>
-                                            </div>
-                                            <div class="float-right col-6">
-                                                <small class="text-muted">PROJECT:</small>
-                                                <h5 id="projectt"></h5>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="float-left col-6">
-                                                <small class="text-muted">SEQUENCE:</small>
-                                                <h5 id="sequencee"></h5>
-                                            </div>
-                                            <div class="float-right col-6">
-                                                <small class="text-muted">TASK TYPE:</small>
-                                                <h5 id="task_typee"></h5>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="float-left col-6">
-                                                <small class="text-muted">TYPE:</small>
-                                                <h5 id="typee"></h5>
-                                            </div>
-                                            <div class="float-right col-6">
-                                                <small class="text-muted">STATUS:</small>
-                                                <h5 id="statuss"></h5>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="float-left col-6">
-                                                <small class="text-muted">CLIENT ETA: <i
-                                                        class="mdi mdi-check-circle-outline"
-                                                        style="color: #ec680b;"></i></small>
-                                                <h5 id="etaa"></h5>
-                                            </div>
-                                            <div class="float-right col-6">
-                                                <small class="text-muted">INTERNAL ETA:</small>
-                                                <h5><input type="date" class="form-control" id="int_etaa"></h5>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="float-left col-6">
-                                                <small class="text-muted"> CLIENT BIDS: <i
-                                                        class="mdi mdi-check-circle-outline"
-                                                        style="color: #ec680b;"></i></small>
-                                                <h5 id="bidss"></h5>
-                                            </div>
-                                            <div class="float-right col-6">
-                                                <small class="text-muted">INTERNAL BIDS: </small>
-                                                <h5><input type="number" class="form-control" value="" id="int_bidss">
-                                                </h5>
-                                            </div>
-
-                                        </div>
-                                        <div class="row">
-                                            <div class="float-left col-6">
-                                                <small class="text-muted">VERSION:</small>
-                                                <h5 id="versionn"></h5>
-                                            </div>
-                                            <div class="float-right col-6">
-                                                <small class="text-muted">PROGRESS:</small>
-                                                <h5 id="progresss"></h5>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="float-left col-6">
-                                                <small class="text-muted">TEAM LEAD:</small>
-                                                <h5 id="team_leadd"></h5>
-                                            </div>
-                                            <div class="float-right col-6">
-                                                <small class="text-muted">ARTISTS:</small>
-                                                <h5 id="artists"></h5>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="float-left col-6">
-                                                <small class="text-muted">SCOPE OF WORK:</small>
-                                                <h5 id="scope_wrk"></h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane p-3 show" id="shot_notes" role="tabpanel">
-                                    <div class="slimScrollDiv"
-                                         style="position: relative; overflow: visible hidden; width: auto; height: 470px;">
-                                        <div class="chat-box" style="overflow: hidden; width: auto; height: 470px;">
-                                            <!--chat Row -->
-                                            <ul class="chat-list">
-                                                <!--chat Row -->
-                                                <li>
-                                                    <div class="chat-img"><img src="../assets/images/users/1.jpg"
-                                                                               alt="user"></div>
-                                                    <div class="chat-content">
-                                                        <h5>James Anderson</h5>
-                                                        <div class="box" style="background-color: #858383">Lorem Ipsum
-                                                            is simply dummy text
-                                                            of the printing &amp; type setting industry.
-                                                        </div>
-                                                    </div>
-                                                    <div class="chat-time">10:56 am</div>
-                                                </li>
-                                                <!--chat Row -->
-                                                <li>
-                                                    <div class="chat-img"><img src="../assets/images/users/2.jpg"
-                                                                               alt="user"></div>
-                                                    <div class="chat-content">
-                                                        <h5>Bianca Doe</h5>
-                                                        <div class="box" style="background-color: #858383">It’s Great
-                                                            opportunity to
-                                                            work.
-                                                        </div>
-                                                    </div>
-                                                    <div class="chat-time">10:57 am</div>
-                                                </li>
-                                                <!--chat Row -->
-                                                <li class="odd">
-                                                    <div class="chat-content">
-                                                        <div class="box" style="background-color: #0A0A0A">I would love
-                                                            to join the
-                                                            team.
-                                                        </div>
-                                                        <br>
-                                                    </div>
-                                                    <div class="chat-time">10:58 am</div>
-                                                </li>
-                                                <!--chat Row -->
-                                                <li class="odd">
-                                                    <div class="chat-content">
-                                                        <div class="box" style="background-color: #0A0A0A">Whats budget
-                                                            of the new
-                                                            project.
-                                                        </div>
-                                                        <br>
-                                                    </div>
-                                                    <div class="chat-time">10:59 am</div>
-                                                </li>
-                                                <!--chat Row -->
-                                                <li>
-                                                    <div class="chat-img"><img src="../assets/images/users/3.jpg"
-                                                                               alt="user"></div>
-                                                    <div class="chat-content">
-                                                        <h5>Angelina Rhodes</h5>
-                                                        <div class="box" style="background-color: #858383">Well we have
-                                                            good budget for
-                                                            the project
-                                                        </div>
-                                                    </div>
-                                                    <div class="chat-time">11:00 am</div>
-                                                </li>
-                                                <!--chat Row -->
-                                                <li>
-                                                    <div class="chat-img"><img src="../assets/images/users/3.jpg"
-                                                                               alt="user"></div>
-                                                    <div class="chat-content">
-                                                        <h5>Angelina Rhodes</h5>
-                                                        <div class="box" style="background-color: #858383">Well we have
-                                                            good budget for
-                                                            the project
-                                                        </div>
-                                                    </div>
-                                                    <div class="chat-time">11:00 am</div>
-                                                </li>
-                                                <!--chat Row -->
-                                                <li>
-                                                    <div class="chat-img"><img src="../assets/images/users/3.jpg"
-                                                                               alt="user"></div>
-                                                    <div class="chat-content">
-                                                        <h5>Angelina</h5>
-                                                        <div class="box" style="background-color: #858383">Well we have
-                                                            good budget for
-                                                            the project
-                                                        </div>
-                                                    </div>
-                                                    <div class="chat-time">11:00 am</div>
-                                                </li>
-                                            </ul>
-                                            <!--chat Row -->
-                                        </div>
-                                        <div class="slimScrollBar"
-                                             style="background: rgb(220, 220, 220); width: 5px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 448.984px;"></div>
-                                        <div class="slimScrollRail"
-                                             style="width: 5px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                        </div>
-
-                    </div>
-
+                    <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3
+                        wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt
+                        laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin
+                        coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes
+                        anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings
+                        occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard
+                        of them accusamus labore sustainable VHS.
+                    </p>
                 </div>
 
             </div><!-- modal-content -->
@@ -1009,11 +776,6 @@
                 deferLoading: 10,
 
             });
-            console.log(table.state())
-            $("#shots_table ").dataTable().find("tbody").on('click', 'tr', function () {
-
-                console.log(table.row( this.rowIndex ).data());
-            });
             table.searchPanes()
 
             // Refilter the table to apply ETA Filters
@@ -1070,25 +832,36 @@
                 shotData = {
                     'shot': shotId_arr[i],
                     'lead': $('#shot_lead_select option:selected').val(),
+                    'status': 11,
                     'assigned_by': {{ user.profile.employee.id }}
                 }
                 $.post("/api/production/shot/assignments/", shotData,
                     function (data, status) {
-                        ++post_count;
-                        if (post_count == shotId_arr.length) {
-
-                            table.ajax.reload(null, false)
-                            $(".custom_preloader").hide()
-                            $.toast({
-                                heading: 'Success',
-                                text: 'Assigned to' + $('#shot_lead_select option:selected').text() + '.',
-                                position: 'top-right',
-                                loaderBg: '#49ffbf',
-                                icon: 'success',
-                                hideAfter: 3000,
-                                stack: 6
-                            });
+                        shot_status = {
+                            'status': "ATL"
                         }
+                        $.ajax({
+                            url: "/api/production/shots/" + data['shot'] + "/",
+                            type: 'PUT',
+                            data: shot_status,
+                            dataType: 'json',
+                            success: function (result) {
+                                ++post_count;
+                                if (post_count == shotId_arr.length) {
+                                    table.ajax.reload(null, false)
+                                    $(".custom_preloader").hide()
+                                    $.toast({
+                                        heading: 'Success',
+                                        text: 'Assigned to' + $('#shot_lead_select option:selected').text() + '.',
+                                        position: 'top-right',
+                                        loaderBg: '#49ffbf',
+                                        icon: 'success',
+                                        hideAfter: 3000,
+                                        stack: 6
+                                    });
+                                }
+                            }
+                        });
                     }
                 )
             }
@@ -1102,30 +875,9 @@
 
         // TODO: Enable to view the shots data in modal
         // Table On Row Click
-        // Table On Row Click
-        $('#shots_table').on('click', 'td.shot_class', function () {
-            console.log('API row values : ', table.row(this).data());
-            $("#myModal2").modal('show');
-            $("#myModalLabel2").text(table.row(this).data().name)
-            $("#clientt").text(table.row(this).data().sequence.project.client.name)
-            $("#projectt").text(table.row(this).data().sequence.project.name)
-            $("#sequencee").text(table.row(this).data().sequence.name)
-            $("#task_typee").text(table.row(this).data().task_type)
-            $("#typee").text(table.row(this).data().type)
-            $("#etaa").text(table.row(this).data().eta)
-            $("#bidss").text(table.row(this).data().bid_days)
-            $("#team_leadd").text(table.row(this).data().team_lead)
-            var now = new Date(table.row(this).data().eta);
-            var day = ("0" + now.getDate()).slice(-2);
-            var month = ("0" + (now.getMonth() + 1)).slice(-2);
-            var eta_date = now.getFullYear() + "-" + (month) + "-" + (day);
-            $("#int_etaa").val(eta_date)
-            $("#int_bidss").val(table.row(this).data().bid_days)
-            $("#statuss").html(`<span class="badge" style="color:white;padding:3px 10px;font-size:1em; background-color:` + table.row(this).data().status.color + `">` + table.row(this).data().status.code + `</span>`)
-            $("#progresss").html(`<div class="progress" style="height: 15px;">
-                        <div class="progress-bar" style="width:` + table.row(this).data().progress + `%;background-color:red;color: white;font-weight: bold" role="progressbar">` + table.row(this).data().progress + `%</div>
-                    </div>`)
-        })
+        {#$('#shots_table').on('click', 'td.shot_class', function () {#}
+        {#    $("#myModal2").modal('show');#}
+        {#})#}
 
         // Export Production sheet to Excel
         function export_to_excel() {

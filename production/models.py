@@ -491,10 +491,3 @@ def on_internal_approve(sender,instance,**kwargs):
     shot_instance.submitted_date = instance.sent_date
     shot_instance.qc_name = instance.approved_by
     shot_instance.save()
-
-@receiver(post_save, sender=Assignments)
-def on_assignment(sender,instance,**kwargs):
-    shot_instance = Shots.objects.get(pk=instance.shot.id)
-    statusInstance = ShotStatus.objects.get(pk=6)
-    shot_instance.status = statusInstance
-    shot_instance.save()

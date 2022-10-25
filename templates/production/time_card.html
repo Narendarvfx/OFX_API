@@ -150,8 +150,7 @@
             background-color: #2a2e33 !important;
             color: white;
         }
-
-        .gantt_layout_cell {
+        .gantt_layout_cell{
             border-right: #0A0A0A;
         }
 
@@ -219,8 +218,7 @@
         .form-group {
             margin-bottom: 5px !important;
         }
-
-        .fa-window-close {
+        .fa-window-close{
             cursor: pointer;
         }
 
@@ -462,14 +460,14 @@
             const light_data = JSON.parse(lightbox_data);
             light_data.forEach(function (light) {
                 str = ""
-                if (light.approved) {
+                if (light.approved){
                     label_str = `<span class="badge badge-pill badge-success float-right" id="approved">Approved</span>`
-                } else {
+                }else{
                     label_str = '<span class="badge badge-pill badge-danger float-right" id="pending">pending</span>'
                 }
                 $('#dynamic_data').append($(`<div class="card">
                                 <div class="col-lg-12 ">
-                                    <h4 class="card-title" style="margin-top: 10px;">` + light.shot.name + label_str + `</h4>
+                                    <h4 class="card-title" style="margin-top: 10px;">` + light.shot.name +label_str+`</h4>
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group row">
