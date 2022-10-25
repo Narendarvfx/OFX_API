@@ -14,6 +14,9 @@ from production.reports.studio_report import studio_sheet_download
 from production.reports.teamlead_report import teamlead_sheet_download
 from production.reports.version_report import check_ver_filters, create_ver_workbook
 
+def resource_availability(request):
+
+    return render(request, 'home/resource_availabilty.html')
 
 def production_reports(request):
     """

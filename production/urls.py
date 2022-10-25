@@ -4,6 +4,7 @@ from .api import ShotsDataFilter
 
 urlpatterns = [
     ################## Web Urls ######################
+    url(r'^production/resource/$', views.resource_availability, name='Resource Availability'),
     url(r'^production/shots/$', views.production_reports, name='Client reports'),
     url(r'^production/export_prod_report/$', views.export_prod_report, name='Client reports'),
     url(r'^production/export_ver_report/$', views.export_ver_report, name='Version reports'),

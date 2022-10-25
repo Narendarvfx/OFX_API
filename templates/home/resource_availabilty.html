@@ -1,0 +1,312 @@
+{% extends 'main/base.html' %}
+{% block bread_crumb %}
+    <link href="/static/template/assets/plugins/timepicker/bootstrap-timepicker.min.css" rel="stylesheet">
+    <link href="/static/template/assets/plugins/daterangepicker/daterangepicker.css" rel="stylesheet">
+    <style>
+        .table td, .table th {
+            padding: 0.25rem;
+        }
+
+        th.rotate {
+            /* Something you can count on */
+            height: 100px;
+            white-space: nowrap;
+        }
+
+        th.rotate > div {
+            transform: /* Magic Numbers */ translate(0px, 0px) /* 45 is really 360 - 45 */ rotate(315deg);
+            width: 10px;
+        }
+
+        th.rotate > div > span {
+            border-bottom: 1px solid #ccc;
+            padding: 5px 5px;
+        }
+
+        .table thead {
+            position: sticky;
+            background-color: #383f48;
+        }
+        .table tfoot {
+            position: sticky;
+            background-color: red;
+        }
+
+        .table thead {
+            inset-block-start: 0; /* "bottom" */
+
+        }
+        .table tfoot {
+            inset-block-end: 0; /* "bottom" */
+        }
+    </style>
+{% endblock bread_crumb %}
+{% block content %}
+
+    <h3>Hello {{ user.profile.employee.fullName }}</h3>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex no-block">
+                            <h4 class="card-title">Resource Availabilty of the Month</h4>
+                        </div>
+                        <div class="table-responsive" style="height: 500px">
+                            <table class="table stylish-table no-wrap">
+                                <thead>
+                                <tr>
+                                    <th colspan="2">Teams</th>
+                                    <th class="rotate">
+                                        <div><span>MTD Target</span></div>
+                                    </th>
+                                    <th class="rotate">
+                                        <div><span>MTD Actuals</span></div>
+                                    </th>
+                                    <th class="rotate">
+                                        <div><span>Week 1</span></div>
+                                    </th>
+                                    <th class="rotate">
+                                        <div><span>Week 2</span></div>
+                                    </th>
+                                    <th class="rotate">
+                                        <div><span>Week 3</span></div>
+                                    </th>
+                                    <th class="rotate">
+                                        <div><span>Week 4</span></div>
+                                    </th>
+                                    <th class="rotate">
+                                        <div><span>October</span></div>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody style="overflow-y: auto">
+                                <tr>
+                                    <td style="width:50px;"><span class="round">s</span></td>
+                                    <td>
+                                        <h6>Sunil</h6></td>
+                                    <td class="text-success">200</td>
+                                    <td class="text-danger">100</td>
+                                    <td>30</td>
+                                    <td>40</td>
+                                    <td class="text-warning">50</td>
+                                    <td>70</td>
+                                    <td>280</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:50px;"><span class="round round-danger">N</span></td>
+                                    <td>
+                                        <h6>Narendar</h6></td>
+                                    <td class="text-success">200</td>
+                                    <td class="text-danger">30</td>
+                                    <td>13</td>
+                                    <td>350</td>
+                                    <td class="text-warning">65</td>
+                                    <td>40</td>
+                                    <td>159</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:50px;"><span class="round round-success">R</span></td>
+                                    <td>
+                                        <h6>Raja</h6></td>
+                                    <td class="text-success">350</td>
+                                    <td class="text-danger">78</td>
+                                    <td>50</td>
+                                    <td>63</td>
+                                    <td class="text-warning">45</td>
+                                    <td>78</td>
+                                    <td>340</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:50px;"><span class="round round-warning">N</span></td>
+                                    <td>
+                                        <h6>Vamshi</h6></td>
+                                    <td class="text-success">170</td>
+                                    <td class="text-danger">40</td>
+                                    <td>20</td>
+                                    <td>40</td>
+                                    <td class="text-warning">30</td>
+                                    <td>60</td>
+                                    <td>450</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:50px;"><span class="round">S</span></td>
+                                    <td>
+                                        <h6>Sabani</h6></td>
+                                    <td class="text-success">150</td>
+                                    <td class="text-danger">60</td>
+                                    <td>20</td>
+                                    <td>40</td>
+                                    <td class="text-warning">30</td>
+                                    <td>60</td>
+                                    <td>256</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:50px;"><span class="round">P</span></td>
+                                    <td>
+                                        <h6>Prasad</h6></td>
+                                    <td class="text-success">240</td>
+                                    <td class="text-danger">150</td>
+                                    <td>20</td>
+                                    <td>40</td>
+                                    <td class="text-warning">30</td>
+                                    <td>60</td>
+                                    <td>324</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:50px;"><span class="round">H</span></td>
+                                    <td>
+                                        <h6>Hari</h6></td>
+                                    <td class="text-success">240</td>
+                                    <td class="text-danger">150</td>
+                                    <td>20</td>
+                                    <td>40</td>
+                                    <td class="text-warning">30</td>
+                                    <td>60</td>
+                                    <td>324</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:50px;"><span class="round">R</span></td>
+                                    <td>
+                                        <h6>Rohith</h6></td>
+                                    <td class="text-success">240</td>
+                                    <td class="text-danger">150</td>
+                                    <td>20</td>
+                                    <td>40</td>
+                                    <td class="text-warning">30</td>
+                                    <td>60</td>
+                                    <td>324</td>
+                                </tr>
+                                </tbody>
+                                <tfoot >
+                                <tr class="bg-info text-white">
+                                    <td colspan="2"><h6>PENDING MAN DAYS</h6></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>350</td>
+                                    <td>450</td>
+                                    <td>456</td>
+                                </tr>
+                                <tr class="bg-warning text-white">
+                                    <td colspan="2"><h6>WAITING FOR BID</h6></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>350</td>
+                                    <td>450</td>
+                                    <td>236</td>
+                                </tr>
+                                <tr class="bg-success text-white">
+                                    <td colspan="2"><h6>Total</h6></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>350</td>
+                                    <td>450</td>
+                                    <td>243</td>
+                                </tr>
+                                <tr class="bg-warning text-white">
+                                    <td colspan="2"><h6>WEEK TARGET</h6></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>350</td>
+                                    <td>450</td>
+                                    <td>324</td>
+                                </tr>
+                                <tr class="bg-danger text-white">
+                                    <td colspan="2"><h6>RESOURCE AVAILABILITY</h6></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>350</td>
+                                    <td>450</td>
+                                    <td>546</td>
+                                </tr>
+                                </tfoot>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {#            <div class="col-lg-4">#}
+            {#                <div class="card">#}
+            {#                    <div class="card-body">#}
+            {#                        <div class="d-flex no-block">#}
+            {#                            <h4 class="card-title">Weather Report</h4>#}
+            {#                            <div class="ml-auto">#}
+            {#                                <select class="custom-select">#}
+            {#                                    <option selected>Today</option>#}
+            {#                                    <option value="1">Weekly</option>#}
+            {#                                </select>#}
+            {#                            </div>#}
+            {#                        </div>#}
+            {#                        <div class="d-flex align-items-center flex-row mt-4">#}
+            {#                            <div class="p-2 display-5 text-info"><i class="wi wi-day-showers"></i> <span>73<sup>°</sup></span>#}
+            {#                            </div>#}
+            {#                            <div class="p-2">#}
+            {#                                <h3 class="mb-0">Saturday</h3><small>Ahmedabad, India</small></div>#}
+            {#                        </div>#}
+            {#                        <table class="table no-border">#}
+            {#                            <tr>#}
+            {#                                <td>Wind</td>#}
+            {#                                <td class="font-medium">ESE 17 mph</td>#}
+            {#                            </tr>#}
+            {#                            <tr>#}
+            {#                                <td>Humidity</td>#}
+            {#                                <td class="font-medium">83%</td>#}
+            {#                            </tr>#}
+            {#                            <tr>#}
+            {#                                <td>Pressure</td>#}
+            {#                                <td class="font-medium">28.56 in</td>#}
+            {#                            </tr>#}
+            {#                            <tr>#}
+            {#                                <td>Cloud Cover</td>#}
+            {#                                <td class="font-medium">78%</td>#}
+            {#                            </tr>#}
+            {#                            <tr>#}
+            {#                                <td>Ceiling</td>#}
+            {#                                <td class="font-medium">25760 ft</td>#}
+            {#                            </tr>#}
+            {#                        </table>#}
+            {#                        <hr/>#}
+            {#                        <ul class="list-unstyled row text-center city-weather-days">#}
+            {#                            <li class="col"><i class="wi wi-day-sunny"></i><span>09:30</span>#}
+            {#                                <h3>70<sup>°</sup></h3></li>#}
+            {#                            <li class="col"><i class="wi wi-day-cloudy"></i><span>11:30</span>#}
+            {#                                <h3>72<sup>°</sup></h3></li>#}
+            {#                            <li class="col"><i class="wi wi-day-hail"></i><span>13:30</span>#}
+            {#                                <h3>75<sup>°</sup></h3></li>#}
+            {#                            <li class="col"><i class="wi wi-day-sprinkle"></i><span>15:30</span>#}
+            {#                                <h3>76<sup>°</sup></h3></li>#}
+            {#                        </ul>#}
+            {#                    </div>#}
+            {#                </div>#}
+            {#            </div>#}
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block page_scripts %}
+    <!--OFX Core JavaScript -->
+    <script src="/static/ofx/core.js"></script>
+    <!-- ============================================================== -->
+    <!-- This page plugins -->
+    <!-- ============================================================== -->
+    <!-- chartist chart -->
+    <script src="/static/third_party/ChartJs/Chart.min.js"></script>
+
+    <!-- Date range Plugin JavaScript -->
+    <script src="/static/template/assets/plugins/moment/moment.js"></script>
+    <script src="/static/template/assets/plugins/daterangepicker/daterangepicker.js"></script>
+
+
+{% endblock page_scripts %}
