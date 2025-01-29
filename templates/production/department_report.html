@@ -1,40 +1,361 @@
 {% extends 'main/base.html' %}
-
+{% load static %}
 
 {% block bread_crumb %}
-    <!-- ============================================================== -->
-    <!-- Bread crumb and right sidebar toggle -->
-    <!-- ============================================================== -->
-    <!-- Daterange picker plugins css -->
-    <link href="/static/template/assets/plugins/timepicker/bootstrap-timepicker.min.css" rel="stylesheet">
-    <link href="/static/template/assets/plugins/daterangepicker/daterangepicker.css" rel="stylesheet">
+    <link href="{% static 'template/assets/plugins/timepicker/bootstrap-timepicker.min.css' %}" rel="stylesheet">
+    <link href="{% static 'template/assets/plugins/daterangepicker/daterangepicker.css' %}" rel="stylesheet">
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/DataTables-1.12.1/css/jquery.dataTables.min.css' %}"
+          type="text/css"/>
+    <link rel='stylesheet'
+          href="{% static 'third_party/DataTables/Responsive-2.3.0/css/responsive.dataTables.min.css' %}"
+          type="text/css"/>
+    <link rel='stylesheet'
+          href="{% static 'third_party/DataTables/Responsive-2.3.0/css/responsive.bootstrap5.min.css' %}"
+          type="text/css"/>
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/Buttons-2.2.3/css/buttons.dataTables.min.css' %}"
+          type="text/css"/>
+    <link rel='stylesheet' href="{% static 'template/assets/plugins/multiselect/css/multi-select.css' %}"
+          type="text/css"/>
+    <link rel="stylesheet" href="{% static 'template/assets/plugins/toast-master/css/jquery.toast.css' %}"
+          type="text/css"/>
+    <link rel="stylesheet" href="{% static 'third_party/DataTables/custom_css/datables_searchpane.css' %}"
+          type="text/css"/>
+    <link rel="stylesheet" href="{% static 'third_party/DataTables/Select-1.4.0/css/select.dataTables.min.css' %}"
+          type="text/css"/>
+    <link href="{% static 'template/assets/plugins/morrisjs/morris.css' %}" rel="stylesheet">
+    <link href="{% static 'third_party/DataTables/DataTables-1.12.1/css/dataTables.jqueryui.css' %}" rel="stylesheet"
+          type="text/css"/>
+    <!-- <link href="{% static 'template/assets/plugins/chartist-js/dist/chartist.min.css' %}" rel="stylesheet">
+    <link href="{% static 'template/assets/plugins/chartist-js/dist/chartist-init.css' %}" rel="stylesheet"> -->
+    <!-- <link href="{% static 'template/assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.css' %}" rel="stylesheet"> -->
+    <style>
+        #ajaxBusy {
+            display: none !important;
+        }
 
+        .form-control {
+            color: #fffcfc !important;
+        }
+
+        .container-fluid {
+            padding: 10px !important;
+        }
+
+        .row {
+            margin: 0px !important;
+        }
+
+        /* An ugly trick to use a filter icon */
+        .ui-icon-volume-off.ui-icon-filter {
+            -ms-transform: rotate(270deg);
+            -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+        }
+
+        .card {
+            padding: 10px;
+            background: #272c33 !important;
+            color: white;
+            margin-bottom: 10px !important;
+        }
+
+        .card-body {
+            padding: 0rem !important;
+        }
+
+        #filter_div {
+            padding: 10px;
+            background: #272c33 !important;
+            color: white;
+        }
+
+        .col-lg-12 {
+            padding: 0px !important;
+        }
+
+        .col-lg-10 {
+            padding: 0px !important;
+        }
+
+        .card-body {
+            padding: 0rem !important;
+        }
+
+        div.dt-button-collection button.dt-button:active:not(.disabled),
+        div.dt-button-collection button.dt-button.active:not(.disabled),
+        div.dt-button-collection div.dt-button:active:not(.disabled),
+        div.dt-button-collection div.dt-button.active:not(.disabled),
+        div.dt-button-collection a.dt-button:active:not(.disabled),
+        div.dt-button-collection a.dt-button.active:not(.disabled) {
+            background-color: #272c33 !important;
+            background: #272c33 !important;
+        }
+
+        table.dataTable tbody tr {
+            background-color: #272c33 !important;
+            font-size: small;
+            font-weight: normal;
+        }
+
+        table.dataTable tr.odd {
+            background-color: #343a40 !important;
+        }
+
+        table.dataTable td {
+            border-bottom: 0.2px !important;
+            border-color: grey !important;
+        }
+
+        table.dataTable thead {
+            color: #f6f5f5;
+            font-weight: normal;
+            font-size: small;
+        }
+
+        .dataTables_length, .dataTables_info, .dataTables_filter {
+            color: #a2a1a1 !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 2px;
+            background: white !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            color: #fff5f5 !important;
+            background-color: #e5711d !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background-color: rgb(183, 110, 5) !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .ellipsis {
+            color: white;
+        }
+
+        tfoot input {
+            width: 100% !important;
+            padding: 3px !important;
+            box-sizing: border-box !important;
+        }
+
+        table.dataTable tfoot th, table.dataTable tfoot td {
+            padding: 5px;
+            border-top: 0px;
+        }
+
+        .page-titles {
+            padding-bottom: 0px;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            color: #ccc8c8 !important;
+            background-color: inherit;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            color: #dad8d8 !important;
+        }
+
+
+        table.dataTable tbody tr.selected {
+            background-color: #315eb1 !important;
+            color: white !important;
+        }
+
+        label {
+            margin-bottom: 0px !important;
+        }
+
+        .multiselect-container > li > a > label {
+            padding: 4px 20px 3px 20px;
+        }
+
+        table.dataTable tbody th, table.dataTable tbody td {
+            padding: 7px;
+        }
+
+        .column_vis {
+            height: 20px;
+        }
+
+        /* width */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #383f48;
+            border-radius: 5px;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #2965b9;
+            border-radius: 5px;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        div.dtsp-verticalContainer {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-content: flex-start;
+            align-items: flex-start;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes,
+        div.dtsp-verticalContainer div.container {
+            width: 20%;
+            flex-grow: 0;
+            flex-shrink: 0;
+            flex-basis: 0;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes {
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: 26%;
+        }
+
+        div.dtsp-verticalPanes {
+            margin-right: 10px;
+        }
+
+        div.dtsp-title {
+            margin-right: 0px !important;
+            margin-top: 13px !important;
+        }
+
+        input.dtsp-search {
+            min-width: 0px !important;
+            padding-left: 0px !important;
+            margin: 0px !important;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes div.dtsp-searchPanes {
+            flex-direction: column;
+            flex-basis: 0px;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes div.dtsp-searchPanes div.dtsp-searchPane {
+            flex-basis: 0px;
+        }
+
+        div.dtsp-verticalContainer div.container {
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: 80%;
+        }
+
+        div.dtsp-panesContainer {
+            border: 1px solid transparent;
+            border-radius: 6px;
+            padding: 5px;
+        }
+
+        select {
+            -webkit-appearance: none;
+        }
+
+        div.dtsp-narrow {
+            flex-direction: column !important;
+            background-color: #343a40;
+        }
+
+        div.dtsp-panesContainer button.dtsp-clearAll, div.dtsp-panesContainer button.dtsp-collapseAll, div.dtsp-panesContainer button.dtsp-showAll {
+            border: none;
+            background-color: #343a40;
+            padding: 3px;
+            border-radius: 5px;
+        }
+
+        div.dtsp-panesContainer button.dtsp-disabledButton {
+            cursor: default !important;
+            background-color: #343a40;
+            padding: 3px;
+            border-radius: 10px;
+            color: white;
+        }
+
+        div.dtsp-panesContainer div.dataTables_wrapper div.dataTables_scrollBody {
+            background: #343a40 !important;
+            border-bottom: none;
+        }
+
+        .request-loading:empty::before {
+            position: absolute;
+            margin: auto;
+            display: block;
+            content: "Loading please wait...";
+            width: min-content;
+            height: min-content;
+            white-space: nowrap;
+            right: 0px;
+            left: 0px;
+            top: 0px;
+            bottom: 0px;
+            -webkit-transition: .4s;
+            transition: .4s;
+            -webkit-animation: color-change 1s infinite;
+            -moz-animation: color-change 1s infinite;
+            -o-animation: color-change 1s infinite;
+            -ms-animation: color-change 1s infinite;
+            animation: color-change 1s infinite;
+        }
+
+        @keyframes color-change {
+            0% {
+                color: #979797;
+            }
+            50% {
+                color: #cfcfcf;
+            }
+            100% {
+                color: #979797;
+            }
+        }
+
+        .bar-chart-legend {
+            display: inline-block;
+            right: 25px;
+            position: absolute;
+            font-size: 10px;
+            width: 100%;
+            text-align: right;
+        }
+
+        .bar-chart-legend .legend-item {
+            display: inline-block;
+        }
+
+        .bar-chart-legend .legend-color {
+            width: 12px;
+            height: 12px;
+            margin: 3px 5px;
+            display: inline-block;
+        }
+    </style>
     <div class="row page-titles">
         <div class="col-md-4 col-6 align-self-center">
             <h3 class="text-themecolor mb-0 mt-0">Department Report</h3>
         </div>
-        <div class="col-md-8 col-8 align-self-center">
-            <div class="float-right" style="margin-left: 5px">
-                <button class="btn float-right hidden-sm-down btn-primary" onclick="dep_export_to_excel()"><i
+        <div class="col-md-8 col-8 text-right">
+            <div class="btn-group mb-2 mr-2">
+                <select name="department_report_input_select"
+                        class="department-report-input-select form-control"></select>
+            </div>
+            <div class="btn-group mb-2 mr-2">
+                <button class="btn float-right hidden-sm-down btn-primary export-to-excel"><i
                         class="mdi mdi-cloud-download"></i> Export
                 </button>
-            </div>
-            <div class='float-right input-group col-4'>
-                <input type='text' name="daterange" class="form-control dateranges"/>
-                <div class="input-group-append">
-                                        <span class="input-group-text">
-                                            <span class="ti-calendar"></span>
-                                        </span>
-                </div>
-            </div>
-            <div class="float-right" style="margin-left: 5px">
-                <select id="dep_select" class="form-control">
-                    <option value="">Department</option>
-                    <option value="PAINT">PAINT</option>
-                    <option value="ROTO">ROTO</option>
-                    <option value="MM">MM</option>
-                    <option value="COMP">COMP</option>
-                </select>
             </div>
         </div>
     </div>
@@ -45,233 +366,719 @@
 
 
 {% block content %}
-    <div class="row">
-        <div class="col-12 mb-12" id="top_data">
-            <div class="card">
-                <div class="card-body collapse show">
-                    <h3 class="card-title" id="top_title">Statistics Of </h3>
-                    <p class="card-text" id="selected_dates"></p>
-                </div>
-            </div>
-        </div>
-        <!-- Column -->
-        <div class="col-md-6 col-lg-3 col-xlg-3">
-            <div class="card card-inverse card-info">
-                <div class="box bg-info text-center">
-                    <h1 class="font-light text-white" id="total_shots">0</h1>
-                    <h6 class="text-white">Total Shots</h6>
-                </div>
-            </div>
-        </div>
-        <!-- Column -->
-        <div class="col-md-6 col-lg-3 col-xlg-3">
-            <div class="card card-primary card-inverse">
-                <div class="box text-center">
-                    <h1 class="font-light text-white" id="assign_man">0</h1>
-                    <h6 class="text-white">Assigned Man Days</h6>
-                </div>
-            </div>
-        </div>
-        <!-- Column -->
-        <div class="col-md-6 col-lg-3 col-xlg-3">
-            <div class="card card-inverse card-success">
-                <div class="box text-center">
-                    <h1 class="font-light text-white" id="ach_man">0</h1>
-                    <h6 class="text-white">Achieved Man Days</h6>
-                </div>
-            </div>
-        </div>
-        <!-- Column -->
-        <div class="col-md-6 col-lg-3 col-xlg-3">
-            <div class="card card-inverse card-warning">
-                <div class="box text-center">
-                    <h1 class="font-light text-white" id="assgn_vs_ach">0</h1>
-                    <h6 class="text-white">Actual v/s Achieved</h6>
-                </div>
-            </div>
-        </div>
-
-        <!-- Column -->
-        <div class="col-sm-3">
-            <div class="card card-body">
-                <!-- Row -->
-                <div class="row pt-2 pb-2">
-                    <!-- Column -->
-                    <div class="col pr-0">
-                        <h1 class="font-light" id="yts">0</h1>
-                        <h6 class="text-muted">YTS</h6></div>
-                    <!-- Column -->
-                    <div class="col text-right align-self-center">
-                        <div id="yts_per_label" class="css-bar mb-0 css-bar-primary "><i
-                                class="mdi mdi-note-text"></i></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="card card-body">
-                <!-- Row -->
-                <div class="row pt-2 pb-2">
-                    <!-- Column -->
-                    <div class="col pr-0">
-                        <h1 class="font-light" id="wip">0</h1>
-                        <h6 class="text-muted">WIP</h6></div>
-                    <!-- Column -->
-                    <div class="col text-right align-self-center">
-                        <div id="wip_per_label" class="css-bar mb-0 css-bar-warning"><i
-                                class="mdi mdi-tooltip-edit"></i></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="card card-body">
-                <!-- Row -->
-                <div class="row pt-2 pb-2">
-                    <!-- Column -->
-                    <div class="col pr-0">
-                        <h1 class="font-light" id="completed">0</h1>
-                        <h6 class="text-muted">COMPLETED</h6></div>
-                    <!-- Column -->
-                    <div class="col text-right align-self-center">
-                        <div id="comp_per_label" class="css-bar mb-0 css-bar-success"><i
-                                class="mdi mdi-check"></i></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="card card-body">
-                <!-- Row -->
-                <div class="row pt-2 pb-2">
-                    <!-- Column -->
-                    <div class="col pr-0">
-                        <h1 class="font-light" id="retakes">0</h1>
-                        <h6 class="text-muted">RETAKES</h6></div>
-                    <!-- Column -->
-                    <div class="col text-right align-self-center">
-                        <div data-label="10%" class="css-bar mb-0 css-bar-danger css-bar-80"><i
-                                class="mdi mdi-close"></i></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="card card-body">
-                <!-- Row -->
-                <div class="row pt-2 pb-2">
-                    <!-- Column -->
-                    <div class="col pr-0">
-                        <h1 class="font-light" id="retakes_per">0 %</h1>
-                        <h6 class="text-muted">RETAKES %</h6></div>
-                    <!-- Column -->
-                    <div class="col text-right align-self-center">
-                        <div data-label="80%" id="retakes_per_label" class="css-bar mb-0 css-bar-danger"><i
-                                class="mdi mdi-close"></i></div>
-                    </div>
+    <div class="container-fluid row">
+        <div class="col-md-12 reports-view">
+            <div class="row" style="margin-right: -15px!important; margin-left: -15px!important;">
+                <div class="text-center" style="position: relative;margin: auto;top: 100px;width: 100%;">
+                    <h3 class="text-uppercase">Welcome!</h3>
+                    <p class="text-muted mt-4 mb-4">Please Select Department to get Department Report</p>
                 </div>
             </div>
         </div>
     </div>
 {% endblock content %}
-
 {% block page_scripts %}
     <!--OFX Core JavaScript -->
-    <script src="/static/ofx/core.js"></script>
-    <!-- chartist chart -->
-    <script src="/static/template/assets/plugins/moment/moment.js"></script>
-    <!-- Date range Plugin JavaScript -->
-    <script src="/static/template/assets/plugins/daterangepicker/daterangepicker.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-    <!-- Bootstrap tether Core JavaScript -->
-    <script type="text/javascript">
-        let dept;
-        let s_Date;
-        let e_Date;
-        /*******************************************/
-        // Date Ranges
-        /*******************************************/
-        $('.dateranges').daterangepicker({
-            ranges: {
-                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-            },
-            locale: {
-                format: 'DD/MM/YYYY'
-            },
-        }, function (start, end, label) {
-            s_Date = start.format("YYYY-MM-DD");
-            e_Date = end.format("YYYY-MM-DD");
+    <script src="{% static 'ofx/core.js' %}"></script>
+    <script src="{% static 'template/assets/plugins/daterangepicker/daterangepicker.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/DataTables-1.12.1/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Responsive-2.3.0/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Responsive-2.3.0/js/responsive.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Buttons-2.2.3/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Buttons-2.2.3/js/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Bootstrap-5-5.1.3/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'template/assets/plugins/popper/popper.min.js' %}"></script>
+    <script src="{% static 'template/assets/plugins/toast-master/js/jquery.toast.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/custom_js/datatables_searchPane.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Select-1.4.0/js/dataTables.select.min.js' %}"></script>
+    <script src="{% static 'main/dataTables.colReorder.min.js' %}"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script> -->
+    <script src="{% static 'template/assets/plugins/echarts/echarts-all.js' %}"></script>
+    <!-- <script src="{% static 'template/assets/plugins/chartist-js/dist/chartist.min.js' %}"></script>
+    <script src="{% static 'template/assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js' %}"></script> -->
+    <script src="{% static 'template/assets/plugins/raphael/raphael-min.js' %}"></script>
+    <script src="{% static 'template/assets/plugins/morrisjs/morris.js' %}"></script>
+    <script src="{% static 'template/assets/plugins/Chart.js/Chart.min.js' %}"></script>
+    <script src="{% static 'ofx/artistsStatistics.js' %}"></script>
+    <!-- <script src="{% static 'template/assets/plugins/echarts/echarts-init.js' %}"></script> -->
+    {% csrf_token %}
+    <script>
+        if (ofx_page_data.user.role == 'HEAD OF DEPARTMENT') {
+            var depSelftag = $('.department-report-input-select'),
+                thisSelfTagName = $(depSelftag).attr("name");
+            localStorage.setItem(thisSelfTagName, '');
+            $.each(ofx_page_data.taskTypes, function (z, e) {
+                if (ofx_page_data.user.department == e.name) {
+                    localStorage.setItem(thisSelfTagName, e.id);
+                }
+            });
+            $(depSelftag).parent().hide();
+        }
+        var loadingCounter = 0,
+            exportData = {},
+            noDataDiv = `<span style="position: absolute; width: 100%; margin: auto; display: block; text-align: center; top: 0px; bottom: 0px; height: min-content; color: #c1c1c1; font-weight: 600;">No Data Found</span>`,
+            stateSaveTagPrefix = 'department_report_input_',
+            reportsTab = $('.reports-view > .row'),
+            targetDepartment = null,
+            stateSaveFilters = {};
+
+        function setDepartmentOptions() {
+            var deptag = $('.department-report-input-select'),
+                thisTagName = $(deptag).attr("name"),
+                savedValue = localStorage.getItem(thisTagName);
+            savedValue = savedValue == null ? '' : String(savedValue);
+            var oPtions = '<option value="">Department</option>';
+            $.each(ofx_page_data.taskTypes, function (z, e) {
+                oPtions = oPtions + `<option value="` + e.id + `" >` + e.name + `</option>`;
+            });
+            $(deptag).html(oPtions);
+            $(deptag).val(savedValue);
+            $(deptag).click();
+        }
+
+        function setGaugeChart(t, tmd, max = 100, now = 20) {
+            var gaugeChart = echarts.init(t);
+            option = {
+                tooltip: {
+                    formatter: "{a} <br/>{b} : {c}"
+                },
+                backgroundColor: 'transparent',
+                series: [
+                    {
+                        name: 'TMD: ' + tmd,
+                        type: 'gauge',
+                        max: max,
+                        detail: {formatter: '{value}'},
+                        data: [{value: now, name: 'AMD'}],
+                        axisLine: {
+                            lineStyle: {
+                                color: [[0.25, '#f62d51'], [0.5, '#ffbc34'], [0.75, '#009efb'], [1, '#55ce63']],
+                            }
+                        }
+                    }
+                ]
+            };
+            gaugeChart.setOption(option, true);
+        }
+
+        $(document).on('click', '.run-filter-daterange-achieved-mandays', function (e) {
+            var myTag = $('#gauge-chart');
+            $($(`<div id="gauge-chart" class="request-loading" style="width:100%; height:400px;"></div>`)).insertBefore($(myTag));
+            $(myTag).remove();
+            $('.am-target').html('N/A');
+            $('.am-am').html('N/A');
+            var tType = null;
+            $.each(ofx_page_data.taskTypes, function (x, e) {
+                if (String(e.id) == String(targetDepartment)) {
+                    tType = e.name;
+                }
+            });
+            if (tType != null) {
+                exportData['achievedMandays'] = {
+                    tmd:0,
+                    amd:0,
+                    date: {
+                        from: moment(stateSaveFilters['daterange_achieved_mandays'][0]).format('YYYY-MM-DD'),
+                        to: moment(stateSaveFilters['daterange_achieved_mandays'][1]).format('YYYY-MM-DD')
+                        },
+                    department: tType
+                    };
+                $.ajax({
+                    type: "GET",
+                    url: "/api/v2/employeedailystatisticslite/",
+                    dataType: "json",
+                    data: {
+                        logDate__range: moment(stateSaveFilters['daterange_achieved_mandays'][0]).format('YYYY-MM-DD') + '|' + moment(stateSaveFilters['daterange_achieved_mandays'][1]).format('YYYY-MM-DD'),
+                        employee__department__name__in: tType
+                    },
+                    contentType: 'application/json; charset=utf-8',
+                    "dataSrc": "",
+                    "async": true,
+                    beforeSend: function (request) {
+                        request.setRequestHeader("required", JSON.stringify(["id", "tmd", "amd"]));
+                    },
+                    success: function (statistics) {
+                        if (statistics.length > 0) {
+                            var trgt = 0,
+                                arciv = 0;
+                            $.each(statistics, function (_z, emp) {
+                                trgt = trgt + emp.tmd;
+                                arciv = arciv + emp.amd;
+                            });
+                            exportData['achievedMandays'] = {
+                                tmd:trgt,
+                                amd:arciv,
+                                date: {
+                                    from: moment(stateSaveFilters['daterange_achieved_mandays'][0]).format('YYYY-MM-DD'),
+                                    to: moment(stateSaveFilters['daterange_achieved_mandays'][1]).format('YYYY-MM-DD')
+                                    },
+                                department: tType
+                                };
+                            setGaugeChart(document.getElementById('gauge-chart'), parseInt(trgt), parseInt((arciv > trgt ? arciv : trgt)), parseInt(arciv));
+                            $('.am-target').html(trgt.toFixed(2));
+                            $('.am-am').html(arciv.toFixed(2));
+                        } else {
+                            $('#gauge-chart').html(noDataDiv);
+                        }
+                    loadingCounter = loadingCounter - 1;
+                    },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR.responseText)
+                    }
+                });
+            }
+        });
+        $(document).on('click', '.run-filter-monthrange-achieved-mandays', function (e) {
+            var myTag = $('#morris-bar-chart');
+            $($(`<div id="morris-bar-chart" class="request-loading" style="height: 400px;"></div>`)).insertBefore($(myTag));
+            $(myTag).remove();
+            $('#morris-bar-chart-legend').empty();
+            $('.mam-target').html('N/A');
+            $('.mam-am').html('N/A');
+            var tType = null;
+            $.each(ofx_page_data.taskTypes, function (x, e) {
+                if (String(e.id) == String(targetDepartment)) {
+                    tType = e.name;
+                }
+            });
+            if (tType != null) {
+                exportData['monthlyAchievement'] = {
+                    data: [],
+                    date: {
+                        from: moment(stateSaveFilters['monthrange_achieved_mandays'][0]).format('YYYY-MM-DD'),
+                        to: moment(stateSaveFilters['monthrange_achieved_mandays'][1]).format('YYYY-MM-DD')
+                        },
+                    department: tType
+                    };
+                $.ajax({
+                    type: "GET",
+                    url: "/api/v2/employeedailystatisticslite/",
+                    dataType: "json",
+                    data: {
+                        logDate__range: moment(stateSaveFilters['monthrange_achieved_mandays'][0]).format('YYYY-MM-DD') + '|' + moment(stateSaveFilters['monthrange_achieved_mandays'][1]).format('YYYY-MM-DD'),
+                        employee__department__name__in: tType
+                    },
+                    contentType: 'application/json; charset=utf-8',
+                    "dataSrc": "",
+                    "async": true,
+                    beforeSend: function (request) {
+                        request.setRequestHeader("required", JSON.stringify(["id", "tmd", "amd", "logDate"]));
+                    },
+                    success: function (statistics) {
+                        if (statistics.length > 0) {
+                            var _data = {},
+                                trgt = 0,
+                                arciv = 0;
+                            $.each(statistics, function (_z, emp) {
+                                var dKey = 'date_' + moment(emp.logDate).format('YYYY_MM');
+                                if (typeof _data[dKey] == "undefined") {
+                                    _data[dKey] = {
+                                        y: moment(emp.logDate).format('MMM YYYY'),
+                                        tmd: 0,
+                                        amd: 0
+                                    }
+                                }
+                                _data[dKey].tmd = _data[dKey].tmd + emp.tmd;
+                                _data[dKey].amd = _data[dKey].amd + emp.amd;
+                                trgt = trgt + emp.tmd;
+                                arciv = arciv + emp.amd;
+                            });
+                            var _data_ = [];
+                            const ordered = Object.keys(_data).sort().reverse().reduce(
+                                (obj, key) => {
+                                    obj[key] = _data[key];
+                                    return obj;
+                                },
+                                {}
+                            );
+                            $.each(ordered, function (x, y) {
+                                _data_.push({
+                                    y: y.y,
+                                    tmd: y.tmd.toFixed(2),
+                                    amd: y.amd.toFixed(2)
+                                });
+                            });
+                            exportData['monthlyAchievement'] = {
+                                data: _data_,
+                                date: {
+                                    from: moment(stateSaveFilters['monthrange_achieved_mandays'][0]).format('YYYY-MM-DD'),
+                                    to: moment(stateSaveFilters['monthrange_achieved_mandays'][1]).format('YYYY-MM-DD')
+                                    },
+                                department: tType
+                                };
+                            // Bar chart
+                            var browsersChart = Morris.Bar({
+                                element: 'morris-bar-chart',
+                                data: _data_,
+                                xkey: 'y',
+                                ykeys: ['tmd', 'amd'],
+                                labels: ['TMD', 'AMD'],
+                                barColors: ['#55ce63', '#009efb'],
+                                lineColors: ['red', 'green'],
+                                hideHover: 'auto',
+                                gridLineColor: '#eef0f2',
+                                resize: true
+                            });
+                            browsersChart.options.labels.forEach(function (label, i) {
+                                var legendItem = $('<span class="legend-item"></span>').text(label).prepend('<span class="legend-color">&nbsp;</span>');
+                                legendItem.find('span').css('backgroundColor', browsersChart.options.barColors[i]);
+                                $('#morris-bar-chart-legend').append(legendItem)
+                            });
+                            $('.mam-target').html(trgt.toFixed(2));
+                            $('.mam-am').html(arciv.toFixed(2));
+                        } else {
+                            $('#morris-bar-chart').html(noDataDiv);
+                        }
+                    loadingCounter = loadingCounter - 1;
+                    },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR.responseText)
+                    }
+                });
+            }
         });
 
-        $('.dateranges').on('apply.daterangepicker', function(ev, picker) {
-                        var red = "red"
-            var usual = "#747d8a"
-            dept = $("#dep_select :selected").text().trim();
-            if (dept !== "Department") {
-                const all_shots_json = $.ajax({
-                    type: "GET",
-                    url: "/api/production/custom/dep_reports/?start_date=" + s_Date + "T00:00:00" + "&end_date=" + e_Date + "T23:59:59" + "&dept=" + dept,
-                    dataType: "application/json",
-                    async: false,
-                    error: function (xhr, status, err) {
+        function loadTodayArtistsReport(department = null) {
+            exportData['artistsReport'] = {
+                grades:[],
+                totalArtists: 0,
+                onleave: 0,
+                ttm: 0,
+                date: {
+                    from: moment().format('YYYY-MM-DD'),
+                    to: moment().format('YYYY-MM-DD')
                     },
-                }).responseText;
-                const all_shots = JSON.parse(all_shots_json);
-
-                if (all_shots.total_shots !== 0) {
-                    document.getElementById("yts_per_label").classList.add('css-bar-'+all_shots.yts_per.toString())
-                    document.getElementById("wip_per_label").classList.add('css-bar-'+all_shots.wip_per.toString())
-                    document.getElementById("comp_per_label").classList.add('css-bar-'+all_shots.comp_per.toString())
-                    document.getElementById("total_shots").innerHTML = all_shots.total_shots
-                    document.getElementById("ach_man").innerHTML = all_shots.achieved_mandays
-                    document.getElementById("assign_man").innerHTML = all_shots.total_mandays
-                    document.getElementById("yts").innerHTML = all_shots.yts
-                    document.getElementById("wip").innerHTML = all_shots.wip
-                    document.getElementById("completed").innerHTML = all_shots.completed
-                    document.getElementById("retakes").innerHTML = all_shots.retakes
-                    document.getElementById("retakes_per").innerHTML = all_shots.retakes_per + " %"
-                    document.getElementById("assgn_vs_ach").innerHTML = all_shots.act_vs_ach
-                    document.getElementById("top_title").innerHTML = "Statistics Of  " + $("#dep_select option:selected").html()
-                    document.getElementById("selected_dates").innerHTML = start.format("DD-MM-YYYY") + " --- " + end.format("DD-MM-YYYY")
-                    $('#selected_dates').css("color", usual)
-                } else {
-                    document.getElementById("total_shots").innerHTML = "N/A"
-                    document.getElementById("ach_man").innerHTML = "N/A"
-                    document.getElementById("assign_man").innerHTML = "N/A"
-                    document.getElementById("yts").innerHTML = "N/A"
-                    document.getElementById("wip").innerHTML = "N/A"
-                    document.getElementById("completed").innerHTML = "N/A"
-                    document.getElementById("retakes").innerHTML = "N/A"
-                    document.getElementById("retakes_per").innerHTML = "N/A"
-                    document.getElementById("assgn_vs_ach").innerHTML = "N/A"
-                    document.getElementById("top_title").innerHTML = "Statistics Of  " + $("#dep_select option:selected").html()
-                    document.getElementById("selected_dates").innerHTML = "No Statistics Found"
-                    $('#selected_dates').css("color", red)
+                department: department
+                };
+            $.ajax({
+                type: "GET",
+                url: "/api/hrm/grades/",
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                "dataSrc": "",
+                "async": true,
+                success: function (grades) {
+                    var _grades = {};
+                    $.each(grades, function (_z, _e) {
+                        _grades['id_' + _e.id] = JSON.parse(JSON.stringify(Object.assign(_e, {count: 0})));
+                    });
+                    _grades['id_0'] = {
+                        "id": 0,
+                        "name": "Unknown",
+                        "a_man_day": 0,
+                        "count": 0
+                    };
+                    $.ajax({
+                        type: "GET",
+                        url: "/api/v2/employeedailystatisticslite/",
+                        dataType: "json",
+                        data: {
+                            employee__role__name__in: 'VFX ARTIST',
+                            employee__employement_status__name: "Active",
+                            logDate__range: moment().format('YYYY-MM-DD') + '|' + moment().format('YYYY-MM-DD'),
+                            employee__department__name__in: department
+                        },
+                        contentType: 'application/json; charset=utf-8',
+                        "dataSrc": "",
+                        "async": true,
+                        beforeSend: function (request) {
+                            request.setRequestHeader("required", JSON.stringify(["id", "tmd", 'leaves', 'employee__id', 'employee__grade__id',]));
+                        },
+                        success: function (statistics) {
+                            if (statistics.length > 0) {
+                                var aaTprd = 0;
+                                var _statistics = {count: 0, wd: 0, tmd: 0, leaves: 0},
+                                    empLoad = [];
+                                $.each(statistics, function (_z, emp) {
+                                    if (empLoad.indexOf(emp.employee.id) == -1) {
+                                        empLoad.push(emp.employee.id);
+                                        _grades['id_' + (emp.employee.grade != null ? emp.employee.grade.id : 0)].count = _grades['id_' + (emp.employee.grade != null ? emp.employee.grade.id : 0)].count + 1
+                                        _statistics.wd = _statistics.wd + ((_grades['id_' + (emp.employee.grade != null ? emp.employee.grade.id : 0)].a_man_day > 0) ? (emp.tmd / _grades['id_' + (emp.employee.grade != null ? emp.employee.grade.id : 0)].a_man_day) : 0);
+                                        aaTprd = aaTprd + _grades['id_' + (emp.employee.grade != null ? emp.employee.grade.id : 0)].a_man_day;
+                                        _statistics.count = _statistics.count + 1;
+                                        _statistics.tmd = _statistics.tmd + emp.tmd;
+                                        _statistics.leaves = _statistics.leaves + emp.leaves;
+                                    }
+                                });
+                                var _gradesX = [];
+                                $.each(_grades, function (x, e) {
+                                    if (e.count > 0) {
+                                        _gradesX.push({y: `Grade-` + e.name + ` (` + e.a_man_day + `)`, a: e.count});
+                                    }
+                                });
+                                // Bar chart
+                                var $arrColors = ['#ffb834', '#34ff3e', '#f50707', '#348cff'];
+                                Morris.Bar({
+                                    element: 'todayartistsgrades',
+                                    data: _gradesX,
+                                    xkey: 'y',
+                                    ykeys: ['a'],
+                                    labels: ['Artists'],
+                                    barColors: function (row, series, type) {
+                                        return $arrColors[row.x];
+                                    },
+                                    hideHover: 'auto',
+                                    gridLineColor: '#eef0f2',
+                                    resize: true,
+                                });
+                                exportData['artistsReport'] = {
+                                    grades:_gradesX,
+                                    totalArtists: _statistics.count,
+                                    onleave:_statistics.leaves,
+                                    ttm: _statistics.tmd,
+                                    date: {
+                                        from: moment().format('YYYY-MM-DD'),
+                                        to: moment().format('YYYY-MM-DD')
+                                        },
+                                    department: department
+                                    };
+                                var myTag = $('#todayartists');
+                                $($(`<canvas id="todayartists" height="200" class="p-3"></canvas>`)).insertBefore($(myTag));
+                                $(myTag).remove();
+                                new Chart(document.getElementById("todayartists"),
+                                    {
+                                        "type": "pie",
+                                        "data": {
+                                            "labels": ["Present", "on Leave"],
+                                            "datasets": [{
+                                                "label": "Today Available Artists",
+                                                "data": [_statistics.wd, _statistics.leaves],
+                                                "backgroundColor": ["rgb(90,187,79)", "rgb(253,12,12)"]
+                                            }
+                                            ]
+                                        }
+                                    });
+                                $('.aa-ta').html(parseInt(_statistics.count));
+                                $('.aa-tmd').html(_statistics.tmd.toFixed(2));
+                                $('.aa-tprd').html(aaTprd.toFixed(2));
+                            } else {
+                                $('#todayartists').html(noDataDiv);
+                                $('#todayartistsgrades').html(noDataDiv);
+                            }
+                        loadingCounter = loadingCounter - 1;
+                        },
+                        error: function (jqXHR, exception) {
+                            console.log(jqXHR.responseText)
+                        }
+                    });
+                },
+                error: function (jqXHR, exception) {
+                    console.log(jqXHR.responseText)
                 }
-            }else{
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Please Select Department..',
-                })
-            }
-        })
+            });
+        }
 
-        function dep_export_to_excel() {
-            if (dept !== "Department" && s_Date.length >0) {
-                window.location = "/production/dept_reports_export/?start_date=" + s_Date+"T00:00:00" + "&end_date=" + e_Date+"T23:59:59" + "&dept=" + dept
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Please Select Department and Date Range....',
-                })
+        function loadMandaysAvailability(department = null, from_date = null, to_date = null) {
+            $('#mandayavailabulity-bar-chart-legend').empty();
+            var getAdditionalWeeks = 7;
+            from_date = from_date == null ? moment().format('YYYY-MM-DD') + 'T00:00:00.000000' : from_date;
+            to_date = to_date == null ? moment(from_date).add(getAdditionalWeeks, 'week').format("YYYY-MM-DD") : to_date;
+            var weekDates = dateSanitization(from_date, to_date, 'week'),
+                diffDays = parseInt(moment(weekDates.to_date).diff(moment(weekDates.from_date), 'days') / 7);
+            weekDates.from_date = moment(weekDates.from_date).format("YYYY-MM-DD") + 'T00:00:00.000000';
+            weekDates.to_date = moment(weekDates.to_date).format("YYYY-MM-DD") + 'T23:59:59.999999';
+            exportData['mandaysAvailability'] = {
+                data: [],
+                labels: {
+                    y:'WEEK',
+                    a:'AVAILABLE',
+                    b:'TMD',
+                    c:'BIDS',
+                    d:'ACHIEVED'
+                    },
+                date: {
+                    from: moment(weekDates.from_date).format('YYYY-MM-DD'),
+                    to: moment(weekDates.to_date).format('YYYY-MM-DD')
+                    },
+                department: department
+                };
+            $.ajax({
+                type: "GET",
+                url: "/api/v2/mandaysavailability/",
+                dataType: "json",
+                data: {
+                    from_date: moment(weekDates.from_date).format('YYYY-MM-DD'),
+                    to_date: moment(weekDates.to_date).format('YYYY-MM-DD'),
+                    isCurrent: true,
+                    dept: department
+                },
+                contentType: 'application/json; charset=utf-8',
+                "dataSrc": "",
+                "async": true,
+                success: function (response) {
+                    var tabLity = {},
+                        totalData = {
+                            a: 0,
+                            b: 0,
+                            c: 0,
+                            d: 0
+                        };
+                    if (response.length > 0) {
+                        $.each(response[0].data, function (_x, _e) {
+                            var nTcl = parseFloat((/*_e.tmd-_e.bid_days*/ _e.tmd - _e.pending_mandays).toFixed(2)).toFixed(2);
+                            if (typeof tabLity[_x] == "undefined") {
+                                tabLity[_x] = {
+                                    y: genUIDateFormat(_e.range.from, _e.range.to, format = {
+                                        date: "DD",
+                                        month: "MMM",
+                                        year: "YYYY"
+                                    }),
+                                    a: 0, //target
+                                    b: 0, //tmd
+                                    c: 0, //bids
+                                    d: 0, //achieved
+                                };
+                            }
+                            tabLity[_x].a = tabLity[_x].a + parseFloat(nTcl);
+                            tabLity[_x].b = tabLity[_x].b + parseFloat(_e.tmd.toFixed(2));
+                            tabLity[_x].c = tabLity[_x].c + parseFloat(_e.bid_days.toFixed(2));
+                            tabLity[_x].d = tabLity[_x].d + parseFloat(_e.achieved_mandays.toFixed(2));
+                            totalData.a = totalData.a + parseFloat(nTcl);
+                            totalData.b = totalData.b + parseFloat(_e.tmd.toFixed(2));
+                            totalData.c = totalData.c + parseFloat(_e.bid_days.toFixed(2));
+                            totalData.d = totalData.d + parseFloat(_e.achieved_mandays.toFixed(2));
+                        });
+                        var browsersChart = Morris.Bar({
+                            element: 'mandayavailabulity',
+                            data: Object.values(tabLity),
+                            xkey: 'y',
+                            ykeys: ['a', 'b', 'c', 'd'],
+                            labels: ['AVAILABLE', 'TMD', 'BIDS', 'ACHIEVED'],
+                            barColors: ['#009efb', '#7460ee', '#ffbc34', '#ddd'],
+                            hideHover: 'auto',
+                            gridLineColor: '#eef0f2',
+                            resize: true
+                        });
+                        browsersChart.options.labels.forEach(function (label, i) {
+                            var legendItem = $('<span class="legend-item"></span>').text(label).prepend('<span class="legend-color">&nbsp;</span>');
+                            legendItem.find('span').css('backgroundColor', browsersChart.options.barColors[i]);
+                            $('#mandayavailabulity-bar-chart-legend').append(legendItem)
+                        });
+                        exportData['mandaysAvailability'] = {
+                            data: Object.values(tabLity),
+                            labels: {
+                                y:'WEEK',
+                                a:'AVAILABLE',
+                                b:'TMD',
+                                c:'BIDS',
+                                d:'ACHIEVED'
+                                },
+                            date: {
+                                from: moment(weekDates.from_date).format('YYYY-MM-DD'),
+                                to: moment(weekDates.to_date).format('YYYY-MM-DD')
+                                },
+                            department: department
+                            };
+                        $('.dma-target').html(totalData.a.toFixed(2));
+                        $('.dma-tmd').html(totalData.b.toFixed(2));
+                        $('.dma-bids').html(totalData.c.toFixed(2));
+                        $('.dma-amd').html(totalData.d.toFixed(2));
+                    } else {
+                        $('#mandayavailabulity').html(noDataDiv);
+                    }
+                loadingCounter = loadingCounter - 1;
+                },
+                error: function (jqXHR, exception) {
+                    console.log(jqXHR.responseText)
+                }
+            });
+        }
+
+        function renderPageData() {
+            if (targetDepartment.length > 0) {
+                $(reportsTab).empty();
+                $(reportsTab).append(`
+                <div class="col-md-6">
+                    <div class="card pt-0" style="overflow: hidden;">
+                        <div class="card-body ">
+                            <div class="card-title p-2 mb-1" style="margin-left: -10px; margin-right: -10px; background: #192a40; ">
+                                <div class="row">
+                                    <div class="col-5">
+                                        <h4 class="d-inline">Achieved Mandays</h4>
+                                        <p class="text-muted mt-0 mb-0">Target Mandays: <span class="am-target">N/A</span><br>Achieved Mandays: <span class="am-am">N/A</span></p>
+                                    </div>
+                                    <div class="col-7 text-right mt-3 pr-0 amd-search">
+                                        <div class="btn-group mb-2 mr-2">
+                                            <input type='text' style="text-align: left; height: 33px; padding: 0px 10px;" data-type="date-range" class="daterange-achieved-mandays btn btn-outline-info" value="All Dates" />
+                                            <button type="button" style="height: 33px;padding: 0px 10px;" class="btn btn-info run-filter-daterange-achieved-mandays mdi mdi-arrow-right"></button>
+                                        </div>
+                                        <div class="btn-group mb-2 mr-2">
+                                            <button class="btn btn-info mdi mdi-cloud-download export-to-excel only-this" data-target="achievedMandays" title="Export to Excel" style="height: 33px;padding: 0px 10px;"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="gauge-chart" class="request-loading" style="width:100%; height:400px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card pt-0" style="overflow: hidden;">
+                        <div class="card-body ">
+                            <div class="card-title p-2 mb-1" style="margin-left: -10px; margin-right: -10px; background: #192a40; ">
+                                <div class="row">
+                                    <div class="col-5">
+                                        <h4 class="d-inline">Monthly Achievement</h4>
+                                        <p class="text-muted mt-0 mb-0">Target Mandays: <span class="mam-target">N/A</span></br>Achieved Mandays: <span class="mam-am">N/A</span></p>
+                                    </div>
+                                    <div class="col-7 text-right mt-3 pr-0 amd-search">
+                                        <div class="btn-group mb-2 mr-2">
+                                            <input type="month" name="start" min="2018-03" value="2018-05" style="text-align: left; height: 33px; padding: 0px 10px;" data-index="0" class="monthrange-achieved-mandays notset btn btn-outline-info" />
+                                            <input type="month" name="start" min="2018-03" value="2018-05" style="text-align: left; height: 33px; padding: 0px 10px;" data-index="1" class="monthrange-achieved-mandays notset btn btn-outline-info" />
+                                            <button type="button" style="height: 33px;padding: 0px 10px;" class="btn btn-info run-filter-monthrange-achieved-mandays mdi mdi-arrow-right"></button>
+                                        </div>
+                                        <div class="btn-group mb-2 mr-2">
+                                            <button class="btn btn-info mdi mdi-cloud-download export-to-excel only-this" data-target="monthlyAchievement" title="Export to Excel" style="height: 33px;padding: 0px 10px;"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="morris-bar-chart-legend" class="bar-chart-legend"></div>
+                            <div id="morris-bar-chart" class="request-loading" style="height: 400px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mt-3">
+                    <div class="card pt-0" style="overflow: hidden;">
+                        <div class="card-body ">
+                            <div class="card-title p-2 mb-1" style="margin-left: -10px; margin-right: -10px; background: #192a40; ">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h4 class="d-inline">Artists by Grades</h4>
+                                        <p class="text-muted mt-0 mb-0">Total Artists: <span class="aa-ta">N/A</span></br>Department Ability per day: <span class="aa-tprd">N/A</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="todayartistsgrades" class="request-loading p-3" style="height: 345px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mt-3">
+                    <div class="card pt-0" style="overflow: hidden;">
+                        <div class="card-body ">
+                            <div class="card-title p-2 mb-1" style="margin-left: -10px; margin-right: -10px; background: #192a40; ">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h4 class="d-inline">Available Artists</h4>
+                                        <p class="text-muted mt-0 mb-0">Total Artists: <span class="aa-ta">N/A</span></br>Today Target Mandays: <span class="aa-tmd">N/A</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="height: 345px;width: 550px;position: relative;margin: auto;">
+                                <div id="todayartists" class="request-loading p-3" style="height: 345px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-3">
+                    <div class="card pt-0" style="overflow: hidden;">
+                        <div class="card-body ">
+                            <div class="card-title p-2 mb-1" style="margin-left: -10px; margin-right: -10px; background: #192a40; ">
+                                <div class="row">
+                                    <div class="col-5">
+                                        <h4 class="d-inline">Department Manday Availabilty</h4>
+                                        <p class="text-muted mt-0 mb-0">Total Available: <span class="dma-target">N/A</span></br>Total TMD: <span class="dma-tmd">N/A</span></br>Total Bids: <span class="dma-bids">N/A</span></br>Total Achieved Mandays: <span class="dma-amd">N/A</span></br></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="mandayavailabulity-bar-chart-legend" class="bar-chart-legend"></div>
+                            <div id="mandayavailabulity" class="request-loading p-3" style="height: 345px;"></div>
+                        </div>
+                    </div>
+                </div>`);
+                var varx1 = localStorage.getItem(stateSaveTagPrefix + 'daterange_achieved_mandays');
+                varx1 = varx1 != null ? JSON.parse(varx1) : [moment().startOf('month').format("YYYY-MM-DD") + ' 00:00:00.000000', moment().endOf('month').format("YYYY-MM-DD") + ' 23:59:59.999999'];
+                stateSaveFilters['daterange_achieved_mandays'] = varx1;
+                $('.daterange-achieved-mandays').daterangepicker({
+                    startDate: moment(stateSaveFilters['daterange_achieved_mandays'][0]).format("DD/MM/YYYY"),
+                    endDate: moment(stateSaveFilters['daterange_achieved_mandays'][1]).format("DD/MM/YYYY"),
+                    ranges: {
+                        'Today': [moment(), moment()],
+                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                        'This Month': [moment().startOf('month'), moment().endOf('month')],
+                        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                    },
+                    locale: {
+                        format: 'DD/MM/YYYY'
+                    },
+                    autoApply: false
+                }, function (start, end, label) {
+                    stateSaveFilters['daterange_achieved_mandays'] = [];
+                    stateSaveFilters['daterange_achieved_mandays'][0] = start.format("YYYY-MM-DD") + ' 00:00:00.000000';
+                    stateSaveFilters['daterange_achieved_mandays'][1] = end.format("YYYY-MM-DD") + ' 23:59:59.999999';
+                    localStorage.setItem(stateSaveTagPrefix + 'daterange_achieved_mandays', JSON.stringify(stateSaveFilters['daterange_achieved_mandays']));
+                });
+                localStorage.setItem(stateSaveTagPrefix + 'daterange_achieved_mandays', JSON.stringify(stateSaveFilters['daterange_achieved_mandays']));
+                $('.monthrange-achieved-mandays').each(function (e) {
+                    var index = parseInt($(this).attr('data-index'));
+                    var varx2 = localStorage.getItem(stateSaveTagPrefix + 'monthrange_achieved_mandays');
+                    varx2 = varx2 != null ? JSON.parse(varx2) : [moment().subtract(3, 'month').startOf('month').format("YYYY-MM-DD") + ' 00:00:00.000000', moment().subtract(1, 'month').endOf('month').format("YYYY-MM-DD") + ' 23:59:59.999999'];
+                    stateSaveFilters['monthrange_achieved_mandays'] = varx2;
+                    localStorage.setItem(stateSaveTagPrefix + 'monthrange_achieved_mandays', JSON.stringify(stateSaveFilters['monthrange_achieved_mandays']));
+                    $(this).val(moment(varx2[index]).format("YYYY-MM"));
+                });
+                loadingCounter = 4;
+                $('.run-filter-daterange-achieved-mandays').click();
+                $('.run-filter-monthrange-achieved-mandays').click();
+                var tType = null;
+                $.each(ofx_page_data.taskTypes, function (x, e) {
+                    if (String(e.id) == String(targetDepartment)) {
+                        tType = e.name;
+                    }
+                });
+                if (tType != null) {
+                    loadTodayArtistsReport(tType);
+                    loadMandaysAvailability(tType);
+                }
             }
         }
 
+        $(document).on('change', '.monthrange-achieved-mandays', function (e) {
+            var index2 = parseInt($(this).attr('data-index')),
+                valX = moment($(this).val() + '-01 00:00:00.000000');
+            stateSaveFilters['monthrange_achieved_mandays'][index2] = index2 == 0 ? valX.startOf('month').format("YYYY-MM-DD") + ' 00:00:00.000000' : valX.endOf('month').format("YYYY-MM-DD") + ' 23:59:59.999999';
+            localStorage.setItem(stateSaveTagPrefix + 'monthrange_achieved_mandays', JSON.stringify(stateSaveFilters['monthrange_achieved_mandays']));
+        });
+        $(document).on('click change', '.department-report-input-select', function (e) {
+            var thisTagName = $(this).attr("name"),
+                savedValue = $(this).val();
+            if (targetDepartment != savedValue) {
+                targetDepartment = savedValue;
+                localStorage.setItem(thisTagName, targetDepartment);
+                if (savedValue.length > 0) {
+                    renderPageData();
+                }
+            }
+        });
+        setDepartmentOptions();
+        $(document).on('click', '.export-to-excel', function (e) {
+            if(loadingCounter==0){
+                var _data = {};
+                if($(this).hasClass('only-this')){
+                    var target = $(this).attr('data-target');
+                    if(typeof exportData[target] != "undefined"){
+                        _data['exportOnly'] = target;
+                        _data[target] = JSON.stringify(exportData[target]);
+                        }
+                    }else{
+                        $.each(exportData,function(k,v){
+                            _data[k] = JSON.stringify(v);
+                            });
+                        }
+                var from = $(`<form action="/production/export_department_lite_report/" method="POST" target="_blank" style="display:none;">
+                    {% csrf_token %}
+                    </form>`);
+                $.each(_data,function(k,v){
+                    $('<input />', { type:"hidden", name: k, value: v }).appendTo(from);
+                    });
+                $('body').append(from);
+                $(from).submit();
+                $(from).remove();
+                }else{
+                    alert("Loading Please Wait...")
+                    }
+            });
     </script>
 {% endblock page_scripts %}

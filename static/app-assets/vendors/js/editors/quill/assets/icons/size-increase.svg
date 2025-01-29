@@ -1,3 +1,9 @@
+<!--
+  - Copyright (c) 2023.
+  - Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+  - All rights reserved.
+  -->
+
 <svg viewbox="0 0 18 18">
   <polyline class="ql-stroke" points="3.5 14 7 4 10.5 14"></polyline>
   <line class="ql-stroke" x1="9.45" x2="4.55" y1="11" y2="11"></line>

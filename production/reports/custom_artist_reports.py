@@ -1,3 +1,7 @@
+#  Copyright (c) 2023.
+#  Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+#  All rights reserved.
+
 import datetime
 import json
 
@@ -97,14 +101,15 @@ def artist_sheet_download(buffer=None, start_date=None, end_date=None, artist_id
     worksheet.write('C4', 'SHOT CODE', bold)
     worksheet.write('D4', 'TASK', bold)
     worksheet.write('E4', 'STATUS', bold)
-    worksheet.write('F4', 'BID DAYS', bold)
-    worksheet.write('G4', 'PROGRESS', bold)
-    worksheet.write('H4', 'CONSUMED BID DAYS', bold)
-    worksheet.write('I4', 'PENDING BID DAYS', bold)
-    worksheet.write('J4', 'ASSIGNED DATE', bold)
-    worksheet.write('K4', 'ETA', bold)
-    worksheet.write('L4', 'ARTIST', bold)
-    worksheet.write('M4', 'TEAM LEAD', bold)
+    worksheet.write('F4', 'SHOT BID DAYS', bold)
+    worksheet.write('G4', 'ASSIGNED BID DAYS', bold)
+    worksheet.write('H4', 'PROGRESS', bold)
+    worksheet.write('I4', 'CONSUMED BID DAYS', bold)
+    worksheet.write('J4', 'PENDING BID DAYS', bold)
+    worksheet.write('K4', 'ASSIGNED DATE', bold)
+    worksheet.write('L4', 'ETA', bold)
+    worksheet.write('M4', 'ARTIST', bold)
+    worksheet.write('N4', 'TEAM LEAD', bold)
 
     col = 0
     row = 3
@@ -122,7 +127,8 @@ def artist_sheet_download(buffer=None, start_date=None, end_date=None, artist_id
             elif shot_id['shot']['status']['code'] == "CRT":
                 shot_status = "RETAKE"
 
-            bid_days = float(shot_id['assigned_bids'])
+            shot_bid_days = float(shot_id['shot']['bid_days'])
+            assigned_bid_days = float(shot_id['assigned_bids'])
             percentile = shot_id['shot']['progress'] / 100
 
             bid_column = 'F{}'.format(row + 2)
@@ -141,14 +147,15 @@ def artist_sheet_download(buffer=None, start_date=None, end_date=None, artist_id
             worksheet.write(row + 1, col + 2, shot_id['shot']['name'], border)
             worksheet.write(row + 1, col + 3, shot_id['shot']['task_type'], border)
             worksheet.write(row + 1, col + 4, shot_status, border)
-            worksheet.write(row + 1, col + 5, bid_days, border)
-            worksheet.write(row + 1, col + 6, percentile, percent)
-            worksheet.write(row + 1, col + 7, '=ROUND(({}-{}),1)'.format(bid_column, pending_column), pending_color)
-            worksheet.write(row + 1, col + 8, '=ROUND(({}-{}*{}),1)'.format(bid_column, bid_column, progress_column), pending_color)
-            worksheet.write(row + 1, col + 9, assigned_date, border)
-            worksheet.write(row + 1, col + 10, due_date, border)
-            worksheet.write(row + 1, col + 11, shot_id['artist'], border)
-            worksheet.write(row + 1, col + 12, shot_id['shot']['team_lead'], border)
+            worksheet.write(row + 1, col + 5, shot_bid_days, border)
+            worksheet.write(row + 1, col + 6, assigned_bid_days, border)
+            worksheet.write(row + 1, col + 7, percentile, percent)
+            worksheet.write(row + 1, col + 8, '=ROUND(({}-{}),1)'.format(bid_column, pending_column), pending_color)
+            worksheet.write(row + 1, col + 9, '=ROUND(({}-{}*{}),1)'.format(bid_column, bid_column, progress_column), pending_color)
+            worksheet.write(row + 1, col + 10, assigned_date, border)
+            worksheet.write(row + 1, col + 11, due_date, border)
+            worksheet.write(row + 1, col + 12, shot_id['artist'], border)
+            worksheet.write(row + 1, col + 13, shot_id['shot']['team_lead'], border)
 
         except Exception as e:
             print(e)

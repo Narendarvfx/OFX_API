@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 /*=========================================================================================
     File Name: popover.js
     Description: Popovers are an updated version, which don’t rely on images, use CSS3 for animations, and data-attributes for local title storage.

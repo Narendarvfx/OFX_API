@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 /*eslint no-unused-vars: "off"*/
 /*eslint no-empty-function: "off"*/
 export default {

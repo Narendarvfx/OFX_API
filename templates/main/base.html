@@ -1,16 +1,53 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 
 {% include 'main/head.html' %}
-
+<script type="application/javascript" src="{% static 'template/assets/plugins/moment/moment.js' %}"></script>
+<style>
+    .preloader{
+        display: none!important;
+        }
+    #ajaxBusy {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background-color: rgba(12, 12, 12, 0.62) !important;
+            /* background-image: url('/static/template/assets/images/loading.gif'); */
+            /* background-repeat: no-repeat; */
+            /* background-position: center; */
+        }
+</style>
 <body class="fix-header fix-sidebar card-no-border">
     {% include 'main/preloader.html' %}
     <!-- ============================================================== -->
     <!-- Main wrapper - style you can find in pages.scss -->
     <!-- ============================================================== -->
+    <div id="ajaxBusy">
+        <div class="ajax-loading">
+            <div>
+                <img src="{% static 'template/assets/images/ofx_logo_w.png' %}" />
+                <span></span>
+                <img src="{% static 'template/assets/images/shotbuzz_light_logo.png' %}" />
+            </div>
+            <div>
+                <img  src="{% static 'template/assets/images/loading.gif' %}" />
+            </div>
+            <div>
+                <span>Loading</span>
+                <div>
+                    <span class="stage"><i class="dot-pulse"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="main-wrapper">
         {% include 'main/topbar.html' %}
         {% include 'main/leftsidebar.html' %}
+        {% include 'main/bottom_scripts.html' %}
         <!-- ============================================================== -->
         <!-- Page wrapper  -->
         <!-- ============================================================== -->
@@ -57,12 +94,27 @@
         <!-- End Page wrapper  -->
         <!-- ============================================================== -->
     </div>
+
     <!-- ============================================================== -->
     <!-- End Wrapper -->
     <!-- ============================================================== -->
 
-    {% include 'main/bottom_scripts.html' %}
+
+    {% include 'main/shot_details.html' %}
     {% block page_scripts %} {% endblock page_scripts %}
+
+<script>
+        // Ajax activity indicator bound to ajax start/stop document events
+    $(document).ajaxStart(function () {
+       $('#ajaxBusy').show();
+    }).ajaxStop(function () {
+       $('#ajaxBusy').hide();
+    });
+
+    // $(document).ajaxStop(function () {
+    //     $('#ajaxBusy').hide();
+    // });
+</script>
 
 </body>
 

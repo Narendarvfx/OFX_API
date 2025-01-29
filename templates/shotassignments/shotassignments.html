@@ -1,0 +1,1028 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block bread_crumb %}
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/DataTables-1.12.1/css/jquery.dataTables.min.css' %}"
+          type="text/css"/>
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/Responsive-2.3.0/css/responsive.dataTables.min.css' %}"
+          type="text/css"/>
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/Responsive-2.3.0/css/responsive.bootstrap5.min.css' %}"
+          type="text/css"/>
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/Buttons-2.2.3/css/buttons.dataTables.min.css' %}"
+          type="text/css"/>
+    <link rel='stylesheet' href="{% static 'template/assets/plugins/multiselect/css/multi-select.css' %}"
+          type="text/css"/>
+    <link rel="stylesheet"
+          href="{% static 'third_party/DataTables/custom_css/datables_searchpane.css' %}" type="text/css"/>
+    <link rel="stylesheet"
+          href="{% static 'third_party/DataTables/Select-1.4.0/css/select.dataTables.min.css' %}" type="text/css"/>
+    <link href="{% static 'third_party/DataTables/DataTables-1.12.1/css/dataTables.jqueryui.css' %}" rel="stylesheet"
+          type="text/css"/>
+    <link href="{% static 'third_party/DataTables/DateTime-1.1.2/css/dataTables.dateTime.min.css' %}" rel="stylesheet"
+          type="text/css"/>
+    <link href="{% static 'main/jquery-ui-themes-1.11.1/themes/south-street/jquery-ui.min.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'main/dataTables.jqueryui.css' %}" rel="stylesheet" type="text/css"/>
+    <link rel='stylesheet' href="{% static 'assets/css/style.css' %}" type="text/css"/>
+    <style>
+        code{
+            color: #b6b6b6;
+            }
+    </style>
+    <div class="row page-titles">
+        <div class="col-4 float-left">
+            <h3 class="text-themecolor mb-0 mt-2 re-seletct">Hello {{ user.employee.fullName }}</h3>
+        </div>
+        <div class="col-4">
+            <h3 class="text-themecolor shot-mode-x" style="text-align: center; color: #ffffff!important; border-radius: 10px;"></h3>
+        </div>
+        <div class="col-4 text-right pt-1">
+            <label class="x-switch">
+                <input class="main-sub-switch" type="checkbox" checked>
+                <span class="x-slider x-round"></span>
+            </label>
+            <div class="btn-group mb-2 mr-2" role="group" aria-label="Button group with nested dropdown">
+                <button class="btn btn-warning save-assignemt-order" title="Save Shot Assignments" ><i class="mdi mdi-cloud-download" ></i> Save</button>
+            </div>
+        </div>
+    </div>
+{% endblock bread_crumb %}
+
+{% block content %}
+<div class="container-fluid card p-0 location-nav">
+    <ul class="nav nav-pills nav-fill nav-tabs main-location-nav" role="tablist">
+        <li class="nav-item"> <a class="nav-link show active" data-toggle="tab" href="#global" role="tab" aria-selected="true"><span class="hidden-sm-up"><i class="ti-home"></i></span> <span class="hidden-xs-down">Global</span></a> </li>
+        <li class="nav-item"> <a class="nav-link show" data-toggle="tab" href="#profile" role="tab" aria-selected="false"><span class="hidden-sm-up"><i class="ti-user"></i></span> <span class="hidden-xs-down">Profile</span></a> </li>
+        <li class="nav-item"> <a class="nav-link show" data-toggle="tab" href="#messages" role="tab" aria-selected="false"><span class="hidden-sm-up"><i class="ti-email"></i></span> <span class="hidden-xs-down">Messages</span></a> </li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content tabcontent-border main-location-body">
+        <div class="tab-pane show active" id="global" role="tabpanel">
+            <div class="vtabs customvtab">
+                <ul class="nav nav-tabs tabs-vertical" role="tablist">
+                    <li class="nav-item"> <a class="nav-link active show" data-toggle="tab" href="#home3" role="tab" aria-selected="true"><span class="hidden-sm-up"><i class="ti-home"></i></span> <span class="hidden-xs-down">Home</span> </a> </li>
+                    <li class="nav-item"> <a class="nav-link show" data-toggle="tab" href="#profile3" role="tab" aria-selected="false"><span class="hidden-sm-up"><i class="ti-user"></i></span> <span class="hidden-xs-down">Profile</span></a> </li>
+                    <li class="nav-item"> <a class="nav-link show" data-toggle="tab" href="#messages3" role="tab" aria-selected="false"><span class="hidden-sm-up"><i class="ti-email"></i></span> <span class="hidden-xs-down">Messages</span></a> </li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div class="tab-pane active show" id="home3" role="tabpanel">
+                        <div class="p-3">
+                            <h3>Best Clean Tab ever</h3>
+                            <h4>you can use it with the small code</h4>
+                            <p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a.</p>
+                        </div>
+                    </div>
+                    <div class="tab-pane p-3 show" id="profile3" role="tabpanel">2</div>
+                    <div class="tab-pane p-3 show" id="messages3" role="tabpanel">3</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% block page_scripts %}
+    <!--OFX Core JavaScript -->
+    <script src="{% static 'ofx/core.js' %}"></script>
+    <!-- End Core Javascript -->
+    <script src="{% static 'template/assets/plugins/popper/popper.min.js' %}"></script>
+
+    <script src="{% static 'third_party/DataTables/DataTables-1.12.1/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Responsive-2.3.0/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Responsive-2.3.0/js/responsive.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Buttons-2.2.3/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Buttons-2.2.3/js/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Bootstrap-5-5.1.3/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/custom_js/datatables_searchPane.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Select-1.4.0/js/dataTables.select.min.js' %}"></script>
+    <!-- <script src="{% static 'template/assets/plugins/moment/moment.js' %}"></script> -->
+    <script src="{% static 'third_party/DataTables/DateTime-1.1.2/js/dataTables.dateTime.min.js' %}"></script>
+
+    <script src="{% static 'main/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'main/jquery.ui-contextmenu.min.js' %}"></script>
+    <script src="{% static 'main/dataTables.colReorder.min.js' %}"></script>
+    <script src="{% static 'main/fnFilterClear.js' %}"></script>
+    <script src="{% static 'ofx/jquery.tablednd.js' %}"></script>
+    {% csrf_token %}
+    <script>
+        var pageData = {},
+            copyPage = {},
+            copyPageBackup = {};
+        $(document).on('click','.copy-toRecpt',function(e){
+            copyPage = JSON.parse(JSON.stringify(pageData['id_'+JSON.parse($(this).attr("data-data"))["statusIndex"]]));
+            copyPageBackup = JSON.parse(JSON.stringify(pageData['id_'+JSON.parse($(this).attr("data-data"))["statusIndex"]]));
+            var loctin = localStorage.getItem('assignment_tab_location'),
+                logDep = localStorage.getItem('assignment_tab_dep'),
+                lowde = {},
+                authRols = {};
+            $.each(copyPage.allowedSteps,function(x,y){
+                var rols = {},
+                    trx = JSON.parse(JSON.stringify(y));
+                $.each(trx.roles,function(_x,_y){
+                    rols[_x] = JSON.parse(JSON.stringify(_y));
+                    if(_y.location!=null&&ofx_make_key(_y.location.name)==ofx_make_key(loctin)){
+                        rols[_x].location = null;
+                        }
+                    if(_y.department!=null&&ofx_make_key(_y.department.name)==ofx_make_key(logDep)){
+                        rols[_x].department = null;
+                        }
+                    });
+                trx.roles = JSON.parse(JSON.stringify(rols));
+                lowde[x] = JSON.parse(JSON.stringify(trx));
+                });
+            copyPage.allowedSteps = JSON.parse(JSON.stringify(lowde));
+            var authX = {};
+            $.each(copyPage.authorizedRoles,function(_x,_y){
+                authX[_x] = JSON.parse(JSON.stringify(_y));
+                if(_y.location!=null&&ofx_make_key(_y.location.name)==ofx_make_key(loctin)){
+                    authX[_x].location = null;
+                    }
+                if(_y.department!=null&&ofx_make_key(_y.department.name)==ofx_make_key(logDep)){
+                    authX[_x].department = null;
+                    }
+                });
+            copyPage.authorizedRoles = JSON.parse(JSON.stringify(authX));
+            console.log(copyPage);
+            $.toast({
+                heading: 'Copied',
+                showHideTransition: 'slide',
+                text: copyPage.shotStatus.code,
+                icon: 'success',
+                position: 'bottom-right',
+                loader: true,        // Change it to false to disable loader
+                loaderBg: '#da7b1c',// To change the background
+                bgColor: '#1d6de5',
+                textColor: 'white',
+                hideAfter: 5000   // in milli seconds
+                });
+            });
+        $(document).on('click','.paste-toRecpt',function(e){
+            var tageInfo = $(this).attr('data-data'),
+                isAlloed = true;
+            $.each(pageData,function(x,y){
+                if(y.shotStatus.code==copyPage.shotStatus.code){
+                    isAlloed = false;
+                    }
+                });
+            if(isAlloed){
+                var acC = copyPage.acceptCase,
+                    rcC = copyPage.rejectCase;
+                if(tageInfo!='beforeArtist'){
+                    $.each(StatusCodes,function(cId,cC){
+                        if(ofx_make_key(copyPage.shotStatus.code)!=ofx_make_key(cC.code)){
+                            if(acC==null){
+                                acC = JSON.parse(JSON.stringify(cC));
+                                }else if(rcC==null){
+                                    rcC = JSON.parse(JSON.stringify(cC));
+                                    }
+                            }
+                        });
+                    }
+                var loctin = null,
+                    logDep = null,
+                    lowde = {},
+                    authRols = {};
+                $.each(locations,function(x,r){
+                    if(ofx_make_key(r.name)==ofx_make_key(localStorage.getItem('assignment_tab_location'))){
+                        loctin = JSON.parse(JSON.stringify(r));
+                        }
+                    });
+                console.log("loctin",loctin);
+                $.each(ofx_page_data.taskTypes,function(x,r){
+                    if(ofx_make_key(r.name)==ofx_make_key(localStorage.getItem('assignment_tab_dep'))){
+                        logDep = JSON.parse(JSON.stringify(r));
+                        }
+                    });
+                $.each(copyPage.allowedSteps,function(x,y){
+                    var rols = {},
+                        trx = JSON.parse(JSON.stringify(y));
+                    $.each(trx.roles,function(_x,_y){
+                        rols[_x] = JSON.parse(JSON.stringify(_y));
+                        if(_y.role!=null&&_y.location==null){
+                            rols[_x].location = loctin.id==0?copyPageBackup.allowedSteps[x].roles[_x].location:JSON.parse(JSON.stringify(loctin));
+                            }
+                        if(_y.role!=null&&_y.department==null){
+                            rols[_x].department = JSON.parse(JSON.stringify(logDep));
+                            }
+                        });
+                    trx.roles = JSON.parse(JSON.stringify(rols));
+                    lowde[x] = JSON.parse(JSON.stringify(trx));
+                    });
+                $.each(copyPage.authorizedRoles,function(_x,_y){
+                    authRols[_x] = JSON.parse(JSON.stringify(_y));
+                    if(_y.role!=null&&_y.location==null){
+                        authRols[_x].location = loctin.id==0?copyPageBackup.authorizedRoles[_x].location:JSON.parse(JSON.stringify(loctin));
+                        }
+                    if(_y.role!=null&&_y.department==null){
+                        authRols[_x].department = JSON.parse(JSON.stringify(logDep));
+                        }
+                    });
+                pageData['id_'+Object.keys(pageData).length] = JSON.parse(JSON.stringify({
+                    id: makeId(32),
+                    isNew: true,
+                    location: localStorage.getItem('assignment_tab_location'),
+                    department: localStorage.getItem('assignment_tab_dep'),
+                    shotStatus: copyPage.shotStatus,
+                    acceptCase: acC,
+                    rejectCase: rcC,
+                    statusIndex: Object.keys(pageData).length,
+                    isBeforeArtist: tageInfo=='beforeArtist'?true:false,
+                    isSubShot: localStorage.getItem('assignment_tab_type')=='main'?false:true,
+                    authorizedRoles: JSON.parse(JSON.stringify(authRols)),
+                    allowedSteps: tageInfo=='beforeArtist'?JSON.parse(JSON.stringify(lowde)):{},
+                    }));
+                }else{
+                    $.toast({
+                        heading: 'Unable to Paste',
+                        showHideTransition: 'slide',
+                        text: 'Already '+copyPage.shotStatus.code+' is exist',
+                        icon: 'worning',
+                        position: 'bottom-right',
+                        loader: true,        // Change it to false to disable loader
+                        loaderBg: '#F4BA0C',// To change the background
+                        bgColor: '#F4BA0C',
+                        textColor: 'white',
+                        hideAfter: 5000   // in milli seconds
+                        });
+                    }
+            loadChanges();
+            });
+        $(document).on('click','.save-assignemt-order',function(e){
+            var uQData = {
+                location: localStorage.getItem('assignment_tab_location')=='GLOBAL'?null:localStorage.getItem('assignment_tab_location'),
+                department: localStorage.getItem('assignment_tab_dep'),
+                isSubShot: localStorage.getItem('assignment_tab_type')=='main'?false:true,
+                data: {}
+                };
+            $.each(pageData,function(x,y){
+                var statId = ofx_make_key(y.shotStatus.code),
+                    authorizedRoles = [],
+                    allowedSteps = [];
+                $.each(y.authorizedRoles,function(a,b){
+                    authorizedRoles.push({
+                        location: b.employee==null?b.location.name:null,
+                        department: b.employee==null?b.department.name:null,
+                        role: b.employee==null?b.role.name:null,
+                        employee: b.employee!=null?b.employee.id:null,
+                        });
+                    });
+                $.each(y.allowedSteps,function(a,c){
+                    $.each(c.roles,function(a,b){
+                        allowedSteps.push({
+                            location: b.employee==null?b.location.name:null,
+                            department: b.employee==null?b.department.name:null,
+                            role: b.employee==null?b.role.name:null,
+                            shotStatus: c.status.code,
+                            roleIndex: c.roleIndex,
+                            employee: b.employee!=null?b.employee.id:null,
+                            });
+                        });
+                    });
+                uQData.data[statId] = JSON.parse(JSON.stringify({
+                    location: localStorage.getItem('assignment_tab_location')=='GLOBAL'?null:localStorage.getItem('assignment_tab_location'),
+                    department: localStorage.getItem('assignment_tab_dep'),
+                    shotStatus: y.shotStatus.code,
+                    acceptCase: y.acceptCase!=null?y.acceptCase.code:null,
+                    rejectCase: y.rejectCase!=null?y.rejectCase.code:null,
+                    authorizedRoles: authorizedRoles,
+                    allowedSteps: allowedSteps,
+                    statusIndex: y.statusIndex,
+                    isBeforeArtist: y.isBeforeArtist,
+                    isSubShot: localStorage.getItem('assignment_tab_type')=='main'?false:true
+                    }));
+                });
+            uQData.data = JSON.stringify(uQData.data);
+            $.ajax({
+                    url: '/api/setshotassignmentorder/',
+                    type: 'POST',
+                    dataType: "json",
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(uQData),
+                    async: true, //displays data after loading the page
+                    processing: false,
+                    success: function (rinfo) {
+                        getAssignementOrder();
+                        },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR.responseText)
+                    }
+                });
+
+            
+            console.log(uQData);
+            });
+        $(document).on('click','.add-role-emp',function(e){
+            var dataInfo = JSON.parse($(this).attr('data-data')),
+                qXr = {
+                    location: null,
+                    department: null,
+                    role: null,
+                    employee: null
+                    };
+            $(this).parent().parent().find('.role-user-add').each(function(e){
+                if($(this).val().length > 0){
+                    if(typeof $(this).attr('data-path') != "undefined"){
+                        qXr[$(this).attr('data-path')] = $(this).val();
+                        }else{
+                            qXr.employee = $(this).val();
+                            }
+                    }
+                });
+            if(qXr.employee!=null || (qXr.location!=null&&qXr.department!=null&&qXr.role!=null)){
+                var dataSet = {
+                    id: makeId(32),
+                    isNew: true,
+                    location: null,
+                    department: null,
+                    role: null,
+                    shotStatus: typeof dataInfo.subIndex != "undefined"?JSON.parse(JSON.stringify(pageData['id_'+dataInfo.statusIndex].allowedSteps['id_'+dataInfo.subIndex].status)):null,
+                    roleIndex: typeof dataInfo.subIndex != "undefined"?Object.keys(pageData['id_'+dataInfo.statusIndex].allowedSteps['id_'+dataInfo.subIndex].roles).length:0,
+                    employee: null
+                    };
+                if(qXr.employee!=null){
+                    $.each(allEmployes,function(x,r){
+                        if(parseInt(qXr.employee)==parseInt(r.id)){
+                            dataSet.employee = JSON.parse(JSON.stringify(r));
+                            }
+                        });
+                    }else{
+                        $.each(locations,function(x,r){
+                            if(parseInt(r.id)==parseInt(qXr.location)){
+                                dataSet.location = JSON.parse(JSON.stringify(r));
+                                }
+                            });
+                        $.each(ofx_page_data.departments,function(x,r){
+                            if(parseInt(r.id)==parseInt(qXr.department)){
+                                dataSet.department = JSON.parse(JSON.stringify(r));
+                                }
+                            });
+                        $.each(allRoles,function(x,r){
+                            if(parseInt(r.id)==parseInt(qXr.role)){
+                                dataSet.role = JSON.parse(JSON.stringify(r));
+                                }
+                            });
+                        }
+                if(typeof dataInfo.subIndex != "undefined"){
+                    pageData['id_'+dataInfo.statusIndex].allowedSteps['id_'+dataInfo.subIndex].roles['id_'+Object.keys(pageData['id_'+dataInfo.statusIndex].allowedSteps['id_'+dataInfo.subIndex].roles).length] = JSON.parse(JSON.stringify(dataSet));
+                    }else{
+                        pageData['id_'+dataInfo.statusIndex].authorizedRoles['id_'+Object.keys(pageData['id_'+dataInfo.statusIndex].authorizedRoles).length] = JSON.parse(JSON.stringify(dataSet));
+                        }
+                loadChanges();
+                }else{
+                    $.toast({
+                        heading: 'Error',
+                        showHideTransition: 'slide',
+                        text: 'Unable to Add Please Select Employee or Location/Department/Role/',
+                        icon: 'worning',
+                        position: 'bottom-right',
+                        loader: true,        // Change it to false to disable loader
+                        loaderBg: '#F4BA0C',// To change the background
+                        bgColor: '#F4BA0C',
+                        textColor: 'white',
+                        hideAfter: 5000   // in milli seconds
+                        });
+                    }
+            });
+        $(document).on('change','.add-row',function(e){
+            var tageInfo = JSON.parse($(this).attr('data-data')),
+                seleted = $(this).val(),
+                cXid = null;
+            $.each(StatusCodes,function(cId,cC){
+                if(ofx_make_key(seleted)==ofx_make_key(cC.code)){
+                    cXid = JSON.parse(JSON.stringify(cC));
+                    }
+                });
+            if(typeof tageInfo.statusIndex != "undefined"){
+                pageData['id_'+tageInfo.statusIndex].allowedSteps['id_'+Object.keys(pageData['id_'+tageInfo.statusIndex].allowedSteps).length] = {
+                    isNew: true,
+                    status: cXid,
+                    roleIndex: Object.keys(pageData['id_'+tageInfo.statusIndex].allowedSteps).length,
+                    roles: { }
+                    };
+                }else{
+                    var locationX = localStorage.getItem('assignment_tab_location'),
+                        depX = localStorage.getItem('assignment_tab_dep'),
+                        location = null,
+                        dep = null;
+                    $.each(locations,function(cId,cC){
+                        if(ofx_make_key(locationX)==ofx_make_key(cC.name)){
+                            location = JSON.parse(JSON.stringify(cC));
+                            }
+                        });
+                    $.each(ofx_page_data.departments,function(cId,cC){
+                        if(ofx_make_key(depX)==ofx_make_key(cC.name)){
+                            dep = JSON.parse(JSON.stringify(cC));
+                            }
+                        });
+                    var acC = null,
+                        rcC = null;
+                    if(tageInfo.dtype!='beforeArtist'){
+                        $.each(StatusCodes,function(cId,cC){
+                            if(ofx_make_key(seleted)!=ofx_make_key(cC.code)){
+                                if(acC==null){
+                                    acC = JSON.parse(JSON.stringify(cC));
+                                    }else if(rcC==null){
+                                        rcC = JSON.parse(JSON.stringify(cC));
+                                        }
+                                }
+                            });
+                        }
+                    pageData['id_'+Object.keys(pageData).length] = JSON.parse(JSON.stringify({
+                        id: makeId(32),
+                        isNew: true,
+                        location: location,
+                        department: dep,
+                        shotStatus: cXid,
+                        acceptCase: acC,
+                        rejectCase: rcC,
+                        statusIndex: Object.keys(pageData).length,
+                        isBeforeArtist: tageInfo.dtype=='beforeArtist'?true:false,
+                        isSubShot: localStorage.getItem('assignment_tab_type')=='main'?false:true,
+                        authorizedRoles: {},
+                        allowedSteps: {}
+                        }));
+                    }
+            loadChanges();
+            });
+        $(document).on('click','.delete-toRecpt',function(e){
+            var delData = JSON.parse($(this).attr('data-data'));
+            var newPageData = {}, rxCnt = 0;
+            if(typeof delData.dType != "undefined"){
+                if(delData.dType=='authorizedRoles'||delData.dType=='allowedRole'){
+                    $.each(delData.dType=='authorizedRoles'?pageData['id_'+delData.statusIndex].authorizedRoles:pageData['id_'+delData.statusIndex].allowedSteps['id_'+delData.subIndex].roles,function(x,y){
+                        if(x!=delData.idx){
+                            var rtx = JSON.parse(JSON.stringify(y));
+                            rtx.roleIndex = rxCnt;
+                            newPageData['id_'+rxCnt] = JSON.parse(JSON.stringify(rtx));
+                            rxCnt = rxCnt + 1;
+                            }
+                        });
+                    if(delData.dType=='authorizedRoles'){
+                        pageData['id_'+delData.statusIndex].authorizedRoles = JSON.parse(JSON.stringify(newPageData));
+                        }else{
+                            pageData['id_'+delData.statusIndex].allowedSteps['id_'+delData.subIndex].roles = JSON.parse(JSON.stringify(newPageData));
+                            }
+                    }else if(delData.dType=='allowedSteps'){
+                        $.each(pageData['id_'+delData.statusIndex].allowedSteps,function(x,y){
+                            if(x!=delData.idx){
+                                var rtx = JSON.parse(JSON.stringify(y));
+                                rtx.roleIndex = rxCnt;
+                                newPageData['id_'+rxCnt] = JSON.parse(JSON.stringify(rtx));
+                                rxCnt = rxCnt + 1;
+                                }
+                            });
+                        pageData['id_'+delData.statusIndex].allowedSteps = JSON.parse(JSON.stringify(newPageData));
+                        }
+                }else{
+                    $.each(pageData,function(x,y){
+                        if(x!='id_'+delData.statusIndex){
+                            var rtx = JSON.parse(JSON.stringify(y));
+                            rtx.statusIndex = rxCnt;
+                            newPageData['id_'+rxCnt] = JSON.parse(JSON.stringify(rtx));
+                            rxCnt = rxCnt + 1;
+                            }
+                        // newPageData[x] = JSON.parse(JSON.stringify(y));
+                        });
+                    pageData = JSON.parse(JSON.stringify(newPageData));
+                    }
+            loadChanges();
+            });
+        $(document).on('change','.role-user-add.data-filter',function(e){
+            var qSort = {};
+            $(this).parent().find('.data-filter').each(function(e){
+                if(typeof $(this).attr('data-path') != "undefined"){
+                    var seletctVal = $(this).find(':selected');
+                    if(typeof $(seletctVal).attr('data-filter') != "undefined"){
+                        qSort[$(this).attr('data-path')] = $(seletctVal).attr('data-filter');
+                        }
+                    }
+                });
+            $(this).parent().find($(this).attr('data-target')+' > option').each(function(e){
+                if($(this).attr('value').length>0){
+                    var valueX = JSON.parse($(this).attr('data-data')),
+                        viX = true;
+                    $.each(qSort,function(key,value){
+                        if(valueX[key]==null||ofx_make_key(valueX[key])!=ofx_make_key(value)){
+                            viX = false;
+                            }
+                        });
+                    $(this).attr('style',(viX?'':'display:none;'));
+                    }
+                });
+            });
+        $(document).on('click','.change-tag-code',function(e){
+            var target = JSON.parse($(this).attr('data-info')),
+                toData = JSON.parse($(this).attr('data-data'));
+            
+            if(typeof target.forCase != "undefined"){
+                pageData['id_'+target.statusIndex][target.forCase] = JSON.parse(JSON.stringify(toData));
+                }else if(typeof target.subIndex != "undefined"){
+                    pageData['id_'+target.statusIndex].allowedSteps['id_'+target.subIndex].status = JSON.parse(JSON.stringify(toData));
+                    var rolX = {};
+                    $.each(pageData['id_'+target.statusIndex].allowedSteps['id_'+target.subIndex].roles,function(_x,_e){
+                        _e.shotStatus = JSON.parse(JSON.stringify(toData));
+                        rolX[_x] = JSON.parse(JSON.stringify(_e));
+                        });
+                    pageData['id_'+target.statusIndex].allowedSteps['id_'+target.subIndex].roles = JSON.parse(JSON.stringify(rolX));
+                    }else{
+                        pageData['id_'+target.statusIndex].shotStatus = JSON.parse(JSON.stringify(toData));
+                        }
+            
+            loadChanges();
+            });
+        function statusDropdown(info={},code="",ignoreCodes=[]){
+            var tagsx = [],cXid = null;
+            $.each(StatusCodes,function(cId,cC){
+                if(ofx_make_key(code)==ofx_make_key(cC.code)){
+                    cXid = cId;
+                    }else if(ignoreCodes.indexOf(cC.code)==-1){
+                        tagsx.push(`<a class="dropdown-item change-tag-code" data-info='`+JSON.stringify(info)+`' data-data='`+JSON.stringify(cC)+`' data-bgcolor="`+cC.color+`" title="`+cC.name+`" href="#" style="background: `+cC.color+`;padding: 2px 13px;color: #fff; font-size: smaller; text-align: center;">`+cC.code+`</a>`);
+                        }
+                });
+            return `<div class="btn-group">
+                            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" title="`+StatusCodes[cXid].name+`" aria-haspopup="true" aria-expanded="true" style="color:white; padding:3px 10px; font-size:1em; background-color:`+StatusCodes[cXid].color+`;">`+StatusCodes[cXid].code+`</button>
+                            <div class="dropdown-menu" x-placement="top-start" style="position: absolute; transform: translate3d(0px, -197px, 0px); top: 0px; left: -14px; will-change: transform; padding: 0px; background: transparent;">
+                                `+tagsx.join('')+`
+                            </div>
+                        </div>`;
+            }
+        var onTime = true;
+        function addTableRow(parentTable,e,dataX=[]){
+            var ignoreCodes = [];
+            $.each(dataX,function(xx,yy){
+                ignoreCodes.push(yy.shotStatus.code);
+                });
+            var authTrs = '';
+            $.each(e.authorizedRoles,function(_xe,_xs){
+                authTrs = authTrs + `<tr> 
+                    <td>`+(_xs.employee!=null?'<code style="color: #00cbff;">'+_xs.employee.fullName+'</code>':'<code>'+_xs.location.name+'</code> / <code>'+_xs.department.name+'</code> / <code>'+_xs.role.name+'</code>')+`</td>
+                    <td><button type="button" data-data='`+JSON.stringify({dType:'authorizedRoles',statusIndex:e.statusIndex,idx:_xe})+`' class="ti-trash delete-toRecpt" ></button></td>
+                </tr>`;
+                });
+            var selectLocation = '<option value="">Location</option>',
+                selectDepartment = '<option value="">Department</option>',
+                selectRole = '<option value="">Role</option>',
+                selectEmployee = '<option value="">Employe</option>';
+            $.each(locations,function(x,r){
+                if(r.id!=0){
+                    selectLocation = selectLocation + '<option data-filter="'+r.name+'" value="'+r.id+'">'+r.name+'</option>';
+                    }
+                });
+            $.each(ofx_page_data.departments,function(x,r){
+                selectDepartment = selectDepartment + '<option data-filter="'+r.name+'" value="'+r.id+'">'+r.name+'</option>';
+                });
+            $.each(allRoles,function(x,r){
+                if(ofx_make_key(r.name)!=ofx_make_key('VFX ARTIST')){
+                    selectRole = selectRole + '<option data-filter="'+r.name+'" value="'+r.id+'">'+r.name+'</option>';
+                    }
+                });
+            $.each(allEmployes,function(x,r){
+                if(ofx_make_key(r.role)!=ofx_make_key('VFX ARTIST')){
+                    selectEmployee = selectEmployee + `<option data-data='`+JSON.stringify({location:r.location,department:r.department,role:r.role})+`' value="`+r.id+`">`+r.fullName+` (`+r.employee_id+`)</option>`;
+                    }
+                });
+            if(e.isBeforeArtist){
+                var alloedKey = `table_`+makeId(15);
+                var allowedTrs = '', igcac = [];
+                $.each(e.allowedSteps,function(xe,xs){
+                    igcac.push(xs.status.code);
+                    });
+                $.each(e.allowedSteps,function(xe,xs){
+                    var recptTrs = '';
+                    $.each(xs.roles,function(_xe,_xs){
+                        recptTrs = recptTrs + `<tr> 
+                            <td>`+(_xs.employee!=null?'<code style="color: #00cbff;">'+_xs.employee.fullName+'</code>':'<code>'+_xs.location.name+'</code> / <code>'+_xs.department.name+'</code> / <code>'+_xs.role.name+'</code>')+`</td>
+                            <td><button type="button" data-data='`+JSON.stringify({dType:'allowedRole',statusIndex:e.statusIndex,idx:_xe, subIndex:xs.roleIndex})+`' class="ti-trash delete-toRecpt" ></button></td>
+                        </tr>`;
+                        });
+                    allowedTrs = allowedTrs + `<tr class="allowed-status" id="`+xe+`" data-id="id_`+e.statusIndex+`">
+                            <td class="dragHandle `+alloedKey+` mdi mdi-drag-vertical"></td>
+                            <td>`+statusDropdown({isBeforeArtist:e.isBeforeArtist,currentStatus:e.shotStatus,statusIndex:e.statusIndex,subIndex:xs.roleIndex},xs.status.code,igcac)+`</td>
+                            <td><table>
+                                <tbody>`+recptTrs+`</tbody>
+                                <tfoot>
+                                    <tr class="new-emp-role-row">
+                                        <th style="text-align: left;" >
+                                            <select class="btn btn-info role-user-add data-filter" style="background-color: #383f48; color: #ffffff; border: transparent; outline: none; box-shadow: none;" data-path="location" data-target='.role-user-add[data-tag="emp"]' data-data='`+JSON.stringify({statusIndex:e.statusIndex,subIndex:xs.roleIndex})+`'>`+selectLocation+`</select>
+                                            <select class="btn btn-info role-user-add data-filter" style="background-color: #383f48; color: #ffffff; border: transparent; outline: none; box-shadow: none;" data-path="department" data-target='.role-user-add[data-tag="emp"]' data-data='`+JSON.stringify({statusIndex:e.statusIndex,subIndex:xs.roleIndex})+`'>`+selectDepartment+`</select>
+                                            <select class="btn btn-info role-user-add data-filter" style="background-color: #383f48; color: #ffffff; border: transparent; outline: none; box-shadow: none;" data-path="role" data-target='.role-user-add[data-tag="emp"]' data-data='`+JSON.stringify({statusIndex:e.statusIndex,subIndex:xs.roleIndex})+`'>`+selectRole+`</select>
+                                            <select class="btn btn-info role-user-add" style="background-color: #383f48; color: #ffffff; border: transparent; outline: none; box-shadow: none;" data-tag="emp" data-data='`+JSON.stringify({statusIndex:e.statusIndex,subIndex:xs.roleIndex})+`'>`+selectEmployee+`</select>
+                                        </th> 
+                                        <th ><button type="button" data-data='`+JSON.stringify({statusIndex:e.statusIndex,subIndex:xs.roleIndex})+`' class="btn btn-info ti-plus add-role-emp" ></button></th> 
+                                    </tr>
+                                </tfoot>
+                            </table></td>
+                            <td><button type="button" data-data='`+JSON.stringify({dType:'allowedSteps',statusIndex:e.statusIndex,idx:xe})+`' class="ti-trash delete-toRecpt" ></button></td>
+                        </tr>`;
+                    });
+                cStatus = '<option value="">Select Status</option>';
+                $.each(StatusCodes,function(cId,cC){
+                    if(igcac.indexOf(cC.code)==-1){
+                        cStatus = cStatus + '<option value="'+cC.code+'">'+cC.code+'</option>'
+                        }
+                    });
+                $(parentTable).append(`<tr id="id_`+e.statusIndex+`" data-id="`+e.id+`">
+                        <td class="dragHandle dragHandle1 mdi mdi-drag-vertical"></td>
+                        <td>`+statusDropdown({isBeforeArtist:e.isBeforeArtist,currentStatus:e.shotStatus,statusIndex:e.statusIndex},e.shotStatus.code,ignoreCodes)+`</td>
+                        <td><table class="auth-roles">
+                            <tbody>`+authTrs+`</tbody>
+                            <tfoot>
+                                <tr class="new-emp-role-row">
+                                    <th style="text-align: left;" >
+                                        <select class="btn btn-info role-user-add data-filter" style="background-color: #383f48; color: #ffffff; border: transparent; outline: none; box-shadow: none;" data-path="location" data-target='.role-user-add[data-tag="emp"]' data-data='`+JSON.stringify({statusIndex:e.statusIndex})+`'>`+selectLocation+`</select>
+                                        <select class="btn btn-info role-user-add data-filter" style="background-color: #383f48; color: #ffffff; border: transparent; outline: none; box-shadow: none;" data-path="department" data-target='.role-user-add[data-tag="emp"]' data-data='`+JSON.stringify({statusIndex:e.statusIndex})+`'>`+selectDepartment+`</select>
+                                        <select class="btn btn-info role-user-add data-filter" style="background-color: #383f48; color: #ffffff; border: transparent; outline: none; box-shadow: none;" data-path="role" data-target='.role-user-add[data-tag="emp"]' data-data='`+JSON.stringify({statusIndex:e.statusIndex})+`'>`+selectRole+`</select>
+                                        <select class="btn btn-info role-user-add" style="background-color: #383f48; color: #ffffff; border: transparent; outline: none; box-shadow: none;" data-tag="emp" data-data='`+JSON.stringify({statusIndex:e.statusIndex})+`'>`+selectEmployee+`</select>
+                                    </th> 
+                                    <th ><button type="button" data-data='`+JSON.stringify({statusIndex:e.statusIndex})+`' class="btn btn-info ti-plus add-role-emp" ></button></th> 
+                                </tr>
+                            </tfoot>
+                            </table></td>
+                        <td><table id="table_`+makeId(15)+`" style="width: 100%;" class="allowed-steps"><thead></thead>
+                            <tbody>`+allowedTrs+`</tbody>
+                            <tfoot>
+                                <tr class="shotassignemt-role-new-tr">
+                                    <th style="text-align: left;"colspan="5">Add New <select class="btn btn-info add-row" style="margin-left: 10px; background-color: #383f48; color: #ffffff; border: transparent; outline: none; box-shadow: none;" data-data='`+JSON.stringify({statusIndex:e.statusIndex,target:'sub',dtype:'beforeArtist'})+`'>`+cStatus+`</select></th> 
+                                </tr>
+                            </tfoot>
+                            </table></td>
+                        <td>
+                            <button type="button" data-data='`+JSON.stringify({statusIndex:e.statusIndex})+`' class="ti-files copy-toRecpt" ></button>
+                            <button type="button" data-data='`+JSON.stringify({statusIndex:e.statusIndex})+`' class="ti-trash delete-toRecpt" ></button>
+                        </td>
+                    </tr>`);
+                if(onTime){
+                    // onTime = false;
+                    $(parentTable).find('.allowed-steps').each(function(e){
+                        $(this).tableDnD({
+                            onDrop: function(table, row){
+                                var location = localStorage.getItem('assignment_tab_location'),
+                                    dept = localStorage.getItem('assignment_tab_dep'),
+                                    tyep = localStorage.getItem('assignment_tab_type'),
+                                    parent = $(`.tabx-`+ofx_make_key(location)+`-`+ofx_make_key(dept)+``);
+                                var orderD = {}, countX = 0, indexId = $(row).attr('data-id');
+                                $(table).find('tr.allowed-status').each(function(x,e){
+                                    var dx =  JSON.parse(JSON.stringify(pageData[indexId].allowedSteps[$(this).attr('id')]));
+                                    dx.roleIndex = countX;
+                                    orderD['id_'+countX] = JSON.parse(JSON.stringify(dx));
+                                    countX = countX + 1;
+                                    });
+                                pageData[indexId].allowedSteps = JSON.parse(JSON.stringify(orderD));
+                                loadChanges();
+                                },
+                            dragHandle: "."+alloedKey
+                            });
+                        });
+                    }
+                
+                }else{
+                    $(parentTable).append(`<tr id="id_`+e.statusIndex+`" data-id="`+e.id+`">
+                            <td class="dragHandle dragHandle2 mdi mdi-drag-vertical"></td>
+                            <td>`+statusDropdown({isBeforeArtist:e.isBeforeArtist,currentStatus:e.shotStatus,statusIndex:e.statusIndex},e.shotStatus.code,ignoreCodes)+`</td>
+                            <td><table class="auth-roles">
+                                <tbody>`+authTrs+`</tbody>
+                                <tfoot>
+                                    <tr class="new-emp-role-row">
+                                        <th style="text-align: left;" >
+                                            <select class="btn btn-info role-user-add data-filter" style="background-color: #383f48; color: #ffffff; border: transparent; outline: none; box-shadow: none;" data-path="location" data-target='.role-user-add[data-tag="emp"]' data-data='`+JSON.stringify({statusIndex:e.statusIndex})+`'>`+selectLocation+`</select>
+                                            <select class="btn btn-info role-user-add data-filter" style="background-color: #383f48; color: #ffffff; border: transparent; outline: none; box-shadow: none;" data-path="department" data-target='.role-user-add[data-tag="emp"]' data-data='`+JSON.stringify({statusIndex:e.statusIndex})+`'>`+selectDepartment+`</select>
+                                            <select class="btn btn-info role-user-add data-filter" style="background-color: #383f48; color: #ffffff; border: transparent; outline: none; box-shadow: none;" data-path="role" data-target='.role-user-add[data-tag="emp"]' data-data='`+JSON.stringify({statusIndex:e.statusIndex})+`'>`+selectRole+`</select>
+                                            <select class="btn btn-info role-user-add" style="background-color: #383f48; color: #ffffff; border: transparent; outline: none; box-shadow: none;" data-tag="emp" data-data='`+JSON.stringify({statusIndex:e.statusIndex})+`'>`+selectEmployee+`</select>
+                                        </th> 
+                                        <th ><button type="button" data-data='`+JSON.stringify({statusIndex:e.statusIndex})+`' class="btn btn-info ti-plus add-role-emp" ></button></th> 
+                                    </tr>
+                                </tfoot>
+                            </table></td>
+                            <td>`+statusDropdown({forCase:"acceptCase",isBeforeArtist:e.isBeforeArtist,currentStatus:e.shotStatus,statusIndex:e.statusIndex},e.acceptCase.code,[e.shotStatus.code,e.acceptCase.code,e.rejectCase.code])+`</td>
+                            <td>`+statusDropdown({forCase:"rejectCase",isBeforeArtist:e.isBeforeArtist,currentStatus:e.shotStatus,statusIndex:e.statusIndex},e.rejectCase.code,[e.shotStatus.code,e.acceptCase.code,e.rejectCase.code])+`</td>
+                            <td>
+                                <button type="button" data-data='`+JSON.stringify({statusIndex:e.statusIndex})+`' class="ti-files copy-toRecpt" ></button>
+                                <button type="button" data-data='`+JSON.stringify({statusIndex:e.statusIndex})+`' class="ti-trash delete-toRecpt" ></button>
+                            </td>
+                        </tr>`);
+                    }
+            }
+        function loadChanges(){
+            var sc = $("html").scrollTop();
+            var location = localStorage.getItem('assignment_tab_location'),
+                dept = localStorage.getItem('assignment_tab_dep'),
+                tyep = localStorage.getItem('assignment_tab_type'),
+                parent = $(`.tabx-`+ofx_make_key(location)+`-`+ofx_make_key(dept)+``);
+            var ignoreCodes = [];
+            $.each(pageData,function(xx,yy){
+                ignoreCodes.push(yy.shotStatus.code);
+                });
+            cStatus = '<option value="">Select Status</option>';
+            $.each(StatusCodes,function(cId,cC){
+                if(ignoreCodes.indexOf(cC.code)==-1){
+                    cStatus = cStatus + '<option value="'+cC.code+'">'+cC.code+'</option>'
+                    }
+                });
+            $(parent).html(`<div class="row" style="margin-left: -20px; margin-right: -20px;">
+                <div class="col-12 data-before-artist p-0">
+                    <div class="row">
+                        <div class="col-12"><h3 style="padding-left:45px">Before Artist</h3></div>
+                    </div>
+                    <table id="table_`+makeId(15)+`" class="table draggable drag1" data-data="before">
+                        <thead>
+                            <tr>
+                                <th style="width:15px"></th>
+                                <th style="width: 115px;">Shot Status</th>
+                                <th>Authorised</th>
+                                <th>To Assign</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                        <tfoot>
+                            <tr>
+                                <th style="text-align: left;" colspan="4">Add New <select class="btn btn-info add-row" style="margin-left: 10px; background-color: #383f48; color: #ffffff; border: transparent; outline: none; box-shadow: none;" data-data='`+JSON.stringify({target:'main',dtype:'beforeArtist'})+`'>`+cStatus+`</select></th> 
+                                <th style="text-align: right;">
+                                    <button style="`+(typeof copyPage.shotStatus == "undefined"?'display: none;':'')+`" type="button" data-data="beforeArtist" class="ti-clipboard paste-toRecpt" ></button>
+                                </th> 
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <hr style="position: relative; margin: auto; width: 100%; margin-bottom: 20px;">
+                <div class="col-12 data-after-artist p-0">
+                    <div class="row">
+                        <div class="col-12"><h3 style="padding-left:45px">After Artist</h3></div>
+                    </div>
+                    <table id="table_`+makeId(15)+`" class="table draggable drag2" data-data="after">
+                        <thead>
+                            <tr>
+                                <th style="width:15px"></th>
+                                <th style="width: 115px;">Shot Status</th>
+                                <th>Authorised</th>
+                                <th>Accept Case</th>
+                                <th>Reject Case</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                        <tfoot>
+                            <tr>
+                                <th style="text-align: left;" colspan="5">Add New <select class="btn btn-info add-row" style="margin-left: 10px; background-color: #383f48; color: #ffffff; border: transparent; outline: none; box-shadow: none;" data-data='`+JSON.stringify({target:'main',dtype:'afterArtist'})+`'>`+cStatus+`</select></th> 
+                                <th style="text-align: right;">
+                                    <button style="`+(typeof copyPage.shotStatus == "undefined"?'display: none;':'')+`" type="button" data-data="afterArtist" class="ti-clipboard paste-toRecpt" ></button>
+                                </th> 
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>`);
+            var beforeArtist = $(parent).find('.data-before-artist > table'),
+                afterArtist = $(parent).find('.data-after-artist > table');
+            $.each(pageData,function(x,e){
+                addTableRow(e.isBeforeArtist?beforeArtist:afterArtist,e,pageData);
+                });
+            $(".draggable").each(function(e){
+                $(this).tableDnD({
+                    onDrop: function(table, row){
+                        var location = localStorage.getItem('assignment_tab_location'),
+                            dept = localStorage.getItem('assignment_tab_dep'),
+                            tyep = localStorage.getItem('assignment_tab_type'),
+                            parent = $(`.tabx-`+ofx_make_key(location)+`-`+ofx_make_key(dept)+``);
+                        var beforeArtist = $(parent).find('.data-before-artist > table > tbody >  tr'),
+                            afterArtist = $(parent).find('.data-after-artist > table > tbody > tr'); 
+                        var orderD = {}, countX = 0;
+                        $.each(beforeArtist,function(x,e){
+                            var dx = JSON.parse(JSON.stringify(pageData[$(this).attr('id')]));
+                            dx.statusIndex = countX;
+                            orderD['id_'+countX] = JSON.parse(JSON.stringify(dx));
+                            countX = countX + 1;
+                            });
+                        $.each(afterArtist,function(x,e){
+                            var dx = JSON.parse(JSON.stringify(pageData[$(this).attr('id')]));
+                            dx.statusIndex = countX;
+                            orderD['id_'+countX] = JSON.parse(JSON.stringify(dx));
+                            countX = countX + 1;
+                            });
+                        console.log(countX);
+                        console.log(orderD);
+                        pageData = JSON.parse(JSON.stringify(orderD));
+                        loadChanges();
+                        },
+                    dragHandle: ".dragHandle"+($(this).hasClass("drag1")?1:2)
+                    });
+                });
+            $("html").animate({
+                scrollTop: sc
+                }, 500);
+            }
+        function getAssignementOrder(){
+            var location = localStorage.getItem('assignment_tab_location'),
+                dept = localStorage.getItem('assignment_tab_dep'),
+                tyep = localStorage.getItem('assignment_tab_type'),
+                parent = $(`.tabx-`+ofx_make_key(location)+`-`+ofx_make_key(dept)+``);
+            var req = {
+                department__name: dept,
+                isSubShot:(tyep=='main'?'False':'True'),
+                };
+            if(location!='GLOBAL'){
+                req.location__name = location;
+                }
+            $.ajax({
+                url: '/api/shotassignments/',
+                type: 'GET',
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                async: true, //displays data after loading the page
+                processing: false,
+                data: req,
+                beforeSend: function(request) {
+                    request.setRequestHeader("required", JSON.stringify(["id", "location__id", "location__name", "department__id", "department__name", "shotStatus__id", "shotStatus__code", "shotStatus__name", "shotStatus__color", "acceptCase__id", "acceptCase__code", "acceptCase__name", "acceptCase__color", "rejectCase__id", "rejectCase__code","rejectCase__name","rejectCase__color", "authorizedRoles__id", "authorizedRoles__location__id", "authorizedRoles__location__name", "authorizedRoles__department__id", "authorizedRoles__department__name", "authorizedRoles__role__id", "authorizedRoles__role__name", "authorizedRoles__employee__id", "authorizedRoles__employee__fullName", "authorizedRoles__employee__department__id", "authorizedRoles__employee__department__name", "authorizedRoles__employee__role__id", "authorizedRoles__employee__role__name", "authorizedRoles__shotStatus__id", "authorizedRoles__shotStatus__code", "authorizedRoles__roleIndex", "allowedSteps__id", "allowedSteps__location__id", "allowedSteps__location__name", "allowedSteps__department__id", "allowedSteps__department__name", "allowedSteps__role__id", "allowedSteps__role__name", "allowedSteps__employee__id", "allowedSteps__employee__fullName", "allowedSteps__employee__department__id", "allowedSteps__employee__department__name", "allowedSteps__employee__role__id", "allowedSteps__employee__role__name", "allowedSteps__shotStatus__id", "allowedSteps__shotStatus__code", "allowedSteps__roleIndex", "statusIndex", "isBeforeArtist", "isSubShot"]));
+                    },
+                success: function (assignemts) {
+                    pageData = {};
+                    $.each(assignemts,function(x,e){
+                        if(typeof req.location__name != "undefined"||(typeof req.location__name == "undefined" && e.location == null)){
+                            if(typeof pageData['id_'+e.statusIndex] == "undefined"){
+                                pageData['id_'+e.statusIndex] = [];
+                                }
+                            pageData['id_'+e.statusIndex].push(JSON.parse(JSON.stringify(e)));
+                            }
+                        });
+                    const ordered1 = Object.keys(pageData).sort().reduce(
+                        (obj, key) => {
+                            obj[key] = pageData[key]; 
+                            return obj;
+                            }, 
+                        {}
+                        );
+                    pageData = JSON.parse(JSON.stringify(ordered1));
+                    var reX = {},
+                        idx = 0;
+                    $.each(pageData,function(_x,_e){
+                        $.each(_e,function(a,b){
+                            var dx = JSON.parse(JSON.stringify(b));
+                            dx.statusIndex = idx;
+                            var authorized = {};
+                            $.each(dx.authorizedRoles,function(s,se){
+                                authorized['id_'+s] = JSON.parse(JSON.stringify(se));
+                                });
+                            dx.authorizedRoles = JSON.parse(JSON.stringify(authorized));
+                            if(dx.isBeforeArtist){
+                                var authRol = {}, roleIndex = {};
+                                $.each(dx.allowedSteps,function(s,se){
+                                    if(typeof roleIndex['id_'+se.roleIndex] == "undefined"){
+                                        roleIndex['id_'+se.roleIndex] = [];
+                                        }
+                                    roleIndex['id_'+se.roleIndex].push(JSON.parse(JSON.stringify(se)));
+                                    });
+                                const ordered2 = Object.keys(roleIndex).sort().reduce(
+                                    (obj, key) => { 
+                                        obj[key] = roleIndex[key]; 
+                                        return obj;
+                                        }, 
+                                    {}
+                                    );
+                                roleIndex = JSON.parse(JSON.stringify(ordered2));
+                                var statusCds = [];
+                                $.each(roleIndex,function(s,se){
+                                    $.each(se,function(sr,sx){
+                                        if(sx.shotStatus!=null){
+                                            if(statusCds.indexOf(sx.shotStatus.code)==-1){
+                                                statusCds.push(sx.shotStatus.code);
+                                                }
+                                            var keyName = statusCds.indexOf(sx.shotStatus.code);
+                                            if(typeof authRol['id_'+keyName] == "undefined"){
+                                                authRol['id_'+keyName] = {
+                                                    status: JSON.parse(JSON.stringify(sx.shotStatus)),
+                                                    roleIndex: keyName,
+                                                    roles: {}
+                                                    };
+                                                }
+                                            var rXd = JSON.parse(JSON.stringify(sx));
+                                            rXd.roleIndex = keyName;
+                                            authRol['id_'+keyName].roles['id_'+Object.keys(authRol['id_'+keyName].roles).length] = JSON.parse(JSON.stringify(rXd));
+                                            }
+                                        });
+                                    });
+                                dx.allowedSteps = JSON.parse(JSON.stringify(authRol));
+                                }
+                            reX['id_'+idx] = JSON.parse(JSON.stringify(dx));
+                            idx = idx + 1;
+                            });
+                        });
+                    pageData = JSON.parse(JSON.stringify(reX));
+                    loadChanges();
+                    /*console.log(pageData);
+                    $(".draggable").each(function(e){
+                        $(this).tableDnD({
+                            onDrop: function(table, row){
+                                console.log(table,row);
+                                },
+                            dragHandle: ".dragHandle"
+                            });
+                        });*/
+                    },
+                error: function (jqXHR, exception) {
+                    console.log(jqXHR.responseText)
+                    }
+                });
+            }
+        $('.main-sub-switch').prop('checked',localStorage.getItem('assignment_tab_type')=='main'?true:false);
+        $('.shot-mode-x').html('You are viewing '+(localStorage.getItem('assignment_tab_type')=='main'?'main':'sub')+' shot');
+        $('.shot-mode-x').css('background',(localStorage.getItem('assignment_tab_type')=='main'?'#ff8300':'#009efb'));
+        if(localStorage.getItem('assignment_tab_location')==null){
+            localStorage.setItem('assignment_tab_location','GLOBAL');
+            }
+        if(localStorage.getItem('assignment_tab_dep')==null){
+            localStorage.setItem('assignment_tab_dep',ofx_page_data.taskTypes[0].name);
+            }
+        if(localStorage.getItem('assignment_tab_type')==null){
+            localStorage.setItem('assignment_tab_type','main');
+            }
+        $(document).on('click','.select-location:not(.active)',function(e){
+            localStorage.setItem('assignment_tab_location',$(this).attr('data-tab'));
+            $($(this).attr('href')).find('.select-dep[data-tab="'+localStorage.getItem('assignment_tab_dep')+'"]').click();
+            });
+        $(document).on('click','.select-dep',function(e){
+            localStorage.setItem('assignment_tab_dep',$(this).attr('data-tab'));
+            if(ofx_make_key($(this).attr('data-location'))==ofx_make_key(localStorage.getItem('assignment_tab_location'))){
+                getAssignementOrder();
+                }
+            });
+        $(document).on('change','.main-sub-switch',function(e){
+            localStorage.setItem('assignment_tab_type',$(this).prop('checked')?'main':'sub');
+            $('.shot-mode-x').html('You are viewing '+(localStorage.getItem('assignment_tab_type')=='main'?'main':'sub')+' shot');
+            $('.shot-mode-x').css('background',(localStorage.getItem('assignment_tab_type')=='main'?'#ff8300':'#009efb'));
+            getAssignementOrder();
+            });
+        
+        var locations = [],
+            allRoles = [],
+            allEmployes = [],
+            mainLocationNav = $('.main-location-nav'),
+            mainLocationBody = $('.main-location-body');
+        $(document).ready(function () {
+            $.ajax({
+                url: '/api/v2/locations/',
+                type: 'GET',
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                async: true, //displays data after loading the page
+                processing: false,
+                // data: {updated_date__range: moment(getKeys.from_date ).format('YYYY-MM-DD')+'T00:00:00.000000|'+moment(getKeys.to_date ).format('YYYY-MM-DD')+'T23:59:59.999999'},
+                beforeSend: function(request) {
+                    request.setRequestHeader("required", JSON.stringify(["id","name"]));
+                    },
+                success: function (locations_x) {
+                    locations = []
+                    locations.push({id:0,name:'GLOBAL'})
+                    $.each(locations_x,function(x,e){ locations.push(e); });
+                    $(mainLocationNav).empty();
+                    $(mainLocationBody).empty();
+                    $.ajax({
+                        url: '/api/hrm/role/',
+                        type: 'GET',
+                        dataType: "json",
+                        contentType: 'application/json; charset=utf-8',
+                        async: true, //displays data after loading the page
+                        processing: false,
+                        success: function (rols) {
+                            allRoles = JSON.parse(JSON.stringify(rols));
+                            $.ajax({
+                                url: '/api/hrm/employee/',
+                                type: 'GET',
+                                dataType: "json",
+                                contentType: 'application/json; charset=utf-8',
+                                async: true, //displays data after loading the page
+                                processing: false,
+                                success: function (emps) {
+                                    allEmployes = JSON.parse(JSON.stringify(emps));
+                                    $.each(locations,function(x,e){
+                                        $(mainLocationNav).append(`<li class="nav-item"><a class="select-location nav-link show`+(ofx_make_key(e.name)==ofx_make_key(localStorage.getItem('assignment_tab_location'))?" active":'')+`" data-tab="`+e.name+`" data-data='`+JSON.stringify(e)+`' data-toggle="tab" href="#location`+ofx_make_key(e.name)+`" role="tab" aria-selected="`+(ofx_make_key(e.name)==ofx_make_key(localStorage.getItem('assignment_tab_location'))?"true":'false')+`"><span class="hidden-sm-up"><i class="ti-home"></i></span> <span class="hidden-xs-down">`+e.name+`</span></a> </li>`);
+                                        var subNav = '', subBody = '';
+                                        $.each(ofx_page_data.taskTypes,function(_x,_e){
+                                            subNav = subNav + `<li class="nav-item"> <a class="select-dep nav-link show`+(ofx_make_key(_e.name)==ofx_make_key(localStorage.getItem('assignment_tab_dep'))?" active":'')+`" data-location="`+e.name+`" data-tab="`+_e.name+`" data-data='`+JSON.stringify({location:e,dep:_e})+`' data-toggle="tab" href="#tab`+ofx_make_key(e.name)+ofx_make_key(_e.name)+`" role="tab" aria-selected="`+(ofx_make_key(_e.name)==ofx_make_key(localStorage.getItem('assignment_tab_dep'))?"true":'false')+`"><span class="hidden-sm-up"><i class="ti-home"></i></span> <span class="hidden-xs-down">`+_e.name+`</span> </a> </li>`
+                                            subBody = subBody + `<div class="tab-pane show`+(ofx_make_key(_e.name)==ofx_make_key(localStorage.getItem('assignment_tab_dep'))?" active":'')+`" id="tab`+ofx_make_key(e.name)+ofx_make_key(_e.name)+`" role="tabpanel"><div class="tabx-`+ofx_make_key(e.name)+`-`+ofx_make_key(_e.name)+`"></div></div>`;
+                                            });
+                                        $(mainLocationBody).append(`<div class="tab-pane show`+(ofx_make_key(e.name)==ofx_make_key(localStorage.getItem('assignment_tab_location'))?" active":'')+`" id="location`+ofx_make_key(e.name)+`" role="tabpanel">
+                                                <div class="vtabs customvtab" style="width: 100%;">
+                                                    <ul class="nav nav-tabs tabs-vertical" role="tablist">`+subNav+`</ul>
+                                                    <!-- Tab panes -->
+                                                    <div class="tab-content pb-0">`+subBody+`</div>
+                                                </div>
+                                            </div>`);
+                                        });
+                                    getAssignementOrder();
+                                    },
+                                error: function (jqXHR, exception) {
+                                    console.log(jqXHR.responseText)
+                                    }
+                                });
+                            },
+                        error: function (jqXHR, exception) {
+                            console.log(jqXHR.responseText)
+                            }
+                        });
+                    },
+                error: function (jqXHR, exception) {
+                    console.log(jqXHR.responseText)
+                    }
+                });
+            });
+        
+    </script>
+{% endblock page_scripts %}

@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 /*!
  * pickadate.js v3.6.4, 2019/05/25
  * By Amsul, http://amsul.ca

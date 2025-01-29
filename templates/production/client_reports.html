@@ -1,0 +1,1167 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block bread_crumb %}
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/DataTables-1.12.1/css/jquery.dataTables.min.css' %}"
+          type="text/css"/>
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/Responsive-2.3.0/css/responsive.dataTables.min.css' %}"
+          type="text/css"/>
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/Responsive-2.3.0/css/responsive.bootstrap5.min.css' %}"
+          type="text/css"/>
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/Buttons-2.2.3/css/buttons.dataTables.min.css' %}"
+          type="text/css"/>
+    <link rel='stylesheet' href="{% static 'template/assets/plugins/multiselect/css/multi-select.css' %}"
+          type="text/css"/>
+    <link rel="stylesheet"
+          href="{% static 'template/assets/plugins/toast-master/css/jquery.toast.css' %}" type="text/css"/>
+    <link rel="stylesheet"
+          href="{% static 'third_party/DataTables/custom_css/datables_searchpane.css' %}" type="text/css"/>
+    <link rel="stylesheet"
+          href="{% static 'third_party/DataTables/Select-1.4.0/css/select.dataTables.min.css' %}" type="text/css"/>
+    <link href="{% static 'third_party/DataTables/DataTables-1.12.1/css/dataTables.jqueryui.css' %}" rel="stylesheet"
+          type="text/css"/>
+<!--?    <link href="https://cdn.datatables.net/colreorder/1.5.6/css/colReorder.dataTables.min.css' %}" rel="stylesheet"-->
+<!--?          type="text/css"/>-->
+
+    <style>
+        .form-control {
+            color: #fffcfc !important;
+        }
+
+        .container-fluid {
+            padding: 10px !important;
+        }
+
+        .row {
+            margin: 0px !important;
+        }
+
+        /* An ugly trick to use a filter icon */
+        .ui-icon-volume-off.ui-icon-filter {
+            -ms-transform: rotate(270deg);
+            -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+        }
+
+        .card {
+            padding: 10px;
+            background: #272c33 !important;
+            color: white;
+            margin-bottom: 10px !important;
+        }
+
+        .col-md-12 {
+            padding: 0px !important;
+        }
+
+        .col-lg-10 {
+            padding: 0px !important;
+        }
+
+        .card-body {
+            padding: 0rem !important;
+        }
+
+        #filter_div {
+            padding: 10px;
+            background: #272c33 !important;
+            color: white;
+        }
+
+        .col-lg-12 {
+            padding: 0px !important;
+        }
+
+        .col-lg-10 {
+            padding: 0px !important;
+        }
+
+        .card-body {
+            padding: 0rem !important;
+        }
+        div.dt-button-collection button.dt-button:active:not(.disabled),
+        div.dt-button-collection button.dt-button.active:not(.disabled),
+        div.dt-button-collection div.dt-button:active:not(.disabled),
+        div.dt-button-collection div.dt-button.active:not(.disabled),
+        div.dt-button-collection a.dt-button:active:not(.disabled),
+        div.dt-button-collection a.dt-button.active:not(.disabled){
+            background-color: #272c33!important;
+            background: #272c33!important;
+            }
+
+        table.dataTable tbody tr {
+            background-color: #272c33 !important;
+            font-size: small;
+            font-weight: normal;
+        }
+
+        table.dataTable tr.odd {
+            background-color: #343a40 !important;
+        }
+
+        table.dataTable td {
+            border-bottom: 0.2px !important;
+            border-color: grey !important;
+        }
+
+        table.dataTable thead {
+            color: #f6f5f5;
+            font-weight: normal;
+            font-size: small;
+        }
+
+        .dataTables_length, .dataTables_info, .dataTables_filter {
+            color: #a2a1a1 !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 2px;
+            background: white !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            color: #fff5f5 !important;
+            background-color: #e5711d !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background-color: rgb(183, 110, 5) !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .ellipsis {
+            color: white;
+        }
+
+        tfoot input {
+            width: 100% !important;
+            padding: 3px !important;
+            box-sizing: border-box !important;
+        }
+
+        table.dataTable tfoot th, table.dataTable tfoot td {
+            padding: 5px;
+            border-top: 0px;
+        }
+
+        .page-titles {
+            padding-bottom: 0px;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            color: #ccc8c8 !important;
+            background-color: inherit;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            color: #dad8d8 !important;
+        }
+
+
+        table.dataTable tbody tr.selected {
+            background-color: #315eb1 !important;
+            color: white !important;
+        }
+
+        label {
+            margin-bottom: 0px !important;
+        }
+
+        .multiselect-container > li > a > label {
+            padding: 4px 20px 3px 20px;
+        }
+
+        table.dataTable tbody th, table.dataTable tbody td {
+            padding: 7px;
+        }
+
+        .column_vis {
+            height: 20px;
+        }
+
+        /* width */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #383f48;
+            border-radius: 5px;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #2965b9;
+            border-radius: 5px;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        svg {
+            width: 100px;
+            height: 100px;
+            margin: 20px;
+            display: inline-block;
+            background-color: #0A0A0A;
+        }
+
+        div.dtsp-verticalContainer {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-content: flex-start;
+            align-items: flex-start;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes,
+        div.dtsp-verticalContainer div.container {
+            width: 20%;
+            flex-grow: 0;
+            flex-shrink: 0;
+            flex-basis: 0;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes {
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: 26%;
+        }
+
+        div.dtsp-verticalPanes {
+            margin-right: 10px;
+        }
+
+        div.dtsp-title {
+            margin-right: 0px !important;
+            margin-top: 13px !important;
+        }
+
+        input.dtsp-search {
+            min-width: 0px !important;
+            padding-left: 0px !important;
+            margin: 0px !important;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes div.dtsp-searchPanes {
+            flex-direction: column;
+            flex-basis: 0px;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes div.dtsp-searchPanes div.dtsp-searchPane {
+            flex-basis: 0px;
+        }
+
+        div.dtsp-verticalContainer div.container {
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: 80%;
+        }
+
+        div.dtsp-panesContainer {
+            border: 1px solid transparent;
+            border-radius: 6px;
+            padding: 5px;
+        }
+
+        select {
+            -webkit-appearance: none;
+        }
+
+        div.dtsp-narrow {
+            flex-direction: column !important;
+            background-color: #343a40;
+        }
+
+        div.dtsp-panesContainer button.dtsp-clearAll, div.dtsp-panesContainer button.dtsp-collapseAll, div.dtsp-panesContainer button.dtsp-showAll {
+            border: none;
+            background-color: #343a40;
+            padding: 3px;
+            border-radius: 5px;
+        }
+
+        div.dtsp-panesContainer button.dtsp-disabledButton {
+            cursor: default !important;
+            background-color: #343a40;
+            padding: 3px;
+            border-radius: 10px;
+            color: white;
+        }
+
+        div.dtsp-panesContainer div.dataTables_wrapper div.dataTables_scrollBody {
+            background: #343a40 !important;
+            border-bottom: none;
+        }
+        .view-shot-version.active{
+            background-color: #009efb !important;
+            }
+        .dtsp-nameCont img{
+            max-width: 25px;
+            }
+        .version-item > button{
+            position: absolute;
+            margin: auto;
+            bottom: 20px;
+            right: 10px;
+            width: 40px;
+            height: 40px;
+            opacity: 0;
+            -webkit-transition: .4s;
+            transition: .4s;
+            }
+        .version-item:hover > button{
+            opacity: 1;
+            }
+            .form-control {
+            color: #fffcfc !important;
+        }
+
+        .container-fluid {
+            padding: 10px !important;
+        }
+
+        .row {
+            margin: 0px !important;
+        }
+
+        /* An ugly trick to use a filter icon */
+        .ui-icon-volume-off.ui-icon-filter {
+            -ms-transform: rotate(270deg);
+            -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+        }
+
+        .card {
+            padding: 10px;
+            background: #272c33 !important;
+            color: white;
+            margin-bottom: 10px !important;
+        }
+
+        .card-body {
+            padding: 0rem !important;
+        }
+
+        #filter_div {
+            padding: 10px;
+            background: #272c33 !important;
+            color: white;
+        }
+
+        .col-lg-12 {
+            padding: 0px !important;
+        }
+
+        .col-lg-10 {
+            padding: 0px !important;
+        }
+
+        .card-body {
+            padding: 0rem !important;
+        }
+
+        div.dt-button-collection button.dt-button:active:not(.disabled),
+        div.dt-button-collection button.dt-button.active:not(.disabled),
+        div.dt-button-collection div.dt-button:active:not(.disabled),
+        div.dt-button-collection div.dt-button.active:not(.disabled),
+        div.dt-button-collection a.dt-button:active:not(.disabled),
+        div.dt-button-collection a.dt-button.active:not(.disabled) {
+            background-color: #272c33 !important;
+            background: #272c33 !important;
+        }
+
+        table.dataTable tbody tr {
+            background-color: #272c33 !important;
+            font-size: small;
+            font-weight: normal;
+        }
+
+        table.dataTable tr.odd {
+            background-color: #343a40 !important;
+        }
+
+        table.dataTable td {
+            border-bottom: 0.2px !important;
+            border-color: grey !important;
+        }
+
+        table.dataTable thead {
+            color: #f6f5f5;
+            font-weight: normal;
+            font-size: small;
+        }
+
+        .dataTables_length, .dataTables_info, .dataTables_filter {
+            color: #a2a1a1 !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 2px;
+            background: white !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            color: #fff5f5 !important;
+            background-color: #e5711d !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background-color: rgb(183, 110, 5) !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .ellipsis {
+            color: white;
+        }
+
+        tfoot input {
+            width: 100% !important;
+            padding: 3px !important;
+            box-sizing: border-box !important;
+        }
+
+        table.dataTable tfoot th, table.dataTable tfoot td {
+            padding: 5px;
+            border-top: 0px;
+        }
+
+        .page-titles {
+            padding-bottom: 0px;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            color: #ccc8c8 !important;
+            background-color: inherit;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            color: #dad8d8 !important;
+        }
+
+
+        table.dataTable tbody tr.selected {
+            background-color: #315eb1 !important;
+            color: white !important;
+        }
+
+        label {
+            margin-bottom: 0px !important;
+        }
+
+        .multiselect-container > li > a > label {
+            padding: 4px 20px 3px 20px;
+        }
+
+        table.dataTable tbody th, table.dataTable tbody td {
+            padding: 7px;
+        }
+
+        .column_vis {
+            height: 20px;
+        }
+
+        /* width */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #383f48;
+            border-radius: 5px;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #2965b9;
+            border-radius: 5px;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        div.dtsp-verticalContainer {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-content: flex-start;
+            align-items: flex-start;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes,
+        div.dtsp-verticalContainer div.container {
+            width: 20%;
+            flex-grow: 0;
+            flex-shrink: 0;
+            flex-basis: 0;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes {
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: 26%;
+        }
+
+        div.dtsp-verticalPanes {
+            margin-right: 10px;
+        }
+
+        div.dtsp-title {
+            margin-right: 0px !important;
+            margin-top: 13px !important;
+        }
+
+        input.dtsp-search {
+            min-width: 0px !important;
+            padding-left: 0px !important;
+            margin: 0px !important;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes div.dtsp-searchPanes {
+            flex-direction: column;
+            flex-basis: 0px;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes div.dtsp-searchPanes div.dtsp-searchPane {
+            flex-basis: 0px;
+        }
+
+        div.dtsp-verticalContainer div.container {
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: 80%;
+        }
+
+        div.dtsp-panesContainer {
+            border: 1px solid transparent;
+            border-radius: 6px;
+            padding: 5px;
+        }
+
+        select {
+            -webkit-appearance: none;
+        }
+
+        div.dtsp-narrow {
+            flex-direction: column !important;
+            background-color: #343a40;
+        }
+
+        div.dtsp-panesContainer button.dtsp-clearAll, div.dtsp-panesContainer button.dtsp-collapseAll, div.dtsp-panesContainer button.dtsp-showAll {
+            border: none;
+            background-color: #343a40;
+            padding: 3px;
+            border-radius: 5px;
+        }
+
+        div.dtsp-panesContainer button.dtsp-disabledButton {
+            cursor: default !important;
+            background-color: #343a40;
+            padding: 3px;
+            border-radius: 10px;
+            color: white;
+        }
+
+        div.dtsp-panesContainer div.dataTables_wrapper div.dataTables_scrollBody {
+            background: #343a40 !important;
+            border-bottom: none;
+        }
+
+        .request-loading:empty::before {
+            position: absolute;
+            margin: auto;
+            display: block;
+            content: "Loading please wait...";
+            width: min-content;
+            height: min-content;
+            white-space: nowrap;
+            right: 0px;
+            left: 0px;
+            top: 0px;
+            bottom: 0px;
+            -webkit-transition: .4s;
+            transition: .4s;
+            -webkit-animation: color-change 1s infinite;
+            -moz-animation: color-change 1s infinite;
+            -o-animation: color-change 1s infinite;
+            -ms-animation: color-change 1s infinite;
+            animation: color-change 1s infinite;
+        }
+
+        @keyframes color-change {
+            0% {
+                color: #979797;
+            }
+            50% {
+                color: #cfcfcf;
+            }
+            100% {
+                color: #979797;
+            }
+        }
+
+        .bar-chart-legend {
+            display: inline-block;
+            right: 25px;
+            position: absolute;
+            font-size: 10px;
+            width: 100%;
+            text-align: right;
+        }
+
+        .bar-chart-legend .legend-item {
+            display: inline-block;
+        }
+
+        .bar-chart-legend .legend-color {
+            width: 12px;
+            height: 12px;
+            margin: 3px 5px;
+            display: inline-block;
+        }
+    </style>
+    <div class="row page-titles" style="margin-left: -10px !important;margin-right: -10px !important;margin-top: -10px !important;background: #272c33;padding-top: 10px;padding-bottom: 6px;border-bottom: 1px solid #818181;">
+        <div class="col-2 float-left">
+            <h3 class="text-themecolor mb-0 mt-2 re-seletct">Client Report</h3>
+        </div>
+        <div class="col-10 text-right pt-1">
+            <div class="btn-group mb-2 mr-2">
+                <select name="client__id" style="text-align: left; height: 33px; padding: 0px 10px;" class="btn btn-outline-info client-report-input-tag"></select>
+            <!-- </div>
+            <div class="btn-group mb-2 mr-2"> -->
+                <select name="project__id" style="text-align: left; height: 33px; padding: 0px 10px;" class="btn btn-outline-info client-report-input-tag"><option value="">All Projects</option></select>
+            </div>
+            <div class="btn-group mb-2 mr-2">
+                <select name="dep__id" style="text-align: left; height: 33px; padding: 0px 10px;" class="btn btn-outline-info client-report-input-tag"><option value="">All Department</option></select>
+            </div>
+            <div class="btn-group mb-2 mr-2">
+                <button type="button" style="height: 33px;padding: 0px 10px;" class="btn btn-info run-filter boot">Apply <i class="mdi mdi-arrow-right"></i></button>
+            </div>
+            <div class="btn-group mb-2 mr-2" role="group" aria-label="Button group with nested dropdown">
+                <button type="button" style="height: 33px;padding: 0px 10px;"  class="btn btn-primary export-to-excel" title="Export to Excel" ><i class="mdi mdi-cloud-download" ></i> Export to EXCEL</button>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+{% endblock bread_crumb %}
+
+
+{% block content %}
+    <div class="container-fluid row">
+        <div class="col-md-12 reports-view">
+            <div class="row" style="margin-right: -15px!important; margin-left: -15px!important;">
+                <div class="text-center" style="position: relative;margin: auto;top: 100px;width: 100%;">
+                    <h3 class="text-uppercase">Welcome!</h3>
+                    <p class="text-muted mt-4 mb-4">Please Select Client and click on Apply to get Client Report</p>
+                </div>
+            </div>
+        </div>
+        <div class="reports-table-view col-md-6" style="display: none;">
+        </div>
+    </div>
+{% endblock content %}
+{% block page_scripts %}
+    <!--OFX Core JavaScript -->
+    <script src="{% static 'ofx/core.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/DataTables-1.12.1/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Responsive-2.3.0/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Responsive-2.3.0/js/responsive.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Buttons-2.2.3/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Buttons-2.2.3/js/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Bootstrap-5-5.1.3/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'template/assets/plugins/popper/popper.min.js' %}"></script>
+    <script src="{% static 'template/assets/plugins/toast-master/js/jquery.toast.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/custom_js/datatables_searchPane.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Select-1.4.0/js/dataTables.select.min.js' %}"></script>
+    <script src="{% static 'main/dataTables.colReorder.min.js' %}"></script>
+    <script src="{% static 'template/assets/plugins/echarts/echarts-all.js' %}"></script>
+    <!-- <script src="{% static 'template/assets/plugins/moment/moment.js' %}"></script> -->
+<!--?    <script src="https://cdn.datatables.net/colreorder/1.5.6/js/dataTables.colReorder.min.js' %}"></script>-->
+    {% csrf_token %}
+    <script>
+        var reportsTab = $('.reports-view > .row'),
+            reportsTableTab = $('.reports-table-view');
+        function getSelectedQery(target='amd|hv'){
+            var project = $('.'+target+'-project-tag').find(":selected").val();
+            var department = $('.'+target+'-dep-tag').find(":selected").val();
+            project = typeof project != "undefined" ? project : '';
+            department = typeof department != "undefined" ? department : '';
+            var rData = [];
+            $.each(pageDataX.clientreport,function(xx,ee){
+                $.each(ee.projects,function(x,e){
+                    $.each(e.departments,function(_x,_e){
+                        if((String(project).length == 0 || String(project) == String(_e.project.id))&&(String(department).length == 0 || String(department) == String(_e.dep.id))){
+                            rData.push(JSON.parse(JSON.stringify(_e)));
+                            }
+                        });
+                    });
+                });
+            return rData;
+            }
+        
+        function setGaugeChart(t, tmd, max = 100, now = 20) {
+            var gaugeChart = echarts.init(t);
+            option = {
+                tooltip: {
+                    formatter: "{a} <br/>{b} : {c}"
+                },
+                backgroundColor: 'transparent',
+                series: [
+                    {
+                        name: 'TMD: ' + tmd,
+                        type: 'gauge',
+                        max: max,
+                        detail: {formatter: '{value}'},
+                        data: [{value: now, name: 'AMD'}],
+                        axisLine: {
+                            lineStyle: {
+                                color: [[0.25, '#f62d51'], [0.5, '#ffbc34'], [0.75, '#009efb'], [1, '#55ce63']],
+                            }
+                        }
+                    }
+                ]
+            };
+            gaugeChart.setOption(option, true);
+            }
+        function genVNumbers(str, max, isEnd = true){
+            str = str.toString();
+            return (isEnd?'V':'')+(str.length < max ? genVNumbers("0" + str, max,false) : str);
+            }
+        function applyProjectAMD(){
+            var myTag = $('#gauge-chart');
+            $($(`<div id="gauge-chart" class="request-loading" style="width:100%; height:400px;"></div>`)).insertBefore($(myTag));
+            $(myTag).remove();
+            $('.am-target').html('N/A');
+            $('.am-am').html('N/A');
+            var seleted = getSelectedQery('amd'),
+                trgt = 0,
+                arciv = 0;
+            $.each(seleted,function(i,x){
+                trgt = trgt + x.tmd;
+                arciv = arciv + x.amd;
+                });
+            setGaugeChart(document.getElementById('gauge-chart'), parseInt(trgt), parseInt((arciv > trgt ? arciv : trgt)), parseInt(arciv));
+            $('.am-target').html(trgt.toFixed(2));
+            $('.am-am').html(arciv.toFixed(2));
+            }
+        function applyProjectHV(){
+            var seleted = getSelectedQery('hv'),
+                highestVersion = 0,
+                highestVersionShotsCount = 0,
+                totalshots = 0,
+                retake_per = 0,
+                artistcount = 0,
+                missedEta = 0,
+                artistTMD = 0,
+                retake_per_count = 0;
+            $.each(seleted,function(i,x){
+                if(parseInt(x.highest_ver) > highestVersion){
+                    highestVersion = x.highest_ver;
+                    highestVersionShotsCount = x.highest_ver_shotCount;
+                    }
+                totalshots = totalshots + x.totalshots;
+                retake_per = retake_per + x.retake_per;
+                artistcount = artistcount + x.artistcount;
+                artistTMD = artistTMD + x.artistTMD;
+                missedEta = missedEta + x.missedEta;
+                retake_per_count = retake_per_count + 1;
+                });
+            retake_per = parseInt(retake_per_count > 0 ? (retake_per/retake_per_count):0);
+            var myTag = $('<div class="row"></div>');
+            $('#hv-statistics').empty().append(myTag);
+            let lx = ['success','primary','info','warning','danger'];
+            var highestVersionPerntage = parseInt((100/totalshots)*highestVersionShotsCount);
+            var missedEtaPerntage = parseInt((100/totalshots)*missedEta);
+            $(myTag).append(`<div class="col-12" style="margin-top: 30px;">
+                                <div class="card" style="border: 1px solid #ffffff1f;height: 100%;">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Highest Version</h4>
+                                        <div class="d-flex flex-row">
+                                            <div class="align-self-center">
+                                                <span class="display-6">`+(highestVersion > 0 ? genVNumbers(highestVersion,3):'N/A')+`</span>
+                                            </div>
+                                            <div class="ml-auto">
+                                                <h2 class="font-light mb-0">`+(highestVersionShotsCount > 0 ? highestVersionShotsCount:'N/A')+`</h2>
+                                                <span class="text-muted">Shot`+(highestVersionShotsCount > 1 ? 's':'')+`</span>
+                                            </div>
+                                        </div>
+                                        <span class="text-`+lx[(highestVersionPerntage<25 ? 0 : (highestVersionPerntage<50 ? 1 : (highestVersionPerntage<75 ? 2 : (highestVersionPerntage<100 ? 3 : 4))))]+`">`+highestVersionPerntage+`%</span>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-`+lx[(highestVersionPerntage<25 ? 0 : (highestVersionPerntage<50 ? 1 : (highestVersionPerntage<75 ? 2 : (highestVersionPerntage<100 ? 3 : 4))))]+`" role="progressbar" style="width: `+highestVersionPerntage+`%; height: 6px;" aria-valuenow="`+highestVersionPerntage+`" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`);
+            {#$(myTag).append(`<div class="col-6" style="margin-top: 30px;">#}
+            {#                    <div class="card" style="border: 1px solid #ffffff1f;height: 100%;">#}
+            {#                        <div class="card-body">#}
+            {#                            <h4 class="card-title" style="margin-bottom: 36px;">Missed ETA</h4>#}
+            {#                            <div class="d-flex flex-row">#}
+            {#                                <div class="align-self-center">#}
+            {#                                    <span class="display-6 text-`+lx[(missedEtaPerntage<25 ? 0 : (missedEtaPerntage<50 ? 1 : (missedEtaPerntage<75 ? 2 : (missedEtaPerntage<100 ? 3 : 4))))]+`">`+missedEtaPerntage+`%</span>#}
+            {#                                </div>#}
+            {#                                <div class="ml-auto">#}
+            {#                                    <h2 class="font-light mb-0">`+(missedEta > 0 ? missedEta:'N/A')+`</h2>#}
+            {#                                    <span class="text-muted">Shot`+(missedEta > 1 ? 's':'')+`</span>#}
+            {#                                </div>#}
+            {#                            </div>#}
+            {#                            <div class="progress">#}
+            {#                                <div class="progress-bar bg-`+lx[(missedEtaPerntage<25 ? 0 : (missedEtaPerntage<50 ? 1 : (missedEtaPerntage<75 ? 2 : (missedEtaPerntage<100 ? 3 : 4))))]+`" role="progressbar" style="width: `+missedEtaPerntage+`%; height: 6px;" aria-valuenow="`+missedEtaPerntage+`" aria-valuemin="0" aria-valuemax="100"></div>#}
+            {#                            </div>#}
+            {#                        </div>#}
+            {#                    </div>#}
+            {#                </div>`);#}
+            $(myTag).append(`<div class="col-12" style="margin-top: 30px;">
+                                <div class="card" style="border: 1px solid #ffffff1f;height: 100%;">
+                                    <div class="card-body">
+                                        <h4 class="card-title" style="margin-bottom: 42px;">Retake Percentage</h4>
+                                        <div class="d-flex flex-row">
+                                            <div class="align-self-center">
+                                                <span class="display-6 text-`+lx[(retake_per<25 ? 0 : (retake_per<50 ? 1 : (retake_per<75 ? 2 : (retake_per<100 ? 3 : 4))))]+`">`+retake_per+`%</span>
+                                            </div>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-`+lx[(retake_per<25 ? 0 : (retake_per<50 ? 1 : (retake_per<75 ? 2 : (retake_per<100 ? 3 : 4))))]+`" role="progressbar" style="width: `+retake_per+`%; height: 6px;" aria-valuenow="`+retake_per+`" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`);
+            {#$(myTag).append(`<div class="col-6" style="margin-top: 30px;">#}
+            {#                    <div class="card" style="border: 1px solid #ffffff1f;height: 100%;">#}
+            {#                        <div class="card-body">#}
+            {#                            <h4 class="card-title" style="margin-bottom: 32px;">Artists</h4>#}
+            {#                            <div class="d-flex flex-row">#}
+            {#                                <div class="align-self-center">#}
+            {#                                    <span class="display-6">`+artistcount+`</span>#}
+            {#                                    <h6 class="text-muted" style="margin: auto;">Total VFX Artists</h6>#}
+            {#                                </div>#}
+            {#                                <div class="ml-auto">#}
+            {#                                    <span class="display-6">`+artistTMD.toFixed(2)+`</span>#}
+            {#                                    <h6 class="text-muted" style="margin: auto;">Mandays/Day</h6>#}
+            {#                                </div>#}
+            {#                            </div>#}
+            {#                        </div>#}
+            {#                    </div>#}
+            {#                </div>`);#}
+            $('.hv-rtkprcnt').html(`<span class="text-`+lx[(retake_per<25 ? 0 : (retake_per<50 ? 1 : (retake_per<75 ? 2 : (retake_per<100 ? 3 : 4))))]+`">`+retake_per+`%</span>`);
+            $('.hv-shcnt').html(totalshots);
+            }
+        $(document).on('change','.amd-project-tag',function(e){ applyProjectAMD(); });
+        $(document).on('change','.hv-project-tag',function(e){ applyProjectHV(); });
+
+        function setClientReport(e=null){
+            $(reportsTab).empty();
+            if(e!=null && Object.keys(e.clientreport).length > 0){
+                console.log("Page Data",e);
+                var clientData = JSON.parse(JSON.stringify(e.clientreport[Object.keys(e.clientreport)[0]]));
+                var oPtions = '<option value="">All Projects</option>';
+                var sortX = {};
+                $.each(clientData.projects,function(x,e){
+                    sortX[e.name] = JSON.parse(JSON.stringify(e));
+                    });
+                const ordered = Object.keys(sortX).sort().reduce(
+                    (obj, key) => { 
+                        obj[key] = sortX[key]; 
+                        return obj;
+                    }, 
+                    {}
+                    );
+                var posibleDeps = {};
+                $.each(ordered,function(z,e){
+                    oPtions = oPtions+`<option value="`+e.id+`" >`+e.name+`</option>`;
+                    $.each(e.departments,function(_z,_e){
+                        posibleDeps[_e.dep.name] = JSON.parse(JSON.stringify(_e.dep));
+                        });
+                    });
+                const ordered2 = Object.keys(posibleDeps).sort().reduce(
+                    (obj, key) => { 
+                        obj[key] = posibleDeps[key]; 
+                        return obj;
+                    }, 
+                    {}
+                    );
+                var oPtions2 = '<option value="">All Department</option>';
+                $.each(ordered2,function(z,e){
+                    oPtions2 = oPtions2+`<option value="`+e.id+`" >`+e.name+`</option>`;
+                    });
+                $(reportsTab).append(`<div class="col-md-6">
+                                        <div class="card pt-0" style="overflow: hidden;">
+                                            <div class="card-body ">
+                                                <div class="card-title p-2 mb-1" style="margin-left: -10px; margin-right: -10px; background: #192a40; ">
+                                                    <div class="row">
+                                                        <div class="col-5">
+                                                            <h4 class="d-inline">Achieved Mandays</h4>
+                                                            <p class="text-muted mt-0 mb-0">Target Mandays: <span class="am-target">N/A</span><br>Achieved Mandays: <span class="am-am">N/A</span></p>
+                                                        </div>
+                                                        <div class="col-7 text-right mt-3 pr-0 amd-search">
+                                                            <div class="btn-group mb-2 mr-2 achieved-mandays-filter-div">
+                                                                `+(Object.keys(clientData.projects).length > 1 ? `<select style="text-align: left; height: 33px; padding: 0px 10px;" class="btn btn-outline-info amd-project-tag">`+oPtions+`</select>`:`<button type="button" style="text-align: center; height: 33px; padding: 0px 10px;" class="btn btn-info" >`+(Object.keys(clientData.projects).length>0?clientData.projects[Object.keys(clientData.projects)[0]].name:'')+`</button>`)+`
+                                                                `+(Object.keys(posibleDeps).length > 1 ? `<select style="text-align: left; height: 33px; padding: 0px 10px;" class="btn btn-outline-info amd-dep-tag">`+oPtions2+`</select>`:`<button type="button" style="text-align: center; height: 33px; padding: 0px 10px;" class="btn btn-info" >`+(Object.keys(posibleDeps).length>0?posibleDeps[Object.keys(posibleDeps)[0]].name:'')+`</button>`)+`
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div id="gauge-chart" class="request-loading" style="width:100%; height:400px;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card pt-0" style="overflow: hidden;">
+                                            <div class="card-body ">
+                                                <div class="card-title p-2 mb-1" style="margin-left: -10px; margin-right: -10px; background: #192a40; ">
+                                                    <div class="row">
+                                                        <div class="col-5">
+                                                            <h4 class="d-inline">Statistics</h4>
+                                                            <p class="text-muted mt-0 mb-0">Retake Percentage: <span class="hv-rtkprcnt">N/A</span></br>Shots Count: <span class="hv-shcnt">N/A</span></p>
+                                                        </div>
+                                                        <div class="col-7 text-right mt-3 pr-0 amd-search">
+                                                            <div class="btn-group mb-2 mr-2 higest-version-filter-div">
+                                                                `+(Object.keys(clientData.projects).length > 1 ? `<select style="text-align: left; height: 33px; padding: 0px 10px;" class="btn btn-outline-info hv-project-tag">`+oPtions+`</select>`:`<button type="button" style="text-align: center; height: 33px; padding: 0px 10px;" class="btn btn-info" >`+(Object.keys(clientData.projects).length>0?clientData.projects[Object.keys(clientData.projects)[0]].name:'')+`</button>`)+`
+                                                                `+(Object.keys(posibleDeps).length > 1 ? `<select style="text-align: left; height: 33px; padding: 0px 10px;" class="btn btn-outline-info hv-dep-tag">`+oPtions2+`</select>`:`<button type="button" style="text-align: center; height: 33px; padding: 0px 10px;" class="btn btn-info" >`+(Object.keys(posibleDeps).length>0?posibleDeps[Object.keys(posibleDeps)[0]].name:'')+`</button>`)+`
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div id="hv-statistics" class="request-loading" style="height: 400px;"></div>
+                                            </div>
+                                        </div>
+                                    </div>`);
+                applyProjectAMD();
+                applyProjectHV();
+                }else{
+                    $(reportsTab).append(`<div class="text-center" style="position: relative;margin: auto;top: 100px;width: 100%;">
+                            <h3 class="text-uppercase">No Data Found!</h3>
+                            <p class="text-muted mt-4 mb-4">No data found for selected request please try again later...!</p>
+                        </div>`);
+                    }
+            }
+        // function genVNumbers(str, max, isEnd = true){
+        //     str = str.toString();
+        //     return (isEnd?'V':'')+(str.length < max ? genVNumbers("0" + str, max,false) : str);
+        //     }
+        // console.log("genVNumbers",genVNumbers(1,3))
+        // var maxVersionCount = null;
+        
+        
+
+        var stateSaveTagPrefix = 'client_report_input_',
+            stateSaveFilters = {};
+        function setClientOptions(){
+            var thisTag = $('.client-report-input-tag[name="client__id"]'), thisTagName = $(thisTag).attr("name");
+            var savedValue = localStorage.getItem(stateSaveTagPrefix+thisTagName);
+            savedValue = savedValue==null?'':String(savedValue);
+            stateSaveFilters[thisTagName] = savedValue;
+            var oPtions = '<option value="">Select Client</option>';
+            $.ajax({
+                url: '/api/production/clients/',
+                type: 'GET',
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                async: true, //displays data after loading the page
+                processing: false,
+                data: {},
+                success: function (response) {
+                    var sortX = {};
+                    $.each(response,function(x,e){
+                        sortX[e.name] = JSON.parse(JSON.stringify(e));
+                        });
+                    const ordered = Object.keys(sortX).sort().reduce(
+                        (obj, key) => { 
+                            obj[key] = sortX[key]; 
+                            return obj;
+                        }, 
+                        {}
+                        );
+                    $.each(ordered,function(z,e){
+                        oPtions = oPtions+`<option value="`+e.id+`" >`+e.name+`</option>`;
+                        });
+                    $(thisTag).html(oPtions);
+                    $(thisTag).val(savedValue);
+                    },
+                error: function (jqXHR, exception) {
+                    console.log(jqXHR.responseText)
+                    }
+                });
+            }
+        setClientOptions();
+        function setProjectOptions(client=''){
+            var thisTag = $('.client-report-input-tag[name="project__id"]'), thisTagName = $(thisTag).attr("name");
+            var savedValue = localStorage.getItem(stateSaveTagPrefix+thisTagName);
+            savedValue = savedValue==null?'':String(savedValue);
+            stateSaveFilters[thisTagName] = savedValue;
+            var oPtions = '<option value="">All Projects</option>';
+            if(client.length>0){
+                $.ajax({
+                    url: '/api/production/projects/'+client+'/',
+                    type: 'GET',
+                    dataType: "json",
+                    contentType: 'application/json; charset=utf-8',
+                    async: true, //displays data after loading the page
+                    processing: false,
+                    // data: {status:"IN PROGRESS"},
+                    success: function (response) {
+                        var sortX = {};
+                        $.each(response,function(x,e){
+                            sortX[e.name] = JSON.parse(JSON.stringify(e));
+                            });
+                        const ordered = Object.keys(sortX).sort().reduce(
+                            (obj, key) => { 
+                                obj[key] = sortX[key]; 
+                                return obj;
+                            }, 
+                            {}
+                            );
+                        $('.run-filter').parent().show();
+                        $.each(ordered,function(z,e){
+                            oPtions = oPtions+`<option value="`+e.id+`" >`+e.name+`</option>`;
+                            });
+                        $(thisTag).html(oPtions);
+                        $(thisTag).val(savedValue);
+                        $('.run-filter.boot').click();
+                        },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR.responseText)
+                        }
+                    });
+                }else{
+                    $(thisTag).html(oPtions);
+                    $(thisTag).val("");
+                    }
+            }
+        setProjectOptions(stateSaveFilters["client__id"]);
+        $(document).on('change','.client-report-input-tag[name="client__id"]',function(e){
+            stateSaveFilters[$(this).attr("name")] = $(this).val();
+            localStorage.setItem(stateSaveTagPrefix+$(this).attr("name"),$(this).val());
+            stateSaveFilters["project__id"] = '';
+            localStorage.setItem(stateSaveTagPrefix+"project__id",stateSaveFilters["project__id"]);
+            setProjectOptions($(this).val());
+            });
+        $(document).on('change','.client-report-input-tag[name="project__id"]',function(e){
+            stateSaveFilters[$(this).attr("name")] = $(this).val();
+            localStorage.setItem(stateSaveTagPrefix+$(this).attr("name"),$(this).val());
+            });
+        
+        function setDepartmentOptions(){
+            var thisTag = $('.client-report-input-tag[name="dep__id"]'), thisTagName = $(thisTag).attr("name");
+            var savedValue = localStorage.getItem(stateSaveTagPrefix+thisTagName);
+            savedValue = savedValue==null?'':String(savedValue);
+            stateSaveFilters[thisTagName] = savedValue;
+            var oPtions = '<option value="">All Department</option>';
+            $.each(ofx_page_data.taskTypes,function(z,e){
+                oPtions = oPtions+`<option value="`+e.id+`" >`+e.name+`</option>`;
+                });
+            $(thisTag).html(oPtions);
+            $(thisTag).val(savedValue);
+            }
+        setDepartmentOptions();
+        $(document).on('change','.client-report-input-tag[name="dep__id"]',function(e){
+            stateSaveFilters[$(this).attr("name")] = $(this).val();
+            localStorage.setItem(stateSaveTagPrefix+$(this).attr("name"),$(this).val());
+            });
+        var pageDataX = {query:{},clientreport:{}};
+        var lastqData = null;
+        function getClientStatistics(qData={}){
+            lastqData = JSON.parse(JSON.stringify(qData));
+            pageDataX.query = JSON.parse(JSON.stringify(lastqData));
+            $.ajax({
+                url: '/api/v2/reports/clientreports/',
+                type: 'GET',
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                async: true, //displays data after loading the page
+                processing: false,
+                data: qData,
+                beforeSend: function(request) {
+                    var $crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+                    request.setRequestHeader("X-CSRFToken",$crf_token);
+                    request.setRequestHeader("required", JSON.stringify([
+                        'id',
+                        "client__id",
+                        "client__name",
+                        "project__id",
+                        "project__name",
+                        "dep__id",
+                        "dep__name",
+                        "tmd",
+                        "amd",
+                        "highest_ver",
+                        "highest_ver_shotCount",
+                        "retake_per",
+                        "artistcount",
+                        "artistTMD",
+                        "missedEta",
+                        "totalshots"
+                        ]));
+                    },
+                success: function (response) {
+                    pageDataX.clientreport = {};
+                    $.each(response,function(x,e){
+                        if(typeof pageDataX.clientreport['client_'+e.client.id] == "undefined"){
+                            pageDataX.clientreport['client_'+e.client.id] = {
+                                id: e.client.id,
+                                name: e.client.name,
+                                projects: {}
+                                };
+                            }
+                        if(typeof pageDataX.clientreport['client_'+e.client.id].projects['project_'+e.project.id] == "undefined"){
+                            pageDataX.clientreport['client_'+e.client.id].projects['project_'+e.project.id] = {
+                                id: e.project.id,
+                                name: e.project.name,
+                                departments: {}
+                                };
+                            }
+                        pageDataX.clientreport['client_'+e.client.id].projects['project_'+e.project.id].departments['department_'+e.dep.id] = JSON.parse(JSON.stringify(e));
+                        });
+                    setClientReport(pageDataX);
+                    },
+                error: function (jqXHR, exception) {
+                    console.log(jqXHR.responseText)
+                    }
+                });
+            }
+        $(document).on('click','.run-filter',function(e){
+            var qData = { };
+            $.each(stateSaveFilters,function(k,v){
+                if(v.length>0){
+                    qData[k] = v;
+                    }
+                });
+            if($(this).hasClass('boot')){
+                $(this).removeClass('boot');
+                if(typeof qData.client__id == "undefined" || qData.client__id.length==0){
+                    return false;
+                    }
+                }
+            if(typeof qData.client__id != "undefined" && qData.client__id.length>0){
+                getClientStatistics(qData);
+                }else{
+                    alert("Please Select Client and click on Apply!")
+                    }
+            });
+        $(document).on('click','.export-to-excel',function(e){
+            var vers = $(this).hasClass('only-this')?$(this).attr('data-target'):null;
+            if(lastqData!=null){
+                var exportQ = [];
+                $.each(lastqData,function(x,e){
+                    exportQ.push(`<input name="`+x+`" value="`+e+`"/>`);
+                    });
+                var from = $(`<form action="/production/export/clientreport/" method="POST" target="_blank" style="display:none;">
+                    {% csrf_token %}
+                    `+exportQ.join('')+`
+                    </form>`);
+                $('body').append(from);
+                $(from).submit();
+                $(from).remove();
+                }else{
+                    alert("Invalid export request");
+                    } 
+            });
+    </script>
+{% endblock page_scripts %}

@@ -1,10 +1,8 @@
-/**
-* jQuery asGradient v0.3.2
-* https://github.com/amazingSurge/jquery-asGradient
-*
-* Copyright (c) amazingSurge
-* Released under the LGPL-3.0 license
-*/
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
 (function(global, factory) {
   if (typeof define === "function" && define.amd) {
     define('AsGradient', ['exports', 'jquery', 'jquery-asColor'], factory);

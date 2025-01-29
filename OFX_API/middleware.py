@@ -1,7 +1,13 @@
+#  Copyright (c) 2023.
+#  Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+#  All rights reserved.
+
 import re
 from django.conf import settings
 from django.shortcuts import redirect
 import threading
+
+from django.http import HttpResponse
 
 EXEMPT_URLS = [re.compile(settings.LOGIN_URL.lstrip('/'))]
 if hasattr(settings, 'LOGIN_EXEMPT_URLS'):
@@ -44,3 +50,12 @@ class RequestMiddleware:
     # the view is called.
 
     return response
+
+class HealthCheckMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        if request.path == '/health':
+            return HttpResponse('ok')
+        return self.get_response(request)

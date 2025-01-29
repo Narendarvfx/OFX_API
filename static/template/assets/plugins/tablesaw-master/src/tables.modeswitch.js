@@ -1,9 +1,8 @@
 /*
-* tablesaw: A set of plugins for responsive tables
-* Mode Switch: UI element to allow the user to change table modes: stack/swipe/columntoggle
-* Copyright (c) 2013 Filament Group, Inc.
-* MIT License
-*/
+ * Copyright (c) 2013-2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
 
 (function() {
 	var S = {

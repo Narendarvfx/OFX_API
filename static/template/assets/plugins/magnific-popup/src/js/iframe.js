@@ -1,4 +1,10 @@
 
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 var IFRAME_NS = 'iframe',
 	_emptyPage = '//about:blank',
 	

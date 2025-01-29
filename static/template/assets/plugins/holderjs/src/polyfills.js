@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 //https://github.com/inexorabletash/polyfill/blob/master/web.js
   if (!document.querySelectorAll) {
     document.querySelectorAll = function (selectors) {

@@ -1,5 +1,11 @@
 #! /bin/sh
 
+#
+# Copyright (c) 2023.
+# Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+# All rights reserved.
+#
+
 : 'This file is in the public domain, so clarified as of'
 : '2006-07-17 by Arthur David Olson.'
 

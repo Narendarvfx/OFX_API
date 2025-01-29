@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 // USING AJAX TO UPDATE DATABASE THROUGH REST API
 function getCookie(name) {
     var cookieValue = null;

@@ -1,0 +1,148 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block bread_crumb %}
+
+    <!-- ============================================================== -->
+    <!-- End Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+{% endblock bread_crumb %}
+
+
+{% block content %}
+<div class="row reports-row"></div>
+
+{% endblock content %}
+
+{% block page_scripts %}
+{% csrf_token %}
+<script>
+    var reportsRow = $('.reports-row'),
+        menuItems = [
+            {
+            icon: 'ti-world',
+            title: 'Clients Report',
+            subTitle: 'Active Clients',
+            countEndpoint: '/api/v2/getrecordscount/?target=clients',
+            targetEndpoint: '/production/client_report',
+            targetButton: 'View Report',
+            permission: 'can_view_nav_client_reports',
+            },
+            {
+            icon: 'ti-view-grid',
+            title: 'Departments Report',
+            subTitle: 'Total Departments',
+            countEndpoint: '/api/v2/getrecordscount/?target=departments',
+            targetEndpoint: '/production/department_reports',
+            targetButton: 'View Report',
+            permission: 'can_view_nav_department_reports',
+            },
+            {
+            icon: 'mdi mdi-account-star',
+            title: 'Team Leads Report',
+            subTitle: 'Active Team Leads',
+            countEndpoint: '/api/v2/getrecordscount/?target=TEAM LEAD',
+            // targetEndpoint: '/production/teamleadreports/',
+            targetEndpoint: '/production/leadreports/?lead=TEAM LEAD',
+            targetButton: 'View Report',
+            permission: 'can_view_nav_team_lead_reports',
+            },
+            {
+            icon: 'mdi mdi-account-star',
+            title: 'HODs Report',
+            subTitle: 'Active HODs',
+            countEndpoint: '/api/v2/getrecordscount/?target=HEAD OF DEPARTMENT',
+            targetEndpoint: '/production/leadreports/?lead=HEAD OF DEPARTMENT',
+            targetButton: 'View Report',
+            permission: 'can_view_nav_hod_reports',
+            },
+            {
+            icon: 'mdi mdi-account-star',
+            title: 'Supervisors Report',
+            subTitle: 'Active Supervisors',
+            countEndpoint: '/api/v2/getrecordscount/?target=SUPERVISOR',
+            targetEndpoint: '/production/leadreports/?lead=SUPERVISOR',
+            targetButton: 'View Report',
+            permission: 'can_view_nav_supervisor_reports',
+            },
+            {
+            icon: 'ti-user',
+            title: 'Artists Report',
+            subTitle: 'Active Artists',
+            countEndpoint: '/api/v2/getrecordscount/?target=VFX ARTIST',
+            targetEndpoint: '/production/artist_reports/',
+            targetButton: 'View Report',
+            permission: 'can_view_nav_artist_reports',
+            },
+            {
+            icon: 'ti-video-clapper',
+            title: 'Versions Report',
+            subTitle: 'Total Shots',
+            countEndpoint: '/api/v2/getrecordscount/?target=all_shots',
+            targetEndpoint: '/production/version_reports',
+            targetButton: 'View Report',
+            permission: 'can_view_nav_version_reports',
+            },
+            {
+            icon: 'ti-camera',
+            title: 'Studio Report',
+            subTitle: 'Active Shots',
+            countEndpoint: '/api/v2/getrecordscount/?target=all_active_shots',
+            targetEndpoint: '/production/studio_reports',
+            targetButton: 'View Report',
+            permission: 'can_view_nav_studio_reports',
+            }
+        ];
+    $(reportsRow).empty();
+    function addItem(parent,e,res){
+        var tag = $(`<div class="col-md-4 reports-card">
+                        <div class="card card-inverse">
+                            <div class="card-body `+e.icon+`">
+                                <div class="content-x">
+                                    <div class="row d-flex">
+                                        <div class="mr-3 align-self-center"><h1 class="text-white"></h1></div>
+                                        <div><h3 class="card-title">`+e.title+`</h3><h6 class="card-subtitle">`+e.subTitle+`</h6></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-5 align-self-center">
+                                            <font class="display-7 text-white">`+res.count+`</font>
+                                        </div>
+                                        <div class="col-7 align-self-center self-button">
+                                            <h2 class="font-light mb-0">
+                                                <a href="`+e.targetEndpoint+`">
+                                                    <span>`+e.targetButton+`</span>
+                                                    <span class="ti-arrow-right"></span>
+                                                </a>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`);
+        var ptag = $(parent).find(`.self-tag-`+ofx_make_key(e.title));
+        $(tag).insertBefore($(ptag));
+        $(ptag).remove();
+        }
+    $.each(menuItems,function(x,itm){
+        if (userPermissions.indexOf(itm.permission)!= -1||userPermissions.indexOf('all')!= -1){
+            $(reportsRow).append($(`<div class="self-tag-`+ofx_make_key(itm.title)+`"></div>`));
+            $.ajax({
+                url: itm.countEndpoint,
+                type: 'GET',
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                beforeSend: function(request) {
+                    var $crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+                    request.setRequestHeader("X-CSRFToken",$crf_token);
+                    },
+                success: function (res) {
+                    addItem(reportsRow,itm,res);
+                    },
+                error: function (jqXHR, exception) {
+                    console.log(jqXHR.responseText)
+                    }
+                });
+            }
+        });
+</script>
+{% endblock page_scripts %}

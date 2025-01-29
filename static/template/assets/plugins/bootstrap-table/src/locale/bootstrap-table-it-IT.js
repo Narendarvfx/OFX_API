@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 /**
  * Bootstrap Table Italian translation
  * Author: Davide Renzi<davide.renzi@gmail.com>

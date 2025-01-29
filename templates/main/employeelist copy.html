@@ -1,0 +1,697 @@
+{% extends 'main/base.html' %}
+{% block bread_crumb %}
+<link rel='stylesheet' href='/static/template/assets/plugins/multiselect/css/multi-select.css'
+      type="text/css"/>
+<link rel="stylesheet"
+      href="/static/template/assets/plugins/toast-master/css/jquery.toast.css" type="text/css"/>
+<style>
+    input[type="text"], textarea, select {
+
+        color: #e3dada !important;
+    }
+
+    .modal label {
+        color: #b0afaf;
+    }
+</style>
+<!-- ============================================================== -->
+<!-- End Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+{% endblock bread_crumb %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-6 col-8 align-self-center">
+            <h3 class="text-themecolor mb-0 mt-0">Employee List</h3>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                <li class="breadcrumb-item active">Employee</li>
+            </ol>
+        </div>
+        <div class="col-md-6 text-right pt-1">
+            <button class="btn btn-info" id="add_emp_btn"><i
+                    class="mdi mdi-plus-circle"></i>Add Employee
+            </button>
+            <div class="btn-group " role="group" aria-label="Button group with nested dropdown">
+                <div class="input-group-prepend">
+
+                    <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">Select Department
+                    </button>
+                    <div class="dropdown-menu departments" x-placement="bottom-start"
+                         style="position: absolute; transform: translate3d(0px, 20px, 0px); top: 0px; left: 0px; will-change: transform; color: #d0cdcd;">
+                    </div>
+
+                </div>
+            </div>
+            <input type="text" class="btn btn-info search" id="search_box"
+                   placeholder="Search..." style="background: transparent !important; cursor: initial;"
+                   value="">
+        </div>
+        <div class="col-md-6 col-4 align-self-center">
+
+        </div>
+
+    </div>
+    <!-- ============================================================== -->
+    <!-- Start Page Content -->
+    <!-- ============================================================== -->
+    <!-- .row -->
+    <div class="row employee-cards">
+        <!-- .col -->
+
+        <!-- /.col -->
+    </div>
+    <div id="add_employee_modal" class="modal fade" aria-labelledby="myModalLabel"
+         aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form action="#" id="emp_form">
+                        <div class="form-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group ">
+                                        <label class="control-label">User Name</label>
+                                        <input type="text" id="username"
+                                               class="form-control"
+                                               placeholder="">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group ">
+                                        <label class="control-label">Employee Id</label>
+                                        <input type="text" id="employee_id"
+                                               class="form-control"
+                                               placeholder="">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!--/row-->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group ">
+                                        <label class="control-label">Email</label>
+                                        <input type="text" id="email"
+                                               class="form-control "
+                                               placeholder="">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group ">
+                                        <label class="control-label">Full Name</label>
+                                        <input type="text" id="fullName"
+                                               class="form-control "
+                                               placeholder="">
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <!--/row-->
+                            <div class="row">
+                                 <div class="col-md-6">
+                                    <div class="form-group ">
+                                        <label class="control-label">First Name</label>
+                                        <input type="text" id="first_name"
+                                               class="form-control "
+                                               placeholder="">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group ">
+                                        <label class="control-label">Last Name</label>
+                                        <input type="text" id="last_name"
+                                               class="form-control "
+                                               placeholder="">
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                            <!--/row-->
+                            <div class="row">
+                                 <div class="col-md-6">
+                                    <div class="form-group ">
+                                        <label class="control-label">Contact</label>
+                                        <input type="text" id="contact"
+                                               class="form-control "
+                                               placeholder="">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group ">
+                                        <label class="control-label">Address</label>
+                                        <input type="text" id="address"
+                                               class="form-control "
+                                               placeholder="">
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                             <!--/row-->
+                            <div class="row">
+                                 <div class="col-md-6">
+                                    <div class="form-group ">
+                                        <label class="control-label">Skills</label>
+                                        <input type="text" id="skills"
+                                               class="form-control "
+                                               placeholder="">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group ">
+                                        <label class="control-label">Experience</label>
+                                        <input type="text" id="experience"
+                                               class="form-control "
+                                               placeholder="">
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <!--/row-->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group ">
+                                        <label class="control-label">Department</label>
+                                        <select class="form-control custom-select dropdown-toggle dep"
+                                                id="department">
+                                            <option value="">Select Department</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group ">
+                                        <label class="control-label">Role</label>
+                                        <select class="form-control custom-select dropdown-toggle roles"
+                                                id="role">
+                                            <option value="">Select Role</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!--/row-->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group ">
+                                        <label class="control-label">Grade</label>
+                                        <select class="form-control custom-select dropdown-toggle grades"
+                                                id="grade">
+                                            <option value="">Select Grade</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group ">
+                                        <label class="control-label">Location</label>
+                                        <select class="form-control custom-select dropdown-toggle locations"
+                                                id="location">
+                                            <option value="">Select Location</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                             <div class="row">
+                               <div class="col-md-6">
+                                    <div class="form-group ">
+                                        <label class="control-label">Employee Status</label>
+                                        <select class="form-control custom-select"
+                                                class="form-control custom-select"
+                                                id="employement_status">
+                                            <option value="Active">Active</option>
+                                            <option value="Deactive">Deactive</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+
+
+
+                            <div class="form-actions">
+                                <button type="button" id="save_btn" class="btn btn-success"
+                                        onclick="create_profile()"><i
+                                        class="fa fa-check"></i>Save
+                                </button>
+                                <button type="button" id="update_btn" class="btn btn-success hide"
+                                >Update
+                                </button>
+                                <button type="button" class="btn btn-dark"
+                                        onclick="close_employee_modal()">Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}>
+
+{% block page_scripts %}
+<!--OFX Core JavaScript -->
+<script src="/static/ofx/core.js"></script>
+<script src="/static/template/assets/plugins/popper/popper.min.js"></script>
+<script src="/static/template/assets/plugins/toast-master/js/jquery.toast.js"></script>
+
+
+<div class="csrf-ajax-token-self" style="display: none;">{% csrf_token %}</div>
+<script>
+    var CSRFToken_self = "";
+    $('.csrf-ajax-token input').each(function (e) {
+        CSRFToken_self = $(this).val();
+    });
+
+    function reload_page(e) {
+        console.log(e)
+    }
+
+
+    var clr = {blank: 'black'}
+
+    //TeamLead Assignments Modal Show
+    $("#add_emp_btn").click(function (e) {
+        console.log("Clicked")
+        document.getElementById("emp_form").reset();
+        $('#save_btn').removeClass('hide')
+        $('#update_btn').addClass('hide')
+        $("#username").prop("readonly", false);
+        $(' #add_employee_modal').modal('show');
+
+    });
+    var glob_emp_data = ""
+
+    function close_employee_modal() {
+        $('#add_employee_modal').modal('hide');
+    }
+
+    $(document).on("click", "#update_btn", function (e) {
+        var emp_id = $(this).attr('data-data')
+        _empdata = {
+            'employee_id': $("#employee_id").val(),
+            'contact': $("#contact").val(),
+            'email': $("#email").val(),
+            'address': $("#address").val(),
+            'skills': $("#skills").val(),
+            'experience': $("#experience").val(),
+            'employement_status': $("#employement_status").val(),
+            'department': $("#department").val(),
+            'role': $("#role").val(),
+            'grade': $("#grade").val(),
+            'location': $("#location").val(),
+        }
+        console.log(_empdata)
+        $.ajax({
+            type: "PUT",
+            url: "/api/hrm/employee/" + emp_id + '/',
+            data: _empdata,
+            dataType: "json",
+            success: function (data, status, xhr) {
+                console.log(xhr)
+                if (xhr.status == 201) {
+                    close_employee_modal()
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Employee Updated Successfully'
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong \n Please contact Pipeline Administrator',
+                    });
+                }
+            },
+            error: function (xhr, status, errorThrown) {
+                console.log(status)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong \n Please contact Pipeline Administrator',
+                });
+            }
+        })
+        return false
+
+        console.log($(this).attr('data-data'));
+    });
+
+    function create_profile() {
+        _data = {
+            'employee_id': $("#employee_id").val(),
+            'username': $("#username").val(),
+            'email': $("#email").val(),
+             'fullName': $("#fullName").val(),
+            'first_name': $("#first_name").val(),
+            'last_Name': $("#last_name").val(),
+            'skills': $("#skills").val(),
+            'experience': $("#experience").val(),
+            'is_staff': false,
+            'password': 'Ofx@12345',
+
+        }
+        $.ajax({
+            type: "POST",
+            url: " /api/users/",
+            data: _data,
+            dataType: "json",
+            success: function (data, statusText, xhr) {
+
+                if (xhr.status === 201) {
+
+                    create_employee(data);
+                }
+            },
+            error: function (xhr, status, errorThrown) {
+                //console.log(status)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong \n Please contact Pipeline Administrator',
+                });
+            }
+        })
+        return false
+    }
+
+
+    function create_employee(data) {
+        _empdata = {
+            'employee_id': $("#employee_id").val(),
+            'fullName': $("#fullName").val(),
+            'first_name': $("#first_name").val(),
+            'last_name': $("#last_name").val(),
+            'contact': $("#contact").val(),
+            'email': $("#email").val(),
+            'address': $("#address").val(),
+            'skills': $("#skills").val(),
+            'experience': $("#experience").val(),
+            'employement_status': $("#employement_status").val(),
+            'department': $("#department").val(),
+            'role': $("#role").val(),
+            'grade': $("#grade").val(),
+            'location': $("#location").val(),
+            'profile': data.id
+        }
+        //console.log(_empdata)
+        $.ajax({
+            type: "POST",
+            url: "/api/hrm/employee/",
+            data: _empdata,
+            dataType: "json",
+            success: function (data, status, xhr) {
+                //console.log(xhr)
+                if (xhr.status == 201) {
+                    close_employee_modal()
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Employee Added Successfully'
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong \n Please contact Pipeline Administrator',
+                    });
+                }
+            },
+            error: function (xhr, status, errorThrown) {
+                //console.log(status)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong \n Please contact Pipeline Administrator',
+                });
+            }
+        })
+        return false
+    }
+
+
+    function view_employee_data(employee) {
+        //console.log(employee['profile']['username'])
+        $('#username').val(employee['profile']['username'])
+        $('#employee_id').val(employee['employee_id'])
+        $('#fullName').val(employee['fullName'])
+        $('#first_name').val(employee['first_name'])
+        $('#last_name').val(employee['last_name'])
+        $('#contact').val(employee['contact'])
+        $('#email').val(employee['email'])
+        $('#address').val(employee['address'])
+        $('#employement_status').val(employee['employement_status'])
+        $('#skills').val(employee['skills'])
+        $('#experience').val(employee['experience'])
+        $('#department').val(employee['department'])
+        $('#role').val(employee['role'])
+        $('#grade').val(employee['grade'])
+        $('#location').val(employee['location'])
+        $('#id').val(employee['id'])
+        $('#save_btn').addClass('hide')
+        $('#update_btn').removeClass('hide')
+        $('#update_btn').attr("data-data", employee['id'])
+        $("#username").prop("readonly", true);
+        $('#add_employee_modal').modal('show');
+
+    }
+
+
+    function render_emp_data(emp_data) {
+        emp_div = `<div class="col-md-6 col-lg-6 col-xlg-4">
+            <div class="card card-body">
+                <div class="row">
+                    <div class="col-md-4 col-lg-3 text-center" onclick='view_employee_data(` + JSON.stringify(emp_data) + `)' >
+                        <a href="#" ><img src=` + emp_data['photo'] + ` style="width:120px; height:120px"
+                                   onerror="this.src='/media/profiles/photo/default.png'" alt="user"/></a>
+                    </div>
+                    <div class="col-md-8 col-lg-9">
+                        <h4 class="mb-0">` + emp_data['fullName'] + `</h4>
+                        <small class="label label-success" style="background-color: ` + clr[ofx_make_key(emp_data['department'] != null ? emp_data['department'] : "blank")] + `;">` + emp_data['department'] + `</small></br>
+                        <small class="label label-primary">` + emp_data['role'] + `</small>
+                        <address> ` + emp_data['address'] + `
+                            <br/>
+                            <br/>
+                            <abbr  title="Phone">P:</abbr> ` + emp_data['contact'] + `
+                        </address>
+                    </div>
+                </div>
+            </div>
+        </div>`
+        $('.employee-cards').append(emp_div)
+    }
+
+    function dep(depart = "PAINT") {
+        $.ajax({
+            url: "/api/hrm/employee/" + (depart != null ? '?dept=' + depart : ''),
+            type: 'GET',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            "dataSrc": "",
+            'async': true,
+            success: function (response) {
+                $('.employee-cards').empty()
+                for (a = 0; a < response.length; a++) {
+                    //console.log(response[a])
+                    render_emp_data(response[a])
+                }
+            },
+            error: function (jqXHR, exception) {
+                console.log(jqXHR.responseText)
+            }
+        });
+
+    }
+
+
+    $(document).ready(function () {
+        $.ajax({
+            url: '/api/hrm/departments/',
+            type: 'GET',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function (response, statusText, xhr) {
+                for (a = 0; a < response.length; a++) {
+                    $('.departments').append(`<a href="#" class="dropdown-item get-department-data" data="` + response[a]['name'] + `">` + response[a]['name'] + `</a>`);
+                    clr[ofx_make_key(response[a]['name'])] = response[a]['color'];
+                    $('.dep').append(`<option   value="` + response[a]['name'] + `">` + response[a]['name'] + `</option>`);
+                }
+            },
+            error: function (jqXHR, exception) {
+                console.log(jqXHR.responseText)
+            }
+        });
+        $.ajax({
+            url: '/api/hrm/role/',
+            type: 'GET',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                if (response.status === 200) {
+
+                } else if (response.status === 201) {
+
+                }
+
+                for (b = 0; b < response.length; b++) {
+                    //console.log(response[b])
+                    // bb = `<a href="#" class="dropdown-item get-role-data" data="` + response[b]['name'] + `">` + response[b]['name'] + `</ahref>`
+                    bb = `<option   value="` + response[b]['name'] + `">` + response[b]['name'] + `</option>`
+                    $('.roles').append(bb)
+                }
+            },
+            error: function (jqXHR, exception) {
+                console.log(jqXHR.responseText)
+            }
+        });
+        $.ajax({
+            url: '/api/hrm/grades/',
+            type: 'GET',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                for (b = 0; b < response.length; b++) {
+                    //console.log(response[b])
+                    // bb = `<a href="#" class="dropdown-item get-grade-data" data="` + response[b]['name'] + `">` + response[b]['name'] + `</ahref>`
+                    bb = `<option   value="` + response[b]['name'] + `">` + response[b]['name'] + `</option>`
+                    $('.grades').append(bb)
+                }
+            },
+            error: function (jqXHR, exception) {
+                console.log(jqXHR.responseText)
+            }
+        });
+        $.ajax({
+            url: '/api/hrm/locations/',
+            type: 'GET',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                for (b = 0; b < response.length; b++) {
+                    //console.log(response[b])
+                    // bb = `<a href="#" class="dropdown-item get-location-data" data="` + response[b]['name'] + `">` + response[b]['name'] + `</ahref>`
+                    bb = `<option   value="` + response[b]['name'] + `">` + response[b]['name'] + `</option>`
+                    $('.locations').append(bb)
+                }
+            },
+            error: function (jqXHR, exception) {
+                console.log(jqXHR.responseText)
+            }
+        });
+        dep();
+    });
+
+
+    $(document).on("click", ".get-department-data", function (e) {
+        var parent = $(this).parent();
+        $(parent).find(".get-department-data").each(function (e) {
+            $(this).attr("style", "");
+        });
+        $(this).attr("style", "display:none;");
+        $(parent).parent().find('button.dropdown-toggle').html($(this).html());
+        dep($(this).attr("data"));
+
+    });
+
+
+    $(document).on("click", ".get-dep-data", function (e) {
+        var parent = $(this).parent();
+        $(parent).select(".get-dep-data").each(function (e) {
+            $(this).attr("style", "");
+        });
+        $(this).attr("style", "display:none;");
+        $(parent).parent().select('.dropdown-toggle').html($(this).html());
+        ($(this).attr("data"));
+    });
+
+
+    $(document).on("click", ".get-role-data", function (e) {
+        var parent = $(this).parent();
+        $(parent).select(".get-role-data").each(function (e) {
+            $(this).attr("style", "");
+        });
+        $(this).attr("style", "display:none;");
+        $(parent).parent().select('.dropdown-toggle').html($(this).html());
+        ($(this).attr("data"));
+    });
+
+
+    $(document).on("click", ".get-grade-data", function (e) {
+        var parent = $(this).parent();
+        $(parent).select(".get-grade-data").each(function (e) {
+            $(this).attr("style", "");
+        });
+        $(this).attr("style", "display:none;");
+        $(parent).parent().select('.dropdown-toggle').html($(this).html());
+        ($(this).attr("data"));
+    });
+
+
+    $(document).on("click", ".get-location-data", function (e) {
+        var parent = $(this).parent();
+        $(parent).select(".get-location-data").each(function (e) {
+            $(this).attr("style", "");
+        });
+        $(this).attr("style", "display:none;");
+        $(parent).parent().select('.dropdown-toggle').html($(this).html());
+        ($(this).attr("data"));
+    });
+
+
+    var all_employee_json = $.ajax({
+        type: "GET",
+        url: "/api/hrm/employee",
+        dataType: "application/json",
+        async: false,
+        error: function (xhr, status, errorThrown) {
+        }
+    }).responseText;
+    var all_employees = JSON.parse(all_employee_json);
+    all_employees.forEach(function (employee) {
+        render_emp_data(employee);
+    });
+
+
+    // Name Search
+    function employee_search(search_text) {
+        $('.employee-cards').html('');
+        all_employees.forEach(function (employee) {
+            var full_name = employee['fullName'].toUpperCase();
+            if (full_name.includes(search_text.toUpperCase())) {
+                render_emp_data(employee);
+            }
+        })
+    }
+
+    $('#search_box').on('input', function () {
+        employee_search($(this).val());
+    });
+
+    // todo: remove the below line while deploying
+    dep('MM');
+
+</script>
+
+{% endblock page_scripts %}

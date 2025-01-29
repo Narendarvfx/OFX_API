@@ -1,30 +1,28 @@
 {% extends 'main/base.html' %}
-
+{% load static %}
 {% block bread_crumb %}
-    <link rel='stylesheet' href='/static/third_party/DataTables/DataTables-1.12.1/css/jquery.dataTables.min.css'
+
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/DataTables-1.12.1/css/jquery.dataTables.min.css' %}" %}"
           type="text/css"/>
-    <link rel='stylesheet' href='/static/third_party/DataTables/Responsive-2.3.0/css/responsive.dataTables.min.css'
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/Responsive-2.3.0/css/responsive.dataTables.min.css' %}" %}"
           type="text/css"/>
-    <link rel='stylesheet' href='/static/third_party/DataTables/Responsive-2.3.0/css/responsive.bootstrap5.min.css'
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/Responsive-2.3.0/css/responsive.bootstrap5.min.css' %}"
           type="text/css"/>
-    <link rel='stylesheet' href='/static/third_party/DataTables/Buttons-2.2.3/css/buttons.dataTables.min.css'
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/Buttons-2.2.3/css/buttons.dataTables.min.css' %}"
           type="text/css"/>
-    <link rel='stylesheet' href='/static/template/assets/plugins/multiselect/css/multi-select.css'
+    <link rel='stylesheet' href="{% static 'template/assets/plugins/multiselect/css/multi-select.css' %}"
           type="text/css"/>
     <link rel="stylesheet"
-          href="/static/template/assets/plugins/toast-master/css/jquery.toast.css" type="text/css"/>
+          href="{% static 'third_party/DataTables/custom_css/datables_searchpane.css' %}" type="text/css"/>
     <link rel="stylesheet"
-          href="/static/third_party/DataTables/custom_css/datables_searchpane.css" type="text/css"/>
-    <link rel="stylesheet"
-          href="/static/third_party/DataTables/Select-1.4.0/css/select.dataTables.min.css" type="text/css"/>
-    <link href="/static/third_party/DataTables/DataTables-1.12.1/css/dataTables.jqueryui.css" rel="stylesheet"
+          href="{% static 'third_party/DataTables/Select-1.4.0/css/select.dataTables.min.css' %}" type="text/css"/>
+    <link href="{% static 'third_party/DataTables/DataTables-1.12.1/css/dataTables.jqueryui.css' %}" rel="stylesheet"
           type="text/css"/>
-    <link href="/static/third_party/DataTables/DateTime-1.1.2/css/dataTables.dateTime.min.css" rel="stylesheet"
+    <link href="{% static 'third_party/DataTables/DateTime-1.1.2/css/dataTables.dateTime.min.css' %}" rel="stylesheet"
           type="text/css"/>
-    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/south-street/jquery-ui.min.css"
-          rel="stylesheet" type="text/css"/>
-    <link href="https://cdn.datatables.net/plug-ins/725b2a2115b/integration/jqueryui/dataTables.jqueryui.css"
-          rel="stylesheet" type="text/css"/>
+    <link href="{% static 'main/jquery-ui-themes-1.11.1/themes/south-street/jquery-ui.min.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'main/dataTables.jqueryui.css' %}" rel="stylesheet" type="text/css"/>
+    <link rel='stylesheet' href="{% static 'assets/css/style.css' %}" type="text/css"/>
     <style>
         .form-control {
             color: #fffcfc !important;
@@ -46,9 +44,9 @@
         }
 
         .card {
-            padding: 10px;
+            padding: 10px 1px;
             background: #272c33 !important;
-            color: white;
+            color: #dedcdc;
             margin-bottom: 10px !important;
         }
 
@@ -69,12 +67,15 @@
         .card-body {
             padding: 0rem !important;
         }
-
-        .dt-buttons .dt-button {
-            border-radius: 4px;
-            background: orange;
-            color: #ffffff
-        }
+        div.dt-button-collection button.dt-button:active:not(.disabled),
+        div.dt-button-collection button.dt-button.active:not(.disabled),
+        div.dt-button-collection div.dt-button:active:not(.disabled),
+        div.dt-button-collection div.dt-button.active:not(.disabled),
+        div.dt-button-collection a.dt-button:active:not(.disabled),
+        div.dt-button-collection a.dt-button.active:not(.disabled){
+            background-color: #272c33!important;
+            background: #272c33!important;
+            }
 
         table.dataTable tbody tr {
             background-color: #272c33 !important;
@@ -97,7 +98,7 @@
             font-size: small;
         }
 
-        #shots_table_length, #shots_table_info, #shots_table_filter {
+        .dataTables_length, .dataTables_info, .dataTables_filter {
             color: #a2a1a1 !important;
         }
 
@@ -105,13 +106,20 @@
             padding: 2px;
             background: white !important;
         }
+
         .dataTables_wrapper .dataTables_paginate .paginate_button.current {
             color: #fff5f5 !important;
-            background-color: rgb(230 137 6) !important;
+            background-color: #e5711d !important;
         }
+
         .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
             background-color: rgb(183, 110, 5) !important;
         }
+
+        .dataTables_wrapper .dataTables_paginate .ellipsis {
+            color: white;
+        }
+
         tfoot input {
             width: 100% !important;
             padding: 3px !important;
@@ -135,6 +143,7 @@
         .dataTables_wrapper .dataTables_filter input {
             color: #dad8d8 !important;
         }
+
 
         table.dataTable tbody tr.selected {
             background-color: #315eb1 !important;
@@ -292,7 +301,7 @@
         }
 
         .modal.right .modal-body {
-            padding: 15px 15px 80px;
+            padding: 15px 15px 15px;
         }
 
         .modal.right.fade .modal-dialog {
@@ -315,43 +324,69 @@
 
         .modal-header {
             border-bottom-color: #EEEEEE;
-            background-color: #756e6e;
+            background-color: #e5711d;
         }
-
-
+        input.dtsp-search::placeholder {
+            color: #a4a4a8 !important;
+        }
+        .dtsp-nameColumn .dropdown-toggle::after{
+            display: none;
+            }
+        .table-x-viewer table tr[data-shot="sub"] > td{
+            background: #000000;
+            }
+        .my-actions { margin: 0 2em; }
+        .order-1 { order: 1; }
+        .order-2 { order: 2; }
+        .order-3 { order: 3; }
+        .right-gap {
+            margin-right: auto;
+            }
+        .no-eta-color{
+            background: #dc2222 !important;
+            }
     </style>
     <div class="row page-titles">
-        <div class="col-md-6 col-4 float-left">
-            <h3 class="text-themecolor mb-0 mt-2">SHOTS</h3>
+        <div class="col-4 float-left">
+            <h3 class="text-themecolor mb-0 mt-2 re-seletct">Shots</h3>
         </div>
-        <div class="col-md-6 col-8 float-right" style="background-color: #e5711d;border-radius: 10px">
-            <div class="float-right" style="margin-left: 5px">
-                <button class="btn waves-effect waves-lightfloat-right" title="Export to Excel"
-                        onclick="export_to_excel()"><i
-                        class="mdi mdi-cloud-download" style="color: white;font-size: large"></i> EXPORT TO EXCEL
-                </button>
+        <div class="col-4"><div class="alert alert-danger" style="background:#dc2222 !important; color:#ffffff;"> <i class="ti-star"></i> This color indicates that the shot Retake ETA is pending
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>
+        </div></div>
+        <div class="col-4 text-right pt-1">
+            <div class="btn-group mb-2 mr-2" role="group" aria-label="Button group with nested dropdown">
+                <select class="btn btn-outline-warning select-get-sort" data-data="pending" >
+                    <option value="pending">Live</option>
+                    <option value="approved">Approved</option>
+                    <option value="all">All</option>
+                </select>
             </div>
-{#            TODO: Enable to work on filters#}
-            <!--- Filter button --->
-            <div class="float-right" style="margin-left: 5px">
-
-                <button class="column_filter btn waves-effect waves-lightfloat-right" title="Filters"
-                        data-toggle="button" aria-pressed="true">
-                    <i
-                            class="mdi mdi-filter" style="color:white;font-size: large"></i> FILTERS
-                </button>
-            </div>
-            <div class="float-right" style="margin-left: 5px">
-                <button type="button" class="assign_leads btn waves-effect waves-light float-right"
-                        title="Assign to Team Leads"><i
-                        class="mdi mdi-account-plus" style="color:white;font-size: large"></i> ASSIGN TO LEADS
-                </button>
+            <script>
+                var sortFilterStoreKey = 'sortFilterShotPage';
+                let sortFilterLC = localStorage.getItem(sortFilterStoreKey);
+                sortFilterLC = sortFilterLC==null?"pending":sortFilterLC;
+                localStorage.setItem(sortFilterStoreKey,sortFilterLC);
+                var specialStatusCodes = ['OMT','HLD'];
+                $.each(specialStatusCodes,function(x,z){
+                    $('.select-get-sort').append(`<option value="`+z+`">`+z+`</option>`);
+                    });
+                let selectGetSort = $('.select-get-sort');
+                $(selectGetSort).removeClass('select-get-sort');
+                $(selectGetSort).val("approved");
+                $(selectGetSort).find('option').each(function(e){
+                    if($(this).attr('value')==sortFilterLC){
+                        $(selectGetSort).val(sortFilterLC);
+                        }
+                    });
+                $(selectGetSort).addClass('select-get-sort');
+            </script>
+            <div class="btn-group mb-2 mr-2" role="group" aria-label="Button group with nested dropdown">
+                <button type="button" class="btn btn-warning assign-to" title="Assign"><i class="mdi mdi-account-plus" ></i> Assign</button>
+                <button class="column_filter btn btn-warning" title="Filters" data-toggle="button" aria-pressed="true"><i class="mdi mdi-filter" ></i> Filters</button>
+                <button class="btn btn-warning" title="Export to Excel" onclick="export_to_excel()"><i class="mdi mdi-cloud-download" ></i> Export to EXCEL</button>
             </div>
         </div>
     </div>
-    <!-- ============================================================== -->
-    <!-- End Bread crumb and right sidebar toggle -->
-    <!-- ============================================================== -->
 {% endblock bread_crumb %}
 
 
@@ -360,124 +395,21 @@
 
         <!-- Shots Table View -->
         <div class="col-lg-12" id="shots_list_view">
-            <div class="card">
+            <div class="card table-x-viewer">
 
                 <table id="shots_table" class="table display no-wrap" style="width:100%">
-
 
                 </table>
 
             </div>
         </div>
         <div class="col-md-3 col-2 card" id="filter_div"
-             style="display: none;height:1000px;overflow-y: auto;margin: 0px;">
+             style="display: none; height:1000px; overflow-y: auto;margin: 0px;">
             <h6><i onclick="header_vis(this)" class="ti-angle-right"></i> Header Visibility</h6>
-            <div class="card" id="header_filter"
-                 style="display: none; height:200px; overflow-y: scroll; border-bottom: 1px solid #494848;border-radius: 0px">
+            <div class="card" id="header_filter" style="display: none; height:200px; overflow-y: scroll; border-bottom: 1px solid #494848;border-radius: 0px">
                 <div class="card-body">
-                    <input type="text" class="form-control column_vis" id="search_header" onkeyup="search_column()"
-                           placeholder="Search for...">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="client" data-column="1"
-                               value="check" checked>
-                        <label class="custom-control-label" for="client">CLIENT</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="project" data-column="2"
-                               value="check" checked>
-                        <label class="custom-control-label" for="project">PROJECT</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="seq" data-column="3"
-                               value="check" checked>
-                        <label class="custom-control-label" for="seq">SEQUENCE</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="shot" data-column="4"
-                               value="check" checked>
-                        <label class="custom-control-label" for="shot">SHOT</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="task_type" data-column="5"
-                               value="check" checked>
-                        <label class="custom-control-label" for="task_type">TASK TYPE</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="type" data-column="6"
-                               value="check" checked>
-                        <label class="custom-control-label" for="type">TYPE</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="complexity" data-column="7"
-                               value="check" checked>
-                        <label class="custom-control-label" for="complexity">COMPLEXITY</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="status" data-column="8"
-                               value="check" checked>
-                        <label class="custom-control-label" for="status">STATUS</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="progress" data-column="9"
-                               value="check" checked>
-                        <label class="custom-control-label" for="progress">PROGRESS</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="actual_bids" data-column="10"
-                               value="check" checked>
-                        <label class="custom-control-label" for="actual_bids">ACTUAL BIDS</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="consumed_bids"
-                               data-column="11"
-                               value="check" checked>
-                        <label class="custom-control-label" for="consumed_bids">CONSUMED BIDS</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="eta" data-column="12"
-                               value="check" checked>
-                        <label class="custom-control-label" for="eta">ETA</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="frame_in" data-column="13"
-                               value="check" checked>
-                        <label class="custom-control-label" for="frame_in">FRAME IN</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="frame_out" data-column="14"
-                               value="check" checked>
-                        <label class="custom-control-label" for="frame_out">FRAME OUT</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="duration" data-column="15"
-                               value="check" checked>
-                        <label class="custom-control-label" for="duration">DURATION</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="team_lead" data-column="16"
-                               value="check" checked>
-                        <label class="custom-control-label" for="team_lead">TEAM LEAD</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="artist" data-column="17"
-                               value="check" checked>
-                        <label class="custom-control-label" for="artist">ARTIST</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="version" data-column="18"
-                               value="check" checked>
-                        <label class="custom-control-label" for="version">VERSION</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="location" data-column="19"
-                               value="check" checked>
-                        <label class="custom-control-label" for="location">LOCATION</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="locality" data-column="20"
-                               value="check" checked>
-                        <label class="custom-control-label" for="locality">LOCALITY</label>
-                    </div>
+                    <input type="text" class="form-control column_vis" id="search_header" onkeyup="search_column()" placeholder="Search for...">
+                    
                 </div>
             </div>
             <div class="card">
@@ -497,105 +429,145 @@
                     <div class="dtsp-verticalContainer">
                         <div class="dtsp-verticalPanes">
                         </div>
-                        <div class="container">
-                        </div>
                     </div>
                 </div>
             </div>
 
         </div>
     </div>
-    <div id="select_lead_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-         aria-hidden="true" style="display: none;">
+    <div id="select_lead_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Select Team Lead</h4>
+                    <h4 class="modal-title">Select To Assign</h4>
                 </div>
                 <div class="modal-body">
                     <form class="form-horizontal" role="form">
                         {% csrf_token %}
                         <div class="form-body" id="select_lead">
+                            <!-- <div class="leads-div">
+
+                            </div>
                             <select id="shot_lead_select" class="form-control">
                                 <option value="0">Select Team Lead</option>
                                 {% for lead in leads %}
-                                    <option value={{ lead.id }}>{{ lead.fullName }}</option>
+                                    <option data-apikey={{ lead.apikey }} value={{ lead.id }}>{{ lead.fullName }}</option>
                                 {% endfor %}
-                            </select>
+                            </select> -->
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" name="save" class="btn btn-success waves-effect waves-light"
-                            onclick="assign_lead()">Assign
-                    </button>
-                    <button type="button" name="close" class="btn btn-default waves-effect" data-dismiss="modal"
-                            onclick="close_assign_modal()">Close
-                    </button>
+                    <button type="button" name="save" class="btn btn-success waves-effect waves-light" onclick="assign_lead()">Assign</button>
+                    <button type="button" name="close" class="btn btn-default waves-effect" data-dismiss="modal" onclick="close_assign_modal()">Close</button>
                 </div>
             </div>
         </div>
     </div>
-    <div class="modal right fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
-        <div class="modal-dialog" role="document">
+    <div id="select_lead_modal2" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
             <div class="modal-content">
-
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel2">Right Sidebar</h4>
+                    <h4 class="modal-title">Select Client & Project</h4>
                 </div>
-
                 <div class="modal-body">
-
-                    <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3
-                        wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt
-                        laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin
-                        coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes
-                        anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings
-                        occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard
-                        of them accusamus labore sustainable VHS.
-                    </p>
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label >Select Client</label>
+                            <div class="input-group">
+                                <select class="form-control read-s-tag" name="client"></select>
+                                <div class="input-group-append"><span class="input-group-text"><i class="ti-list"></i></span></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label >Select Project</label>
+                            <div class="input-group">
+                                <select class="form-control read-s-tag" name="project"></select>
+                                <div class="input-group-append"><span class="input-group-text"><i class="ti-list"></i></span></div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-
-            </div><!-- modal-content -->
-        </div><!-- modal-dialog -->
-    </div><!-- modal -->
-    <div class="custom_preloader spinner-grow text-warning" role="status">
-        <span class="sr-only">Loading...</span>
+                <div class="modal-footer">
+                    <button type="button" name="save" class="btn btn-success waves-effect waves-light get-shorts" >Get</button>
+                    <button type="button" name="close" class="btn btn-default waves-effect" data-dismiss="modal" onclick="close_assign_modal()">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
-
 {% endblock content %}
-
-
-
 {% block page_scripts %}
     <!--OFX Core JavaScript -->
-    <script src="/static/ofx/core.js"></script>
-    <script src="/static/template/assets/plugins/popper/popper.min.js"></script>
-    <script src="/static/template/assets/plugins/toast-master/js/jquery.toast.js"></script>
-    <script src="/static/third_party/DataTables/DataTables-1.12.1/js/jquery.dataTables.min.js"></script>
-    <script src="/static/third_party/DataTables/Responsive-2.3.0/js/dataTables.responsive.min.js"></script>
-    <script src="/static/third_party/DataTables/Responsive-2.3.0/js/responsive.bootstrap5.min.js"></script>
-    <script src="/static/third_party/DataTables/Buttons-2.2.3/js/dataTables.buttons.min.js"></script>
-    <script src="/static/third_party/DataTables/Buttons-2.2.3/js/buttons.html5.min.js"></script>
-    <script src="/static/third_party/DataTables/Bootstrap-5-5.1.3/js/bootstrap.bundle.min.js"></script>
-    <script src="/static/third_party/DataTables/custom_js/datatables_searchPane.js"></script>
-    <script src="/static/third_party/DataTables/Select-1.4.0/js/dataTables.select.min.js"></script>
-    <script src="/static/template/assets/plugins/moment/moment.js"></script>
-    <script src="/static/third_party/DataTables/DateTime-1.1.2/js/dataTables.dateTime.min.js"></script>
+    <script src="{% static 'ofx/core.js' %}"></script>
+    <!-- End Core Javascript -->
+    <script src="{% static 'template/assets/plugins/popper/popper.min.js' %}"></script>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.ui-contextmenu/1.7.0/jquery.ui-contextmenu.min.js"></script>
-    <script src="https://cdn.datatables.net/colreorder/1.1.2/js/dataTables.colReorder.min.js"></script>
-    <script src="https://cdn.datatables.net/plug-ins/725b2a2115b/api/fnFilterClear.js"></script>
+    <script src="{% static 'third_party/DataTables/DataTables-1.12.1/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Responsive-2.3.0/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Responsive-2.3.0/js/responsive.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Buttons-2.2.3/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Buttons-2.2.3/js/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Bootstrap-5-5.1.3/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/custom_js/datatables_searchPane.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Select-1.4.0/js/dataTables.select.min.js' %}"></script>
+    <!-- <script src="{% static 'template/assets/plugins/moment/moment.js' %}"></script> -->
+    <script src="{% static 'third_party/DataTables/DateTime-1.1.2/js/dataTables.dateTime.min.js' %}"></script>
+
+    <script src="{% static 'main/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'main/jquery.ui-contextmenu.min.js' %}"></script>
+    <script src="{% static 'main/dataTables.colReorder.min.js' %}"></script>
+    <script src="{% static 'main/fnFilterClear.js' %}"></script>
+    <script src="{% static 'ofx/shotassignments.js' %}"></script>
     <script>
+        var selfStyle = '';
+        $.each(ofx_page_data.taskTypes,function(_x,_e){
+            selfStyle = selfStyle + `
+                .table-x-viewer:not(.type-`+ofx_make_key(_e.name)+`) .shot_checkbox.type-`+ofx_make_key(_e.name)+`{
+                    display: none;
+                    }
+                `;
+            $('.table-x-viewer').addClass(`type-`+ofx_make_key(_e.name));
+            });
+        $.each(ofx_page_data.StatusCodes,function(_x,_e){
+            selfStyle = selfStyle + `
+                .table-x-viewer:not(.status-`+ofx_make_key(_e.code)+`) .shot_checkbox.status-`+ofx_make_key(_e.code)+`{
+                    display: none;
+                    }
+                `;
+            $('.table-x-viewer').addClass(`status-`+ofx_make_key(_e.code));
+            });
+        selfStyle = selfStyle + `
+            .table-x-viewer:not(.location-blank) .shot_checkbox.location-blank{
+                display: none;
+                }
+            `;
+        $('.table-x-viewer').addClass(`location-blank`);
+        $.each(ofx_page_data.locations,function(_x,_e){
+            selfStyle = selfStyle + `
+                .table-x-viewer:not(.location-`+ofx_make_key(_e.name)+`) .shot_checkbox.location-`+ofx_make_key(_e.name)+`{
+                    display: none;
+                    }
+                `;
+            $('.table-x-viewer').addClass(`location-`+ofx_make_key(_e.name));
+            });
+        $.each(['sub','main'],function(_x,_e){
+            selfStyle = selfStyle + `
+                .table-x-viewer:not(.shot-`+ofx_make_key(_e)+`) .shot_checkbox.shot-`+ofx_make_key(_e)+`{
+                    display: none;
+                    }
+                `;
+            $('.table-x-viewer').addClass(`shot-`+ofx_make_key(_e));
+            });
+        $('head').append(`<style>`+selfStyle+`</style>`);
+        // var ableToDo = getAssignmentsInfo(userDepartment,userRole);
+        // var userIndex = typeof assignmentStepsOrderIndex[userDepartment] != "undefined"?assignmentStepsOrderIndex[userDepartment].indexOf(userRole):-1;
+        // var userStatusPoint = userIndex !=-1 ? assignmentStepsOrderStatus[userDepartment][userIndex]:null;
         // Custom filtering function which will search data in column tweleve between two values
         $.fn.dataTable.ext.search.push(
             function (settings, data, dataIndex) {
                 var min = minDate.val();
                 var max = maxDate.val();
-                var date = new Date(data[12]);
+                var date = new Date(data[ETA_filter_index]);
 
                 if (
                     (min === null && max === null) ||
@@ -648,141 +620,664 @@
             }
         }
 
-        let client_id = 0;
-        let project_id = 0;
-        let status_id = 0
-        let location_id = 0
-        let locality_id = 0
-        let task_type_id = 0
+        // let client_id = 0;
+        // let project_id = 0;
+        // let status_id = 0
+        // let location_id = 0
+        // let locality_id = 0
+        // let task_type_id = 0
 
-        //  Load Shots Information
-        status_list = "YTA|ATL|YTS|STQ|WIP|IRT|QIP|CRT|IAP|LAP|LRT|HLD|OMT"
+        // //  Load Shots Information
+        // status_list = "YTA|ATL|YTS|STQ|WIP|IRT|QIP|CRT|IAP|LAP|LRT|HLD|OMT"
 
         var shotId_arr = [];
-        var table = ""
-
-        $(document).ready(function () {
-            // Create date inputs
-            minDate = new DateTime($('#min'), {
-                format: 'MMMM Do YYYY'
+        // var shotInfo_arr = {};
+        
+        // Create date inputs
+        minDate = new DateTime($('#min'), {
+            format: 'MMMM Do YYYY'
+        });
+        maxDate = new DateTime($('#max'), {
+            format: 'MMMM Do YYYY'
+        });
+        var getDeps = ["{{user.employee.department}}"];
+        $.each(crossRoles.departments,function(z,e){
+            if(getDeps.indexOf(e.name)==-1){
+                getDeps.push(e.name);
+                }
             });
-            maxDate = new DateTime($('#max'), {
-                format: 'MMMM Do YYYY'
+        var tableParent = $('.table-x-viewer'),
+            tableFilter = $('.dtsp-verticalPanes'),
+            table = null;
+        
+        if(!allowAllActions&&userPermissions.indexOf("can_assign_all_shots")==-1&&userPermissions.indexOf("can_assign_all_dept_shots")==-1){
+            $('.assign-to').hide();
+            }
+        
+        // var crossAuthorisedRoles = {};
+        // $.ajax({
+        //     url: '/api/v2/assignmentstepsorder/',
+        //     type: 'GET',
+        //     dataType: "json",
+        //     contentType: 'application/json; charset=utf-8',
+        //     async: true, //displays data after loading the page
+        //     processing: false,
+        //     data: Object.assign((!allowAllActions&&userPermissions.indexOf("can_assign_all_dept_shots")==-1?{department__name:ofx_page_data.user.department}:{}),{authorised_roles__name__in: ofx_page_data.user.role }),
+        //     beforeSend: function(request) {
+        //         request.setRequestHeader("required", JSON.stringify(['department__id','department__name','role__id','role__name','shotStatus__id','shotStatus__code','shotStatus__name','allowed_steps__id','allowed_steps__name','acceptCase__id','acceptCase__code','acceptCase__name','rejectCase__id','rejectCase__code','rejectCase__name','onRejectSendTo__id','onRejectSendTo__name','roleIndex','isBeforeArtist']));
+        //         },
+        //     success: function (response) {
+        //         $.each(response,function(z,e){
+        //             if(e.isBeforeArtist){
+        //                 crossAuthorisedRoles[(!allowAllActions&&userPermissions.indexOf("can_assign_all_dept_shots")==-1?ofx_make_key(e.department.name)+'_':"")+ofx_make_key(e.shotStatus.code)] = JSON.parse(JSON.stringify(e));
+        //                 }
+        //             });
+        //         },
+        //     error: function (jqXHR, exception) {
+        //         console.log(jqXHR.responseText)
+        //         }
+        //     });
+
+        $('#min, #max').on('change', function () {
+            table.draw();
             });
-
-            $(".custom_preloader").hide()
-
-            table = $('#shots_table').DataTable({
-                columnDefs: [
-                    {
-                        searchPanes: {
-                            show: false
+        $(document).on('click', 'input.toggle-vis', function(e){
+            // Get the column API object
+            var column = table.column($(this).attr('data-column'));
+            // Toggle the visibility
+            column.visible(!column.visible());
+            });
+        var sortFilter = localStorage.getItem(sortFilterStoreKey);
+        $(document).on('change', '.read-s-tag[name="client"]', function(e){
+            let client = $(this).val();
+            if(client.length>0){
+                var oPtions = '<option value="">Select Project</option>';
+                $.ajax({
+                    url: '/api/production/projects/'+client+'/',
+                    type: 'GET',
+                    dataType: "json",
+                    contentType: 'application/json; charset=utf-8',
+                    async: true, //displays data after loading the page
+                    processing: false,
+                    // data: {status:"IN PROGRESS"},
+                    success: function (response) {
+                        $.each(response,function(z,e){
+                            oPtions = oPtions+`<option value="`+e.id+`">`+e.name+`</option>`;
+                            });
+                        $('.read-s-tag[name="project"]').html(oPtions);
                         },
-                        targets: [3, 4, 9, 10, 11, 12, 13, 14, 15, 18]
-                    },
-                    {className: "shot_class", "targets": [4]}
-                ],
-                searchPanes: {
-                    cascadePanes: true,
-                    layout: 'columns-1',
-                    controls: false,
-
-                },
-                dom: '<"dtsp-dataTable"frtip>',
-                "searching": true,
-                "ajax": {
-                    "processing": true,
-                    "url": "/api/production/production_sheet/?status=" + status_list + "/",
-                    "type": "GET",
-                    "dataSrc": ""
-                },
-                'language': {
-                    'loadingRecords': '&nbsp;',
-                    'processing': 'Loading...'
-                },
-
-                columns: [
-                    {
-                        data: "id",
-                        render: function (data, type, row, meta) {
-                            return (
-                                '<input type="checkbox" name="shotCheckbox" class="shot_checkbox"  value="' +
-                                data +
-                                '">'
-                            );
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR.responseText)
+                        }
+                    });
+                }
+            });
+        $(document).on('click', '.get-shorts', function(e){
+            var project = $('.read-s-tag[name="project"]').val();
+            if(project.length){
+                sortFilter = 'project_id='+project;
+                setTable();
+                }else{
+                    alert('Fields must be selected');
+                    sortFilter = null;
+                    } 
+            }); 
+        $(document).on('change', '.select-get-sort', function(e){
+            if($(this).val()=="approved"){
+                var oPtions = '<option value="">Select Client</option>';
+                $.ajax({
+                    url: '/api/production/clients/',
+                    type: 'GET',
+                    dataType: "json",
+                    contentType: 'application/json; charset=utf-8',
+                    async: true, //displays data after loading the page
+                    processing: false,
+                    data: {status:"IN PROGRESS"},
+                    success: function (response) {
+                        $.each(response,function(z,e){
+                            oPtions = oPtions+`<option value="`+e.id+`">`+e.name+`</option>`;
+                            });
+                        $('.read-s-tag[name="client"]').html(oPtions);
+                        $('#select_lead_modal2').modal('show');
                         },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR.responseText)
+                        }
+                    });
+                // setTable();
+                }else{
+                    $(this).attr('data-data',$(this).val());
+                    sortFilter = $(this).val();
+                    setTable();
+                    }
+            // console.log($(this).val());
+            });
+        // var isPrimaryUser = userRoleChain!=null?userRoleChain.roleIndex:-1;
+        // console.log("test",isPrimaryUser);
+        var viewAllShots = (userPermissions.indexOf("view_all_shots")!=-1 || userPermissions.indexOf("can_view_all_dept_shots")!=-1);
+        // console.log("test",viewAllShots);
+        var tableColms = [];
+        var abc = false;
+        var xKeyEDR = shotassignments.makeKey([
+                ofx_page_data.user.location!=null?ofx_page_data.user.location:null,
+                ofx_page_data.user.department!=null?ofx_page_data.user.department:null,
+                ofx_page_data.user.role!=null?ofx_page_data.user.role:null
+                ]),
+            xKeyEKEY = shotassignments.makeKey([
+                ofx_page_data.user.fullName!=null?ofx_page_data.user.fullName:null
+                ]);
+        tableColms.push({
+            cell: {
+                    data: ((viewShortsBy!=null&&viewShortsBy!='MY')?"":"shot.")+"id",
+                    render: function (data, type, row, meta) {
+                        var rowX = (viewShortsBy!=null&&viewShortsBy!='MY')?row:row.shot;
+                        {#console.log(row)#}
+                        var xKey = shotassignments.makeKey([
+                                rowX.location!=null?(typeof rowX.location.name != "undefined" ? rowX.location.name: rowX.location):null,
+                                rowX.task_type!=null?rowX.task_type:null,
+                                rowX.status!=null?rowX.status.code:null,
+                                rowX.isSubShot?'sub':'main',
+                                ]);
+                        if(typeof shotassignments.shotPosb[xKey] != "undefined" && shotassignments.shotPosb[xKey].isBeforeArtist &&(allowAllActions||userPermissions.indexOf("can_assign_all_dept_shots")!=-1||(userPermissions.indexOf("can_assign_all_shots")!=-1&&userDepartment!=null&&ofx_make_key(rowX.task_type)==userDepartment))&&( allowAllActions || typeof shotassignments.shotPosb[xKey].authorizedRoles[xKeyEDR] != "undefined" || typeof shotassignments.shotPosb[xKey].authorizedRoles[xKeyEKEY] != "undefined" ) ){
+                            return '<input type="checkbox" name="shotCheckbox" class="shot_checkbox type-'+ofx_make_key(rowX.task_type)+' status-'+ofx_make_key(rowX.status.code)+' location-'+ofx_make_key((rowX.location!=null?(typeof rowX.location.name != "undefined" ? rowX.location.name: rowX.location):'blank'))+' shot-'+(rowX.isSubShot?'sub':'main')+'" data-dep="'+rowX.task_type+'" data-shot="'+(rowX.isSubShot?'sub':'main')+'" data-status="'+rowX.status.code+'" data-location="'+(rowX.location!=null?(typeof rowX.location.name != "undefined" ? rowX.location.name: rowX.location):'blank')+'" value="' +data +'">';
+                            }else{
+                                return '';
+                                }
+                        // return ((rowX.status.code==userStatusPoint||typeof crossAuthorisedRoles[(!allowAllActions&&userPermissions.indexOf("can_assign_all_dept_shots")==-1?ofx_make_key(rowX.task_type)+'_':"")+ofx_make_key(rowX.status.code)] != "undefined")&&(allowAllActions||((userPermissions.indexOf("can_assign_all_shots")!=-1&&userDepartment == ofx_make_key(rowX.task_type))||userPermissions.indexOf("can_assign_all_dept_shots")!=-1))?'<input type="checkbox" name="shotCheckbox" class="shot_checkbox" data-dep="'+rowX.task_type+'" value="' +data +'">':'');
                     },
-                    {name: "client", title: "CLIENT", data: 'sequence.project.client.name'},
-                    {name: "project", title: "PROJECT", data: 'sequence.project.name'},
-                    {name: "seq", title: "SEQUENCE", data: 'sequence.name'},
-                    {name: "shot", title: "SHOT CODE", data: 'name'},
-                    {name: "task_type", title: "TASK TYPE", data: 'task_type'},
-                    {name: "type", title: "TYPE", data: 'type'},
-                    {name: "complexity", title: "COMPLEXITY", data: 'complexity'},
-                    {
-                        name: "status",
-                        title: "STATUS", data: 'status',
-                        render: function (data, type, row, meta) {
-                            return (
-                                '<span class="badge" style="color:white;padding:3px 10px;font-size:1em; background-color:' + data.color + '">' + data.code + '</span>'
-                            );
+                },
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: false,
+            class:"",
+            });
+        tableColms.push({
+            cell: {
+                name: "angle_right", title: "", data: null,
+                render: function (data, type, row, meta) {
+                    var rowX = (viewShortsBy!=null&&viewShortsBy!='MY')?row:row.shot;
+                    return (`<a href="#" data-shot="`+rowX.id+`" ><i class="ti-angle-right"></i></a>`);
+                    },
+                },
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            class:"show-shot-tasks",
+            });
+        tableColms.push({
+            cell: {
+                name: "client",
+                title: "CLIENT", data: ((viewShortsBy!=null&&viewShortsBy!='MY')?"":"shot.")+'sequence.project.client.name',
+                render: function (data, type, row, meta) {
+                    {#console.log(data)#}
+                    var rowX = (viewShortsBy!=null&&viewShortsBy!='MY')?row:row.shot;
+                    return (`<a style="color:#fff" class="viwe-shot-tab" href="#" data-href="/production/shots/view/?shot_id=`+rowX.id+`" >` + data + `</a>`);
+                    },
+                },
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "project", title: "PROJECT", data: ((viewShortsBy!=null&&viewShortsBy!='MY')?"":"shot.")+'sequence.project.name'},
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "seq", title: "SEQUENCE", data: ((viewShortsBy!=null&&viewShortsBy!='MY')?"":"shot.")+'sequence.name'},
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {
+                name: "shot",
+                title: "SHOT CODE", data: ((viewShortsBy!=null&&viewShortsBy!='MY')?"":"shot.")+'name',
+                render: function (data, type, row, meta) {
+                    var rowX = (viewShortsBy!=null&&viewShortsBy!='MY')?row:row.shot;
+                    return (`<span data-data='`+JSON.stringify({id:rowX.id})+`' data-row="`+rowX.id+`" >` + data + `</span>`);
+                    },
+                },
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            class:"shot_class",
+            });
+        tableColms.push({
+            cell: {name: "task_type", title: "TASK TYPE", data: ((viewShortsBy!=null&&viewShortsBy!='MY')?"":"shot.")+'task_type'},
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "type", title: "TYPE", data: ((viewShortsBy!=null&&viewShortsBy!='MY')?"":"shot.")+'type',
+                    render: function (data, type, row, meta) {
+                        return (data=='RETAKE'?`<div class="btn-group"><button type="button" class="btn" style="color:white;padding: 3px 16px;font-size:1em;background-color:#E3450B;">RETAKE</button></div>`:`<span style="width: 100%;display: block;margin: auto;text-align: center;">`+data+`</span>`);
                         },
+                },
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "complexity", title: "COMPLEXITY", data: ((viewShortsBy!=null&&viewShortsBy!='MY')?"":"shot.")+'complexity'},
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {
+                    name: "captain",
+                    title: "CAPTAIN", data: null,
+                    render: function (data, type, row, meta) {
+                        var rowX = (viewShortsBy!=null&&viewShortsBy!='MY')?row:row.shot;
+                        var iti = [];
+                        $.each(rowX.artists,function(_z,_x){ iti.push(_x.fullName); });
+                        {#console.log(rowX)#}
+                        {#return (`<img class="profile-img" src="` + (rowX.artist != null ? rowX.artist.photo : "{%media 'profiles/photo/default.png'%}") + `" alt="` + (rowX.artist != null ? rowX.artist.fullName : 'N/A') + `" title="` + (rowX.artist != null ? rowX.artist.fullName : 'N/A') + `" onerror="this.src='{%media 'profiles/photo/default.png'%}'" style="width: 20%;border-radius: 50px"><span title="` + (iti.length > 0 ? iti.join('\n') : 'N/A') + `">` + (rowX.artist != null ? rowX.artist.fullName : 'N/A') + `</span>`);#}
+                        return (`<img class="profile-img" src="{%media 'profiles/photo/default.png'%}" alt="" title="" onerror="this.src='{%media 'profiles/photo/default.png'%}'" style="width: 20%;border-radius: 50px"><span title="` + (iti.length > 0 ? iti.join('\n') : 'N/A') + `">` + (rowX.artist != null ? rowX.artist : 'N/A') + `</span>`);
+
                     },
-                    {
+                },
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {
+                    name: "status",
+                    title: "STATUS", data: ((viewShortsBy!=null&&viewShortsBy!='MY')?"":"shot.")+'status',
+                    render: function (data, type, row, meta) {
+                        var rowX = (viewShortsBy!=null&&viewShortsBy!='MY')?row:row.shot;
+                        var isVFXArtist = (ofx_page_data.user.role!=null&&ofx_make_key(ofx_page_data.user.role)==ofx_make_key("VFX ARTIST"));
+                        if(userPermissions.indexOf("can_update_shot_status")!=-1&&!isVFXArtist){
+                            return ofx_shot_status_dropdown(ofx_page_data.user.department,ofx_page_data.user.role,data.code,data.color,{shot_id:rowX.id});
+                            }else{
+                                return `<div class="btn-group"><button type="button" class="btn " title="`+data.name+`" style="color:white;padding: 3px 16px;font-size:1em;background-color:`+data.color+`;">`+data.code+`</button></div>`;
+                                }
+                        // return ( ofx_shot_status_dropdown("{{user.employee.department}}","{{user.employee.role}}",data.code,data.color,{shot_id:rowX.id}) );
+                        // return (((ofx_page_data.user.fullName!=null&&rowX.artist!=null&&ofx_make_key(ofx_page_data.user.fullName)==ofx_make_key(rowX.artist))||(ofx_page_data.user.role!=null&&ofx_make_key(ofx_page_data.user.role)!=ofx_make_key("VFX ARTIST")))?ofx_shot_status_dropdown(ofx_page_data.user.department,ofx_page_data.user.role,data.code,data.color,{shot_id:rowX.id}):`<div class="btn-group"><button type="button" class="btn " title="`+data.name+`" style="color:white;padding: 3px 16px;font-size:1em;background-color:`+data.color+`;">`+data.code+`</button></div>`);
+                    },
+                },
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {
                         name: "progress",
-                        title: "PROGRESS", data: 'progress',
+                        title: "PROGRESS", data: ((viewShortsBy!=null&&viewShortsBy!='MY')?"":"shot.")+'progress',
                         render: function (data, type, row, meta) {
-                            return (
-                                `<div class="progress" style="height: 15px;">
-                        <div class="progress-bar" style="width:` + data + `%;background-color:red;color: white;font-weight: bold" role="progressbar">` + data + `%</div>
-                    </div>`
-                            )
+                            let lx = ['danger','warning','info','primary','success'], status = parseInt(data);
+                            return (`<div class="progress" style="height: 15px;">
+                                        <div class="progress-bar bg-`+lx[(status<25 ? 0 : (status<50 ? 1 : (status<75 ? 2 : (status<100 ? 3 : 4))))]+`" style="width:` + data + `%; color: white;font-weight: bold" role="progressbar">` + data + `%</div>
+                                    </div>`)
                         }
                     },
-                    {name: "actual_bids", title: "ACTUAL BIDS", data: 'bid_days'},
-                    {
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {
+                name: "actual_bids",
+                title: "ACTUAL BIDS",
+                data: ((viewShortsBy!=null&&viewShortsBy!='MY')?"":"shot.")+'bid_days',
+                render: function (data, type, row, meta) {
+                    return (data==null?"N/A":data.toFixed(2));
+                    }
+                },
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {
+                name: "pending_bids",
+                title: "PENDING BIDS", data: null,
+                render: function (data, type, row, meta) {
+                    var rowX = (viewShortsBy!=null&&viewShortsBy!='MY')?row:row.shot;
+                    return parseFloat((rowX.bid_days - rowX.achieved_mandays).toFixed(2)).toFixed(2)
+                    }
+                },
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            class:"",
+            });
+        // tableColms.push({
+        //     cell: {name: "internal_bids", title: "INTERNAL BIDS", data: ((viewShortsBy!=null&&viewShortsBy!='MY')?"":"shot.")+'internal_bid_days'},
+        //     isETAFilter: false,
+        //     isFilter: true,
+        //     });
+        tableColms.push({
+            cell: {
                         name: "consumed_bids",
-                        title: "CONSUMED BIDS", data: 'total_spent',
+                        title: "CONSUMED BIDS", data: ((viewShortsBy!=null&&viewShortsBy!='MY')?"":"shot.")+'achieved_mandays',
                         render: function (data, type, row, meta) {
+                            // console.log(row);
+                            // return ''
                             return data.toFixed(2)
                         }
                     },
-                    {
-                        name: "eta",
-                        title: "ETA", data: 'eta',
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            class:"",
+            });
+        if(userPermissions.indexOf('can_view_client_eta')!=-1){
+            tableColms.push({
+                cell: {
+                            name: "eta",
+                            title: "ETA", data: ((viewShortsBy!=null&&viewShortsBy!='MY')?"":"shot.")+'eta',
+                            render: function (data, type, row, meta) {
+                                return moment(data).format("YYYY-MM-DD");
+                            }
+                        },
+                isETAFilter: true,
+                isFilter: false,
+                headerVisibility: true,
+                class:"",
+                }); 
+            tableColms.push({
+                cell: {
+                            name: "internal_eta",
+                            title: "INTERNAL ETA", data: ((viewShortsBy!=null&&viewShortsBy!='MY')?"":"shot.")+'internal_eta',
+                            render: function (data, type, row, meta) {
+                                var rowX = (viewShortsBy!=null&&viewShortsBy!='MY')?row:row.shot;
+                                if(typeof rowX.internal_eta != "undefined" && (rowX.internal_eta == null || rowX.internal_eta=="1970-01-01T00:00:00")){
+                                    rowX.internal_eta = null;
+                                    }
+                                return (rowX.internal_eta!=null?moment(rowX.internal_eta).format("YYYY-MM-DD"):'Pending')
+                            }
+                        },
+                isETAFilter: false,
+                isFilter: false,
+                headerVisibility: true,
+                class:"",
+                });
+            }else{
+                tableColms.push({
+                    cell: {
+                                name: "internal_eta",
+                                title: "ETA", data: ((viewShortsBy!=null&&viewShortsBy!='MY')?"":"shot.")+'internal_eta',
+                                render: function (data, type, row, meta) {
+                                    var rowX = (viewShortsBy!=null&&viewShortsBy!='MY')?row:row.shot;
+                                    if(typeof rowX.internal_eta != "undefined" && (rowX.internal_eta == null || rowX.internal_eta=="1970-01-01T00:00:00")){
+                                        rowX.internal_eta = rowX.eta;
+                                        }
+                                    return moment(rowX.internal_eta).format("YYYY-MM-DD");
+                                }
+                            },
+                    isETAFilter: true,
+                    isFilter: false,
+                    headerVisibility: true,
+                    class:"",
+                    }); 
+                }
+         
+        
+        tableColms.push({
+            cell: {name: "frame_in", title: "START FRAME", data: ((viewShortsBy!=null&&viewShortsBy!='MY')?"":"shot.")+'actual_start_frame'},
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            class:"",
+            }); 
+        tableColms.push({
+            cell: {name: "frame_out", title: "END FRAME", data: ((viewShortsBy!=null&&viewShortsBy!='MY')?"":"shot.")+'actual_end_frame'},
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            class:"",
+            }); 
+        tableColms.push({
+            cell: {name: "duration", title: "DURATION", data: null, "defaultContent": ""},
+            cell: {
+                        name: "duration",
+                        title: "DURATION", data: null,
                         render: function (data, type, row, meta) {
-                            return moment(data).format("YYYY-MM-DD");
+                            var rowX = (viewShortsBy!=null&&viewShortsBy!='MY')?row:row.shot;
+                            return (rowX.actual_end_frame - rowX.actual_start_frame)+1;
                         }
                     },
-                    {name: "frame_in", title: "START FRAME", data: 'actual_start_frame'},
-                    {name: "frame_out", title: "END FRAME", data: 'actual_end_frame'},
-                    {name: "duration", title: "DURATION", data: null, "defaultContent": ""},
-                    {name: "team_lead", title: "TEAM LEAD", data: 'team_lead'},
-                    {name: "artist", title: "ARTIST", data: 'artist'},
-                    {name: "version", title: "VERSION", data: 'version'},
-                    {name: "location", title: "LOCATION", data: 'location'},
-                    {name: "locality", title: "LOCALITY", data: 'sequence.project.client.locality'},
-                ],
-                select: true,
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            class:"",
+            }); 
+        tableColms.push({
+            cell: {name: "supervisor", title: "SUPERVISOR", data: ((viewShortsBy!=null&&viewShortsBy!='MY')?"":"shot.")+'supervisor',
+                    render: function (data, type, row, meta) {
+                        return data!=null?data:'N/A';
+                        }
+                    },
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "team_lead", title: "TEAM LEAD", data: ((viewShortsBy!=null&&viewShortsBy!='MY')?"":"shot.")+'team_lead',
+                    render: function (data, type, row, meta) {
+                        return data!=null?data:'N/A';
+                        }
+                    },
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            class:"",
+            }); 
+        tableColms.push({
+            cell: {name: "hod", title: "HOD", data: ((viewShortsBy!=null&&viewShortsBy!='MY')?"":"shot.")+'hod',
+                    render: function (data, type, row, meta) {
+                        return data!=null?data:'N/A';
+                        }
+                    },
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            class:"",
+            }); 
+
+        tableColms.push({
+            cell: {name: "version", title: "VERSION", data: ((viewShortsBy!=null&&viewShortsBy!='MY')?"":"shot.")+'version'},
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            class:"",
+            }); 
+        tableColms.push({
+            cell: {name: "estimate_id", title: "ESTIMATE ID", data: ((viewShortsBy!=null&&viewShortsBy!='MY')?"":"shot.")+'estimate_id',
+                    render: function (data, type, row, meta) {
+                        return data!=null?data:'N/A';
+                        }
+                    },
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            class:"",
+            }); 
+        tableColms.push({
+            cell: {name: "package_id", title: "PACKAGE ID", data: ((viewShortsBy!=null&&viewShortsBy!='MY')?"":"shot.")+'package_id',
+                    render: function (data, type, row, meta) {
+                        return data!=null?data:'N/A';
+                        }
+                    },
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            class:"",
+            }); 
+        tableColms.push({
+            cell: {name: "locality", title: "LOCALITY", data: ((viewShortsBy!=null&&viewShortsBy!='MY')?"":"shot.")+'sequence.project.client.locality'},
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "shotType", title: "SHOT TYPE", data: null,
+                    render: function (data, type, row, meta) {
+                        var rowX = (viewShortsBy!=null&&viewShortsBy!='MY')?row:row.shot;
+                        return rowX.isSubShot?'SUB SHOT':'MAIN SHOT';
+                        }
+                    },
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "location", title: "LOCATION", data: null,
+                    render: function (data, type, row, meta) {
+                        var rowX = (viewShortsBy!=null&&viewShortsBy!='MY')?row:row.shot;
+                        return rowX.location==null?'GLOBAL':(typeof rowX.location.name != "undefined"? rowX.location.name:rowX.location);
+                        }
+                    },
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            class:"",
+            });
+        $(document).on("mouseover",'td > a.viwe-shot-tab[href="#"]',function(e){
+            $(this).attr("href",$(this).attr("data-href"));
+            });
+        $.each(tableColms,function(z,e){
+            var parent = $("#header_filter > .card-body");
+            if(e.headerVisibility){
+                $(parent).append(`<div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="`+e.cell.name+`" data-column="`+z+`" value="check" checked="">
+                        <label class="custom-control-label" for="`+e.cell.name+`">`+e.cell.title+`</label>
+                    </div>`);
+                }
+            });
+        var ETA_filter_index = 0,
+            tableX = null;
+        function setTable(){
+            shotId_arr = [];
+            // shotInfo_arr = {};
+            tableX = $(`<table id="shots_table_`+(userPermissions.indexOf('can_view_external_eta')!=-1?'t621':"t622")+`" class="table display no-wrap" style="width:100%"></table>`);
+            $(tableParent).html('');
+            $(tableFilter).html('');
+            $(tableParent).append($('<div class="reload-table-row"></div>'));
+            $(tableParent).append($(tableX));
+            var uPar = [];
+            localStorage.setItem(sortFilterStoreKey,sortFilter);
+            if(sortFilter=="pending"||sortFilter==null){
+                $.each(ofx_page_data.StatusCodes,function(x,er){
+                    if(!er.isApproved&&specialStatusCodes.indexOf(er.code)==-1){
+                        uPar.push(er.code);
+                        }
+                    });
+                uPar = uPar.join("|");
+                }else if(sortFilter=='all'){
+                    $.each(ofx_page_data.StatusCodes,function(x,er){
+                        uPar.push(er.code);
+                        });
+                    uPar = uPar.join("|");
+                    }else if(specialStatusCodes.indexOf(sortFilter)!=-1){
+                        uPar = sortFilter;
+                        }else{
+                            $.each(ofx_page_data.StatusCodes,function(x,er){
+                                if(er.isApproved&&specialStatusCodes.indexOf(er.code)==-1){
+                                    uPar.push(er.code);
+                                    }
+                                });
+                            uPar = uPar.join("|")+"&"+sortFilter;
+                            let pr = $('.select-get-sort');
+                            $(pr).attr('data-data',$(pr).val());
+                            $('#select_lead_modal2').modal('hide');
+                            }
+            var cols = [], searchPanes = [], _addClass = [];
+            $.each(tableColms,function(z,e){
+                cols.push(e.cell);
+                if(e.isETAFilter){
+                    ETA_filter_index = parseInt(z);
+                    }
+                if(!e.isFilter){
+                    searchPanes.push(parseInt(z));
+                    }
+                if(e.class.length>0){
+                    _addClass.push({className: e.class, "targets": [parseInt(z)]});
+                    }
+                });
+            
+            var columnDefs = [{
+                            searchPanes: {
+                                show: false
+                            },
+                            // targets: [3, 4, 9, 10, 11, 12, 13, 14, 15, 18]
+                            targets: searchPanes
+                            }];
+            $.each(_addClass,function(z,e){
+                columnDefs.push(e);
+                });
+            // console.log("searchPanes",_addClass);
+            table = $(tableX).DataTable({
+                columnDefs: columnDefs,
+                searchPanes: {
+                    initCollapsed: true,
+                    cascadePanes: true,
+                    layout: 'columns-1',
+                    controls: false
+                },
+                dom: '<"dtsp-dataTable"frtip>',
+                "searching": true,
+
+                "ajax": {
+                    "processing": false,
+                    // "url": "/api/production/production_sheet/?status=" + status_list + "&dept="+getDeps.join('|'),
+                    "url": ((viewShortsBy!=null&&viewShortsBy!='MY')?(viewShortsBy=='ARTIST'?"/api/v2/shots/leads_filter/?lead="+ofx_page_data.user.id+"&status=":"/api/production/production_sheet/?status="):"/api/production/shots/leads_filter/?lead="+ofx_page_data.user.id+"&status_codes=")+uPar+((viewShortsBy!='ALL'&&viewShortsBy!='MY'&&viewShortsBy!='ARTIST')?"&dept="+getDeps.join('|'):""),
+                    "type": "GET",
+                    "dataSrc": "",
+                    "async": true //displays data after loading the page
+                },
+                createdRow: function( row, data, dataIndex ) {
+                    {#console.log(data)#}
+                    var rowX = (viewShortsBy!=null&&viewShortsBy!='MY')?data:data.shot;
+                    {#console.log(rowX)#}
+                    if(rowX.internal_eta==null && rowX.type=='RETAKE'){
+                        $(row).attr("style","background:#dc2222 !important;"); 
+                        }
+                    $(row).attr('data-shot', data.isSubShot ? 'sub' : 'main');
+                    },
+                columns: cols,
+                select: "multi",
                 order: [[1, 'asc']],
                 scrollResize: true,
                 scrollX: true,
                 scrollCollapse: true,
-                buttons: [],
+                buttons: ["pageLength"],
+                dom: 'Bfrtip',
+                lengthMenu:[
+                    [10,25,50,100],
+                    ['10','25','50','100'],
+                    ],
                 "paging": true,
                 "pageLength": 25,
                 "bSortClasses": false,
                 stateSave: true,
                 deferLoading: 10,
-
-            });
-            table.searchPanes()
-
-            // Refilter the table to apply ETA Filters
-            $('#min, #max').on('change', function () {
-                table.draw();
-            });
-
+                });
+            let sectag = $('.table-x-viewer input[type="search"]');
+            // $('<input type="search" class="table-search" value="'+$(sectag).val()+'" />').insertAfter($(sectag));
+            let shots_table_search = localStorage.getItem('shots_table_search');
+            $('<input type="search" class="table-search" value="'+(shots_table_search!=null?shots_table_search:'')+'" />').insertAfter($(sectag));
+            $(sectag).remove();
+            table.rows({ filter: 'applied' }).columns(5).search(shots_table_search!=null?shots_table_search:'').draw();
+            table.searchPanes();
             // Below code saves boolean type  in localstorage for header visibility
             var all_columns = table.settings().init().columns;
             var visible_columns = [];
@@ -795,93 +1290,470 @@
                     localStorage.setItem(all_columns[i].name, false)
                     $('#' + all_columns[i].name).prop('checked', false)
                 }
-            }
-
-            // Toggles header visibility
-            $('input.toggle-vis').on('click', function (e) {
-                {#e.preventDefault();#}
-
-                // Get the column API object
-                var column = table.column($(this).attr('data-column'));
-
-                // Toggle the visibility
-                column.visible(!column.visible());
-            });
-            $("div.dtsp-verticalPanes").append(table.searchPanes.container());
-        });
-
-        //TeamLead Assignments Modal Show
-        $(".assign_leads").click(function (e) {
-            shotId_arr.length = 0
-            $("input:checkbox[class=shot_checkbox]:checked").each(function () {
-                shotId_arr.push($(this).val());
-            });
-
-            if (shotId_arr.length > 0) {
-                $('#select_lead_modal').modal('show');
-            } else {
-                alert("No Shots are Selected")
-            }
-        });
-
-        // TeamLead Assignments Post Data Function
-        function assign_lead() {
-            $(".custom_preloader").show()
-            var post_count = 0;
-            for (i = 0; i < shotId_arr.length; i++) {
-                shotData = {
-                    'shot': shotId_arr[i],
-                    'lead': $('#shot_lead_select option:selected').val(),
-                    'status': 11,
-                    'assigned_by': {{ user.profile.employee.id }}
                 }
-                $.post("/api/production/shot/assignments/", shotData,
-                    function (data, status) {
-                        shot_status = {
-                            'status': "ATL"
-                        }
-                        $.ajax({
-                            url: "/api/production/shots/" + data['shot'] + "/",
-                            type: 'PUT',
-                            data: shot_status,
-                            dataType: 'json',
-                            success: function (result) {
-                                ++post_count;
-                                if (post_count == shotId_arr.length) {
-                                    table.ajax.reload(null, false)
-                                    $(".custom_preloader").hide()
-                                    $.toast({
-                                        heading: 'Success',
-                                        text: 'Assigned to' + $('#shot_lead_select option:selected').text() + '.',
-                                        position: 'top-right',
-                                        loaderBg: '#49ffbf',
-                                        icon: 'success',
-                                        hideAfter: 3000,
-                                        stack: 6
-                                    });
-                                }
+            $(tableFilter).append(table.searchPanes.container());
+            }
+        var lastRowId = {};
+        $(document).on('click', 'table.dataTable tbody > tr', function () {
+            var targetId = JSON.parse($($(this).find('td.shot_class > span')).attr('data-data'));
+            lastRowId = {'row':$(this),'targetId': typeof targetId.shot != "undefined" ? targetId.shot.id:targetId.id}
+            });
+        
+        $(document).on('click','.reload-table-row',function(e){
+            var targetX = $(this);
+
+            var targetId = typeof $(targetX).attr('data-id') != "undefined"?$(targetX).attr('data-id'):lastRowId.targetId;
+            // console.log("Click",targetX,targetId);
+            table.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                var tData = table.row(rowIdx).data();
+                let Sid = (typeof tData.shot != "undefined" && String(tData.shot.id)==String(targetId))?tData.shot.id:((typeof tData.shot == "undefined" && String(tData.id)==String(targetId))?tData.id:null);
+                if(Sid!=null){
+                    $.ajax({
+                        url: "/api/production/production_sheet/?shot_id="+Sid,
+                        type: 'GET',
+                        dataType: "json",
+                        contentType: 'application/json; charset=utf-8',
+                        // data: {shot__id:shot_id},
+                        async: true, //displays data after loading the page
+                        processing: false,
+                        success: function (response) {
+                            table.row(rowIdx).data(JSON.parse(JSON.stringify(Object.assign(tData,(typeof tData.shot != "undefined"?{shot:response[0]}:response[0])))));
+                            },
+                        error: function (jqXHR, exception) {
+                            console.log(jqXHR.responseText)
                             }
                         });
                     }
-                )
+                }).draw();
+            });
+        
+        function resetCheckBoxVisibility(dep=null,status=null,location=null,shot=null){
+            var classes = [];
+            $.each(ofx_page_data.taskTypes,function(_x,_e){
+                classes.push(`type-`+ofx_make_key(_e.name));
+                });
+            $.each(ofx_page_data.StatusCodes,function(_x,_e){
+                classes.push(`status-`+ofx_make_key(_e.code));
+                });
+            classes.push(`location-blank`);
+            $.each(ofx_page_data.locations,function(_x,_e){
+                classes.push(`location-`+ofx_make_key(_e.name));
+                });
+            $.each(['sub','main'],function(_x,_e){
+                classes.push(`shot-`+ofx_make_key(_e));
+                });
+            $('.table-x-viewer').removeClass(classes.join(' ')).addClass((shotId_arr.length>0)?`type-`+ofx_make_key(dep)+` status-`+ofx_make_key(status)+` location-`+ofx_make_key(location)+` shot-`+ofx_make_key(shot):classes.join(' '))
             }
+
+        $(document).ready(function () { setTable(); });
+
+        // var depReaded=[];
+        $(document).on('click', 'input:checkbox.shot_checkbox', function(e){
+            let value = $(this).val(), indx = shotId_arr.indexOf(value), newX = [], sKey = 'id_'+value;
+            if(indx==-1){
+                shotId_arr.push(value);
+                }else{
+                    delete shotId_arr[indx];
+                    }
+            $.each(shotId_arr,function(z,e){
+                if(e!=null){
+                    newX.push(e);
+                    }
+                });
+            shotId_arr = JSON.parse(JSON.stringify(newX));
+            resetCheckBoxVisibility($(this).attr('data-dep'),$(this).attr('data-status'),$(this).attr('data-location'),$(this).attr('data-shot'));
+            // console.log(shotId_arr);
+            });
+        
+        $(document).on('click', '.paging_simple_numbers, #filter_div, .page-titles', function(e){
+            $('input:checkbox.shot_checkbox').each(function(e){
+                let value = $(this).val();
+                if(shotId_arr.indexOf(value)!=-1){
+                    $(this).attr('checked',true);
+                    }else{
+                        $(this).attr('checked',false);
+                        }
+                });
+            });
+        
+        $(document).on('search change keyup','.table-search',function(e){
+            let valueX = $(this).val().trim();
+            $(this).removeClass('table-search');
+            $(this).val(valueX);
+            $(this).addClass('table-search');
+            localStorage.setItem('shots_table_search',valueX);
+            if(typeof $(this).attr('data-data') == "undefined" || $(this).attr('data-data') != valueX){
+                table.rows({ filter: 'applied' }).columns(5).search( valueX ).draw();
+                $(this).attr('data-data',valueX);
+                }
+            });
+        
+        var assignmentLocation = 'all';
+        $(document).on('change','.read-location',function(e){
+            assignmentLocation = $(this).val();
+            $(this).parents('.modal-body').find('.read-assign-to-tag.tag-dep-role option').each(function(e){
+                $($(this).parent()).val('');
+                if(assignmentLocation=='all'||$(this).attr('data-location')==assignmentLocation||$(this).attr('value')==''){
+                    $(this).attr('style','');
+                    }else{
+                        $(this).attr('style','display:none;');
+                        }
+                });
+            });
+        var assignShotLocation = null;
+        $(document).on('click','.assign-to',function(e){
+            var model = $('#select_lead_modal'),
+                body = $(model).find('.form-body'),
+                shotX = {};
+            assignShotLocation = null;
+            if(allowAllActions||userPermissions.indexOf("can_assign_all_shots")!=-1||userPermissions.indexOf("can_assign_all_dept_shots")!=-1){
+                if(shotId_arr.length>0){
+                    table.rows({selected: true}).deselect();
+                    table.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                        var tData = table.row(rowIdx).data();
+                        if(shotId_arr.indexOf(String(typeof tData.shot != "undefined"?tData.shot.id:tData.id))!=-1){
+                            table.row(rowIdx).select();
+                            shotX.task_type = typeof tData.shot != "undefined"?tData.shot.task_type:tData.task_type;
+                            shotX.location = typeof tData.shot != "undefined"?tData.shot.location:tData.location;
+                            shotX.isSubShot = typeof tData.shot != "undefined"?tData.shot.isSubShot:tData.isSubShot;
+                            shotX.status = typeof tData.shot != "undefined"?tData.shot.status:tData.status;
+                            }
+                        });
+                    if(Object.keys(shotX).length>0){
+                        $(body).html('');
+                        assignmentLocation = shotassignments.makeKey(shotX.location!=null?(typeof shotX.location.name != "undefined" ? shotX.location.name: shotX.location):'all');
+                        assignShotLocation = shotX.location!=null?(typeof shotX.location.name != "undefined" ? shotX.location.name: shotX.location):null
+                        var xKey = shotassignments.makeKey([
+                                shotX.location!=null?(typeof shotX.location.name != "undefined" ? shotX.location.name: shotX.location):null,
+                                shotX.task_type!=null?shotX.task_type:null,
+                                shotX.status!=null?shotX.status.code:null,
+                                shotX.isSubShot?'sub':'main',
+                                ]),
+                            can_shots = {};
+                        var _tagQKey = {},
+                            _tagQData = {},
+                            _tagInfo = {};
+                        $.each(shotassignments.shotPosb[xKey].allowedSteps,function(_x,e_){
+                            var rxKey = shotassignments.makeKey(e_.employee!=null?[e_.employee.department.name,e_.employee.role.name]:[e_.department.name,e_.role.name])
+                            if(typeof _tagQData[rxKey] == "undefined"){
+                                if(typeof _tagQKey['id_'+String(e_.roleIndex)] == "undefined"){
+                                    _tagQKey['id_'+String(e_.roleIndex)] = [];
+                                    }
+                                if(_tagQKey['id_'+String(e_.roleIndex)].indexOf(rxKey)==-1){
+                                    _tagQKey['id_'+String(e_.roleIndex)].push(rxKey);
+                                    }
+                                _tagQData[rxKey] = [];
+                                _tagInfo[rxKey] = {shotStatus:e_.shotStatus==null?null:e_.shotStatus.code, department:(e_.employee!=null?e_.employee.department.name:e_.department.name),role:(e_.employee!=null?e_.employee.role.name:e_.role.name)};
+                                }
+                            _tagQData[rxKey].push(JSON.parse(JSON.stringify(e_))); 
+                            });
+                        const ordered1 = Object.keys(_tagQKey).sort().reduce(
+                            (obj, key) => {
+                                obj[key] = _tagQKey[key]; 
+                                return obj;
+                                }, 
+                            {}
+                            );
+                        _tagQKey = JSON.parse(JSON.stringify(ordered1));
+                        var _locations = `<option value="all" `+(assignmentLocation=='all'?'selected="selected"':'')+` >All | Global</option>`;
+                        $.each(ofx_page_data.locations,function(_x,_e){
+                            _locations = _locations + `<option value="`+shotassignments.makeKey([_e.name])+`" `+((assignmentLocation!='all'&&shotassignments.makeKey([assignmentLocation])==shotassignments.makeKey([_e.name]))?'selected="selected"':'')+` >`+_e.name.toLowerCase().replace(/\b[a-z]/g, function(letter) { return letter.toUpperCase(); })+`</option>`;
+                            });
+                        $(body).append(`<div class="form-group tag-location" style="display:none;">
+                            <label for="exampleInputEmail2">LOCATION</label>
+                                <div class="input-group">
+                                    <select class="form-control read-location" >`+_locations+`</select>
+                                    <div class="input-group-append"><span class="input-group-text"><i class="ti-list"></i></span></div>
+                                </div>
+                            </div>`);
+                        var created = [];
+                        $.each(_tagQKey,function(_x,_e_){
+                            $.each(_e_,function(_x_,re_){
+                                if(created.indexOf(re_)==-1){
+                                    created.push(re_);
+                                    let e_ = _tagInfo[re_];
+                                    if(shotassignments.makeKey([e_.role])!=shotassignments.makeKey(['VFX ARTIST'])){
+                                        $(body).append(`<div class="form-group">
+                                            <label for="exampleInputEmail2">`+e_.department+` / `+e_.role+`</label>
+                                                <div class="input-group">
+                                                    <select class="form-control read-assign-to-tag tag-dep-role" data-toStatus="`+StatusCodes[ofx_make_key(e_.shotStatus)].id+`" data-tag="`+shotassignments.makeKey([e_.department])+`_`+shotassignments.makeKey([e_.role])+`" data-role="`+shotassignments.makeKey([e_.role])+`" >
+                                                        <option value="" >`+(`Select `+e_.role).toLowerCase().replace(/\b[a-z]/g, function(letter) { return letter.toUpperCase(); })+`</option>
+                                                    </select>
+                                                    <div class="input-group-append"><span class="input-group-text"><i class="ti-list"></i></span></div>
+                                                </div>
+                                            </div>`);
+                                        }
+                                    }
+                                });
+                            });
+                        var selectedlocation = [], spclEmps = [];
+                        console.log("_tagQData",_tagQData);
+                        $.each(_tagQData,function(__x,ex_){
+                            $.each(ex_,function(_x,ex){
+                                var query = {};
+                                if(ex.employee!=null){
+                                    query.id = ex.employee.id;
+                                    if(spclEmps.indexOf(ex.employee.id)==-1){
+                                        spclEmps.push(ex.employee.id);
+                                        }
+                                    }else{
+                                        if(userPermissions.indexOf('can_assign_all_location_shots')==-1&&!allowAllActions){
+                                            query.location = ex.location==null?ofx_page_data.user.location:ex.location.name;
+                                            }else if(ex.location!=null&&!allowAllActions){
+                                                query.location = ex.location.name;
+                                                }
+                                        if(typeof query.location != "undefined" && selectedlocation.indexOf(shotassignments.makeKey([query.location]))==-1){
+                                            selectedlocation.push(shotassignments.makeKey([query.location]));
+                                            }
+                                        query.dept = ex.department.name;
+                                        query.role = ex.role.name;
+                                        }
+                                $.ajax({
+                                    url: '/api/hrm/employee/',
+                                    type: 'GET',
+                                    dataType: "json",
+                                    contentType: 'application/json; charset=utf-8',
+                                    async: true, //displays data after loading the page
+                                    processing: false,
+                                    data: query,
+                                    success: function (response) {
+                                        $.each(response,function(z,e){
+                                            if(e.department!=null&&e.role!=null){
+                                                let depr = shotassignments.makeKey([e.department]),
+                                                    roler = shotassignments.makeKey([e.role]),
+                                                    location = shotassignments.makeKey([e.location==null?'':e.location]),
+                                                    pTag = $(`select.tag-dep-role[data-tag="`+depr+`_`+roler+`"]`);
+                                                if($(pTag).find(`option[data-apikey="`+e.apikey+`"]`).length==0){
+                                                    if(spclEmps.indexOf(e.id)!=-1||selectedlocation.indexOf(location)!=-1){
+                                                        $(pTag).append(`<option data-apikey="`+e.apikey+`" data-leadlocation="`+(e.location==null?'':e.location)+`" value="`+e.id+`" style="`+((assignmentLocation=='all'||location==assignmentLocation)?``:`display:none;`)+`" data-location="`+location+`" data-data="`+$(pTag).attr('data-toStatus')+`">`+e.fullName+`</option>`);
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                        },
+                                    error: function (jqXHR, exception) {
+                                        console.log(jqXHR.responseText)
+                                        }
+                                    });
+                                });
+                            });
+                        if(userPermissions.indexOf('can_assign_all_location_shots')!=-1||allowAllActions||selectedlocation.length>0){
+                            $('.tag-location').attr('style','');
+                            if(!(userPermissions.indexOf('can_assign_all_location_shots')!=-1||allowAllActions)){
+                                $('.tag-location .read-location option').each(function(e){
+                                    if(selectedlocation.indexOf($(this).attr('value'))==-1&&$(this).attr('value')!='all'){
+                                        $(this).attr('style','display:none;');
+                                        }
+                                    });
+                                }
+                            }
+                        $('#select_lead_modal').modal('show');
+                        }else{
+                            alert("Invalid operation Please do, 'CTRL+SHIFT+R' 5 times, Try Again");
+                            }
+                    }else{
+                        alert("Minimum shots are not selected");
+                        }
+                }else{
+                    alert("Authorization required");
+                    }
+            });
+
+        function assignPost(post_data,dataToUpdate,wsLogs,notifyData){
+            $.ajax({
+                    url: '/api/production/shot/assignments/',
+                    type: 'POST',
+                    dataType: "json",
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(post_data),
+                    async: true, //displays data after loading the page
+                    processing: false,
+                    success: function (rinfo) {
+                        $.ajax({
+                            url: '/api/v2/shot/',
+                            type: 'PUT',
+                            dataType: "json",
+                            contentType: 'application/json; charset=utf-8',
+                            data: JSON.stringify(dataToUpdate),
+                            async: true, //displays data after loading the page
+                            processing: false,
+                            success: function (response) {
+                                table.rows({selected: true}).every(function (rowIdx, tableLoop, rowLoop) {
+                                    var tData = table.row(rowIdx).data();
+                                    let Sid = typeof tData.shot != "undefined"?tData.shot.id:tData.id;
+                                    $.ajax({
+                                        url: "/api/production/production_sheet/?shot_id="+Sid,
+                                        type: 'GET',
+                                        dataType: "json",
+                                        contentType: 'application/json; charset=utf-8',
+                                        // data: {shot__id:shot_id},
+                                        async: true, //displays data after loading the page
+                                        processing: false,
+                                        success: function (response) {
+                                            table.row(rowIdx).data(JSON.parse(JSON.stringify(Object.assign(tData,(typeof tData.shot != "undefined"?{shot:response[0]}:response[0])))));
+                                            },
+                                        error: function (jqXHR, exception) {
+                                            console.log(jqXHR.responseText)
+                                            }
+                                        });
+                                    }).draw();
+                                table.rows({selected: true}).deselect();
+                                shotId_arr = [];
+                                resetCheckBoxVisibility();
+                                // shotInfo_arr = {};
+                                $.toast({
+                                    heading: 'Updated',
+                                    showHideTransition: 'slide',
+                                    text: 'Shot(s) Details Updated Successfully',
+                                    icon: 'success',
+                                    position: 'bottom-right',
+                                    loader: true,        // Change it to false to disable loader
+                                    loaderBg: '#da7b1c',// To change the background
+                                    bgColor: '#1d6de5',
+                                    textColor: 'white',
+                                    hideAfter: 5000   // in milli seconds
+                                    });
+                                },
+                            error: function (jqXHR, exception) {
+                                console.log(jqXHR.responseText)
+                                }
+                            });
+                        },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR.responseText)
+                    }
+                });
+            ofx_notify_save(notifyData);
+            $wsClient.sendMessage("", "",wsLogs.toApikey, [], {
+                title: wsLogs.title,
+                message: wsLogs.message
+                }, null);
             $('#select_lead_modal').modal('hide');
+            }
+        // TeamLead Assignments Post Data Function
+        function assign_lead() {
+            var post_data = [], notifyData = [], wsLogs = {
+                toApikey: [],
+                title: ofx_page_data.user.fullName,
+                message: shotId_arr.length + " Shot's Assigned"
+                },dataToUpdate=[], dataLeadLocation = {};
+            $('select.read-assign-to-tag option:selected').each(function(e){
+                var employeeX = $(this).val();
+                if(employeeX.length>0){
+                    wsLogs.toApikey.push($(this).attr("data-apikey"));
+                    var tagX = (typeof $($(this).parent()).attr("data-role") != "undefined" ?$($(this).parent()).attr("data-role"):'uniq'),
+                        tagSate = (typeof $(this).attr("data-data") != "undefined" && $(this).attr("data-data") != "undefined")?$(this).attr("data-data"):null,
+                        leadLocation = $(this).attr("data-leadlocation");
+                    $.each(shotId_arr,function(z,ex){
+                        var setData__X = {status: tagSate, "__SELECT__":{id: ex} };
+                        if(tagSate!=null){ setData__X['status'] = tagSate; }
+                        if(['teamlead','supervisor','headofdepartment'].indexOf(tagX)!=-1){
+                            if(tagX=='teamlead'){
+                                setData__X['team_lead'] = employeeX;
+                                }else if(tagX=='headofdepartment'){
+                                    setData__X['hod'] = employeeX;
+                                    }else{
+                                        setData__X['supervisor'] = employeeX;
+                                        }
+                            }
+                        if(Object.keys(setData__X).length>1){ 
+                            dataLeadLocation['id_'+ex] = JSON.parse(JSON.stringify({
+                                shotId:ex,
+                                location: assignShotLocation,
+                                leadLocation: leadLocation
+                                }));
+                            dataToUpdate.push(JSON.parse(JSON.stringify(setData__X)));
+                            }
+                        post_data.push({
+                            "shot": ex,
+                            "lead": employeeX,
+                            "assigned_by": ofx_page_data.user.id
+                            });
+                        notifyData.push({
+                            referenceId: ex,
+                            reference_type: "SHOT",
+                            to_users: [employeeX],
+                            message: "Assigned By: " + ofx_page_data.user.fullName,
+                            });
+                        });
+                    }
+                });
+            var locationUpdates = [];
+            $.each(dataLeadLocation,function(_x,_e){
+                if(_e.leadLocation.length>0&&shotassignments.makeKey([_e.location])!=shotassignments.makeKey([_e.leadLocation])){
+                    $.each(ofx_page_data.locations,function(_x_,_e_){
+                        if(shotassignments.makeKey([_e_.name])==shotassignments.makeKey([_e.leadLocation])){
+                            locationUpdates.push(JSON.parse(JSON.stringify({
+                                location: _e_.id,
+                                "__SELECT__":{id: _e.shotId}
+                                })));
+                            }
+                        });
+                    }
+                });
+            if(locationUpdates.length>0){
+                Swal.fire({
+                    title: 'Different Shot(s) Location',
+                    html: "Selected lead location is different from shot location!</br>Do you want to change shot location to lead location?",
+                    type: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#ff7f7f',
+                    confirmButtonText: 'Yes, Change Shot Location',
+                    cancelButtonText: "No, Don't Change Shot Location"
+                    }).then((result) => {
+                        if(result.value){
+                            $.each(locationUpdates,function(_x,_e){
+                                dataToUpdate.push(JSON.parse(JSON.stringify(_e)));
+                                });
+                            assignPost(post_data,dataToUpdate,wsLogs,notifyData);
+                            }else if(result.dismiss=='cancel'){
+                                Swal.fire({
+                                    title: 'Are you sure!',
+                                    html: "You want to assign without changing the shot(s) location?",
+                                    type: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: 'Yes'
+                                    }).then((result) => {
+                                        if(result.value) {
+                                            assignPost(post_data,dataToUpdate,wsLogs,notifyData);
+                                            }
+                                        });
+                                }
+                        });
+                }else{
+                    assignPost(post_data,dataToUpdate,wsLogs,notifyData);
+                    }  
         }
 
         // TeamLead Assignments Modal Close
         function close_assign_modal() {
             $('#select_lead_modal').modal('hide');
-        }
-
-        // TODO: Enable to view the shots data in modal
-        // Table On Row Click
-        {#$('#shots_table').on('click', 'td.shot_class', function () {#}
-        {#    $("#myModal2").modal('show');#}
-        {#})#}
-
+            $('#select_lead_modal2').modal('hide');
+            }
+        $('#select_lead_modal2').on('hidden.bs.modal', function () {
+            let pr = $('.select-get-sort');
+            $(pr).removeClass('select-get-sort');
+            $(pr).val($(pr).attr('data-data'));
+            $(pr).addClass('select-get-sort');
+            });
         // Export Production sheet to Excel
         function export_to_excel() {
-            window.location = "/production/export_prod_report/?client=" + client_id + "&project=" + project_id + "&statuss=" + status_id + "&locality=" + locality_id + "&location=" + location_id + "&task_type=" + task_type_id
-        }
+            var shots = [];
+            table.rows( { filter: 'applied' } ).every( function () {
+                let dxr = this.data();
+                shots.push((typeof dxr.shot != "undefined"?dxr.shot.id:dxr.id));
+                });
+            // console.log(shots.length,shots);
+            var from = $(`<form action="/production/export_prod_report/" method="POST" target="_blank" style="display:none;">
+                {% csrf_token %}
+                <input name="shot_ids" value="`+shots.join('|')+`"/>
+                </form>`);
+            $('body').append(from);
+            $(from).submit();
+            $(from).remove();
+            }
     </script>
 {% endblock page_scripts %}

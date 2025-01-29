@@ -2,42 +2,69 @@
 
 
 {% block bread_crumb %}
-
+<div class="row page-titles">
+    <div class="col-md-6 col-4 float-left">
+        <h3 class="text-themecolor mb-2 mt-2">Projects</h3>
+    </div>
+    <div class="col-md-6 text-right pt-1">
+        <div class="btn-group mb-2 mr-2" role="group" aria-label="Button group with nested dropdown">
+            <div class="input-group-prepend">
+                <button class="btn btn-outline-info dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Clients</button>
+                <div class="dropdown-menu departments-selectors" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 37px, 0px); top: 0px; left: 0px; will-change: transform;">
+                    <a class="dropdown-item" href="#">CLIENT001</a>
+                    <a class="dropdown-item" href="#">CLIENT002</a>
+                    <a class="dropdown-item" href="#">CLIENT003</a>
+                </div>
+            </div>
+            <select type="text" class="btn btn-info" style="background: transparent !important; cursor: initial;" >
+                <option style="color: #000;">IN PROGRESS</option>
+                <option style="color: #000;">ARCHIVED</option>
+            </select>
+            <input type="text" class="btn btn-info search" placeholder="Search..." style="background: transparent !important; cursor: initial;" value="">
+        </div>
+    </div>
+</div>
 {% endblock bread_crumb %}
 
 {% block content %}
-    <div class="container-fluid">
-        <div class="row el-element-overlay">
-            <div class="col-md-12">
-                <h4 class="card-title">Projects</h4>
-            </div>
-
-            {% for project in projects %}
-            <div class="card" style="margin-left:10px">
-                <div class="el-card-item">
-                    <div class="el-card-avatar el-overlay-1"><img src="/static/template/assets/images/ofx_logo1.png"
-                                                                  alt="user"/>
-                        <div class="el-overlay">
-                            <ul class="el-info">
-                                <li><a class="btn default btn-outline" href="javascript:void(0);"><i
-                                        class="icon-link"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="el-card-content">
-                        <div class="progress" style="height: 15px;width: 30%">
-                            <div class="progress-bar"
-                                 style="width:70%;background-color:#806c44;color: white;font-weight: bold"
-                                 role="progressbar">70%
-                            </div>
-                        </div>
-                        <h3 class="box-title">{{project.name}}</h3> <small>Total Shots: 117</small>
-                        <br/>
+<div class="row el-element-overlay">
+    {% for project in projects %}
+    <div class="col-md-2" style="padding-left: 5px; padding-right: 5px;">
+        <div class="card" style="margin-bottom: 10px;">
+            <div class="el-card-item">
+                <div class="el-card-avatar el-overlay-1"><img src="/static/template/assets/images/ofx_logo1.png" alt="user"/>
+                    <div class="el-overlay">
+                        <ul class="el-info">
+                            <li><a class="btn default btn-outline" href="javascript:void(0);"><i class="icon-link"></i></a></li>
+                        </ul>
                     </div>
                 </div>
+                <div class="el-card-content pl-3 pr-3">
+                    <div class="progress" style="height: 15px;width: 100%">
+                        <div class="progress-bar ex-progress" data-data='{"total_shots":{{project.total_shots}},"completed":{{project.completed}}}' style="background-color:#806c44; color: white;font-weight: bold" role="progressbar"></div>
+                    </div>
+                    <h3 class="box-title">{{project.name}}</h3>
+                    <span class="label label-light-info mr-1">Total Shots: {{project.total_shots}}</span>
+                    <span class="label label-light-danger">WIP: {{project.wip}}</span>
+                    <br>
+                    <span class="label label-light-warning mr-1">YTS: {{project.yts}}</span>
+                    <span class="label label-light-success">Completed: {{project.completed}}</span>
+                </div>
             </div>
-            {% endfor %}
-
         </div>
     </div>
+    {% endfor %}
+    <script>
+        $( document ).ready(function() {
+            $('.ex-progress').each(function(e){
+                let d = JSON.parse($(this).attr('data-data'));
+                let cal = parseInt((100/d.total_shots)*d.completed);
+                $(this).html(cal+'%');
+                $(this).css('width',cal+'%');
+                $(this).removeClass('ex-progress');
+                });
+            $('#ajaxBusy').hide();
+            });
+    </script>
+</div>
 {% endblock content %}

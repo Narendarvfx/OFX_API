@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 // Restore the require/define
 var require = $.fn.select2.amd.require;
 var define = $.fn.select2.amd.define;

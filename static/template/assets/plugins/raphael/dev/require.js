@@ -1,7 +1,7 @@
-/** vim: et:ts=4:sw=4:sts=4
- * @license RequireJS 2.1.8 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
- * Available via the MIT or new BSD license.
- * see: http://github.com/jrburke/requirejs for details
+/*
+ * Copyright (c) 2010-2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
  */
 //Not using strict: uneven strict support in browsers, #392, and causes
 //problems with requirejs.exec()/transpiler plugins that may not be strict.
@@ -916,7 +916,7 @@ var requirejs, require, define;
                     }
 
                     //Finished the define stage. Allow calling check again
-                    //to allow define notifications below in the case of a
+                    //to allow define wsnotifications below in the case of a
                     //cycle.
                     this.defining = false;
 

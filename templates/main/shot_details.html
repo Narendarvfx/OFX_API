@@ -1,0 +1,2408 @@
+{% load static %}
+<style>
+    .round {
+        background: transparent;
+    }
+    button.delete-task.hide-del{
+        display: none;
+        }
+</style>
+<div class="modal right fade" id="myModal2" role="dialog" aria-labelledby="myModalLabel2">
+    <div class="modal-dialog" style="max-width: 45% !important;width: 45% !important;min-width: 870px;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel2"></h4>
+                <button type="button" id="modal_close" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="card shot-action-bar">
+                    <div style="border-radius: 10px" class="col-lg-14">
+                        <div class="float-left ass_art_butt">
+                            <button type="button" class="assign_artist btn waves-effect waves-light float-right" title="ASSIGN ARTIST" style="color: white"><i class="mdi mdi-account-plus" style="color:orange;"></i> ASSIGN TO ARTIST</button>
+                        </div>
+                        <div class="float-left">
+                            <button class="change-shot-status btn waves-effect waves-light float-right" title="APPROVE" style="color: white"><i class="mdi mdi-checkbox-marked-circle" style="color:green;padding-top: 5px"></i> APPROVE</button>
+                        </div>
+                        <div class="float-left">
+                            <button class="change-shot-status btn waves-effect waves-light float-right" title="REJECT" style="color: white"><i class="mdi mdi-close-circle" style="color: red;"></i> REJECT</button>
+                        </div>
+                        <!-- <div class="float-left">
+                            <button class="shot_reject btn waves-effect waves-light float-right" title="PUBLISH" style="color: white"><i class="mdi mdi-arrow-up-bold-circle" style="color: #006fff"></i> PUBLISH</button>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body pb-0">
+                        <ul class="nav nav-tabs customtab" role="tablist">
+                            <li class="nav-item"><a class="nav-link active" id="shot_details_tab" data-toggle="tab" href="#shot_details" role="tab" aria-selected="false"><span class="hidden-sm-up"><i class="ti-home"></i></span> <span class="hidden-xs-down">DETAILS</span></a></li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" id="shot_notes_tab" href="#shot_notes" role="tab" aria-selected="true" onclick="shot_notes_tab()"><span class="hidden-sm-up"><i class="ti-user"></i></span> <span class="hidden-xs-down">NOTES</span></a></li>
+                            <li class="nav-item"><a class="nav-link k-members" data-toggle="tab" id="shot_members_tab" href="#members" role="tab" aria-selected="true" ><span class="hidden-sm-up"><i class="ti-user"></i></span> <span class="hidden-xs-down">TEAM</span></a></li>
+                            <li class="nav-item"><a class="nav-link k-shot-logs" data-toggle="tab" href="#shotlogs" role="tab" aria-selected="true" ><span class="hidden-sm-up"><i class="ti-user"></i></span> <span class="hidden-xs-down">SHOT % LOGS</span></a></li>
+                            <li class="nav-item"><a class="nav-link k-task-logs" data-toggle="tab" href="#tasklogs" role="tab" aria-selected="true" ><span class="hidden-sm-up"><i class="ti-user"></i></span> <span class="hidden-xs-down">TASK % LOGS</span></a></li>
+                            <li class="nav-item"><a class="nav-link show k-history-logs" data-toggle="tab" href="#historylogs" role="tab" aria-selected="false">HISTORY</a></li>
+                            <li class="nav-item" id="shottabmanageshothelp1" style="display: none;"><a class="nav-link show k-help-task" data-toggle="tab" href="#subShots" role="tab" aria-selected="false">SUB SHOTS</a></li>
+                        </ul>
+                        <script>
+                            if ((userPermissions.indexOf("can_manage_sub_shot")!= -1)){
+                                document.getElementById("shottabmanageshothelp1").style.display = "block";
+                                }
+                        </script>
+                        <div class="tab-content">
+                            <div class="tab-pane show" id="shot_details" role="tabpanel">
+                                <div class="p-3 side-bar-shot-details">
+                                    <div class="row">
+                                        <div class="float-left col-6">
+                                            <small class="text-muted">CLIENT:</small>
+                                            <h5 id="clientt"></h5>
+                                        </div>
+                                        <div class="float-right col-6">
+                                            <small class="text-muted">PROJECT:</small>
+                                            <h5 id="projectt"></h5>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="float-left col-6">
+                                            <small class="text-muted">SEQUENCE:</small>
+                                            <h5 id="sequencee"></h5>
+                                        </div>
+                                        <div class="float-right col-6">
+                                            <small class="text-muted">TASK TYPE:</small>
+                                            <h5 id="task_typee"></h5>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="float-left col-6">
+                                            <small class="text-muted">TYPE:</small>
+                                            <h5 id="typee"></h5>
+                                        </div>
+                                        <div class="float-right col-6">
+                                            <small class="text-muted">STATUS:</small>
+                                            <h5 id="statuss"></h5>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="float-left col-6">
+                                            <small class="text-muted">CLIENT ETA: <i
+                                                    class="mdi mdi-check-circle-outline"
+                                                    style="color: #ec680b;"></i></small>
+                                            <h5 id="etaa"></h5>
+                                        </div>
+                                        <div class="float-right col-6">
+                                            <small class="text-muted">INTERNAL ETA:</small>
+                                            <h5><input type="date" class="form-control" id="int_etaa"></h5>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="float-left col-6">
+                                            <small class="text-muted"> CLIENT BIDS: <i
+                                                    class="mdi mdi-check-circle-outline"
+                                                    style="color: #ec680b;"></i></small>
+                                            <h5 id="bidss"></h5>
+                                        </div>
+                                        <div class="float-right col-6">
+                                            <small class="text-muted">INTERNAL BIDS: </small>
+                                            <h5><input type="number" class="form-control" value="" id="int_bidss">
+                                            </h5>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="float-left col-6">
+                                            <small class="text-muted">VERSION:</small>
+                                            <h5 id="versionn"></h5>
+                                        </div>
+                                        <div class="float-right col-6">
+                                            <small class="text-muted">PROGRESS:</small>
+                                            <h5 id="progresss"></h5>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="float-left col-6">
+                                            <small class="text-muted">TEAM LEAD:</small>
+                                            <h5 id="team_leadd"></h5>
+                                        </div>
+                                        <div class="float-right col-6">
+                                            <small class="text-muted">ARTISTS:</small>
+                                            <h5 id="artists"></h5>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="float-left col-6">
+                                            <small class="text-muted">SCOPE OF WORK:</small>
+                                            <h5 id="scope_wrk"></h5>
+                                        </div>
+                                        <div class="float-right col-6">
+                                            <small class="text-muted">COMPLEXITY:</small>
+                                            <h5 id="complexityy"></h5>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="float-left col-12">
+                                            <button type="button" class="save-shot-details btn btn-success waves-effect waves-light" >Update</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane show" id="shot_notes" role="tabpanel">
+                                <!-- <div class="col-lg-12"> -->
+                                <div>
+                                    <div class="card">
+                                        <div class="comment-widgets"></div>
+                                        <div class="card-body border-top">
+                                            <form class="row ofx-send-notfic pr-3" method="POST" enctype="multipart/form-data">
+                                                <div class="col-10 mt-3">
+                                                    <textarea placeholder="Type your message here" id="shot_notes_msg" name="message" class="form-control b-0"></textarea>
+                                                </div>
+                                                <ul class="col-2 mt-4 ofx-notbtns">
+                                                    <li>
+                                                        <div class="fils fas fa-paperclip btn btn-info">
+                                                            <input type="file" id="inputGroupFile01" name="attachments" multiple/>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <button type="submit" class="btn btn-info"><i class="fas fa-paper-plane"></i></button>
+                                                    </li>
+                                                </ul>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane show" id="members" role="tabpanel">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12 pt-2">
+                                            <div class="btn-group" role="group" aria-label="Button group with nested dropdown" style="float: right;">
+                                                <a href="#" class="btn btn-warning mb-2 add-member"><i class="mdi mdi-account-plus"></i> ADD ARTIST</a>
+                                                <a href="#" class="btn btn-warning mb-2 save-members"><i class="mdi mdi-floppy"></i> SAVE</a>
+                                                <a href="#" target="_blank" class="btn btn-warning mb-2 tasks-export-tasks"><i class="mdi mdi-cloud-download"></i> Export to EXCEL</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 pl-0 pr-0">
+                                            <hr class="mb-1 mt-0">
+                                            <div class="table-responsive ">
+                                                <table class="table table-hover no-wrap members-content">
+                                                    <thead>
+                                                        <tr style="font-size: small;">
+                                                            <th>ARTIST</th>
+                                                            <th>TYPE</th>
+                                                            <th>STATUS</th>
+                                                            <th>BID DAYS</th>
+                                                            <th>PROGRESS</th>
+                                                            <th>CAPTAIN</th>
+                                                            <th>ETA</th>
+                                                            <th>ASSIGNED DATE</th>
+                                                            <th>START DATE</th>
+                                                            <th>COMPLETED DATE</th>
+                                                            <th class="artst-task-delete">ACTION</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="sub-set"></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 pt-3" style="display: none;">
+                                            <div class="row">
+                                                <div class="col-md-6 col-lg-3 col-xlg-3" style=" padding-left: 5px; padding-right: 5px;">
+                                                    <div class="card card-inverse card-info">
+                                                        <div class="box bg-primary text-center" style="border-radius: 15px;">
+                                                            <h1 class="font-light text-white atr-tab-shot-bids">N/A</h1>
+                                                            <h6 class="text-white">Shot biddays</h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-lg-3 col-xlg-3" style=" padding-left: 5px; padding-right: 5px;">
+                                                    <div class="card card-inverse card-info">
+                                                        <div class="box bg-info text-center" style="border-radius: 15px;">
+                                                            <h1 class="font-light text-white atr-tab-assigned-biddays">N/A</h1>
+                                                            <h6 class="text-white">Assigned Biddays</h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-lg-3 col-xlg-3" style=" padding-left: 5px; padding-right: 5px;">
+                                                    <div class="card card-inverse card-info">
+                                                        <div class="box bg-success text-center" style="border-radius: 15px;">
+                                                            <h1 class="font-light text-white atr-tab-remaining-biddays">N/A</h1>
+                                                            <h6 class="text-white">Remaining Biddays</h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-lg-3 col-xlg-3" style=" padding-left: 5px; padding-right: 5px;">
+                                                    <div class="card card-inverse card-info">
+                                                        <div class="box bg-warning text-center" style="border-radius: 15px;">
+                                                            <h1 class="font-light text-white atr-tab-tasks">N/A</h1>
+                                                            <h6 class="text-white">Total Task(s)</h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane show" id="shotlogs" role="tabpanel">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12 pt-2">
+                                            <div class="btn-group" role="group" aria-label="Button group with nested dropdown" style="float: right;">
+                                                <a href="#" target="_blank" class="btn btn-warning mb-2 export-shot-logs"><i class="mdi mdi-cloud-download"></i> Export to EXCEL</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 pl-0 pr-0">
+                                            <div class="table-responsive ">
+                                                <table class="table table-bordered no-wrap table-hover shotlogs-tab">
+                                                    <thead>
+                                                        <tr style="font-size: small;">
+                                                            <th>DATE</th>
+                                                            <th>CREATED BY</th>
+                                                            <th>SHOT BID DAYS</th>
+                                                            <th>CONSUMED MAN-DAY</th>
+                                                            <th>SHOT PERCENTAGE</th>
+                                                            <th>DAY PERCENTAGE</th>
+                                                            <th>UPDATED BY</th>
+                                                            <th>LAST UPDATE</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane show" id="tasklogs" role="tabpanel">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12 pt-2">
+                                            <div class="btn-group" role="group" aria-label="Button group with nested dropdown" style="float: right;">
+                                                <a href="#" target="_blank" class="btn btn-warning mb-2 export-task-logs"><i class="mdi mdi-cloud-download"></i> Export to EXCEL</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 pl-0 pr-0">
+                                            <div class="table-responsive ">
+                                                <table class="table table-bordered no-wrap table-hover tasklogs-tab">
+                                                    <thead>
+                                                        <tr style="font-size: small;">
+                                                            <th style="text-align: center;">DATE</th>
+                                                            <th style="text-align: center;">CREATED BY</th>
+                                                            <th style="text-align: center;" >TASK BID DAYS</th>
+                                                            <th style="text-align: center;">CONSUMED MAN-DAY</th>
+                                                            <th style="text-align: center;">ARTIST PERCENTAGE</th>
+                                                            <th style="text-align: center;">DAY PERCENTAGE</th>
+                                                            <th style="text-align: center;">UPDATED BY</th>
+                                                            <th style="text-align: center;">LAST UPDATE</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane show" id="historylogs" role="tabpanel">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12 pl-0 pr-0">
+                                            <div class="historylogs-lab history-timeline">
+                                                <div class="timeline">
+                                                    <div class="container">
+                                                      <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="timeline-container">
+                                                                <div class="timeline-end">
+                                                                    <p>Now</p>
+                                                                </div>
+                                                                <div class="timeline-continue is-model"></div>
+                                                                <div class="timeline-start">
+                                                                    <p>Start</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane show" id="subShots" role="tabpanel">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12 pt-2">
+                                            <div class="btn-group" role="group" aria-label="Button group with nested dropdown" style="float: right;">
+                                                <select class="btn btn-warning mb-2 cerate-help-shot"></select>
+                                                <a href="#" class="btn btn-warning mb-2 save-help-shot"><i class="mdi mdi-floppy"></i> SAVE</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 pl-0 pr-0">
+                                            <hr class="mb-1 mt-0">
+                                            <div class="table-responsive ">
+                                                <table class="table table-hover no-wrap subshot-content">
+                                                    <thead>
+                                                        <tr style="font-size: small;">
+                                                            <th></th>
+                                                            <th>TASK TYPE</th>
+                                                            <th>TYPE</th>
+                                                            <th>COMPLEXITY</th>
+                                                            <th>CAPTAIN</th>
+                                                            <th>STATUS</th>
+                                                            <th>PROGRESS</th>
+                                                            <th>HELP BIDS</th>
+                                                            <th>PENDING BIDS</th>
+                                                            <th>CONSUMED BIDS</th>
+                                                            <th>ETA</th>
+                                                            <th>SUPERVISOR</th>
+                                                            <th>TEAM LEAD</th>
+                                                            <th>HOD</th>
+                                                            <th>ARTIST</th>
+                                                            <th class="artst-task-delete">ACTION</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="sub-set-shot"></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- modal-content -->
+    </div><!-- modal-dialog -->
+</div><!-- modal -->
+<div id="select_artists" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Select To Assign</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-body" >
+                    <div class="form-group">
+                        <label for="exampleInputEmail2">ARTISTS <code class="artist-cout pl-2"></code></label>
+                        <div class="input-group">
+                            <div style="width: calc(100% - 43px); margin-right: 1px;">
+                                <input type="text" name="name" class="form-control e-find-artist" placeholder="Search..." style="border-bottom-left-radius: 0px; border-bottom-right-radius: 0px; border-top-right-radius: 0px;">
+                                <select class="form-control tag-select-artist" name="artist" multiple="" style="overflow-y: auto; border-top-left-radius: 0px; border-top-right-radius: 0px; border-bottom-right-radius: 0px;"></select>
+                            </div>
+                            <div class="input-group-append"><span class="input-group-text"><i class="ti-user"></i></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" name="save" class="btn btn-success waves-effect waves-light assign-new-artists">Assign</button>
+                <button type="button" name="close" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="select_qc_case" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Are you sure?</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-body" >
+                    <div class="form-group" style="margin-bottom: 10px;">
+                        <label for="exampleInputEmail2">Output Path</label>
+                        <textarea name="oppath" class="form-control stq-op-path" placeholder="Output Path" style="min-height: 100px;"></textarea>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 10px;">
+                        <label for="exampleInputEmail2">Submission Note</label>
+                        <textarea name="submitnote" class="form-control stq-submit-note" placeholder="Submission Note" style="min-height: 100px;"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" name="save" class="btn btn-success waves-effect waves-light make-shot-qc">Yes, APPROVE</button>
+                <button type="button" name="close" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="{% static 'template/assets/plugins/sweetalert/sweetalert.min.js' %}"></script>
+<div class="csrf-ajax-token" style="display: none;">{% csrf_token %}</div>
+<script type="text/javascript" src="{% static 'ofx/history-timeline.js' %}"></script>
+<script>
+    $(document).on('click','.show-shot-tasks > a',function(e){
+        var isOpen = $(this).find('i').hasClass('rotate-90'),
+            thShotId = $(this).attr('data-shot'),
+            pTr = $(this).parent().parent();
+        if(isOpen){
+            $(this).find('i').removeClass('rotate-90');
+            $(pTr).next().remove("tr.shots-sub-tr");
+            }else{
+                $.ajax({
+                    url: '/api/v2/shot/task/',
+                    type: 'GET',
+                    dataType: "json",
+                    contentType: 'application/json; charset=utf-8',
+                    data: {shot__id:thShotId},
+                    async: true, //displays data after loading the page
+                    processing: false,
+                    beforeSend: function(request) {
+                        request.setRequestHeader("required", JSON.stringify(["artist__id","artist__fullName", "type", "task_status__id","task_status__code", "task_status__color","assigned_bids","compiler","art_percentage","creation_date","start_date","eta"]));
+                        },
+                    success: function (response) {
+                        var memTRs = '';
+                        $.each(response,function(x,e){
+                            let lx = ['danger','warning','info','primary','success'], status = parseInt(e.art_percentage);    
+                            memTRs = memTRs+`
+                                        <tr style="font-size: small;" >
+                                            <td><span>`+e.artist.fullName+`</span></td>
+                                            <td><span>`+e.type+`</span></td>
+                                            <td><button type="button" class="btn" title="`+e.task_status.name+`" style="cursor: default; color:white; padding: 3px 16px; font-size:1em; background-color:`+e.task_status.color+`;">`+e.task_status.code+`</button></td>
+                                            <td><span>`+e.assigned_bids.toFixed(2)+`</span></td>
+                                            <td>
+                                                <div class="progress" style="height: 15px;">
+                                                    <div class="progress-bar bg-`+lx[(status<25 ? 0 : (status<50 ? 1 : (status<75 ? 2 : (status<100 ? 3 : 4))))]+`" style="width:` + status + `%; color: white;font-weight: bold" role="progressbar">` + status + `%</div>
+                                                </div>
+                                            </td>
+                                            <td><span>`+(e.compiler==2?'Captain':'')+`</span></td>
+                                            <td><span>`+(e.eta!=null?moment(e.eta).format("MMM Do YYYY, h:mm a"):'Pending')+`</span></td>
+                                            <td><span>`+moment(e.creation_date).format("MMM Do YYYY, h:mm a")+`</span></td>
+                                            <td><span>`+(e.start_date!=null?moment(e.start_date).format("MMM Do YYYY, h:mm a"):'')+`</span></td>
+                                            <td><span>`+(e.end_date!=null?moment(e.end_date).format("MMM Do YYYY, h:mm a"):'')+`</span></td>
+                                        </tr>`;
+                            });
+                        var tdCount = $(pTr).find('td').length;
+                        var tdNew = `<tr class="shots-sub-tr" >
+                            `+($(pTr).parents('.subshot-content').length==0?`<td></td><td colspan="`+(tdCount-1)+`">`:`<td colspan="`+tdCount+`">`)+`<div style="position: relative; width: 100%; height: min-content; display: block;">
+                                                <div style="display: inline-block;float: left; `+($(pTr).parents('.sub-set-shot').length>0?`width: 100%;`:``)+`">
+                                                    `+(memTRs.length>0?`<table class="table table-hover no-wrap sub-task-table" style="width: `+($(pTr).parents('.sub-set-shot').length>0?`100%;`:`min-content`)+`; display: inline-block; `+($(pTr).parents('.sub-set-shot').length==0?`border: 1px solid #808080;`:``)+` ">
+                                                        <thead>
+                                                            <tr style="font-size: small;">
+                                                                <th `+($(pTr).parents('.sub-set-shot').length>0?`style="width: 10%;"`:``)+`>ARTIST</th>
+                                                                <th `+($(pTr).parents('.sub-set-shot').length>0?`style="width: 10%;"`:``)+`>TYPE</th>
+                                                                <th `+($(pTr).parents('.sub-set-shot').length>0?`style="width: 10%;"`:``)+`>STATUS</th>
+                                                                <th `+($(pTr).parents('.sub-set-shot').length>0?`style="width: 10%;"`:``)+`>BID DAYS</th>
+                                                                <th `+($(pTr).parents('.sub-set-shot').length>0?`style="width: 10%;"`:``)+`>PROGRESS</th>
+                                                                <th `+($(pTr).parents('.sub-set-shot').length>0?`style="width: 10%;"`:``)+`>CAPTAIN</th>
+                                                                <th `+($(pTr).parents('.sub-set-shot').length>0?`style="width: 10%;"`:``)+`>ETA</th>
+                                                                <th `+($(pTr).parents('.sub-set-shot').length>0?`style="width: 10%;"`:``)+`>ASSIGNED DATE</th>
+                                                                <th `+($(pTr).parents('.sub-set-shot').length>0?`style="width: 10%;"`:``)+`>START DATE</th>
+                                                                <th `+($(pTr).parents('.sub-set-shot').length>0?`style="width: 10%;"`:``)+`>COMPLETED DATE</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            `+memTRs+`
+                                                        </tbody>
+                                                    </table>`:`<p>No Tasks Available</p>`)+`
+                                                </div>
+                                                `+($(pTr).parents('.sub-set-shot').length==0?`
+                                                <div style="display: inline-block;float: left;padding-left: 15px;">
+                                                    <table class="subshot-content-`+thShotId+` table table-hover no-wrap subshot-content" style="width: min-content;display: inline-block;border: 1px solid #808080;">
+                                                        <thead>
+                                                            <tr style="font-size: small;">
+                                                                <th></th>
+                                                                <th>TASK TYPE</th>
+                                                                <th>TYPE</th>
+                                                                <th>COMPLEXITY</th>
+                                                                <th>CAPTAIN</th>
+                                                                <th>STATUS</th>
+                                                                <th>PROGRESS</th>
+                                                                <th>HELP BIDS</th>
+                                                                <th>PENDING BIDS</th>
+                                                                <th>CONSUMED BIDS</th>
+                                                                <th>ETA</th>
+                                                                <th>SUPERVISOR</th>
+                                                                <th>TEAM LEAD</th>
+                                                                <th>HOD</th>
+                                                                <th>ARTIST</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="sub-set-shot"></tbody>
+                                                    </table>
+                                                </div>
+                                                `:``)+`
+                                            </div>
+                                        </td>
+                                    </tr>`;
+                        $(tdNew).insertAfter($(pTr));
+                        $.ajax({
+                            url: '/api/v2/helpshot/',
+                            type: 'GET',
+                            dataType: "json",
+                            contentType: 'application/json; charset=utf-8',
+                            async: true, //displays data after loading the page
+                            processing: false,
+                            data: {parent_shot_id:thShotId},
+                            success: function (subShots) {
+                                $.each(subShots,function(x,e){
+                                    addShotRow($(`.subshot-content-`+thShotId+` > tbody.sub-set-shot`),e,0,-1,false);
+                                    });
+                                },
+                            error: function (jqXHR, exception) {
+                                console.log(jqXHR.responseText)
+                                }
+                            });
+                        },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR.responseText)
+                        }
+                    });
+                $(this).find('i').addClass('rotate-90');
+                }
+        return false;
+        });
+    var ofxApi = {
+        request: function(url='',method='POST',data={},callback=[{func:'myfunc',data:true}],required=[]){
+            var CSRFToken = '';
+            $('.csrf-ajax-token input').each(function(e){ CSRFToken = $(this).val(); });
+            var urlParms = [];
+            if(method=='DELETE'){
+                $.each(data,function(z,e){
+                    urlParms.push(z+'='+((jQuery.type(e) === "string"||jQuery.type(e) === "number")?e:JSON.stringify(e)));
+                    });
+                }
+            $.ajax({
+                url: url+(urlParms.length>0?"?"+urlParms.join('&'):""),
+                type: method,
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                data: method!='DELETE'?data:{},
+                async: true, //displays data after loading the page
+                processing: false,
+                beforeSend: function(request){
+                    if(required.length>0){
+                        request.setRequestHeader("required", JSON.stringify(required));
+                        }
+                    if(CSRFToken.length>0){
+                        request.setRequestHeader("X-CSRFToken", CSRFToken);
+                        }
+                    },
+                success: function (response){
+                    $.each(callback,function(z,e){
+                        if(typeof window[e.func] === 'function'){
+                            if(e.data==true){
+                                window[e.func](response);
+                                }else if(e.data==false){
+                                    window[e.func]();
+                                    }else{
+                                        window[e.func](e.data);
+                                        }
+                            }
+                        });
+                    },
+                error: function (jqXHR, exception){
+                    console.log(jqXHR.responseText)
+                    }
+                });
+            },
+        };
+    
+    $(document).on('click', '.assign-new-artists', function(e){
+        let parent = $('.members-content > tbody.main-set').length > 0 ?$('.members-content > tbody.main-set'):$('.members-content > tbody.sub-set');
+        $('select.tag-select-artist[name="artist"] > option:selected').each(function(x){
+            var data = JSON.parse($(this).attr('data-data'));
+            addTaskRow(parent,makeId(20),{
+                id: makeId(20),
+                artist:{
+                    id: $(this).attr('value'),
+                    fullName: data.fullName
+                    },
+                art_percentage:0,
+                task_status:{
+                    name: StatusCodes['yts'].name,
+                    color: StatusCodes['yts'].color,
+                    code: StatusCodes['yts'].code,
+                    },
+                assigned_bids:0,
+                compiler: 1,
+                eta: null,
+                creation_date: moment().format("YYYY-MM-DD HH:mm:ss"),
+                start_date:null,
+                end_date:null
+                },true);
+            });
+        if($(parent).find('input[name="compiler"]:checked').length==0){
+            $(parent).parent().find('tr:first-child input[name="compiler"]').prop('checked', true);
+            }
+        if($(parent).find('tr').length>1){
+            $(parent).find('input[name="compiler"]').each(function(e){
+                if($(this).prop('checked') == true){
+                    $(this).parents('tr').find('button.delete-task').addClass('hide-del');
+                    }else{
+                        $(this).parents('tr').find('button.delete-task').removeClass('hide-del');
+                        }
+                });
+            }else if($(parent).find('tr').length==1){
+                $(parent).find('button.delete-task').removeClass('hide-del');
+                }
+        $('.atr-tab-tasks').html($(parent).parent().find('tbody > tr').length);
+        $(this).parents('.modal').find('button[data-dismiss="modal"]').click();
+        });
+    function chkAndUpdateTaskETAifNull(r_shot_Id=0,r_eta=''){
+        $.ajax({
+            url: '/api/v2/shot/task/',
+            type: 'GET',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            data: {shot__id:r_shot_Id},
+            async: true, //displays data after loading the page
+            processing: false,
+            beforeSend: function(request) {
+                request.setRequestHeader("required", JSON.stringify(["id","eta"]));
+                },
+            success: function (response) {
+                let changes = [];
+                $.each(response,function(_x,e){
+                    if(e["eta"] == null){
+                        changes.push(JSON.parse(JSON.stringify({
+                            '__SELECT__': { id: e.id },
+                            "eta": r_eta
+                            })));
+                        }
+                    });
+                if(changes.length>0){
+                    setShotMembersPOST(changes,{},false);
+                    }
+                },
+            error: function (jqXHR, exception) {
+                console.log(jqXHR.responseText)
+                }
+            });
+        }
+    $(document).on('click', '.save-shot-details', function(e){
+        var data = {}, thisTag = $(this);
+        $(this).parents('.side-bar-shot-details').find('.read-shot-side-x').each(function(e){
+            if(typeof $(this).attr('name') != "undefined"){
+                data[$(this).attr('name')] = $(this).val();
+                }
+            });
+        $.ajax({
+            url: '/api/production/shots/'+$(thisTag).attr('data-id')+'/',
+            type: 'PUT',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            async: false,
+            data: JSON.stringify(data),
+            success: function (response) {
+                shotUpdateDetected($(thisTag).attr('data-id'),data);
+                if(!$(thisTag).hasClass('v2')){
+                    showShotDetails(response,false);
+                    $('.reload-table-row').click();
+                    }
+                if(typeof data.internal_eta != "undefined"){
+                    chkAndUpdateTaskETAifNull($(thisTag).attr('data-id'),data.internal_eta);
+                    }
+                },
+            error: function (jqXHR, exception) {
+                console.log(jqXHR.responseText)
+                }
+            });
+        return false;
+        });
+    $(document).on('change keyup', '.e-find-artist', function(e){
+        let keSearch = $(this).val().trim();
+        $('select.tag-select-artist[name="artist"] > option').each(function(e){
+            let dt = JSON.parse($(this).attr('data-data')), isIn = false;
+            $.each(dt,function(z,xd){
+                if(xd!=null&&xd.trim().toLowerCase().replace(/&nbsp;/g, ' ').includes(keSearch.toLowerCase())){
+                    isIn = true;
+                    }
+                });
+            if(isIn){
+                $(this).removeAttr('style');
+                }else{
+                    $(this).css('display','none');
+                    }
+            });
+        });
+    $(document).on('change', 'select.tag-select-artist[name="artist"]', function(e){
+        $('.artist-cout').html($('select.tag-select-artist[name="artist"] > option:selected').length);
+        });
+    function shot_notes_tab() {
+        $.ajax({
+            // url: '/api/wsnotifications/notificationlogs/?reference_type=SHOT&referenceId='+shot_id,
+            url: '/api/wsnotifications/notificationlogs/',
+            type: 'GET',
+            data: {
+                'reference_type': 'SHOT',
+                'referenceId': $("#myModal2").attr('data-data'),
+                },
+            success: function (response) {
+                let parent = $(".comment-widgets");
+                $(parent).html('');
+                addComment(parent, response);
+                }
+            });
+        }
+    function shot_update() {
+        data = {
+            "internal_eta": $("#int_etaa").val(),
+            "internal_bid_days": $("#int_bidss").val()
+            }
+        $.ajax({
+            url: '/api/production/shots/' + $("#myModal2").attr('data-data') + '/',
+            type: 'PUT',
+            data: data,
+            success: function (response) {
+                //...
+                }
+            });
+        }
+    function _showShotDetails(data,reset){
+        shotInfo = JSON.parse(JSON.stringify(data));
+        if(typeof data.internal_eta != "undefined" && (data.internal_eta == null || data.internal_eta=="1970-01-01T00:00:00")){
+            // data.internal_eta = data.eta;
+            data.internal_eta = null;
+            }
+        let btnbarHiden = true;
+        if(userPermissions.indexOf("can_assign_to_artist")==-1||noUpdateOnShot.indexOf(data.status.code)!=-1){
+            if(userPermissions.indexOf("can_assign_to_artist")==-1){
+                $('.ass_art_butt').remove();
+                $('.add-member').remove();
+                }else{
+                    $('.ass_art_butt').attr("style","display:none;");
+                    $('.add-member').attr("style","display:none;");
+                    }
+            }else{
+                $('.ass_art_butt').attr("style","");
+                $('.add-member').attr("style","");
+                btnbarHiden = false;
+                }
+        let approve_button = $('.shot-action-bar').find('.change-shot-status[title="APPROVE"]'),
+            reject_button = $('.shot-action-bar').find('.change-shot-status[title="REJECT"]');
+            $(approve_button).hide();
+            $(reject_button).hide();
+        $('a.k-help-task').attr('style',((data.isSubShot||userPermissions.indexOf("can_manage_sub_shot")==-1)?'display: none;':''));
+        if(userRole=='vfxartist'){
+            $('.shot-action-bar').remove();
+            }else{
+                var xKey = shotassignments.makeKey([
+                        data.location!=null?(typeof data.location.name != "undefined" ? data.location.name: data.location):null,
+                        data.task_type!=null?data.task_type:null,
+                        data.status!=null?data.status.code:null,
+                        data.isSubShot?'sub':'main',
+                        ]);
+                var xKeyEDR = shotassignments.makeKey([
+                        ofx_page_data.user.location!=null?ofx_page_data.user.location:null,
+                        ofx_page_data.user.department!=null?ofx_page_data.user.department:null,
+                        ofx_page_data.user.role!=null?ofx_page_data.user.role:null
+                        ]),
+                    xKeyEKEY = shotassignments.makeKey([
+                        ofx_page_data.user.fullName!=null?ofx_page_data.user.fullName:null
+                        ]);
+                if(typeof shotassignments.shotPosb[xKey] != "undefined" && !shotassignments.shotPosb[xKey].isBeforeArtist && (allowAllActions||typeof shotassignments.shotPosb[xKey].authorizedRoles[xKeyEDR] != "undefined" || typeof shotassignments.shotPosb[xKey].authorizedRoles[xKeyEKEY] != "undefined" ) && (allowAllActions || userPermissions.indexOf("can_view_shots_by_artists")==-1 || [data.supervisor, data.team_lead].indexOf(ofx_make_key(ofx_page_data.user.fullName))!=-1)){
+                    if(shotassignments.shotPosb[xKey].acceptCase !=null){
+                        $(approve_button).attr('data-data',JSON.stringify({shot_id:data.id}));
+                        $(approve_button).attr('data-set',JSON.stringify({status: shotassignments.shotPosb[xKey].acceptCase.id}));
+                        $(approve_button).attr('data-key',JSON.stringify({status: shotassignments.shotPosb[xKey].acceptCase.code}));
+                        $(approve_button).show();
+                        btnbarHiden = false;
+                        }
+                    if(shotassignments.shotPosb[xKey].rejectCase !=null){
+                        $(reject_button).attr('data-data',JSON.stringify({shot_id:data.id}));
+                        $(reject_button).attr('data-set',JSON.stringify({status: shotassignments.shotPosb[xKey].rejectCase.id}));
+                        $(reject_button).attr('data-key',JSON.stringify({status: shotassignments.shotPosb[xKey].rejectCase.code}));
+                        $(reject_button).show();
+                        btnbarHiden = false;
+                        }
+                    }
+                if(btnbarHiden){
+                    $('.shot-action-bar').hide();
+                    }else{
+                        $('.shot-action-bar').show();
+                        }
+                }
+        $("#myModal2").attr('data-data',data.id);
+        $("#myModalLabel2").html(data.name);
+        var dfts = [];
+
+        dfts.push({
+            title:"CLIENT",
+            size:6,
+            icon: '',
+            value: data.sequence.project.client.name,
+            feild: null,
+            attrb:{},
+            });
+
+        dfts.push({
+            title:"PROJECT",
+            size:6,
+            icon: '',
+            value: data.sequence.project.name,
+            feild: null,
+            attrb:{},
+            });
+
+        dfts.push({
+            title:"SEQUENCE",
+            size:6,
+            icon: '',
+            value: data.sequence.name,
+            feild: null,
+            attrb:{},
+            });
+
+        dfts.push({
+            title:"TASK TYPE",
+            size:6,
+            icon: '',
+            value: data.task_type,
+            feild: null,
+            attrb:{},
+            });
+        dfts.push({
+            title:"TYPE",
+            size:6,
+            icon: '',
+            value: data.type,
+            feild: null,
+            attrb:{},
+            });
+
+        var isVFXArtist = (ofx_page_data.user.role!=null&&ofx_make_key(ofx_page_data.user.role)==ofx_make_key("VFX ARTIST")),
+            _trgt = '',
+            _dfBtn = `<button type="button" class="btn" title="`+data.status.name+`" style="cursor: default; color:white; padding: 3px 16px; font-size:1em; background-color:`+data.status.color+`;">`+data.status.code+`</button>`;
+        if(userPermissions.indexOf("can_update_shot_status")!=-1&&!isVFXArtist){
+            _trgt = ofx_shot_status_dropdown(ofx_page_data.user.department,ofx_page_data.user.role,data.status.code,data.status.color,{shot_id:data.id});
+            }else{
+                _trgt = _dfBtn;
+                }
+        dfts.push({
+            title:"STATUS",
+            size:6,
+            icon: '',
+            value: _trgt,
+            feild: null,
+            attrb:{class:"update-pop-status"},
+            });
+        if(allowAllActions||userPermissions.indexOf('can_view_client_eta')!=-1){
+            dfts.push({
+                title:"CLIENT ETA",
+                size:6,
+                icon: 'mdi mdi-check-circle-outline',
+                value: `<span>`+(data.eta!=null?moment(data.eta).format("MMM Do YYYY"):'Pending')+`</span>`,
+                feild: ((noUpdateOnShot.indexOf(data.status.code)==-1&&(allowAllActions||userPermissions.indexOf('can_update_shot_client_eta')!=-1))?`<input class="read-shot-side-x" type="date" name="eta" value="`+(data.eta!=null?data.eta.split('T')[0]:'')+`" data-default="`+(data.eta!=null?data.eta.split('T')[0]:'')+`" >`:null),
+                attrb:((noUpdateOnShot.indexOf(data.status.code)==-1&&(allowAllActions||userPermissions.indexOf('can_update_shot_client_eta')!=-1))?{class: 'table-input-field', style: "position: relative; min-width: 180px;"}:{}),
+                });
+            }
+        if(allowAllActions||userPermissions.indexOf('can_view_client_bids')!=-1){
+            dfts.push({
+                title:"CLIENT BIDS",
+                size:6,
+                icon: 'mdi mdi-check-circle-outline',
+                value: `<span>`+data.bid_days.toFixed(2)+`</span>`,
+                feild: ((noUpdateOnShot.indexOf(data.status.code)==-1&&(allowAllActions||userPermissions.indexOf('can_update_shot_client_biddays')!=-1))?`<input class="read-shot-side-x" type="number" name="bid_days" min="`+data.minBidDays.toFixed(2)+`" value="`+data.bid_days.toFixed(2)+`" step="0.10" style="max-width: 47px;" data-default="`+data.bid_days.toFixed(2)+`" >`:null),
+                attrb: ((noUpdateOnShot.indexOf(data.status.code)==-1&&(allowAllActions||userPermissions.indexOf('can_update_shot_client_biddays')!=-1))?{class: 'table-input-field', style: "position: relative; min-width: 180px;"}:{}),
+                });
+            }
+        dfts.push({
+            title: (allowAllActions||userPermissions.indexOf('can_view_client_eta')!=-1?"INTERNAL ":"")+"ETA",
+            size:6,
+            icon: '',
+            value: `<span>`+(data.internal_eta !=null?moment(data.internal_eta).format("MMM Do YYYY"):'Pending')+`</span>`,
+            feild: ((noUpdateOnShot.indexOf(data.status.code)==-1&&(allowAllActions||userPermissions.indexOf('can_update_shot_internal_eta')!=-1))?`<input class="read-shot-side-x" type="date" name="internal_eta" value="`+(data.internal_eta !=null?data.internal_eta:(data.eta!=null?data.eta:'')).split('T')[0]+`" data-default="`+(data.internal_eta !=null?data.internal_eta:(data.eta!=null?data.eta:'')).split('T')[0]+`" >`:null),
+            attrb: ((noUpdateOnShot.indexOf(data.status.code)==-1&&(allowAllActions||userPermissions.indexOf('can_update_shot_internal_eta')!=-1))?{class: 'table-input-field', style: "position: relative; min-width: 180px;"}:{}),
+            });
+
+        let lx = ['danger','warning','info','primary','success'];
+        dfts.push({
+            title: "PROGRESS",
+            size:6,
+            icon: '',
+            value: `<div class="progress" style="height: 15px;"><div class="progress-bar bg-`+lx[(data.progress<25 ? 0 : (data.progress<50 ? 1 : (data.progress<75 ? 2 : (data.progress<100 ? 3 : 4))))]+`" style="width:` + data.progress + `%; color: white;font-weight: bold" role="progressbar">` + data.progress + `%</div></div>`,
+            feild: ((noUpdateOnShot.indexOf(data.status.code)==-1&&(allowAllActions||userPermissions.indexOf('can_update_shot_percentage')!=-1))?`<input class="read-shot-side-x shot_percentage" data-data='`+JSON.stringify({shot_id:data.id,bidDays:data.bid_days})+`' type="number" min="`+(true||allowAllActions||userPermissions.indexOf('can_overwrite_shot_percentage')!=-1?0:data.progress)+`" max="100" value="`+data.progress+`" step="1" style="width: 100%; top: 0px;left: 0px;" data-default="`+data.progress+`" >`:null),
+            attrb: ((noUpdateOnShot.indexOf(data.status.code)==-1&&(allowAllActions||userPermissions.indexOf('can_update_shot_percentage')!=-1))?{class: 'table-input-field', style:'position: relative;'}:{}),
+            });
+
+        dfts.push({
+            title:"TEAM LEAD",
+            size:6,
+            icon: '',
+            value: `<span>`+(data.team_lead !=null?data.team_lead:'N/A')+`</span>`,
+            feild: null,
+            attrb:{},
+            });
+        dfts.push({
+            title:"SUPERVISOR",
+            size:6,
+            icon: '',
+            value: `<span>`+(data.supervisor !=null?data.supervisor:'N/A')+`</span>`,
+            feild: null,
+            attrb:{},
+            });
+        dfts.push({
+            title:"HOD",
+            size:6,
+            icon: '',
+            value: `<span>`+(data.hod !=null?data.hod:'N/A')+`</span>`,
+            feild: null,
+            attrb:{},
+            });
+        dfts.push({
+            title:"CAPTAIN",
+            size:6,
+            icon: '',
+            value: `<span>`+(data.artist !=null?data.artist:'N/A')+`</span>`,
+            feild: null,
+            attrb:{},
+            });
+
+        dfts.push({
+            title:"COMPLEXITY",
+            size:6,
+            icon: '',
+            value: `<span class="badge" style="color:white;padding:3px 10px;font-size:1em; background-color:red"> ` + data.complexity + `</span>`,
+            feild: null,
+            attrb:{},
+            });
+
+        artists = [];
+        $.each(data.artists,function(x,e){
+            if(data.artist!=e.fullName){
+                artists.push(e.fullName);
+                }
+            });
+        dfts.push({
+            title:"ARTISTS",
+            size:12,
+            icon: '',
+            value: `<span>`+(artists.length>0?artists.join(', '):'N/A')+`</span>`,
+            feild: null,
+            attrb:{},
+            });
+        dfts.push({
+            title:"SCOPE OF WORK",
+            size:12,
+            icon: '',
+            value: `<span>`+(data.scope_of_work !=null?data.scope_of_work:'N/A')+`</span>`,
+            feild: ((noUpdateOnShot.indexOf(data.status.code)==-1&&(allowAllActions||userPermissions.indexOf('can_update_shot_scope_of_work')!=-1))?`<textarea class="read-shot-side-x" style="width: 100%; height: 80px;" type="text" name="scope_of_work" data-default="`+(data.scope_of_work !=null?data.scope_of_work:'N/A')+`" >`+(data.scope_of_work !=null?data.scope_of_work:'')+`</textarea>`:null),
+            attrb: ((noUpdateOnShot.indexOf(data.status.code)==-1&&(allowAllActions||userPermissions.indexOf('can_update_shot_scope_of_work')!=-1))?{class: 'table-input-field', style: "position: relative;min-width: 180px;height: 80px;"}:{}),
+            });
+        
+        var shot_detailsInfo = '';
+        var count = 0;
+        $.each(dfts,function(z,e){
+            let  styleX = '';
+            $.each(e.attrb,function(zz,ee){
+                styleX = styleX+" "+zz+`='`+ee+`'`;
+                });
+            let row = `<div class="float-left col-`+e.size+`">
+                        <small class="text-muted">`+e.title+`:`+(e.icon.length>0?`<i class="`+e.icon+`" style="color: #ec680b;"></i>`:``)+`</small>
+                        <h5 `+styleX+` >`+(e.feild!=null?e.feild:'')+``+e.value+`</h5>
+                    </div>`;
+            if(count==0){
+                shot_detailsInfo=shot_detailsInfo+`<div class="row">`;
+                }
+            shot_detailsInfo=shot_detailsInfo+row;
+            if(count==1){
+                shot_detailsInfo=shot_detailsInfo+`</div>`;
+                count = 0;
+                }else{
+                    count = count + 1;
+                    }
+            });
+        if(noUpdateOnShot.indexOf(data.status.code)==-1&&(allowAllActions||userPermissions.indexOf('can_update_shot_client_eta')!=-1||userPermissions.indexOf('can_update_shot_client_biddays')!=-1||userPermissions.indexOf('can_update_shot_internal_eta')!=-1||userPermissions.indexOf('can_update_shot_percentage')!=-1||userPermissions.indexOf('can_update_shot_scope_of_work')!=-1)){
+            shot_detailsInfo=shot_detailsInfo+`<div class="row">
+                                        <div class="float-left col-12">
+                                            <button type="button" class="save-shot-details btn btn-success waves-effect waves-light" data-id="`+data.id+`" >Update</button>
+                                        </div>
+                                    </div>`;
+            }
+        $('.side-bar-shot-details').html(shot_detailsInfo);
+        $('#shot_details').addClass('active');
+        $('#shot_details_tab').addClass('active');
+        $("#myModal2").modal('show');
+        $("#shot_notes_msg").attr('data-id', data.id);
+        $("#shot_notes_msg").attr('data-type', data.task_type);
+        let parent = $(".comment-widgets");
+        $(parent).html('');
+        if(reset){
+            $('#shot_details_tab').parents('.nav-tabs').find('.nav-item > .nav-link').each(function(e){
+                $(this).removeClass('active show');
+                });
+            $('#shot_details_tab').parents('.card-body').find('.tab-content > .tab-pane').each(function(e){
+                $(this).removeClass('active show');
+                });
+            $('#shot_details_tab').attr('onclick','');
+            $('#shot_details_tab').click();
+            $('#shot_details_tab').attr('onclick',`showShotDetails(`+data.id+`,true)`);
+            }
+        }
+    function showShotDetails(data,reset=true){
+        $.ajax({
+            url: '/api/production/shots/'+(typeof data == "object"?data.id:data)+'/',
+            type: 'GET',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            // data: {shot__id:shot_id},
+            async: true, //displays data after loading the page
+            processing: false,
+            success: function (datax) {
+                $.ajax({
+                    url: '/api/v2/shot/task/',
+                    type: 'GET',
+                    dataType: "json",
+                    contentType: 'application/json; charset=utf-8',
+                    data: {shot__id:datax.id},
+                    async: true, //displays data after loading the page
+                    processing: false,
+                    beforeSend: function(request) {
+                        request.setRequestHeader("required", JSON.stringify(["id","assigned_bids"]));
+                        },
+                    success: function (all_shoshot_tasks) {
+                        datax.minBidDays = 0;
+                        $.each(all_shoshot_tasks,function(x,e){
+                            datax.minBidDays = datax.minBidDays + parseFloat(e.assigned_bids);
+                            });
+                        _showShotDetails(datax,reset);
+                        },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR.responseText)
+                        }
+                    });
+                },
+            error: function (jqXHR, exception) {
+                console.log(jqXHR.responseText)
+                }
+            });
+        }
+    function addComment(parent, response) {
+        $.each(response, function (x, e) {
+            let files = '';
+            if(e.from_user != null && typeof e.from_user.photo != "undefined"){
+                $.each(e.attachments, function (z, xe) {
+                    files = files + `<div class="col-6">
+                            <a class="btn waves-effect waves-light btn-block btn-dark" href="#" onclick="window.location = '/attachments/notes/download/` + xe.id + `/';" title="` + xe.file_name + `">
+                                <p class="fas ` + (typeof fas_file_icons[xe.file_type] != "undefined" ? fas_file_icons[xe.file_type] : fas_file_icons['default']) + `"></p>
+                                <p>
+                                    <span class="file-name">` + xe.file_name + `</span>
+                                    <span class="file-info">
+                                        <i>` + formatBytes(xe.file_size, 2) + `</i>
+                                        ` + (false ? `<i>File: ` + xe.file_type + `</i>` : '') + `
+                                    </span>
+                                </p>
+                            </a>
+                        </div>`;
+                });
+                $(parent).append(`<div class="d-flex flex-row comment-row conent-abc">
+                        <div class="p-2"><span class="round">
+                            <img src="` + e.from_user.photo + `" alt="` + e.from_user.fullName + `" onerror="this.src='/media/profiles/photo/default.png'" width="50"></span>
+                        </div>
+                        <div class="comment-text w-100">
+                            <h5>
+                                <span>` + e.from_user.fullName + `</span>
+                                <span class="text-muted float-right">` + moment(e.creation_date).format("MMM Do YYYY, h:mm a") + `</span>
+                            </h5>
+                            <p class="mb-1">` + e.message + `</p>
+                            <div class="comment-footer row file-x">` + files + `
+                                ` + (false ? `<span class="text-muted float-right">` + moment(e.creation_date).format("MMM Do YYYY, h:mm a") + `</span>
+                                <span class="action-icons">
+                                    <a href="#"><i class="ti-pencil-alt"></i></a>
+                                </span>` : '') + `
+                            </div>
+                        </div>
+                    </div>`);
+                }
+        });
+        let hit = 0;
+        $(parent).find('.comment-row').each(function (e) {
+            hit = hit + $(this).outerHeight();
+        });
+
+        $(parent).animate({
+            scrollTop: hit
+        }, 200, function () {
+            // if you need a callback function
+        });
+        // console.log($(parent).outerHeight());
+        // $(parent).scrollTop($(parent).scrollHeight);
+        // $(parent).scrollTop($(parent).outerHeight());
+        }
+    $(document).on('click', 'td.shot_view', function(e){
+        window.location = '/production/shots/view/?shot_id='+$($(this).find('span')).attr('data-data');
+        });
+    // TODO: Enable to view the shots data in modal
+    // Table On Row Click
+    if(typeof shotInfo == "undefined"){
+        var shotInfo = {};
+        }
+    if(typeof shot_id == "undefined"){
+        var shot_id = null;
+        }
+    $(document).on('click', 'td.shot_class', function(e){
+        shotInfo = JSON.parse($($(this).find('span')).attr('data-data'));
+        shot_id =  typeof shotInfo.shot != "undefined" ? shotInfo.shot.id:shotInfo.id;
+        // console.log(shot_id,shotInfo);
+        if(typeof table != "undefined"){
+            table.rows({selected: true}).deselect();
+            table.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                var tData = table.row(rowIdx).data();
+                if(String(typeof tData.shot != "undefined"?tData.shot.id:tData.id)==String(shot_id)){
+                    shotInfo = JSON.parse(JSON.stringify(tData));
+                    table.row(rowIdx).select();
+                    }
+                });
+            }
+        showShotDetails(shot_id,true);
+        });
+    $(document).on('click', '.assign_artist', function(e){
+        $('#shot_members_tab').click();
+        $('.add-member').click();
+        });
+    function addTaskRow(parent,x,e,isNew=false){
+        if(typeof shotInfo.internal_eta != "undefined" && (shotInfo.internal_eta == null || shotInfo.internal_eta=="1970-01-01T00:00:00")){
+            // shotInfo.internal_eta = shotInfo.eta;
+            shotInfo.internal_eta = null;
+            }
+        if(typeof e.eta != "undefined" && (e.eta == null || e.eta=="1970-01-01T00:00:00")){
+            if(shotInfo.internal_eta!=null){
+                e.eta = shotInfo.internal_eta;
+                }else{
+                    e.eta = null;
+                    }
+            }
+        let lx = ['danger','warning','info','primary','success'], status = parseInt(e.art_percentage);
+        $(parent).append(`<tr `+(isNew?`class="new"`:'')+` style="font-size: small;" data-data='`+JSON.stringify(e)+`'>
+            <td>
+                `+(isNew?`<input class="read-x-input" data-row="`+e.id+`" type="hidden" name="artist" value="`+e.artist.id+`" data-default="0" >
+                <input class="read-x-input" data-row="`+e.id+`" type="hidden" name="shot" value="`+shotInfo.id+`" data-default="0" >
+                <input class="read-x-input" data-row="`+e.id+`" type="hidden" name="type" value="`+shotInfo.type+`" data-default="0" >
+                `:'')+`<span>`+e.artist.fullName+`</span>
+            </td>
+            <td>
+                <span>`+(typeof e.type == "undefined"?shotInfo.type:e.type)+`</span>
+            </td>
+            <td class="mytask-status-options `+(e.compiler==2?'compiler':'')+`">`+((ofx_page_data.user.id==e.artist.id&&userPermissions.indexOf("can_update_task_status")!=-1)?ofx_shot_status_dropdown(ofx_page_data.user.department,ofx_page_data.user.role,e.task_status.code,e.task_status.color,(/*e.compiler==2?{shot_id:shotInfo.id}:*/{task_id:e.id})):`<button type="button" class="btn" title="`+e.task_status.name+`" style="cursor: default; color:white; padding: 3px 16px; font-size:1em; background-color:`+e.task_status.color+`;">`+e.task_status.code+`</button>`)+`</td>
+            `+((shotInfo.type!="RETAKE"&&noUpdateOnShot.indexOf(shotInfo.status.code)==-1&&(allowAllActions||userPermissions.indexOf('can_update_task_biddays')!=-1))?`
+            <td class="table-input-field" style="position: relative;">
+                <input class="read-x-input" data-row="`+e.id+`" type="number" name="assigned_bids" min="`+((userPermissions.indexOf('can_overwrite_task_biddays')!=-1)?0:((e.assigned_bids/100)*e.art_percentage).toFixed(2))+`" max="`+shotInfo.bid_days+`" data-stype="`+shotInfo.type+`" value="`+e.assigned_bids.toFixed(2)+`" step="0.01" style="max-width: 47px;" data-default="`+e.assigned_bids+`" >
+                <span>`+e.assigned_bids.toFixed(2)+`</span>
+            </td>
+            `:`
+            <td>
+                <span>`+e.assigned_bids.toFixed(2)+`</span>
+            </td>`)+`
+            `+((e.task_status.code!="YTS"&&noUpdateOnShot.indexOf(shotInfo.status.code)==-1&&(allowAllActions||(userPermissions.indexOf('can_update_task_percentage')!=-1&&(ofx_page_data.user.role!="VFX ARTIST"||ofx_page_data.user.id==e.artist.id))))?`
+            <td class="table-input-field" style="position: relative;">
+                <input class="read-x-input shot_percentage" data-data='`+JSON.stringify({task_id:e.id,assigned_bids:e.assigned_bids})+`' type="number" min="0" max="100" value="`+status+`" step="1" style="width: 100%;" data-default="`+status+`" >
+                <div class="progress" style="height: 15px;">
+                    <div class="progress-bar bg-`+lx[(status<25 ? 0 : (status<50 ? 1 : (status<75 ? 2 : (status<100 ? 3 : 4))))]+`" style="width:` + status + `%; color: white;font-weight: bold" role="progressbar">` + status + `%</div>
+                </div>
+            </td>
+            `:`
+            <td>
+                <div class="progress" style="height: 15px;">
+                    <div class="progress-bar bg-`+lx[(status<25 ? 0 : (status<50 ? 1 : (status<75 ? 2 : (status<100 ? 3 : 4))))]+`" style="width:` + status + `%; color: white;font-weight: bold" role="progressbar">` + status + `%</div>
+                </div>
+            </td>`)+`
+            `+((noUpdateOnShot.indexOf(shotInfo.status.code)==-1&&(allowAllActions||userPermissions.indexOf('can_change_compiler')!=-1))?`
+            <td>
+                <div class="custom-control custom-radio">
+                    <input type="radio" data-row="`+e.id+`" id="compilerRadio`+x+`" name="compiler" class="custom-control-input read-x-input" `+(e.compiler==2?'checked="checked"':'')+` data-default="`+e.compiler+`" >
+                    <label class="custom-control-label" for="compilerRadio`+x+`">Captain</label>
+                </div>
+            </td>
+            `:`
+            <td>
+                <span>`+(e.compiler==2?'Captain':'')+`</span>
+            </td>`)+`
+            `+((noUpdateOnShot.indexOf(shotInfo.status.code)==-1&&(allowAllActions||userPermissions.indexOf('can_update_task_eta')!=-1))?`
+            <td class="table-input-field" style="position: relative; min-width: 180px;">
+                <input class="read-x-input" data-row="`+e.id+`" type="datetime-local" name="eta" max="`+shotInfo.eta+`" value="`+e.eta+`" data-default="`+e.eta+`" >
+                <span>`+(e.eta!=null?moment(e.eta).format("MMM Do YYYY, h:mm a"):'Pending')+`</span>
+            </td>
+            `:`
+            <td>
+                <span>`+(e.eta!=null?moment(e.eta).format("MMM Do YYYY, h:mm a"):'Pending')+`</span>
+            </td>`)+`
+            <td>
+                <span>`+moment(e.creation_date).format("MMM Do YYYY, h:mm a")+`</span>
+            </td>
+            <td>
+                <span>`+moment((e.start_date==null?e.creation_date:e.start_date)).format("MMM Do YYYY, h:mm a")+`</span>
+            </td>
+            <td>
+                <span>`+(e.end_date!=null?moment(e.end_date).format("MMM Do YYYY, h:mm a"):'')+`</span>
+            </td>`+((noUpdateOnShot.indexOf(shotInfo.status.code)==-1&&(allowAllActions||userPermissions.indexOf("can_delete_task")!=-1))?`
+            <td style="text-align:center;padding: inherit;vertical-align: middle;">
+                `+(e.task_status.code=="YTS"?`<button type="button" data-data="`+e.id+`" class="btn btn-danger ti-trash delete-task" style="text-align: center; padding-right: 13px;" ></button>`:``)+`
+            </td>`:``)+`
+        </tr>`);
+        if($(parent).find('tr').length>1){
+            $(parent).find('input[name="compiler"]').each(function(e){
+                if($(this).prop('checked') == true){
+                    $(this).parents('tr').find('button.delete-task').addClass('hide-del');
+                    }else{
+                        $(this).parents('tr').find('button.delete-task').removeClass('hide-del');
+                        }
+                });
+            }else if($(parent).find('tr').length==1){
+                $(parent).find('button.delete-task').removeClass('hide-del');
+                }
+        }
+    $(document).on('click','input[name="compiler"]',function(e){
+        var parent = $(this).parents('tbody');
+        if($(parent).find('tr').length>1){
+            $(parent).find('input[name="compiler"]').each(function(e){
+                if($(this).prop('checked') == true){
+                    $(this).parents('tr').find('button.delete-task').addClass('hide-del');
+                    }else{
+                        $(this).parents('tr').find('button.delete-task').removeClass('hide-del');
+                        }
+                });
+            }else if($(parent).find('tr').length==1){
+                $(parent).find('button.delete-task').removeClass('hide-del');
+                }
+        });
+    var updateResponse = false;
+    function getMembersTab(updateRespon=false){
+        if(userPermissions.indexOf("can_assign_to_artist")==-1||noUpdateOnShot.indexOf(shotInfo.status.code)!=-1){
+            if(userPermissions.indexOf("can_assign_to_artist")==-1){
+                $('.save-members').remove();
+                $('.add-member').remove();
+                }else{
+                    $('.save-members').attr("style","display:none;");
+                    $('.add-member').attr("style","display:none;");
+                    }
+            }else{
+                $('.save-members').attr("style","");
+                $('.add-member').attr("style","");
+                }
+        $('.tasks-export-tasks').attr("href","/production/shot/tasks_export/?shot_id="+shot_id); //shot_id
+        updateResponse = updateRespon;
+        $.ajax({
+            url: '/api/production/shots/'+shot_id+'/',
+            type: 'GET',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            async: false,
+            // data: getKeys,
+            success: function (shot_data) {
+                shotInfo = JSON.parse(JSON.stringify(shot_data));
+                $.ajax({
+                    // url: '/api/production/mytask/shot/'+shot_id+'/',
+                    url: '/api/v2/shot/task/',
+                    type: 'GET',
+                    dataType: "json",
+                    contentType: 'application/json; charset=utf-8',
+                    data: {shot__id:shot_id},
+                    async: true, //displays data after loading the page
+                    processing: false,
+                    beforeSend: function(request) {
+                        request.setRequestHeader("required", JSON.stringify(["artist__id","artist__fullName", "type", "task_status__id","task_status__code", "task_status__color","assigned_bids","compiler","art_percentage","creation_date","start_date","eta"]));
+                        },
+                    success: function (response) {
+                        // let parent = $('.members-content > tbody');
+                        let parent = $('.members-content > tbody.main-set').length > 0 ?$('.members-content > tbody.main-set'):$('.members-content > tbody.sub-set');
+                        $(parent).html('');
+                        if(ofx_make_key(ofx_page_data.user.role)!=ofx_make_key("VFX ARTIST")){
+                            $('.atr-tab-shot-bids').parents('div.col-12').attr('style','');
+                            $('.atr-tab-shot-bids').html(shotInfo.bid_days!=null?shotInfo.bid_days.toFixed(2):'N/A');
+                            }
+                        if(!(allowAllActions||userPermissions.indexOf("can_delete_task")!=-1)){
+                            $('th.artst-task-delete').remove();
+                            }
+                        var _used_bids = 0;
+                        $.each(response,function(x,e){
+                            _used_bids = _used_bids + e.assigned_bids;
+                            addTaskRow(parent,x,e,false);
+                            });
+                        $('.atr-tab-assigned-biddays').html(_used_bids!=0?_used_bids.toFixed(2):'N/A');
+                        $('.atr-tab-remaining-biddays').html(shotInfo.bid_days!=null&&_used_bids!=0?(shotInfo.bid_days-_used_bids).toFixed(2):'N/A');
+                        $('.atr-tab-tasks').html(response.length>0?response.length:'N/A');
+                        //atr-tab-assigned-biddays
+                        if(updateResponse){
+                            updateResponse = false;
+                            $.toast({
+                                heading: 'Updated',
+                                showHideTransition: 'slide',
+                                text: 'Short Details Updated Successfully',
+                                icon: 'success',
+                                position: 'bottom-right',
+                                loader: true,        // Change it to false to disable loader
+                                loaderBg: '#da7b1c',// To change the background
+                                bgColor: '#1d6de5',
+                                textColor: 'white',
+                                hideAfter: 5000   // in milli seconds
+                                });
+                            }
+                        },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR.responseText)
+                        }
+                    });
+                },
+            error: function (jqXHR, exception) {
+                console.log(jqXHR.responseText)
+                }
+            });
+        }
+    $(document).on('click', '.delete-task', function(e){
+        if($(this).parents('tr').hasClass('new')){
+            $('.atr-tab-tasks').html($(this).parents('table').find('tbody > tr').length-1);
+            var parent = $(this).parents('tbody');
+            $(this).parents('tr').remove();
+            if($(parent).find('input[name="compiler"]:checked').length==0){
+                $(parent).parent().find('tr:first-child input[name="compiler"]').prop('checked', true);
+                }
+            if($(parent).find('tr').length>1){
+                $(parent).find('input[name="compiler"]').each(function(e){
+                    if($(this).prop('checked') == true){
+                        $(this).parents('tr').find('button.delete-task').addClass('hide-del');
+                        }else{
+                            $(this).parents('tr').find('button.delete-task').removeClass('hide-del');
+                            }
+                    });
+                }else if($(parent).find('tr').length==1){
+                    $(parent).find('button.delete-task').removeClass('hide-del');
+                    }
+            }else{
+                let taskId = JSON.parse($(this).attr("data-data"));
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if(result.value) {
+                            ofxApi.request('/api/v2/shot/task/','DELETE',{id:taskId},[{func:'getMembersTab',data:false}],[]);
+                            }
+                        });
+                }
+        
+        });
+    $(document).on('click', 'a.k-members',function(e){
+        getMembersTab();
+        });
+    
+    var _expoShotLogs = [];
+    $(document).on('click', 'a.k-shot-logs',function(e){
+        var taskTab = $('.shotlogs-tab > tbody');
+        $(taskTab).empty();
+        $.ajax({
+            url: '/api/v2/shotdaylogsfilter/',
+            type: 'GET',
+            dataType: "json",
+            data:{shot__id:shot_id},
+            contentType: 'application/json; charset=utf-8',
+            "dataSrc": "",
+            "async": true, //displays data after loading the page
+            beforeSend: function(request) {
+                request.setRequestHeader("required", JSON.stringify(['id','shot__id', 'artist__id', 'artist__fullName', 'artist__employee_id', 'shot_biddays', 'percentage', 'day_percentage', 'consumed_man_day', 'updated_by__id', 'updated_by__fullName', 'updated_date','last_updated_date']));
+                },
+            success: function (response) {
+                _expoShotLogs = JSON.parse(JSON.stringify(response));
+                var _tr = [];
+                $.each(response,function(_z,_e){
+                    $(taskTab).append(`<tr style="font-size: small;">
+                        <td>`+moment(_e.updated_date).format("MMM Do YYYY")+`</td>
+                        <td>`+_e.artist.fullName+`</td>
+                        <td style="text-align: center;">`+(_e.shot_biddays==null?'N/A':_e.shot_biddays.toFixed(2))+`</td>
+                        <td style="text-align: center;">`+(_e.consumed_man_day==null?'N/A':_e.consumed_man_day.toFixed(2))+`</td>
+                        <td style="text-align: center;">`+(_e.percentage==null?'N/A':_e.percentage.toFixed(2))+`</td>
+                        <td style="text-align: center;">`+(_e.day_percentage==null?'N/A':_e.day_percentage.toFixed(2))+`</td>
+                        <td style="text-align: center;">`+((_e.updated_by!=null&&_e.updated_by.fullName!=null)?_e.updated_by.fullName:'N/A')+`</td>
+                        <td style="text-align: center;">`+moment(_e.last_updated_date).format("MMM Do YYYY, h:mm a")+`</td>
+                    </tr>`);
+                    });
+                },
+            error: function (jqXHR, exception) {
+                console.log(jqXHR.responseText);
+                }
+            }); 
+        });
+    
+    $(document).on('click', 'a.export-shot-logs',function(e){
+        var _idx = [];
+        $.each(_expoShotLogs,function(_z,_e){ _idx.push(_e.id); });
+        console.log(_idx);
+        var from = $(`<form action="/production/shot/shotdaylogs_export/" method="POST" target="_blank" style="display:none;">
+            {% csrf_token %}
+            <input name="shotdaylogs_ids" value="`+_idx.join('|')+`"/>
+            </form>`);
+        $('body').append(from);
+        $(from).submit();
+        $(from).remove();
+        return false;
+        });
+    function stringReplaceAll(string, search, replace) {
+        return string.split(search).join(replace);
+        }
+    function getTaskHistory(shotHistory=[]){
+        
+        $.ajax({
+                url: '/api/v2/history/mytask/',
+                type: 'GET',
+                dataType: "json",
+                data:{target__shot__id:shot_id},
+                contentType: 'application/json; charset=utf-8',
+                "dataSrc": "",
+                "async": true, //displays data after loading the page
+                beforeSend: function(request) {
+                    request.setRequestHeader("required", JSON.stringify(['impact','dataField','fromData','toData','title','message','requestType','who__fullName','who__photo','created_at']));
+                    },
+                success: function (response) {
+                    $.each(response,function(x,y){
+                        y.dataType = 'Task';
+                        shotHistory.push(y);
+                        });
+                    $.ajax({
+                        url: '/api/v2/history/taskdaylogs/',
+                        type: 'GET',
+                        dataType: "json",
+                        data:{target__task__shot__id:shot_id},
+                        contentType: 'application/json; charset=utf-8',
+                        "dataSrc": "",
+                        "async": true, //displays data after loading the page
+                        beforeSend: function(request) {
+                            request.setRequestHeader("required", JSON.stringify(['impact','dataField','fromData','toData','title','message','requestType','who__fullName','who__photo','created_at']));
+                            },
+                        success: function (response) {
+                            $.each(response,function(x,y){
+                                y.dataType = 'TaskLog';
+                                shotHistory.push(y);
+                                });
+                            var historyTab = $('.historylogs-lab .timeline-continue');
+                            $(historyTab).empty();
+                            var isLeft = false;
+                            var _rshotHistory = {}
+                            $.each(shotHistory,function(x,e){
+                                var dateKey = 'key_'+moment(e.created_at).valueOf();
+                                if(typeof _rshotHistory[dateKey]=="undefined"){
+                                    _rshotHistory[dateKey] = [];
+                                    }
+                                _rshotHistory[dateKey].push(e);
+                                });
+                            const ordered = Object.keys(_rshotHistory).sort().reduce(
+                                (obj, key) => { 
+                                    obj[key] = _rshotHistory[key]; 
+                                    return obj;
+                                }, 
+                                {}
+                                );
+                            _rshotHistory = [];
+                            $.each(ordered,function(x,e){
+                                $.each(e,function(_x,_e){
+                                    _rshotHistory.push(_e);
+                                    });
+                                });
+                            $.each(_rshotHistory,function(x,e){
+                                if(((allowAllActions||userPermissions.indexOf('can_view_client_eta')!=-1)&&e.dataField=='eta')||e.dataField!='eta'||e.dataType!='Shot'){
+                                    isLeft = isLeft?false:true;
+                                    $(historyTab).HistoryTimelineLog(e={
+                                        type:isLeft?'left':'right',
+                                        dateTime: e.created_at,
+                                        createdBy:e.who,
+                                        title: stringReplaceAll(stringReplaceAll(e.title, '$impact$',(ofx_make_key(ofx_page_data.user.role)!=ofx_make_key("VFX ARTIST")?'#impact#':'')), '#impact#',e.impact),
+                                        message: stringReplaceAll(stringReplaceAll(e.message, '#_who_#',e.who.fullName), '#impact#',e.impact),
+                                        },false);
+                                    }
+                                });
+                            },
+                        error: function (jqXHR, exception) {
+                            console.log(jqXHR.responseText);
+                            }
+                        });
+                    },
+                error: function (jqXHR, exception) {
+                    console.log(jqXHR.responseText);
+                    }
+                });
+        }
+    $(document).on('click', 'a.k-history-logs',function(e){
+        var historyTab = $('.historylogs-lab .timeline-continue');
+        $(historyTab).empty();
+        if(ofx_make_key(ofx_page_data.user.role)!=ofx_make_key("VFX ARTIST")){
+            $.ajax({
+                url: '/api/v2/history/shot/',
+                type: 'GET',
+                dataType: "json",
+                data:{target__id:shot_id},
+                contentType: 'application/json; charset=utf-8',
+                "dataSrc": "",
+                "async": true, //displays data after loading the page
+                beforeSend: function(request) {
+                    request.setRequestHeader("required", JSON.stringify(['impact','dataField','fromData','toData','title','message','requestType','who__fullName','who__photo','created_at']));
+                    },
+                success: function (response) {
+                    var shotH  = []
+                    $.each(response,function(x,y){
+                        y.dataType = 'Shot';
+                        shotH.push(y);
+                        });
+                    $.ajax({
+                        url: '/api/v2/history/shotdaylogs/',
+                        type: 'GET',
+                        dataType: "json",
+                        data:{target__shot__id:shot_id},
+                        contentType: 'application/json; charset=utf-8',
+                        "dataSrc": "",
+                        "async": true, //displays data after loading the page
+                        beforeSend: function(request) {
+                            request.setRequestHeader("required", JSON.stringify(['impact','dataField','fromData','toData','title','message','requestType','who__fullName','who__photo','created_at']));
+                            },
+                        success: function (response) {
+                            $.each(response,function(x,y){
+                                y.dataType = 'ShotLogs';
+                                shotH.push(y);
+                                });
+                            getTaskHistory(shotH);
+                            },
+                        error: function (jqXHR, exception) {
+                            console.log(jqXHR.responseText);
+                            }
+                        });
+                    },
+                error: function (jqXHR, exception) {
+                    console.log(jqXHR.responseText);
+                    }
+                });
+            }else{
+                getTaskHistory([]);
+                }
+        });
+    var _expoTaskLogs = [];
+    $(document).on('click', 'a.k-task-logs',function(e){
+        var taskTab = $('.tasklogs-tab > tbody');
+        $(taskTab).empty();
+        // $('.export-task-logs').attr("href","/production/task/taskdaylogs_export/?shot_id="+shot_id);
+        $.ajax({
+            url: '/api/v2/taskdaylogsfilter/',
+            type: 'GET',
+            dataType: "json",
+            data:{task__shot__id:shot_id},
+            contentType: 'application/json; charset=utf-8',
+            "dataSrc": "",
+            "async": true, //displays data after loading the page
+            beforeSend: function(request) {
+                request.setRequestHeader("required", JSON.stringify(['task__id', 'task__artist__id', 'task__artist__fullName', 'task__artist__employee_id', 'updated_task_biddays','task_biddays', 'percentage', 'day_percentage', 'consumed_man_day', 'updated_by__id', 'updated_by__fullName', 'updated_date','last_updated_date']));
+                },
+            success: function (response) {
+                    _expoTaskLogs = JSON.parse(JSON.stringify(response));
+                    var _tr = [];
+                    $.each(response,function(_z,_e){
+                        $(taskTab).append(`<tr style="font-size: small;">
+                            <td>`+moment(_e.updated_date).format("MMM Do YYYY")+`</td>
+                            <td>`+_e.task.artist.fullName+`</td>
+                            <td style="text-align: center;"><p style="margin: auto;">`+(_e.task_biddays!=_e.updated_task_biddays?(_e.updated_task_biddays==null?'N/A':_e.updated_task_biddays.toFixed(2))+`<span style="opacity: 0.5; padding-left: 5px;">(`+(_e.task_biddays==null?'N/A':_e.task_biddays.toFixed(2))+`)</span>`:(_e.task_biddays==null?'N/A':_e.task_biddays.toFixed(2)))+`</p></td>
+                            <td style="text-align: center;">`+(_e.consumed_man_day==null?'N/A':_e.consumed_man_day.toFixed(2))+`</td>
+                            <td style="text-align: center;">`+(_e.percentage==null?'N/A':_e.percentage.toFixed(2))+`</td>
+                            <td style="text-align: center;">`+(_e.day_percentage==null?'N/A':_e.day_percentage.toFixed(2))+`</td>
+                            <td style="text-align: center;">`+((_e.updated_by!=null&&_e.updated_by.fullName!=null)?_e.updated_by.fullName:'N/A')+`</td>
+                            <td style="text-align: center;">`+moment(_e.last_updated_date).format("MMM Do YYYY, h:mm a")+`</td>
+                        </tr>`);
+                        });
+                },
+            error: function (jqXHR, exception) {
+                console.log(jqXHR.responseText);
+                }
+            }); 
+        });
+    $(document).on('click', 'a.export-task-logs',function(e){
+        var _idx = [];
+        $.each(_expoTaskLogs,function(_z,_e){ _idx.push(_e.id); });
+        console.log(_idx);
+        var from = $(`<form action="/production/task/taskdaylogs_export/" method="POST" target="_blank" style="display:none;">
+            {% csrf_token %}
+            <input name="taskdaylogs_ids" value="`+_idx.join('|')+`"/>
+            </form>`);
+        $('body').append(from);
+        $(from).submit();
+        $(from).remove();
+        return false;
+        });
+            
+    $(document).on('click', '.read-x-input[name="assigned_bids"]',function(e){
+        let tot = 0;
+        $('.read-x-input[name="assigned_bids"]').each(function(e){
+            tot = tot + parseFloat($(this).val());
+            });
+        tot = tot - parseFloat($(this).val());
+        tot = parseFloat(shotInfo.bid_days)-tot;
+        $(this).attr("max",tot);
+        });
+    $(document).on('click','.sub-shot-bids.read-x-input[name="bid_days"]',function(e){
+        let tot = 0;
+        $(this).parents('table').find('.read-x-input[name="bid_days"]').each(function(e){
+            tot = tot + parseFloat($(this).val());
+            });
+        tot = tot - parseFloat($(this).val());
+        var actual_bid_days = ((shotInfo.actual_bid_days!=null&&shotInfo.actual_bid_days>0)?shotInfo.actual_bid_days:shotInfo.bid_days)-allTaskMaxBids;
+        tot = parseFloat(actual_bid_days)-tot;
+        $(this).attr("max",tot);
+        });
+    $(document).on('change', '.read-x-input, .read-shot-side-x',function(e){
+        let name = $(this).attr("name"), value = $(this).val();
+        if(name=="assigned_bids"||name=="bid_days"){
+            if(name=="assigned_bids"){
+                if(typeof $(this).attr('max')!="undefined" && parseFloat($(this).attr('max'))<parseFloat($(this).val())){
+                    $(this).val($(this).attr('max'));
+                    value = $(this).val();
+                    }
+                if(typeof $(this).attr('min')!="undefined" && parseFloat($(this).attr('min'))>parseFloat($(this).val())){
+                    $(this).val($(this).attr('min'));
+                    value = $(this).val();
+                    }
+                let tot = 0;
+                $(this).parents('table').find('.read-x-input[name="assigned_bids"]').each(function(e){
+                    tot = tot + parseFloat($(this).val());
+                    });
+                
+                $('.atr-tab-assigned-biddays').html(tot!=0?tot.toFixed(2):'N/A');
+                $('.atr-tab-remaining-biddays').html(shotInfo.bid_days!=null&&tot!=0?(shotInfo.bid_days-tot).toFixed(2):'N/A');
+                }else if(name=="bid_days"){
+                    if(typeof $(this).attr('max')!="undefined" && parseFloat($(this).attr('max'))<=parseFloat($(this).val())){
+                        $(this).val($(this).attr('max'));
+                        value = $(this).val();
+                        }
+                    if(typeof $(this).attr('min')!="undefined" && parseFloat($(this).attr('min'))>=parseFloat($(this).val())){
+                        $(this).val($(this).attr('min'));
+                        value = $(this).val();
+                        }
+                    }
+            $(this).parent().find('span').html(parseFloat(value).toFixed(2));
+            }else if(name=="eta"||name=="internal_eta"){
+                if(!moment(value).isValid()){
+                    value = $(this).attr('data-default');
+                    $(this).val(value);
+                    }
+                var maxDate = moment(shotInfo.eta);
+                var selctedDate = moment(value);
+                value = (maxDate>selctedDate||name=="eta")?moment(value).format('YYYY-MM-DD HH:mm:ss'):moment(shotInfo.eta).format('YYYY-MM-DD HH:mm:ss');
+                if (maxDate <= selctedDate&&name!="eta") {
+                    if($(this).hasClass('read-shot-side-x')){
+                        $(this).val(moment(value).format("YYYY-MM-DD"));
+                        }else{
+                            $(this).val(moment(value).format("YYYY-MM-DD HH:mm:ss"));
+                            }
+                    }
+                if($(this).hasClass('read-shot-side-x')&&name=="eta"){
+                    var _seta = moment(value),
+                        _sIetaTag = $('.read-shot-side-x[name="internal_eta"]'),
+                        _sIeta = $(_sIetaTag).val();
+                    if(!moment(_sIeta).isValid()||_seta < moment(_sIeta)){
+                        $(_sIetaTag).val(moment(_seta).format("YYYY-MM-DD"));
+                        $(_sIetaTag).parent().find('span').html(moment(_seta).format("MMM Do YYYY"));
+                        }
+                    }
+                if($(this).hasClass('read-shot-side-x')){
+                    $(this).parent().find('span').html(moment(value).format("MMM Do YYYY"));
+                    }else{
+                        $(this).parent().find('span').html(moment(value).format("MMM Do YYYY, h:mm a"));
+                        }
+                if($(this).hasClass('read-shot-side-x') && name=="eta"){
+                    shotInfo.eta = moment($(this).val()).format("YYYY-MM-DDTHH:mm:ss");
+                    }
+                }else{
+                    $(this).parent().find('span').html(value);
+                    }
+        }); 
+    $(document).on('click', 'button[data-dismiss="modal"]',function(e){
+        $(this).parents('.modal').modal('hide');
+        });
+    $(document).on('click', '.add-member',function(e){
+        var existingArtists = [];
+        $(this).parents('.card-body').find('.members-content tbody tr').each(function(e){
+            let adata = JSON.parse($(this).attr('data-data'));
+            if(['IAP','DTC','CRT'].indexOf(adata.task_status.code)==-1){
+                existingArtists.push(String(adata.artist.id));
+                }
+            });
+        var oPtions = '';
+        $.ajax({
+            url: '/api/hrm/employee/',
+            type: 'GET',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            async: true, //displays data after loading the page
+            processing: false,
+            data: {dept:shotInfo.task_type, role:'VFX ARTIST'},
+            success: function (response) {
+                $.each(response,function(z,e){
+                    if(existingArtists.indexOf(String(e.id))==-1){
+                        oPtions = oPtions+`<option value="`+e.id+`" data-data='`+JSON.stringify({employee_id:e.employee_id,fullName:e.fullName})+`'>`+e.fullName+` (`+e.employee_id+`)</option>`;
+                        }
+                    });
+                $('.tag-select-artist').html(oPtions);
+                $('.artist-cout').html(0);
+                $('#select_artists').modal('show');
+                },
+            error: function (jqXHR, exception) {
+                console.log(jqXHR.responseText)
+                }
+            });
+        });
+    function checkShotTaskLeeds(changes=[],art_id=null,supervisor_id=null,team_lead_id=null,hod_id=null){
+        $.ajax({
+            type:"GET",
+            url:"/api/v2/employeerolebinding/",
+            dataType: "json",
+            data: {role__name__in:'SUPERVISOR|TEAM LEAD|HEAD OF DEPARTMENT', employee__role__name:"VFX ARTIST",employee__id__in:art_id},
+            contentType: 'application/json; charset=utf-8',
+            "dataSrc": "",
+            "async": true,
+            beforeSend: function(request) {
+                request.setRequestHeader("required", JSON.stringify(['id','employee__id','role__name','bindWith__id']));
+                },
+            success: function (rolebindingx) {
+                var rxd = {
+                    supervisor:null,
+                    team_lead:null,
+                    hod:null
+                    }
+                $.each(rolebindingx,function(x,e){
+                    if(ofx_make_key(e.role.name)==ofx_make_key("SUPERVISOR")){
+                        rxd.supervisor = e.bindWith.id;
+                        }else if(ofx_make_key(e.role.name)==ofx_make_key('TEAM LEAD')){
+                            rxd.team_lead = e.bindWith.id;
+                            }else if(ofx_make_key(e.role.name)==ofx_make_key('HEAD OF DEPARTMENT')){
+                                rxd.hod = e.bindWith.id;
+                                }
+                    });
+                var repl = [];
+                if(rxd.supervisor!=supervisor_id && supervisor_id != null&&rxd.supervisor!=null){
+                    repl.push("Supervisor");
+                    }
+                if(rxd.team_lead!=team_lead_id && team_lead_id != null&&rxd.team_lead!=null){
+                    repl.push("Team Lead");
+                    }
+                if(rxd.hod!=hod_id && hod_id != null&&rxd.hod!=null){
+                    repl.push("Head of Department");
+                    }
+                if(repl.length>0){
+                    Swal.fire({
+                        title: 'Different Shot '+repl.join(' and '),
+                        html: "Captain's '"+repl.join(' and ')+"'"+(repl.length>1?'s are':' is')+" different from shot '"+repl.join(' and ')+"'!</br>Do you want to change shot '"+repl.join(' and ')+"' to Captain's '"+repl.join(' and ')+"'?",
+                        type: 'info',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#ff7f7f',
+                        confirmButtonText: 'Yes, Change',
+                        cancelButtonText: "No, Don't Change"
+                        }).then((result) => {
+                            if(result.value){
+                                setShotMembersPOST(changes,{changeTLSUP:true});
+                                }else if(result.dismiss=='cancel'){
+                                    Swal.fire({
+                                        title: 'Are you sure!',
+                                        html: "You want to assign without changing the shot '"+repl.join(' and ')+"'?",
+                                        type: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#3085d6',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'Yes'
+                                        }).then((result) => {
+                                            if(result.value) {
+                                                setShotMembersPOST(changes);
+                                                }
+                                            });
+                                    }
+                            });
+                    }else{
+                        setShotMembersPOST(changes);
+                        }
+                },
+            error: function (jqXHR, exception) {
+                console.log(jqXHR.responseText)
+                }
+            });
+        }
+    function setShotMembersPOST(changes=[],getQ={},switchTab=true){
+        _rQ = ['shot_id='+shot_id]
+        $.each(getQ,function(x,e){
+            _rQ.push(x+'='+e);
+            });
+        $.ajax({
+            url: '/api/v2/shot/task/'+(_rQ.length>0?'?'+_rQ.join('&'):''),
+            type: 'PUT',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            async: true, //displays data after loading the page
+            processing: false,
+            data: JSON.stringify(changes),
+            success: function (response) {
+                var beforeArtist = [];
+                $.each(shotassignments.shotPosb,function(x,e){
+                    var _location = shotInfo.location!=null?(typeof shotInfo.location.name != "undefined" ? shotInfo.location.name: shotInfo.location):null;
+                    var _task_type = shotInfo.task_type!=null?shotInfo.task_type:null;
+                    var _isSubShot = shotInfo.isSubShot;
+                    if(e.isBeforeArtist && ((_location==null && e.location==null)||(
+
+                    _location!=null && e.location!=null && typeof e.location.name != "undefined" && ofx_make_key(_location)==ofx_make_key(e.location.name)
+                    )
+                    )&&e.isSubShot==shotInfo.isSubShot){
+                        if(beforeArtist.indexOf(e.shotStatus.code)==-1){
+                            beforeArtist.push(e.shotStatus.code);
+                            }
+                        $.each(e.allowedSteps,function(z,b){
+                            if(beforeArtist.indexOf(b.shotStatus.code)==-1){
+                                beforeArtist.push(b.shotStatus.code);
+                                }
+                            });
+                        
+                        }
+                    });
+                if(beforeArtist.indexOf(shotInfo.status.code)!=-1){ 
+                    $.ajax({
+                        url: '/api/v2/shot/?id=' + shotInfo.id,
+                        type: 'PUT',
+                        dataType: "json",
+                        contentType: 'application/json; charset=utf-8',
+                        data: JSON.stringify([
+                            {"status":StatusCodes['yts'].id, "__SELECT__": {id: shotInfo.id}}
+                            ]),
+                        async: true, //displays data after loading the page
+                        processing: false,
+                        success: function (response) {
+                            if(switchTab){
+                                getMembersTab(true);
+                                }
+                            $('.reload-table-row').click();
+                            $.toast({
+                                heading: 'Updated',
+                                showHideTransition: 'slide',
+                                text: 'Shot Details Updated Successfully',
+                                icon: 'success',
+                                position: 'bottom-right',
+                                loader: true,        // Change it to false to disable loader
+                                loaderBg: '#da7b1c',// To change the background
+                                bgColor: '#1d6de5',
+                                textColor: 'white',
+                                hideAfter: 5000   // in milli seconds
+                                });
+                            },
+                        error: function (jqXHR, exception) {
+                            console.log(jqXHR.responseText)
+                            }
+                        });
+                    }else{
+                        // $('.k-members').click();
+                        if(switchTab){
+                            getMembersTab(true);
+                            }
+                        $('.reload-table-row').click();
+                        }
+                },
+            error: function (jqXHR, exception) {
+                console.log(jqXHR.responseText)
+                }
+            });
+        }
+    $(document).on('click', '.save-members',function(e){
+        var _isAlloed = true;
+        $(this).parents('.card-body').find('.read-x-input[name="assigned_bids"]').each(function(e){
+            if($(this).attr("data-stype")!="RETAKE"&&parseFloat($(this).val())==0){
+                _isAlloed = false;
+                }
+            });
+        if(_isAlloed){
+            let data = {},changedetected = false, newData = {};
+            $(this).parents('.card-body').find('.read-x-input').each(function(e){
+                if(!$(this).hasClass("shot_percentage")){
+                    let isNew = $($(this).parents('tr')).hasClass('new'), name = $(this).attr("name"), value = $(this).val();
+                    if(typeof data['id_'+$(this).attr('data-row')] == "undefined"){
+                        data['id_'+$(this).attr('data-row')] = {
+                            // 'id' : parseInt($(this).attr('data-row'))
+                            };
+                        if(isNew){
+                            data['id_'+$(this).attr('data-row')]['__NEW__'] = true;
+                            }
+                        }
+                    if($(this).attr('type')=="radio"){
+                        if($(this).prop('checked') == true && (parseInt($(this).attr('data-default'))!=2||isNew)){
+                            data['id_'+$(this).attr('data-row')][name] = 2;
+                            changedetected = true;
+                            }else if($(this).prop('checked') == false && isNew){
+                                data['id_'+$(this).attr('data-row')][name] = 1;
+                                }
+                        }else if(name=="assigned_bids"){
+                            if(parseFloat($(this).attr('data-default'))!=parseFloat(value)||isNew){
+                                data['id_'+$(this).attr('data-row')][name] = parseFloat(value);
+                                }
+                            }else if(name=="eta"){
+                                var d1 = moment($(this).attr('data-default')).toISOString();
+                                var d2 = moment(value).toISOString();
+                                if(!(d1===d2)||isNew){
+                                    // data['id_'+$(this).attr('data-row')][name] = moment(value).toISOString()!=null?moment(value).toISOString():moment($(this).attr('data-default')).toISOString();
+                                    data['id_'+$(this).attr('data-row')][name] = moment(value).toISOString()!=null?value:$(this).attr('data-default');
+                                    }
+                                if(data['id_'+$(this).attr('data-row')][name]=="null"){
+                                    data['id_'+$(this).attr('data-row')][name] = null;
+                                    }
+                                }else if($(this).attr('data-default')!=value||isNew){
+                                    data['id_'+$(this).attr('data-row')][name] = value;
+                                    }
+                    }
+                });
+            let changes = [], isCompUpdate = null;
+            // console.log(data);
+            $.each(data,function(z,x){
+                if(Object.keys(x).length>0||changedetected){
+                    if(changedetected && typeof x.compiler == "undefined"){
+                        x.compiler = 1;
+                        }
+                    x['__SELECT__'] = { id: z.split("_")[1] }
+                    if(typeof x.compiler != "undefined" && x.compiler==2){
+                        isCompUpdate = JSON.parse(JSON.stringify(x['__SELECT__']));
+                        if(typeof x.artist != "undefined"){
+                            isCompUpdate.artist = x.artist;
+                            isCompUpdate.shot = x.shot;
+                            }
+                        }
+                    // console.log(x);
+                    changes.push(JSON.parse(JSON.stringify(x)));
+                    }
+                });
+            if(isCompUpdate!=null){
+                if(typeof isCompUpdate.shot != "undefined"){
+                    $.ajax({
+                        url: '/api/v2/shot/',
+                        type: 'GET',
+                        dataType: "json",
+                        contentType: 'application/json; charset=utf-8',
+                        data: {id: isCompUpdate.shot},
+                        async: true, //displays data after loading the page
+                        processing: false,
+                        beforeSend: function(request) {
+                            request.setRequestHeader("required", JSON.stringify(["id","supervisor__id","team_lead__id","hod__id"]));
+                            },
+                        success: function (compShot) {
+                            compShot = compShot[0]
+                            checkShotTaskLeeds(changes,isCompUpdate.artist,(compShot.supervisor!=null?compShot.supervisor.id:null),(compShot.team_lead!=null?compShot.team_lead.id:null),(compShot.hod!=null?compShot.hod.id:null));
+                            },
+                        error: function (jqXHR, exception) {
+                            console.log(jqXHR.responseText)
+                            }
+                        });
+                    }else{
+                        $.ajax({
+                            url: '/api/v2/shot/task/',
+                            type: 'GET',
+                            dataType: "json",
+                            contentType: 'application/json; charset=utf-8',
+                            data: isCompUpdate,
+                            async: true, //displays data after loading the page
+                            processing: false,
+                            beforeSend: function(request) {
+                                request.setRequestHeader("required", JSON.stringify(["id","artist__id","shot__id","shot__supervisor__id","shot__team_lead__id","shot__hod__id"]));
+                                },
+                            success: function (compTask) {
+                                compTask = compTask[0];
+                                checkShotTaskLeeds(changes,compTask.artist.id,(compTask.shot.supervisor!=null?compTask.shot.supervisor.id:null),(compTask.shot.team_lead!=null?compTask.shot.team_lead.id:null),(compTask.shot.hod!=null?compTask.shot.hod.id:null));
+                                },
+                            error: function (jqXHR, exception) {
+                                console.log(jqXHR.responseText)
+                                }
+                            });
+                        }
+                }else{
+                    setShotMembersPOST(changes);
+                    }
+            }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Assigned bids should be greater than zero for every task.',
+                    });
+                }
+        return false;
+        });
+    function chkAvailSubShots(){
+        $('.cerate-help-shot').each(function(e){
+            var visCount = 0;
+            $(this).find('option').each(function(e){
+                if($(this).css('display') != 'none'){
+                    visCount = visCount + 1;
+                    }
+                });
+            $(this).attr('style',(visCount>1?'':'display: none;'));
+            });
+        }
+    function addShotRow(parent,e,minBidDays=0,maxBidDays=0,isNew=false){
+        if(typeof shotInfo.internal_eta != "undefined" && (shotInfo.internal_eta == null || shotInfo.internal_eta=="1970-01-01T00:00:00")){
+            // shotInfo.internal_eta = shotInfo.eta;
+            shotInfo.internal_eta = null;
+            }
+        let lx = ['danger','warning','info','primary','success'], status = parseInt(e.progress);
+        var pD = `<tr `+(isNew?`class="new"`:'')+` style="font-size: small;" data-task="`+(typeof e.task_type.name!="undefined"?e.task_type.name:e.task_type)+`" data-data='`+JSON.stringify(isNew?shotInfo:e)+`'>
+            <td class="show-shot-tasks">`+(!isNew?`<a href="#" data-shot="`+e.id+`"><i class="ti-angle-right"></i></a>`:'')+`</td>
+            <td>
+                `+(isNew?`
+                    <input class="read-x-input read-x-input-shot" data-row="`+e.id+`" type="hidden" name="parentShot" value="`+shotInfo.id+`" data-default="0" >
+                    <input class="read-x-input read-x-input-shot" data-row="`+e.id+`" type="hidden" name="task_type" value="`+e.task_type.id+`" data-default="0" >
+                    `:'')+`<span>`+(typeof e.task_type.name!="undefined"?e.task_type.name:e.task_type)+`</span>
+            </td> 
+            <td>
+                <span>`+e.type+`</span>
+            </td> 
+            <td>
+                <span>`+(e.complexity!=null?e.complexity:'N/A')+`</span>
+            </td> 
+            <td>
+                <span>`+(e.artist!=null?e.artist:'N/A')+`</span>
+            </td> 
+            <td>
+                <span><div class="btn-group"><button type="button" class="btn " title="`+e.status.name+`" style="color:white;padding: 3px 16px;font-size:1em;background-color:`+e.status.color+`;">`+e.status.code+`</button></div></span>
+            </td> 
+            <td>
+                <div class="progress" style="height: 15px;">
+                    <div class="progress-bar bg-`+lx[(status<25 ? 0 : (status<50 ? 1 : (status<75 ? 2 : (status<100 ? 3 : 4))))]+`" style="width:` + status + `%; color: white;font-weight: bold" role="progressbar">` + status + `%</div>
+                </div>
+            </td>
+            `+(maxBidDays>=0?`<td class="table-input-field" style="position: relative;">
+                <input class="read-x-input read-x-input-shot sub-shot-bids" data-row="`+e.id+`" type="number" name="bid_days" min="`+minBidDays+`" max="`+maxBidDays+`" data-stype="`+e.type+`" value="`+e.actual_bid_days.toFixed(2)+`" step="0.01" style="max-width: 47px;" data-default="`+e.actual_bid_days.toFixed(2)+`" >
+                <span>`+e.actual_bid_days.toFixed(2)+`</span>
+            </td>`:`<td>
+                <span>`+e.actual_bid_days.toFixed(2)+`</span>
+            </td>`)+`
+            <td>
+                <span>`+(e.bid_days - e.achieved_mandays).toFixed(2)+`</span>
+            </td>
+            <td>
+                <span>`+e.achieved_mandays.toFixed(2)+`</span>
+            </td>
+            `+(maxBidDays>=0?`<td class="table-input-field" style="position: relative; min-width: 180px;">
+                <input class="read-x-input read-x-input-shot" data-row="`+e.id+`" style="min-height: 30px;" type="datetime-local" name="eta" max="`+shotInfo.eta+`" value="`+e.eta+`" data-default="`+e.eta+`" >
+                <span>`+moment(e.eta).format("MMM Do YYYY, h:mm a")+`</span>
+            </td>`:`<td>
+                <span>`+moment(e.eta).format("MMM Do YYYY, h:mm a")+`</span>
+            </td>`)+`
+            <td>
+                <span>`+(e.supervisor!=null?e.supervisor:'N/A')+`</span>
+            </td> 
+            <td>
+                <span>`+(e.team_lead!=null?e.team_lead:'N/A')+`</span>
+            </td> 
+            </td> 
+            <td>
+                <span>`+(e.hod!=null?e.hod:'N/A')+`</span>
+            </td> 
+            <td>
+                <span>`+(e.artist!=null?e.artist:'N/A')+`</span>
+            </td>
+            `+(maxBidDays>=0?`<td style="text-align:center;padding: inherit;vertical-align: middle;">
+                `+(((((e.status.code=="YTA"||e.status.code=="YTS")&&e.artists.length==0)||isNew)&&minBidDays==0)?`<button type="button" data-data="`+e.id+`" class="btn btn-danger ti-trash delete-subshot" style="text-align: center; padding-right: 13px;" ></button>`:``)+`
+            </td>`:``)+`
+        </tr>`;
+        $(parent).append(pD);
+        }
+    
+    var existingSubTasks = [];
+    var subShotMaxBids = parseFloat(0);   
+    var allTaskMaxBids = parseFloat(0);   
+    function setSubShotTab(e=null){
+        if(e!=null){
+            var collectId = null;
+            table.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                var tData = table.row(rowIdx).data();
+                if(String(e.id)==String(typeof tData.shot != "undefined"?tData.shot.id:tData.id)){
+                    collectId = rowIdx;
+                    }
+                });
+            if(collectId!=null){
+                table.row(collectId).remove().draw();
+                }
+            }
+        let parent = $('.subshot-content > tbody.main-set-shot').length > 0 ?$('.subshot-content > tbody.main-set-shot'):$('.subshot-content > tbody.sub-set-shot');
+        $(parent).empty();
+        existingSubTasks = [];
+        $.ajax({
+            url: '/api/v2/tasktype/',
+            type: 'GET',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            async: true, //displays data after loading the page
+            processing: false,
+            // data: {parent_shot_id:shot_id},
+            success: function (taskTypes) {
+                $.ajax({
+                    url: '/api/production/shots/'+shot_id+'/',
+                    type: 'GET',
+                    dataType: "json",
+                    contentType: 'application/json; charset=utf-8',
+                    async: false,
+                    // data: getKeys,
+                    success: function (shot_data) {
+                        shotInfo = JSON.parse(JSON.stringify(shot_data));
+                        $.ajax({
+                            url: '/api/v2/shot/task/',
+                            type: 'GET',
+                            dataType: "json",
+                            contentType: 'application/json; charset=utf-8',
+                            data: {shot__id:shot_id},
+                            async: true, //displays data after loading the page
+                            processing: false,
+                            beforeSend: function(request) {
+                                request.setRequestHeader("required", JSON.stringify(["id","assigned_bids"]));
+                                },
+                            success: function (all_tasks) {
+                                var maxBidDays = 0;
+                                $.each(all_tasks,function(x,e){
+                                    maxBidDays = maxBidDays + parseFloat(e.assigned_bids);
+                                    });
+                                $.ajax({
+                                    url: '/api/v2/helpshot/',
+                                    type: 'GET',
+                                    dataType: "json",
+                                    contentType: 'application/json; charset=utf-8',
+                                    async: true, //displays data after loading the page
+                                    processing: false,
+                                    data: {parent_shot_id:shot_id},
+                                    success: function (shots) {
+                                        existingSubTasks = JSON.parse(JSON.stringify(shots));
+                                        $.each(shots,function(x,_subShot){
+                                            $.ajax({
+                                                url: '/api/v2/shot/task/',
+                                                type: 'GET',
+                                                dataType: "json",
+                                                contentType: 'application/json; charset=utf-8',
+                                                data: {shot__id:_subShot.id},
+                                                async: true, //displays data after loading the page
+                                                processing: false,
+                                                beforeSend: function(request) {
+                                                    request.setRequestHeader("required", JSON.stringify(["id","assigned_bids"]));
+                                                    },
+                                                success: function (all_shoshot_tasks) {
+                                                    var minBidDays = 0;
+                                                    $.each(all_shoshot_tasks,function(x,e){
+                                                        minBidDays = minBidDays + parseFloat(e.assigned_bids);
+                                                        });
+                                                    addShotRow($(parent),_subShot,minBidDays,maxBidDays,false);
+                                                    },
+                                                error: function (jqXHR, exception) {
+                                                    console.log(jqXHR.responseText)
+                                                    }
+                                                });
+                                            });
+                                        allTaskMaxBids = parseFloat(maxBidDays);
+                                        subShotMaxBids = parseFloat(shot_data.actual_bid_days!=0?shot_data.actual_bid_days:shot_data.bid_days) - parseFloat(maxBidDays);
+                                        var _existingSubTasks = [];
+                                        $.each(existingSubTasks,function(x,e){
+                                            _existingSubTasks.push(ofx_make_key(e.task_type));
+                                            });
+                                        var task_typePos = [];
+                                        $('.cerate-help-shot').empty();
+                                        $('.cerate-help-shot').append(`<option value="" data-data='`+JSON.stringify({})+`'>ADD NEW</option>`);
+                                        $.each(taskTypes,function(x,e){
+                                            if(_existingSubTasks.indexOf(ofx_make_key(e.name))==-1&& ofx_make_key(shotInfo.task_type)!=ofx_make_key(e.name)){
+                                                $('.cerate-help-shot').append(`<option value="`+e.id+`" data-title="`+e.name+`" data-data='`+JSON.stringify(e)+`'>`+e.name+`</option>`);
+                                                }
+                                            });
+                                        chkAvailSubShots();
+                                        },
+                                    error: function (jqXHR, exception) {
+                                        console.log(jqXHR.responseText)
+                                        }
+                                    });
+                                },
+                            error: function (jqXHR, exception) {
+                                console.log(jqXHR.responseText)
+                            }
+                        });
+                        },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR.responseText)
+                        }
+                    });
+                },
+            error: function (jqXHR, exception) {
+                console.log(jqXHR.responseText)
+                }
+            });
+        }
+    
+    $(document).on('click', '.delete-subshot', function(e){
+        if($(this).parents('tr').hasClass('new')){
+            var prnt = $(this).parents('tr');
+            $('.cerate-help-shot').find('option[data-title="'+$(prnt).attr('data-task')+'"]').attr('style','');
+            $(prnt).remove();
+            // $(this).parents('tr').remove();
+            chkAvailSubShots();
+            }else{
+                let taskId = JSON.parse($(this).attr("data-data"));
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if(result.value) {
+                            ofxApi.request('/api/v2/helpshot/','DELETE',{id:taskId},[{func:'setSubShotTab',data:{id:taskId}}],[]);
+                            }
+                        });
+                }
+        });
+    $(document).on('click', 'a.k-help-task',function(e){
+        setSubShotTab();
+        return true;
+        let parent = $('.subshot-content > tbody.main-set-shot').length > 0 ?$('.subshot-content > tbody.main-set-shot'):$('.subshot-content > tbody.sub-set-shot');
+        $(parent).empty();
+        existingSubTasks = [];
+        $.ajax({
+            url: '/api/production/shots/'+shot_id+'/',
+            type: 'GET',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            async: false,
+            // data: getKeys,
+            success: function (shot_data) {
+                shotInfo = JSON.parse(JSON.stringify(shot_data));
+                $.ajax({
+                    url: '/api/v2/shot/task/',
+                    type: 'GET',
+                    dataType: "json",
+                    contentType: 'application/json; charset=utf-8',
+                    data: {shot__id:shot_id},
+                    async: true, //displays data after loading the page
+                    processing: false,
+                    beforeSend: function(request) {
+                        request.setRequestHeader("required", JSON.stringify(["id","assigned_bids"]));
+                        },
+                    success: function (all_tasks) {
+                        $.ajax({
+                            url: '/api/v2/helpshot/',
+                            type: 'GET',
+                            dataType: "json",
+                            contentType: 'application/json; charset=utf-8',
+                            async: true, //displays data after loading the page
+                            processing: false,
+                            data: {parent_shot_id:shot_id},
+                            success: function (shots) {
+                                existingSubTasks = JSON.parse(JSON.stringify(shots));
+                                var maxBidDays = shot_data.actual_bid_days!=0?shot_data.actual_bid_days:shot_data.bid_days;
+                                $.each(all_tasks,function(x,e){
+                                    maxBidDays = maxBidDays - e.assigned_bids;
+                                    });
+                                $.each(shots,function(x,_subShot){
+                                    $.ajax({
+                                        url: '/api/v2/shot/task/',
+                                        type: 'GET',
+                                        dataType: "json",
+                                        contentType: 'application/json; charset=utf-8',
+                                        data: {shot__id:_subShot.id},
+                                        async: true, //displays data after loading the page
+                                        processing: false,
+                                        beforeSend: function(request) {
+                                            request.setRequestHeader("required", JSON.stringify(["id","assigned_bids"]));
+                                            },
+                                        success: function (all_shoshot_tasks) {
+                                            var minBidDays = 0;
+                                            $.each(all_shoshot_tasks,function(x,e){
+                                                minBidDays = minBidDays + parseFloat(e.assigned_bids);
+                                                });
+                                            addShotRow($(parent),_subShot,minBidDays,maxBidDays,false);
+                                            },
+                                        error: function (jqXHR, exception) {
+                                            console.log(jqXHR.responseText)
+                                            }
+                                        });
+                                    });
+                                },
+                            error: function (jqXHR, exception) {
+                                console.log(jqXHR.responseText)
+                                }
+                            });
+                        },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR.responseText)
+                    }
+                });
+            },
+            error: function (jqXHR, exception) {
+                console.log(jqXHR.responseText)
+            }
+        });
+    });
+    $(document).on('change', '.cerate-help-shot',function(e){
+        let parent = $('.subshot-content > tbody.main-set-shot').length > 0 ?$('.subshot-content > tbody.main-set-shot'):$('.subshot-content > tbody.sub-set-shot');
+        var selected = $(this).find('option:selected');
+        var value = $(selected).val(), obj = JSON.parse($(selected).attr('data-data'));
+        if(value.length>0){
+            $(selected).attr('style','display:none;');
+            chkAvailSubShots();
+            addShotRow($(parent),JSON.parse(JSON.stringify(Object.assign(JSON.parse(JSON.stringify(shotInfo)),{
+                id: makeId(20),
+                status: {
+                    name: StatusCodes['yts'].name,
+                    color: StatusCodes['yts'].color,
+                    code: StatusCodes['yts'].code,
+                    },
+                task_type: obj,
+                bid_days: 0,
+                actual_bid_days:0,
+                progress:0,
+                supervisor:null,
+                team_lead:null,
+                hod:null,
+                artist:null,
+                artists:[],
+                scope_of_work:'',
+                qc_name:null,
+                pending_mandays:0,
+                achieved_mandays:0,
+                retake_path:'',
+                output_path:'',
+                comments:'',
+                version:'',
+                submitted_date:'',
+                }))),0,subShotMaxBids,true);
+            $(this).val('');
+            }
+        });
+    
+    $(document).on('click', '.save-help-shot',function(e){
+        let data = {},changedetected = false, newData = {};
+        $(this).parents('.card-body').find('.read-x-input-shot').each(function(e){
+            let isNew = $($(this).parents('tr')).hasClass('new'), name = $(this).attr("name"), value = $(this).val();
+            if(typeof data['id_'+$(this).attr('data-row')] == "undefined"){
+                data['id_'+$(this).attr('data-row')] = {};
+                if(isNew){
+                    data['id_'+$(this).attr('data-row')]['__NEW__'] = true;
+                    }
+                }
+            if(name=="bid_days"){
+                if(parseFloat($(this).attr('data-default'))!=parseFloat(value)||isNew){
+                    data['id_'+$(this).attr('data-row')][name] = parseFloat(value);
+                    }
+                }else if(name=="eta"){
+                    var d1 = moment($(this).attr('data-default')).toISOString();
+                    var d2 = moment(value).toISOString();
+                    if(!(d1===d2)||isNew){
+                        data['id_'+$(this).attr('data-row')][name] = moment(value).toISOString()!=null?value:$(this).attr('data-default');
+                        }
+                    }else if($(this).attr('data-default')!=value||isNew){
+                        data['id_'+$(this).attr('data-row')][name] = value;
+                        }
+            });
+        let changes = [];
+        $.each(data,function(z,x){
+            if(Object.keys(x).length>0){
+                x['__SELECT__'] = { id: z.split("_")[1] }
+                changes.push(JSON.parse(JSON.stringify(x)));
+                }
+            });
+        $.ajax({
+            url: '/api/v2/helpshot/',
+            type: 'PUT',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            async: true, //displays data after loading the page
+            processing: false,
+            data: JSON.stringify(changes),
+            success: function (response) {
+                setSubShotTab();
+                },
+            error: function (jqXHR, exception) {
+                console.log(jqXHR.responseText)
+                }
+            });
+        return false;
+        });
+</script>

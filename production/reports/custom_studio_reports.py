@@ -1,3 +1,7 @@
+#  Copyright (c) 2023.
+#  Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+#  All rights reserved.
+
 from production.models import Shots, ClientVersions
 from production.serializers import ShotsSerializer, ClientVersionsSerializer
 

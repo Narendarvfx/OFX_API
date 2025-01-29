@@ -1,9 +1,8 @@
 /*
-* tablesaw: A set of plugins for responsive tables
-* Check all Checkbox: checkbox in header cell selects all checkboxes in the same table column.
-* Copyright (c) 2013 Filament Group, Inc.
-* MIT License
-*/
+ * Copyright (c) 2013-2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
 
 (function() {
 	var pluginName = "tablesawCheckAll";

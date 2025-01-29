@@ -1,4 +1,10 @@
 ﻿/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
+/*
     json2.js
     2012-10-08
 

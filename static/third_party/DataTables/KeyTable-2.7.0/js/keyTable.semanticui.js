@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 /*! Semanic UI styling wrapper for KeyTable
  * ©2018 SpryMedia Ltd - datatables.net/license
  */

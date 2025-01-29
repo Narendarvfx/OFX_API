@@ -1,0 +1,1012 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block bread_crumb %}
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <link rel="stylesheet" href="{% static 'third_party/dhtmlx/dhtmlxGantt/dhtmlxgantt_broadway.css' %}" type="text/css"/>
+    <link rel="stylesheet" href="{% static 'template/assets/plugins/toast-master/css/jquery.toast.css' %}" type="text/css"/>
+{% endblock bread_crumb %}
+{% block content %}
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+
+        }
+        .container-fluid {
+            padding: 5px 5px 0px 5px;
+        }
+        #gantt_here {
+            height: 79vh;
+            height: calc(100vh - 215px);
+            }
+        .no-task-data{
+            display: none;
+            }
+        .gantt-sub-header > div:first-child {
+            border-bottom: 1px solid #cecece;
+        }
+
+        .gantt_last_cell .gantt_tree_content {
+            text-align: center;
+            min-width: min-content;
+            width: 100%;
+        }
+
+        .gantt_task_row.gantt_selected .gantt_task_cell {
+            /* background-color: rgba(0, 199, 181, .2); */
+            background-color: transparent;
+            }
+
+        .gantt_control {
+            background-color: #272c33;
+            font-family: "Rubik", sans-serif;
+            border: 1px solid;
+            border-color: #383f48 !important;
+        }
+
+        .gantt_task_line .gantt_task_content {
+            text-align: center;
+        }
+
+        .filters_wrapper {
+            font: 600 14px Roboto;
+            text-align: left;
+        }
+
+        .filters_wrapper span {
+            font-weight: bold;
+            padding: 5px;
+            margin: 5px
+        }
+
+        .filters_wrapper label {
+            padding-right: 3px;
+            color: white !important;
+        }
+
+        .gantt_data_area {
+            color: #747d8a !important;
+            font-family: "Rubik", sans-serif !important;
+            background-color: #272c33;
+        }
+
+        .gantt_task {
+            color: #747d8a !important;
+            background-color: #272c33;
+            font-family: "Rubik", sans-serif !important;
+        }
+
+        .gantt_task_scale {
+            color: #747d8a !important;
+            background-color: #272c33;
+            font-family: "Rubik", sans-serif !important;
+            border-color: #383f48 !important;
+        }
+
+        .gantt_task_cell {
+            background-color: #272c33;
+            font-family: "Rubik", sans-serif !important;
+            color: #747d8a !important;
+            border-color: #383f48 !important;
+        }
+
+        .gantt_grid_scale {
+            color: #747d8a !important;
+            background-color: #272c33;
+            font-family: "Rubik", sans-serif !important;
+            border-color: #383f48 !important;
+            height: 50px !important;
+            line-height: 50px !important;
+        }
+
+        .gantt_row {
+            font-family: "Rubik", sans-serif !important;
+            color: #747d8a !important;
+            background-color: #272c33;
+            border-color: #383f48 !important;
+        }
+
+        .gantt_row.odd {
+            font-family: "Rubik", sans-serif !important;
+            color: #747d8a !important;
+            background-color: #272c33;
+        }
+
+        .gantt_scale_line {
+            color: #747d8a !important;
+            font-family: "Rubik", sans-serif !important;
+            border-color: #383f48 !important;
+        }
+
+        .gantt_container {
+            color: #747d8a !important;
+            background-color: #272c33;
+            font-family: "Rubik", sans-serif !important;
+            border-color: #383f48 !important;
+        }
+
+        .gantt_scale_cell {
+            color: #e2e4e8 !important;
+            border-color: #383f48 !important;
+        }
+
+        .gantt_grid_head_cell {
+            color: #e2e4e8 !important;
+        }
+
+        .gantt_cell {
+            font-family: "Rubik", sans-serif !important;
+            color: #747d8a !important;
+        }
+
+        .gantt_row {
+            background-color: #2a2e33 !important;
+            color: white;
+        }
+        .gantt_layout_cell{
+            border-right: #0A0A0A;
+        }
+
+        .gantt_grid_data {
+            background-color: #2a2e33 !important;
+        }
+
+        .gantt_tree_content {
+            color: #d3d0d0;
+        }
+
+        .gantt_task_row {
+            border-bottom-color: rgb(56, 63, 72) !important;
+        }
+
+        .gantt_grid_data .gantt_row, .gantt_grid_data .gantt_row.odd {
+            border-top: 0px !important;
+        }
+
+        .gantt_grid_scale .gantt_grid_head_cell {
+            background-color: #272c33;
+        }
+
+        .app-search #search_box {
+            color: white !important;
+        }
+
+        .modal.right .modal-dialog {
+            position: fixed;
+            margin: auto;
+            width: 500px;
+            height: 100%;
+            -webkit-transform: translate3d(0%, 0, 0) !important;
+            -ms-transform: translate3d(0%, 0, 0) !important;
+            -o-transform: translate3d(0%, 0, 0) !important;
+            transform: translate3d(0%, 0, 0) !important;
+        }
+
+        .modal.right .modal-content {
+            height: 100%;
+            overflow-y: auto;
+        }
+
+
+        .modal.right .modal-body {
+            padding: 15px 15px 80px;
+        } 
+        /*Right*/
+        .modal.right .modal-dialog {
+            right: 0px;
+            -webkit-transition: opacity 0.3s linear, right 0.5s ease-in-out !important;
+            -moz-transition: opacity 0.3s linear, right 0.3s ease-in-out !important;
+            -o-transition: opacity 0.3s linear, right 0.3s ease-in-out !important;
+            transition: opacity 0.3s linear, right 0.3s ease-in-out !important;
+        }
+
+
+        /* ----- MODAL STYLE ----- */
+        .modal-content {
+            border-radius: 0;
+            border: none;
+        }
+
+        .form-group {
+            margin-bottom: 5px !important;
+        }
+        .fa-window-close{
+            cursor: pointer;
+        }
+        .gantt-inputs{
+            outline: none;
+            border: none;
+            padding: 2px 10px;
+            height: 25px;
+            width: 100%;
+            }
+        .gantt_tree_icon.gantt_close::before,
+        .gantt_tree_icon.gantt_open::before{
+            content: " ";
+            background-color: #ffffff17;
+            position: absolute;
+            margin: auto;
+            top: 0px;
+            left: 10px;
+            bottom: 0px;
+            width: 10px;
+            height: 10px;
+            }
+        .project-line{
+            background: #434343 !important;
+            }
+        .no-work-data:not(.project-line){
+            background: #5f5500 !important;
+            }
+        .gantt_task_row.gantt_selected {
+            background-color: #272c33;
+            }
+        .gantt_task_progress{
+            box-shadow: none;
+            border: none;
+            }
+        .gantt_task_line.gantt_task_inline_color .gantt_task_progress{
+            text-align: left;
+            }
+        .gantt_task_line.gantt_task_inline_color .gantt_task_progress {
+            background-color: #3636364d;
+            opacity: inherit;
+            color: #ffffff70;
+            font-weight: 500;
+            text-align: left;
+            }
+    </style>
+    <div class="container-fluid">
+        <div id="body">
+            <h4>Artists Scheduling</h4>
+            <div class="gantt_control">
+                <div class="btn-group filters_wrapper-deps" data-toggle="buttons" id="filters_wrapper"></div>
+            </div>
+            <!-- Shots Table View -->
+            <div id="gantt_here">
+
+            </div>
+        </div>
+    </div>
+    <div id="responsive-modal" class="modal right" tabindex="-1" role="document" aria-labelledby="myModalLabel"
+         aria-hidden="true" style="display: none;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Time Log Details</h4>
+                    <i class="fa fa-window-close" style="font-size:26px" onclick="cancel()"></i>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-body" id="dynamic_data">
+
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+
+
+{% block page_scripts %}
+
+    <script src="{% static 'third_party/dhtmlx/dhtmlxGantt/edge/dhtmlxgantt.js' %}"></script>
+    <script src="{% static 'template/assets/plugins/popper/popper.min.js' %}"></script>
+    <script src="{% static 'template/assets/plugins/toast-master/js/jquery.toast.js' %}"></script>
+    <script>
+        // Validation script
+        !function (window, document, $) {
+            "use strict";
+            $("input,select,textarea").not("[type=submit]").jqBootstrapValidation()
+        }(window, document, jQuery);
+    </script>
+    <script>
+        var defaultDays = {
+            past: 1, //Days
+            next: 30 //Days
+            },
+            overlapSubTasks = false;
+        var pastDate = moment().subtract(defaultDays.past,'d').format("YYYY-MM-DD");
+        var nextlDate = moment().add(defaultDays.next,'d').format("YYYY-MM-DD");
+        var getKeys = getGetParam({'from_date':pastDate+'T00:00:00.000000','to_date':nextlDate+'T23:59:59.999999'});
+        var depsfilters_wrapper = $('.filters_wrapper-deps');
+        var leads = ['SUPERVISOR','TEAM LEAD','HEAD OF DEPARTMENT']
+        var leads_of_artists = {};
+        function setFilters(){
+            $(depsfilters_wrapper).empty();
+            $.each(ofx_page_data.taskTypes,function(x,e){
+                var testx  = localStorage.getItem('gantt_filters_wrapper_input_'+ofx_make_key(e.name));
+                if(testx==null){
+                    testx = true
+                    localStorage.setItem('gantt_filters_wrapper_input_'+ofx_make_key(e.name),testx);
+                    }else{
+                        testx = testx=='true';
+                        }
+                $(depsfilters_wrapper).append(`<label class="btn btn-info `+(testx?`active`:'')+`">
+                            <div class="custom-control custom-checkbox mr-sm-2">
+                                <input type="checkbox" class="custom-control-input" name="department" value="`+e.name+`" `+(testx?`checked`:'')+`>
+                                <label class="custom-control-label" for="checkbox`+x+`">`+e.name+`</label>
+                            </div>
+                        </label>`);
+                });
+            var configColumnsX = [];
+            configColumnsX.push({ 
+                lable: "Employee Id",
+                name: "employee_id",
+                placeholder: "Employee Id",
+                template: function(obj){
+                    if(['task','leave','holiday'].indexOf(obj.tType)==-1){
+                        return `<p title="`+obj.employee_id+`">`+obj.employee_id+`</p>`;
+                        }else{
+                            return `<p title="`+obj.taskName+`" style="position: absolute; width: 100%; text-align: left;" >`+obj.taskName+`</p>`;
+                            }
+                    },
+                isTag:true,
+                });
+            configColumnsX.push({
+                lable: "Employee Name",
+                name: "fullName",
+                placeholder: "Search Employee",
+                template: function(obj){
+                    if(['task','leave','holiday'].indexOf(obj.tType)==-1){
+                        return `<p title="`+obj.fullName+`">`+obj.fullName+`</p>`;
+                        }else{
+                            return ``;
+                            }
+                    },
+                isTag:true,
+                });
+            configColumnsX.push({
+                lable: "Grade",
+                name: "grade",
+                template: function(obj){
+                    if(['task','leave','holiday'].indexOf(obj.tType)==-1){
+                        return obj.grade!=null?`<p title="Grade: `+obj.gradeInfo.name+`\nMan Day: `+obj.gradeInfo.a_man_day+`">`+obj.grade+`</p>`:'N/A';
+                        }else{
+                            return ``;
+                            }
+                    },
+                isTag:false,
+                });
+            $.each(leads,function(x,e){
+                configColumnsX.push({
+                    lable: e.toLowerCase().replace(/\b[a-z]/g, function(letter) { return letter.toUpperCase(); }),
+                    name: ofx_make_key(e),
+                    template: function(obj){
+                        if(['task','leave','holiday'].indexOf(obj.tType)==-1){
+                            return obj[ofx_make_key(e)]!=null?`<p title="`+obj[ofx_make_key(e)]+`">`+obj[ofx_make_key(e)]+`</p>`:'N/A';
+                            }else{
+                                return ``;
+                                }
+                        },
+                    isTag:true,
+                    });
+                });
+            configColumnsX.push({
+                lable: "Department",
+                name: "department",
+                template: function(obj){
+                    if(['task','leave','holiday'].indexOf(obj.tType)==-1){
+                        return `<p title="`+obj.department+`">`+obj.department+`</p>`;
+                        }else{
+                            return ``;
+                            }
+                    },
+                isTag:false,
+                });
+            var configColumns = [
+                {lable: "VFX ARTIST", name: "vfx_artist", tree: true, width: "*", resize: true},
+                ];
+            $.each(configColumnsX,function(x,e){
+                    var thisTag = `<div class='gantt-sub-header' style='line-height:20px'>
+                        <div>`+e.lable+`</div>`;
+                    if(typeof e.placeholder != "undefined"){
+                        thisTag = thisTag+`<div><input class="gantt-inputs" name="`+e.name+`" type='text' placeholder='`+e.placeholder+`' ></div>`;
+                        }else{
+                            thisTag = thisTag+`<div><select class="gantt-inputs" name="`+e.name+`" >
+                                <option value=""> All `+e.lable+`</option>`;
+                            if(typeof leads_of_artists[e.name] != "undefined"){
+                                $.each(leads_of_artists[e.name].leads,function(xx,rx){
+                                    thisTag = thisTag+`<option value="`+rx.fullName+`">`+rx.fullName.toLowerCase().replace(/\b[a-z]/g, function(letter) { return letter.toUpperCase(); })+`</option>`;
+                                    });
+                                }
+                            thisTag = thisTag+`</select></div>`;
+                            }
+                    thisTag = thisTag+`</div>`;
+                    configColumns.push(Object.assign(Object.assign({name: e.name, align: "center", /* width: "*",*/ width:(typeof e.width == "undefined"?100:e.width)},e.isTag?{label: thisTag}:{label: e.lable}),typeof e.template != "undefined"?{template: e.template}:{ }));
+                    });
+            gantt.config.columns = configColumns;
+            }
+        var displayCHK = {
+            filters_wrapper:[],
+            inputs: {}
+            };
+        function updatedisplayCHK(){
+            displayCHK.filters_wrapper = {};
+            displayCHK.inputs = {};
+            $('#filters_wrapper input').each(function(e){
+                if(typeof displayCHK.filters_wrapper[ofx_make_key($(this).attr('name'))] == "undefined"){
+                    displayCHK.filters_wrapper[ofx_make_key($(this).attr('name'))] = {}
+                    }
+                displayCHK.filters_wrapper[ofx_make_key($(this).attr('name'))][ofx_make_key($(this).val())] = $(this).prop('checked')==true?true:false;
+                });
+            $('select.gantt-inputs, input.gantt-inputs').each(function(e){
+                displayCHK.inputs[$(this).attr('name')] = $(this).val().trim();
+                });
+            }
+        
+        $(document).on('change keyup','.gantt-inputs',function(e){
+            localStorage.setItem('gantt_inputs_'+$(this).attr('name'),$(this).val());
+            });
+        $(document).on('change keyup','#filters_wrapper input',function(e){
+            localStorage.setItem('gantt_filters_wrapper_input_'+ofx_make_key($(this).val()),$(this).prop('checked')==true?true:false);
+            });
+        $(document).on('change keyup','#filters_wrapper input, .gantt-inputs',function(e){
+            updatedisplayCHK();
+            gantt.refreshData();
+            });
+        gantt.attachEvent("onBeforeLightbox", function(id) {
+            console.log("Lightbox Disabled");
+            // const task = gantt.getTask(id);
+            // task.my_template = `<span id='title1'>Holders: </span>${task.users}
+            // <span id='title2'>Progress: </span>${task.progress*100}%`;
+            return false;
+            });
+        gantt.attachEvent("onGanttRender", function () {
+            $('.gantt-inputs').each(function(e){
+                var testx  = localStorage.getItem('gantt_inputs_'+$(this).attr('name'));
+                if(testx==null){
+                    testx = ''
+                    localStorage.setItem('gantt_inputs_'+$(this).attr('name'),testx);
+                    }
+                $(this).val(testx);
+                });
+            });
+        gantt.attachEvent("onBeforeTaskDisplay", function (id, task) {
+            var isChecked = false;
+            var chkData = ['task','leave','holiday'].indexOf(task.tType)!=-1?task.parentArtist:task;
+            var fKys = Object.keys(displayCHK.filters_wrapper);
+            $.each(fKys,function(x,e){
+                if(typeof chkData[e] != "undefined" && typeof displayCHK.filters_wrapper[e][ofx_make_key(chkData[e])] != "undefined" && displayCHK.filters_wrapper[e][ofx_make_key(chkData[e])]){
+                    isChecked = true;
+                    }
+                });
+            if(isChecked){
+                $.each(displayCHK.inputs,function(name,keSearch){
+                    if(typeof chkData[name] != "undefined" && keSearch.length > 0){
+                        
+                        var targetVal = chkData[name]!=null?String(chkData[name]):null;
+                        if(targetVal==null||(!targetVal.trim().toLowerCase().replace(/&nbsp;/g, ' ').includes(keSearch.toLowerCase()))){
+                            isChecked = false;
+                            }
+                        }
+                    });
+                }
+            return isChecked;
+            });
+        // gantt.attachEvent("onTaskClick", function (id, e) {
+        //     var task = gantt.getTask(id);
+        //     console.log("onTaskClick", id, task);
+        //     // gantt.showLightbox(id)
+        //     return true;
+        //     });
+        $(document).on('click','.on-task-click, .on-project-click',function(e){
+            var dType = $(this).hasClass('on-project-click')?'project':'task',
+                taskId = $(this).attr('task_id'),
+                task = gantt.getTask(taskId);
+            console.log("onClick",dType,taskId,task);
+            });
+        gantt.config.layout = {
+            css: "gantt_container",
+            rows: [
+                {
+                    cols: [
+                        {
+                            // the default grid view
+                            view: "grid",
+                            scrollX: "scrollHor",
+                            scrollY: "scrollVer"
+                        },
+                        {resizer: true, width: 1},
+                        {
+                            // the default timeline view
+                            view: "timeline",
+                            scrollX: "scrollHor",
+                            scrollY: "scrollVer"
+                        },
+                        {
+                            view: "scrollbar",
+                            id: "scrollVer"
+                        }
+                    ]
+                },
+                {
+                    view: "scrollbar",
+                    id: "scrollHor"
+                }
+            ]
+        };
+        gantt.config.show_errors = false;
+
+        gantt.config.show_grid = true;
+
+        gantt.config.show_tasks_outside_timescale = true;
+        gantt.config.fit_tasks = true;
+        gantt.config.grid_resize = true;
+        gantt.config.drag_links = false;
+        gantt.config.drag_move = false;
+        gantt.config.drag_progress = false;
+        gantt.config.show_progress = true;
+        gantt.config.scale_height = 50;
+        
+        gantt.config.auto_types = true;
+        gantt.config.auto_scheduling = true;
+        gantt.config.auto_scheduling_compatibility = true;
+        if(overlapSubTasks){
+            gantt.locale.labels.section_split = "Display";
+            gantt.config.open_split_tasks = true;
+            }
+        gantt.templates.progress_text = function (start, end, task) {
+            return ['task'].indexOf(task.tType)!=-1?"<span style='text-align:left;'>" + Math.round(task.progress * 100) + "% </span>":'';
+            };
+        gantt.templates.grid_row_class = function (start, end, task) {
+            if (task.type == gantt.config.types.project) {
+                return "project-line"+(typeof task.noData != "undefined"?' no-work-data':'');
+                }else if(['task','leave','holiday'].indexOf(task.tType)==-1){
+                    return "no-work-data";
+                    }
+            };
+        gantt.templates.task_class = function(start, end, task){
+            if(typeof task.noData != "undefined"){
+                return "no-task-data";
+                }else if(['task','leave','holiday'].indexOf(task.tType)!=-1){
+                    return "on-task-click";
+                    }else{
+                        return "on-project-click";
+                        }
+            };
+        gantt.templates.timeline_cell_class = function (item, date) {
+            if (date.getDay() == 0 || date.getDay() == 6) {
+                return "weekend";
+            }
+            };
+        gantt.templates.task_text = function(start, end, task){
+            if(task.type == gantt.config.types.project){
+                return "<b>" + task.text + "</b>";
+                }
+            return task.text;
+            };
+        gantt.config.scales = [
+            {unit: "month", step: 1, format: "%F, %Y"},
+            {unit: "day", step: 1, format: "%j"}
+            ];
+        var _rolebinding = {};
+        var global_empTasks = [],
+            dateApply = {
+                from:'creation_date',
+                to:'eta'
+                },
+            weekday = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        function runGanttChat(data=[],holidays=[],deptworkingdays=[]){
+            var _deptworkingdays = {},
+                _holidays = {};
+            $.each(deptworkingdays,function(x,workingday){
+                var dateKey = String(workingday.targetDate);
+                $.each(workingday.department,function(y,dep){
+                    var depKey = ofx_make_key(dep.name);
+                    if(typeof _deptworkingdays[depKey] == "undefined"){
+                        _deptworkingdays[depKey] = {};
+                        }
+                    _deptworkingdays[depKey][dateKey] = JSON.parse(JSON.stringify({
+                        'id':workingday.id,
+                        'date':workingday.targetDate,
+                        'description':workingday.description
+                        }));
+                    });
+                });
+            $.each(holidays,function(x,holiday){
+                var dateKey = String(holiday.targetDate);
+                _holidays[dateKey] = JSON.parse(JSON.stringify({
+                    'id':holiday.id,
+                    'date':holiday.targetDate,
+                    'description':holiday.name
+                    })); 
+                });
+            var _data = [],
+                _links = [],
+                calenderRange = {
+                    from: moment(getKeys.from_date).format('YYYY-MM-DD'),
+                    to: moment(getKeys.to_date).format('YYYY-MM-DD')
+                    };
+            $.each(data,function(x,emp){
+                $.each(emp.tasks,function(lx,le){
+                    if(calenderRange.from == null ||  moment(calenderRange.from).diff(moment(le[dateApply.from]), 'days') > 0){
+                        calenderRange.from = String(le[dateApply.from]);
+                        }
+                    if(calenderRange.to == null ||  moment(le[dateApply.to]).diff(moment(calenderRange.to), 'days') > 0){
+                        calenderRange.to = String(le[dateApply.to]);
+                        }
+                    _links.push({id: String(_links.length), source: String(emp.id), target: String(le.id), type: gantt.config.links.start_to_start})
+                    });
+                $.each(emp.statistics,function(lx,le){
+                    if(le.leaves>0){
+                        if(calenderRange.from == null ||  moment(calenderRange.from).diff(moment(le.logDate), 'days') > 0){
+                            calenderRange.from = String(le.logDate);
+                            }
+                        if(calenderRange.to == null ||  moment(le.logDate).diff(moment(calenderRange.to), 'days') > 0){
+                            calenderRange.to = String(le.logDate);
+                            }
+                        _links.push({id: String(_links.length), source: String(emp.id), target: String(le.id), type: gantt.config.links.start_to_start})
+                        }
+                    });
+                });
+            var nDays = moment(calenderRange.to).diff(moment(calenderRange.from), 'days');
+            $.each(data,function(x,emp){
+                // if(emp.tasks.length>0 && _data.length == 0){
+                var empData = {};
+                $.each(emp,function(empKey,empVal){
+                    if(["id","fullName", "department", "grade", "gradeInfo", "employee_id", "supervisor", "teamlead", "headofdepartment"].indexOf(empKey)!=-1){
+                        empData[empKey] = empVal;
+                        }
+                    });
+                var taksCount = emp.tasks.length,
+                    leavesCount = 0;
+                $.each(emp.statistics,function(lx,le){
+                    if(le.leaves>0){
+                        leavesCount = leavesCount + 1;
+                        }
+                    });
+                if(overlapSubTasks){
+                    empData.render = "split";
+                    empData.parent = 0;
+                    }
+                empData.open = false;
+                empData.vfx_artist = '';
+                empData.text = (taksCount>0?`T:`+taksCount:'')+(leavesCount>0?((taksCount>0?` & `:'')+`L:`+leavesCount):``);
+                empData.type = gantt.config.types.project;
+                
+                var taskRange = {
+                    from: null,
+                    to: null
+                    };
+                var progressbarColor = `#003fa6`;
+                $.each(emp.tasks,function(lx,le){
+                    if(emp.tasks.length==1){
+                        progressbarColor = le.task_status.color;
+                        }
+                    if(taskRange.from == null ||  moment(taskRange.from).diff(moment(le[dateApply.from]), 'days') > 0){
+                        taskRange.from = String(le[dateApply.from]);
+                        }
+                    if(taskRange.to == null ||  moment(le[dateApply.to]).diff(moment(taskRange.to), 'days') > 0){
+                        taskRange.to = String(le[dateApply.to]);
+                        }
+                    });
+                $.each(emp.statistics,function(lx,le){
+                    if(le.leaves>0){
+                        if(emp.tasks.length==0){
+                            progressbarColor = 'red';
+                            }
+                        if(taskRange.from == null ||  moment(taskRange.from).diff(moment(le.logDate), 'days') > 0){
+                            taskRange.from = String(le.logDate);
+                            }
+                        if(taskRange.to == null ||  moment(le.logDate).diff(moment(taskRange.to), 'days') > 0){
+                            taskRange.to = String(le.logDate);
+                            }
+                        }
+                    });
+
+                if(taskRange.from!=null && taskRange.to != null && ( emp.tasks.length > 0 || leavesCount > 0)){
+                    taskRange.from = moment(taskRange.from).format('YYYY-MM-DD');
+                    taskRange.to = moment(taskRange.to).format('YYYY-MM-DD');
+                    empData.start_date = taskRange.from;
+                    // empData.end_date = taskRange.to;
+                    empData.duration = moment(taskRange.to).diff(moment(taskRange.from), 'days')+1;
+                    // empData.color = `#003fa6`;
+                    empData.color = progressbarColor;
+                    }else{
+                        empData.color = `#454545`;
+                        empData.text = `No Data Avilable`;
+                        empData.noData = true;
+                        empData.start_date = String(moment(calenderRange.from).format('DD-MM-YYYY'));
+                        empData.duration = moment(calenderRange.to).diff(moment(), 'days')+1;
+                        }
+                // console.log("empData",(taskRange.from!=null && taskRange.to != null && ( emp.tasks.length > 0 || leavesCount > 0)),empData);
+                var depKey = ofx_make_key(empData.department),
+                    empWeeekOffs = [],
+                    empHolidays = {};
+                for(let xday = 0; xday < nDays; xday++){
+                    $dateForCal = moment(calenderRange.from).add(xday, 'days').format('YYYY-MM-DD');
+                    if(typeof _holidays[$dateForCal] != "undefined" || typeof workingDays[weekday[moment($dateForCal).day()].toLowerCase()] == "undefined"||workingDays[weekday[moment($dateForCal).day()].toLowerCase()].isWorkingDay==false){
+                        if(typeof _holidays[$dateForCal] != "undefined"){
+                            empHolidays[$dateForCal] = JSON.parse(JSON.stringify(_holidays[$dateForCal]));
+                            }
+                        // else if(typeof _deptworkingdays[depKey][$dateForCal] == "undefined"){
+                        //         empWeeekOffs.push($dateForCal);
+                        //         }
+                        }
+                    }
+                empData.weeekOffs = JSON.parse(JSON.stringify(empWeeekOffs));
+                empData.holidays = JSON.parse(JSON.stringify(empHolidays));
+                _data.push(JSON.parse(JSON.stringify(empData)));
+                $.each(emp.tasks,function(lx,le){
+                    _data.push(JSON.parse(JSON.stringify({
+                        taskName: le.shot.name,
+                        parentArtist: JSON.parse(JSON.stringify(empData)),
+                        id:le.id,
+                        text: le.task_status.code,
+                        // text: le.task_status.code+` `+le.art_percentage+`%`,
+                        tType: 'task',
+                        start_date: moment(le.creation_date).format('DD-MM-YYYY'),
+                        end_date: moment(le.eta!=null?le.eta:le.creation_date).format('DD-MM-YYYY'),
+                        duration: moment(le.eta!=null?le.eta:le.creation_date).diff(moment(le.creation_date), 'days')+1,
+                        // type:gantt.config.types.milestone,
+                        // color: 'green',
+                        progress: le.art_percentage/100,
+                        open: true,
+                        color: le.task_status.color,
+                        parent: emp.id
+                        })));
+                    });
+                var xyzLeaves = {};
+                $.each(emp.statistics,function(lx,le){
+                    if(le.leaves>0){
+                        xyzLeaves[moment(le.logDate).format('YYYY-MM-DD')] = JSON.parse(JSON.stringify(le));
+                        }
+                    });
+                const ordered = Object.keys(xyzLeaves).sort().reduce(
+                    (obj, key) => { 
+                        obj[key] = xyzLeaves[key]; 
+                        return obj;
+                    }, 
+                    {}
+                    );
+                $.each(ordered,function(lx,le){
+                    if(le.leaves>0){
+                        _data.push(JSON.parse(JSON.stringify({
+                            taskName: 'Leave on '+moment(le.logDate).format('Do MMM, YYYY'),
+                            parentArtist: JSON.parse(JSON.stringify(empData)),
+                            tType: 'leave',
+                            id: le.id,
+                            text: 'Leave',
+                            start_date: moment(le.logDate).format('DD-MM-YYYY'),
+                            // end_date: moment(le.logDate).add(1,'days').format('DD-MM-YYYY'),
+                            // type: gantt.config.types.milestone,
+                            duration: 1,
+                            color: 'red',
+                            open: true,
+                            parent: emp.id
+                            })));
+                        }
+                    });
+                    // }
+                });
+            setFilters();
+            
+            gantt.init("gantt_here");
+            gantt.parse(JSON.parse(JSON.stringify({
+                data: _data,
+                links: _links
+                })));
+            updatedisplayCHK();
+            gantt.render();
+            if(moment(calenderRange.to).diff(moment(), 'days') >=0 && moment().diff(moment(calenderRange.from), 'days')  >= 0){
+                gantt.showDate(new Date());
+                }
+            }
+        $(document).ready(function () {
+            $.ajax({
+                type:"GET",
+                url: "/api/calendar/holidays/",
+                dataType: "json",
+                // data: {role:"VFX ARTIST"},
+                contentType: 'application/json; charset=utf-8',
+                "dataSrc": "",
+                "async": true,
+                success: function (holidays) {
+                    $.ajax({
+                        type:"GET",
+                        url: "/api/calendar/deptworkingdays/",
+                        dataType: "json",
+                        // data: {role:"VFX ARTIST"},
+                        contentType: 'application/json; charset=utf-8',
+                        "dataSrc": "",
+                        "async": true,
+                        success: function (deptworkingdays) {
+                            $.ajax({
+                                type:"GET",
+                                url: "/api/hrm/employee/",
+                                dataType: "json",
+                                data: {role:"VFX ARTIST"},
+                                contentType: 'application/json; charset=utf-8',
+                                "dataSrc": "",
+                                "async": true,
+                                success: function (empdata) {
+                                    $.ajax({
+                                        type:"GET",
+                                        url:"/api/hrm/grades/",
+                                        dataType: "json",
+                                        contentType: 'application/json; charset=utf-8',
+                                        "dataSrc": "",
+                                        "async": true,
+                                        success: function (grades) {
+                                            var _grades = {};
+                                            $.each(grades,function(_z,_e){
+                                                _grades[ofx_make_key(_e.name)] = JSON.parse(JSON.stringify(_e));
+                                                });
+                                            $.ajax({
+                                                type:"GET",
+                                                url:"/api/v2/employeerolebinding/",
+                                                dataType: "json",
+                                                data: {role__name__in:leads.join('|'), employee__role__name:"VFX ARTIST", employee__employement_status__name:'Active', bindWith__employement_status__name:'Active'},
+                                                contentType: 'application/json; charset=utf-8',
+                                                "dataSrc": "",
+                                                "async": true,
+                                                beforeSend: function(request) {
+                                                    request.setRequestHeader("required", JSON.stringify(['id','employee__id','employee__employee_id','role__id','role__name','bindWith__id','bindWith__employee_id','bindWith__fullName','bindWith__role__id','bindWith__role__name']));
+                                                    },
+                                                success: function (rolebindingx) {
+                                                    $.each(rolebindingx,function(_z,emp){
+                                                        if(emp.employee.employee_id!=null&&emp.role.name!=null&&emp.bindWith.role!=null&&ofx_make_key(emp.role.name)==ofx_make_key(emp.bindWith.role.name)){
+                                                            if(typeof _rolebinding[emp.employee.employee_id] == "undefined"){
+                                                                _rolebinding[emp.employee.employee_id] = {};
+                                                                }
+                                                            if(typeof leads_of_artists[ofx_make_key(emp.role.name)] == "undefined"){
+                                                                leads_of_artists[ofx_make_key(emp.role.name)] = {
+                                                                    role: JSON.parse(JSON.stringify(emp.role)),
+                                                                    leads: {}
+                                                                    };
+                                                                }
+                                                            if(typeof leads_of_artists[ofx_make_key(emp.role.name)].leads['id_'+emp.bindWith.id] == "undefined"){
+                                                                leads_of_artists[ofx_make_key(emp.role.name)].leads['id_'+emp.bindWith.id] = JSON.parse(JSON.stringify(emp.bindWith));
+                                                                // leads_of_artists[ofx_make_key(emp.role.name)].leads['id_'+emp.bindWith.id] = emp.bindWith.fullName;
+                                                                }
+                                                            // _rolebinding[emp.employee.employee_id][ofx_make_key(emp.role.name)] = JSON.parse(JSON.stringify(emp.bindWith));
+                                                            _rolebinding[emp.employee.employee_id][ofx_make_key(emp.role.name)] = emp.bindWith.fullName;
+                                                            }
+                                                        });
+                                                    
+                                                    $.each(_rolebinding,function(_i,_j){
+                                                        $.each(leads,function(x,e){
+                                                            if(typeof _rolebinding[_i][ofx_make_key(e)] == "undefined"){
+                                                                _rolebinding[_i][ofx_make_key(e)] = null;
+                                                                }
+                                                            });
+                                                        });
+                                                    $.ajax({
+                                                        type:"GET",
+                                                        url:"/api/v2/employeedailystatistics/",
+                                                        dataType: "json",
+                                                        data: {from_date:moment(getKeys.from_date).format('YYYY-MM-DD'),to_date:moment(getKeys.to_date).format('YYYY-MM-DD')},
+                                                        contentType: 'application/json; charset=utf-8',
+                                                        "dataSrc": "",
+                                                        "async": true,
+                                                        success: function (statistics) {
+                                                            var _empData = {};
+                                                            $.each(empdata,function(_z,emp){
+                                                                _empData[emp.employee_id] = JSON.parse(JSON.stringify(Object.assign(emp,{
+                                                                    statistics:[],
+                                                                    tasks:[],
+                                                                    // comments:'N/A',
+                                                                    // type:gantt.config.types.project,
+                                                                    // open:true,
+                                                                    gradeInfo: emp.grade!=null?_grades[ofx_make_key(emp.grade)]:null
+                                                                    })));
+                                                                if(typeof _rolebinding[emp.employee_id] != "undefined"){
+                                                                    _empData[emp.employee_id] = JSON.parse(JSON.stringify(Object.assign(JSON.parse(JSON.stringify(_empData[emp.employee_id])),JSON.parse(JSON.stringify(_rolebinding[emp.employee_id])))));
+                                                                    }else{
+                                                                        $.each(leads,function(x,e){
+                                                                            var ld = {};
+                                                                            ld[ofx_make_key(e)] = null;
+                                                                            _empData[emp.employee_id] = JSON.parse(JSON.stringify(Object.assign(JSON.parse(JSON.stringify(_empData[emp.employee_id])),JSON.parse(JSON.stringify(ld)))));
+                                                                            });
+                                                                        }
+                                                                });
+                                                            $.each(statistics,function(_z,emp){
+                                                                if(emp.employee!=null && typeof _empData[emp.employee.employee_id]!="undefined"){
+                                                                    _empData[emp.employee.employee_id].statistics.push(JSON.parse(JSON.stringify({
+                                                                        id:emp.id,
+                                                                        tmd:emp.tmd,
+                                                                        amd: emp.amd,
+                                                                        leaves:emp.leaves,
+                                                                        rwh:emp.rwh,
+                                                                        aeh:emp.aeh,
+                                                                        ash:emp.ash,
+                                                                        logDate:emp.logDate
+                                                                        })));
+                                                                    }
+                                                                });
+                                                            $.ajax({
+                                                                url: '/api/v2/shot/task/',
+                                                                type: 'GET',
+                                                                dataType: "json",
+                                                                contentType: 'application/json; charset=utf-8',
+                                                                data: {creation_date__range:moment(getKeys.from_date).format('YYYY-MM-DD')+' 00:00:00.000000|'+moment(getKeys.to_date).format('YYYY-MM-DD')+' 23:59:59.999999'},
+                                                                async: true, //displays data after loading the page
+                                                                processing: false,
+                                                                beforeSend: function(request) {
+                                                                    request.setRequestHeader("required", JSON.stringify(["id","shot__id","shot__name","artist__id","artist__fullName", "artist__employee_id", "task_status__id", "task_status__code", "task_status__color","assigned_bids","compiler","art_percentage","creation_date","start_date","eta","art_percentage"]));
+                                                                    },
+                                                                success: function (tasksByCreationDate) {
+                                                                    $.ajax({
+                                                                        url: '/api/v2/shot/task/',
+                                                                        type: 'GET',
+                                                                        dataType: "json",
+                                                                        contentType: 'application/json; charset=utf-8',
+                                                                        data: {eta__range:moment(getKeys.from_date).format('YYYY-MM-DD')+' 00:00:00.000000|'+moment(getKeys.to_date).format('YYYY-MM-DD')+' 23:59:59.999999'},
+                                                                        async: true, //displays data after loading the page
+                                                                        processing: false,
+                                                                        beforeSend: function(request) {
+                                                                            request.setRequestHeader("required", JSON.stringify(["id","shot__id","shot__name","artist__id","artist__fullName", "artist__employee_id", "task_status__id", "task_status__code", "task_status__color","assigned_bids","compiler","art_percentage","creation_date","start_date","eta","art_percentage"]));
+                                                                            },
+                                                                        success: function (tasksByETADate) {
+                                                                            var myTasks = {};
+                                                                            $.each(tasksByETADate,function(yt,xt){
+                                                                                myTasks['id_'+xt.id] = JSON.parse(JSON.stringify(xt));
+                                                                                });
+                                                                            $.each(tasksByCreationDate,function(yt,xt){
+                                                                                if(typeof myTasks['id_'+xt.id] == "undefined"){
+                                                                                    myTasks['id_'+xt.id] = JSON.parse(JSON.stringify(xt));
+                                                                                    }
+                                                                                });
+                                                                            $.each(myTasks,function(yt,xt){
+                                                                                if(typeof _empData[xt.artist.employee_id] != "undefined"){
+                                                                                    _empData[xt.artist.employee_id].tasks.push(JSON.parse(JSON.stringify(xt)));
+                                                                                    }
+                                                                                });
+                                                                            runGanttChat(Object.values(_empData),holidays,deptworkingdays);
+                                                                            },
+                                                                        error: function (jqXHR, exception) {
+                                                                            console.log(jqXHR.responseText)
+                                                                            }
+                                                                        });
+                                                                    },
+                                                                error: function (jqXHR, exception) {
+                                                                    console.log(jqXHR.responseText)
+                                                                    }
+                                                                });
+                                                            
+                                                            },
+                                                        error: function (jqXHR, exception) {
+                                                            console.log(jqXHR.responseText)
+                                                            }
+                                                        });
+                                                    },
+                                                error: function (jqXHR, exception) {
+                                                    console.log(jqXHR.responseText)
+                                                    }
+                                                });
+                                            },
+                                        error: function (jqXHR, exception) {
+                                            console.log(jqXHR.responseText)
+                                            }
+                                        });
+                                    },
+                                error: function (jqXHR, exception) {
+                                    console.log(jqXHR.responseText)
+                                    }
+                                });
+                            },
+                        error: function (jqXHR, exception) {
+                            console.log(jqXHR.responseText)
+                            }
+                        });
+                    },
+                error: function (jqXHR, exception) {
+                    console.log(jqXHR.responseText)
+                    }
+                });
+
+
+
+            
+            });
+    </script>
+{% endblock page_scripts %}

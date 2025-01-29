@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 /*! Bootstrap 5 styling wrapper for Select
  * ©2021 SpryMedia Ltd - datatables.net/license
  */

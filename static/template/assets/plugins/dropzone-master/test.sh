@@ -1,5 +1,11 @@
 #!/bin/bash
 
+#
+# Copyright (c) 2023.
+# Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+# All rights reserved.
+#
+
 if [ $# -gt 0 ]
   then
     if [ $1 != "compiled" ]

@@ -1,0 +1,252 @@
+{% extends 'main/base.html' %}
+
+{% block bread_crumb %}
+<div class="row page-titles">
+    <div class="col-md-6 col-4 float-left">
+        <h3 class="text-themecolor mb-2 mt-2">My Team</h3>
+    </div>
+    <div class="col-md-6 text-right pt-1">
+        <div class="btn-group mb-2 mr-2 " role="group" aria-label="Button group with nested dropdown">
+            <div class="input-group-prepend" id="departments-leads-selector" style="display:none;">
+                <button class="btn btn-outline-info dropdown-toggle" type="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">Select Department
+                </button>
+
+                <div class="dropdown-menu departments" x-placement="bottom-start"
+                     style="position: absolute; transform: translate3d(0px, 20px, 0px); top: 0px; left: 0px; will-change: transform; color: #f6f0f0;">
+                </div>
+            </div>
+            <div class="input-group-prepend" id="leads-selector" style="display:none;">
+                <button class="btn btn-outline-info dropdown-toggle"  type="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">Select Team Lead
+                </button>
+                <div class="dropdown-menu team_lead" x-placement="bottom-start"
+                     style="position: absolute; transform: translate3d(0px, 37px, 0px); top: 0px; left: 0px; will-change: transform; color: #f6f0f0;"></div>
+
+            </div>
+            <div class="input-group-prepend" id="artist_selector" style="display:none;">
+                <select class="btn btn-outline-info grades"></select>
+                <select class="btn btn-outline-info locations"></select>
+                <input type="text" class="btn btn-info search find" id="search_header" onkeyup="search_column()"
+                       placeholder="Search..." style="background: transparent !important; cursor: initial;"
+                       value="">
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+{% endblock bread_crumb %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table" id="table">
+                <thead class="bg-info text-white">
+                <tr>
+                    <th>EMPLOYEE ID</th>
+                    <th>USERNAME</th>
+                    <th>FULL NAME</th>
+                    <th>GRADE</th>
+                    <th>EMAIL-ID</th>
+                    <th>CONTACT</th>
+                    <th>LOCATION</th>
+
+                </tr>
+                </thead>
+                <tbody class="my_team">
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% block page_scripts %}
+<script>
+    var x = []
+    function render_emptable(emp_data) {
+
+        var grds = [];
+        var locate = [];
+        for (a = 0; a < emp_data.length; a++) {
+            if (emp_data[a]['profile'] !== null) {
+                t = `<tr style="color: #d0cdcd">
+                                <td>` + emp_data[a]['employee_id'] + `</td>
+                                <td>` + emp_data[a]['profile']['username'] + `</td>
+                                <td>` + emp_data[a]['fullName'] + `</td>
+                                <td class="grade">` + emp_data[a]['grade'] + `</td>
+                                <td>` + emp_data[a]['email'] + `</td>
+                                <td>` + emp_data[a]['contact'] + `</td>
+                                <td class="location">` + emp_data[a]['location'] + `</td>
+                            </tr>`;
+                $('.my_team').append(t);
+                if (grds.indexOf(emp_data[a]['grade']) == -1) {
+                    grds.push(emp_data[a]['grade']);
+                    // console.log((emp_data[a]['grade']));
+                    $('.grades').append(`<option value="` + emp_data[a]['grade'] + `">` + emp_data[a]['grade'] + `</option>`);
+                }
+                if (locate.indexOf(emp_data[a]['location']) == -1) {
+                    locate.push(emp_data[a]['location']);
+                    $('.locations').append(`<option value="` + emp_data[a]['location'] + `">` + emp_data[a]['location'] + `</option>`);
+                }
+            }
+        }
+    }
+    function loadteamleaddata(request = {/*lead:1,department:2*/}) {
+        // console.log(request)
+        var cUrl = '/api/hrm/employee/';
+        $.ajax({
+            url: cUrl,
+            type: 'GET',
+            dataType: "json",
+            data: request,
+            contentType: 'application/json; charset=utf-8',
+            "dataSrc": "",
+            "async": true, //displays data after loading the page
+            success: function (response) {
+                x = response
+                $('.my_team').html("");
+                $('.grades').html(`<option value="">Show All</option>`);
+                $('.locations').html(`<option value="">Show All</option>`);
+                render_emptable(response)
+            },
+            error: function (jqXHR, exception) {
+                console.log(jqXHR.responseText)
+            }
+        });
+    }
+    function loaddepartteamdata(department) {
+        var target = $('.team_lead');
+        $(target).empty();
+        $(target).parent().find('.dropdown-toggle').html("Select Team Lead");
+        // t = `<a href="#" class="dropdown-item get-lead-data"> Select Team Lead </ahref>`
+        // $('.team_lead').append(t)
+        $.ajax({
+            url: '/api/hrm/employee/?role=Team Lead&dept=' + department,
+            type: 'GET',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                x = response
+                for (a = 0; a < response.length; a++) {
+                    // console.log(response[a])
+                    if (response[a]['profile'] !== null) {
+                        t = `<a href="#" class="dropdown-item get-lead-data" data-data="` + response[a]['profile']['id'] + `" >` + response[a]['fullName'] + `</ahref>`
+                        $('.team_lead').append(t)
+                    }
+                }
+            },
+            error: function (jqXHR, exception) {
+                console.log(jqXHR.responseText)
+            }
+        });
+    };
+    function search_column() {
+        var table, tr, td, i, txtValue;
+        var input = document.getElementById("search_header");
+        var filter = input.value.toLowerCase();
+        // console.log(filter)
+        table = document.getElementById("table");
+        tr = table.getElementsByTagName("tr");
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td_1 = tr[i].getElementsByTagName("td")[0];
+            td_2 = tr[i].getElementsByTagName("td")[2];
+            if (td_1 || td_2) {
+                txtValue_1 = td_1.textContent || td_1.innerText;
+                txtValue_2 = td_2.textContent || td_2.innerText;
+                if ((txtValue_1.toLowerCase().indexOf(filter) > -1) || (txtValue_2.toLowerCase().indexOf(filter) > -1)) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+    $(document).ready(function () {
+        // console.log('userPermissions:', userPermissions);
+        if (userPermissions.indexOf("view_departments") != -1) {
+            document.getElementById("departments-leads-selector").style.display = "block";
+            document.getElementById("leads-selector").style.display = "block";
+            document.getElementById("artist_selector").style.display = "block";
+            loaddepartteamdata(ofx_page_data.user.department);
+            loadteamleaddata({dept: ofx_page_data.user.department});
+        }
+        if (userPermissions.indexOf("view_lead_team") != -1) {
+            document.getElementById("leads-selector").style.display = "block";
+            document.getElementById("artist_selector").style.display = "block";
+            loaddepartteamdata(ofx_page_data.user.department);
+            loadteamleaddata({dept: ofx_page_data.user.department});
+        }
+        if (userPermissions.indexOf("view_my_team") != -1) {
+            document.getElementById("artist_selector").style.display = "block";
+            loadteamleaddata({lead: ofx_page_data.user.id});
+        }
+        $.ajax({
+            url: '/api/hrm/departments/',
+            type: 'GET',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                for (a = 0; a < response.length; a++) {
+                    // console.log(response[a])
+                    l = `<a href="#" class="dropdown-item get-department-data" data="` + response[a]['name'] + `">` + response[a]['name'] + `</ahref>`
+                    $('.departments').append(l)
+                }
+            },
+            error: function (jqXHR, exception) {
+                console.log(jqXHR.responseText)
+            }
+        });
+    });
+    $(document).on("click", ".get-department-data", function (e) {
+        var parent = $(this).parent();
+        $(parent).find(".get-department-data").each(function (e) {
+            $(this).attr("style", "");
+        });
+        $(this).attr("style", "display:none;");
+        $(parent).parent().find('button.dropdown-toggle').html($(this).html());
+        loaddepartteamdata($(this).attr("data"));
+        loadteamleaddata({dept: $(this).attr("data")})
+        // console.log($(this).attr("data"));
+    });
+    $(document).on("click", ".get-lead-data", function (e) {
+        var parent = $(this).parent();
+        // console.log($(parent).parent());
+        $(parent).find(".get-lead-data").each(function (e) {
+            $(this).attr("style", "");
+        });
+        $(this).attr("style", "display:none;");
+        $(parent).parent().find('button.dropdown-toggle').html($(this).html());
+        loadteamleaddata({lead: $(this).attr("data-data")});
+        // console.log($(this).attr("data-data"));
+    });
+    $(document).on("change", ".grades", function (e) {
+        var rVal = $(this).val();
+        $('.my_team').find('tr').each(function (e) {
+            if ($(this).find('.grade').html() == rVal || rVal.length==0) {
+                $(this).fadeIn('fast');
+            } else {
+                $(this).fadeOut('fast');
+            }
+        });
+    });
+    $(document).on("change", ".locations", function (e) {
+        var rVal = $(this).val();
+        $('.my_team').find('tr').each(function (e) {
+            if ($(this).find('.location').html() == rVal|| rVal.length==0) {
+                $(this).fadeIn('fast');
+            } else {
+                $(this).fadeOut('fast');
+            }
+        });
+    });
+
+</script>
+
+{% endblock page_scripts %}

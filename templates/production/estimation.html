@@ -1,0 +1,311 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block bread_crumb %}
+<link rel='stylesheet' href="{% static 'template/assets/plugins/multiselect/css/multi-select.css' %}"
+      type="text/css"/>
+<link rel="stylesheet" href="{% static 'template/assets/plugins/toast-master/css/jquery.toast.css' %}" type="text/css"/>
+<style>
+        .table-sm th.name-col, .table-sm td.name-col {
+            width: 150px;
+        }
+        .table-sm th.color-col, .table-sm td.color-col {
+            width: 100px; /* Set width for color column */
+        }
+        .table-sm th.actions-col, .table-sm td.actions-col {
+            width: 120px; /* Set width for actions column */
+        }
+        .table-sm td, .table-sm th {
+            color: white; /* Font color white */
+        }
+
+        .card-deck .card {
+            margin-bottom: 20px;
+            color: white; /* Font color white */
+        }
+        .card-body {
+            background-color: #343a40; /* Dark background for better contrast with white text */
+        }
+</style>
+
+{% endblock bread_crumb %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row page-tides">
+        <div class="col-md-6 col-8 align-self-center">
+            <h3 class="text-themecolor mb-0 mt-0">Estimation</h3>
+        </div>
+        <div class="col-md-6 text-right pt-1">
+            <button class="btn btn-info" id="refresh-button"><i class="fas fa-sync-alt"></i> Refresh</button>
+<!--            <button class="btn btn-info" data-toggle="modal" data-target="#addEstimationModal" disabled><i class="mdi mdi-plus-circle"></i> Add EstimationId</button>-->
+            <input type="text" class="btn btn-info e-find" id="searchEstimation" placeholder="Search..."
+                   style="background: transparent !important; cursor: initial;" value="">
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div id="estimationList">
+                        <!-- Estimation will be loaded here via JavaScript -->
+                    </div>
+                    <div id="pagination" class="pagination-controls"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Estimation Modal -->
+<div class="modal fade" id="addEstimationModal" tabindex="-1" role="dialog" aria-labelledby="addEstimationModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addEstimationModalLabel">Add Estimation Id</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="addEstimationForm" method="post">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="ClientName">Client Name</label>
+                        <input type="text" class="form-control" id="ClientName" name="clientName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="EstimationId">Estimation Id</label>
+                        <input type="text" class="form-control" id="EstimationId" name="estimationId" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ZohoId">Zoho Id</label>
+                        <input type="text" class="form-control" id="ZohoId" name="zohoId" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Status">Status</label>
+                        <input type="text" class="form-control" id="Status" name="status" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Id">ID</label>
+                        <input type="text" class="form-control" id="Id" name="id" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add Estimation Id</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+{% block page_scripts %}
+<script>
+$(document).ready(function () {
+    // Function to get the CSRF token from the meta tag
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    const csrftoken = getCookie('csrftoken');
+
+    // Setup jQuery to include the CSRF token in AJAX requests
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!/^http:.*/.test(settings.url) && !/^https:.*/.test(settings.url)) {
+                // Only send the token to relative URLs
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+    // get client name and estimationIds from Shots model to store into the EstimationId model
+    document.getElementById("refresh-button").addEventListener("click", function () {
+        fetch("/api/production/estimationData/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrftoken,
+            },
+        })
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error("Failed to refresh estimation data.");
+        })
+        .then((data) => {
+            alert(data.message);
+            loadAllEstimations();
+            // Optionally, refresh the displayed estimation data here.
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+            alert("Error refreshing estimation data.");
+        });
+    });
+
+    let allEstimations = []; // Global array to hold all fetched data
+    let currentPage = 1; // Track the current page
+    const itemsPerPage = 2400; // Number of items per page
+
+    function loadAllEstimations() {
+        $.ajax({
+            url: '/api/production/estimation/',
+            method: 'GET',
+            success: function (data) {
+                allEstimations = data; // Store the fetched data
+                displayPaginatedData(); // Display the first page
+            },
+            error: function (error) {
+                console.log('Error loading estimation details:', error);
+            }
+        });
+    }
+
+    function displayPaginatedData() {
+        var estimationList = $('#estimationList');
+        estimationList.empty(); // Clear previous data
+
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const paginatedData = allEstimations.slice(startIndex, endIndex); // Get the current page's data
+
+        if (paginatedData.length === 0) {
+            estimationList.append('<p>No Estimation Ids found.</p>');
+        } else {
+            var table = $('<table class="table table-striped" style="color:white"></table>');
+            var thead = $('<thead><tr><th>CLIENT NAME</th><th>ESTIMATION ID</th><th>ZOHO ID</th><th>STATUS</th><th>ACTIONS</th></tr></thead>');
+            var tbody = $('<tbody></tbody>');
+
+            paginatedData.forEach(function (estimation) {
+                var row = $('<tr class="estimation-row"></tr>');
+                row.append('<td class="estimation-client">' + estimation.clientName + '</td>');
+                row.append('<td class="estimation-estimationId">' + estimation.estimationId + '</td>');
+                row.append('<td class="estimation-zohoId" data-original="' + estimation.zohoId + '">' + estimation.zohoId + '</td>');
+                row.append('<td class="estimation-status">' + estimation.status + '</td>');
+                row.append('<td><button class="btn btn-warning btn-sm edit-btn" data-id="' + estimation.id + '">Edit</button></td>');
+
+                tbody.append(row);
+            });
+
+            table.append(thead);
+            table.append(tbody);
+            estimationList.append(table);
+
+            addPaginationControls(); // Add pagination controls
+        }
+    }
+
+    function addPaginationControls() {
+        var pagination = $('#pagination'); // Assuming a container with ID 'pagination'
+        pagination.empty(); // Clear previous controls
+
+        const totalPages = Math.ceil(allEstimations.length / itemsPerPage);
+
+        if (currentPage > 1) {
+            pagination.append(`<button class="btn btn-light" onclick="goToPage(${currentPage - 1})">Previous</button>`);
+        }
+
+        pagination.append(`<span> Page ${currentPage} of ${totalPages} </span>`);
+
+        if (currentPage < totalPages) {
+            pagination.append(`<button class="btn btn-light" onclick="goToPage(${currentPage + 1})">Next</button>`);
+        }
+    }
+
+    // Attach the function to the global scope
+    window.goToPage = function (page) {
+        currentPage = page;
+        displayPaginatedData();
+    };
+
+    loadAllEstimations();
+
+
+    // Inline editing for ZohoId
+    $(document).on('click', '.edit-btn', function () {
+        // Make only the Zoho ID editable
+        var row = $(this).closest('tr');
+        var zohoIdCell = row.find('.estimation-zohoId');
+        var zohoIdValue = zohoIdCell.text();
+        zohoIdCell.html('<input type="text" class="form-control zohoId-input" value="' + zohoIdValue + '">');
+
+        // Change the button to a "Save" button
+        $(this).text('Save').removeClass('edit-btn btn-warning').addClass('save-btn btn-success');
+    });
+
+    // Save updated ZohoId
+    $(document).on('click', '.save-btn', function () {
+        var row = $(this).closest('tr');
+        var estimationId = row.find('.estimation-estimationId').text();
+        var newZohoId = row.find('.zohoId-input').val();
+
+        // Send the updated Zoho ID to the backend
+        $.ajax({
+            url: '/api/production/estimation/?pk_id=' + encodeURIComponent(estimationId),
+            method: 'PUT',
+            data: JSON.stringify({
+                zohoId: newZohoId
+            }),
+            contentType: 'application/json',
+            dataType: 'json',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            success: function (response) {
+                // Update the table row with the new Zoho ID
+                row.find('.estimation-zohoId').text(newZohoId);
+
+                // Change the "Save" button back to "Edit"
+                row.find('.save-btn').text('Edit').removeClass('save-btn btn-success').addClass('edit-btn btn-warning');
+
+                console.log('Update successful:', response);
+            },
+            error: function (error) {
+                console.error('Error updating estimation:', error);
+            }
+        });
+    });
+
+    // Search function
+    $('#searchEstimation').on('keyup', function () {
+        var value = $(this).val().toLowerCase();
+        $('.estimation-row').filter(function () {
+            // Get the text of both estimationId and client name
+            var estimationId = $(this).find('.estimation-estimationId').text().toLowerCase();
+            var clientName = $(this).find('.estimation-client').text().toLowerCase();
+            var zohoId = $(this).find('.estimation-zohoId').text().toLowerCase();
+
+            // Check if the search term is present in either field
+            $(this).toggle(estimationId.indexOf(value) > -1 || clientName.indexOf(value) > -1 || zohoId.indexOf(value) > -1);
+        });
+    });
+
+});
+
+</script>
+
+<script>
+
+   $('#ajaxBusy').hide();
+
+</script>
+
+{% endblock page_scripts %}

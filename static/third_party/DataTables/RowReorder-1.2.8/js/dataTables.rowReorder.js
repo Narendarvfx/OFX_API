@@ -1,24 +1,11 @@
-/*! RowReorder 1.2.8
- * 2015-2020 SpryMedia Ltd - datatables.net/license
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
  */
 
-/**
- * @summary     RowReorder
- * @description Row reordering extension for DataTables
- * @version     1.2.8
- * @file        dataTables.rowReorder.js
- * @author      SpryMedia Ltd (www.sprymedia.co.uk)
- * @contact     www.sprymedia.co.uk/contact
- * @copyright   Copyright 2015-2020 SpryMedia Ltd.
- *
- * This source file is free software, available under the following license:
- *   MIT license - http://datatables.net/license/mit
- *
- * This source file is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
- *
- * For details please refer to: http://www.datatables.net
+/*! RowReorder 1.2.8
+ * 2015-2020 SpryMedia Ltd - datatables.net/license
  */
 
 (function( factory ){

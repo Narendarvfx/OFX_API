@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 /*! Buttons for DataTables 2.2.3
  * ©2016-2022 SpryMedia Ltd - datatables.net/license
  */

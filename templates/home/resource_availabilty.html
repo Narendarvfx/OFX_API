@@ -1,7 +1,8 @@
 {% extends 'main/base.html' %}
+{% load static %}
 {% block bread_crumb %}
-    <link href="/static/template/assets/plugins/timepicker/bootstrap-timepicker.min.css" rel="stylesheet">
-    <link href="/static/template/assets/plugins/daterangepicker/daterangepicker.css" rel="stylesheet">
+    <link href="{% static 'template/assets/plugins/timepicker/bootstrap-timepicker.min.css' %}" rel="stylesheet">
+    <link href="{% static 'template/assets/plugins/daterangepicker/daterangepicker.css' %}" rel="stylesheet">
     <style>
         .table td, .table th {
             padding: 0.25rem;
@@ -27,6 +28,7 @@
             position: sticky;
             background-color: #383f48;
         }
+
         .table tfoot {
             position: sticky;
             background-color: red;
@@ -36,6 +38,7 @@
             inset-block-start: 0; /* "bottom" */
 
         }
+
         .table tfoot {
             inset-block-end: 0; /* "bottom" */
         }
@@ -43,14 +46,27 @@
 {% endblock bread_crumb %}
 {% block content %}
 
-    <h3>Hello {{ user.profile.employee.fullName }}</h3>
+    <h3>Hello {{ user.employee.fullName }}</h3>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-6">
+            <!-- column -->
+            <!-- <div class="col-lg-6">
+                <div class="card" >
+                    <div class="card-body">
+                        <h4 class="card-title">Human Resource Availabilty</h4>
+                        <div class="flot-chart" style="height: 500px">
+                            <div class="flot-chart-content" id="flot-pie-chart" ></div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- column -->
+            <!-- <div class="col-lg-6">
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex no-block">
-                            <h4 class="card-title">Resource Availabilty of the Month</h4>
+                            <h4 class="card-title">Manday Availabilty of the Month</h4>
                         </div>
                         <div class="table-responsive" style="height: 500px">
                             <table class="table stylish-table no-wrap">
@@ -76,138 +92,50 @@
                                         <div><span>Week 4</span></div>
                                     </th>
                                     <th class="rotate">
+                                        <div><span>Week 5</span></div>
+                                    </th>
+                                    <th class="rotate">
                                         <div><span>October</span></div>
                                     </th>
                                 </tr>
                                 </thead>
-                                <tbody style="overflow-y: auto">
-                                <tr>
-                                    <td style="width:50px;"><span class="round">s</span></td>
-                                    <td>
-                                        <h6>Sunil</h6></td>
-                                    <td class="text-success">200</td>
-                                    <td class="text-danger">100</td>
-                                    <td>30</td>
-                                    <td>40</td>
-                                    <td class="text-warning">50</td>
-                                    <td>70</td>
-                                    <td>280</td>
-                                </tr>
-                                <tr>
-                                    <td style="width:50px;"><span class="round round-danger">N</span></td>
-                                    <td>
-                                        <h6>Narendar</h6></td>
-                                    <td class="text-success">200</td>
-                                    <td class="text-danger">30</td>
-                                    <td>13</td>
-                                    <td>350</td>
-                                    <td class="text-warning">65</td>
-                                    <td>40</td>
-                                    <td>159</td>
-                                </tr>
-                                <tr>
-                                    <td style="width:50px;"><span class="round round-success">R</span></td>
-                                    <td>
-                                        <h6>Raja</h6></td>
-                                    <td class="text-success">350</td>
-                                    <td class="text-danger">78</td>
-                                    <td>50</td>
-                                    <td>63</td>
-                                    <td class="text-warning">45</td>
-                                    <td>78</td>
-                                    <td>340</td>
-                                </tr>
-                                <tr>
-                                    <td style="width:50px;"><span class="round round-warning">N</span></td>
-                                    <td>
-                                        <h6>Vamshi</h6></td>
-                                    <td class="text-success">170</td>
-                                    <td class="text-danger">40</td>
-                                    <td>20</td>
-                                    <td>40</td>
-                                    <td class="text-warning">30</td>
-                                    <td>60</td>
-                                    <td>450</td>
-                                </tr>
-                                <tr>
-                                    <td style="width:50px;"><span class="round">S</span></td>
-                                    <td>
-                                        <h6>Sabani</h6></td>
-                                    <td class="text-success">150</td>
-                                    <td class="text-danger">60</td>
-                                    <td>20</td>
-                                    <td>40</td>
-                                    <td class="text-warning">30</td>
-                                    <td>60</td>
-                                    <td>256</td>
-                                </tr>
-                                <tr>
-                                    <td style="width:50px;"><span class="round">P</span></td>
-                                    <td>
-                                        <h6>Prasad</h6></td>
-                                    <td class="text-success">240</td>
-                                    <td class="text-danger">150</td>
-                                    <td>20</td>
-                                    <td>40</td>
-                                    <td class="text-warning">30</td>
-                                    <td>60</td>
-                                    <td>324</td>
-                                </tr>
-                                <tr>
-                                    <td style="width:50px;"><span class="round">H</span></td>
-                                    <td>
-                                        <h6>Hari</h6></td>
-                                    <td class="text-success">240</td>
-                                    <td class="text-danger">150</td>
-                                    <td>20</td>
-                                    <td>40</td>
-                                    <td class="text-warning">30</td>
-                                    <td>60</td>
-                                    <td>324</td>
-                                </tr>
-                                <tr>
-                                    <td style="width:50px;"><span class="round">R</span></td>
-                                    <td>
-                                        <h6>Rohith</h6></td>
-                                    <td class="text-success">240</td>
-                                    <td class="text-danger">150</td>
-                                    <td>20</td>
-                                    <td>40</td>
-                                    <td class="text-warning">30</td>
-                                    <td>60</td>
-                                    <td>324</td>
-                                </tr>
+
+                                <tbody style="overflow-y: auto" id="resource_table_tbody">
+
                                 </tbody>
-                                <tfoot >
+                                <tfoot>
                                 <tr class="bg-info text-white">
                                     <td colspan="2"><h6>PENDING MAN DAYS</h6></td>
                                     <td></td>
                                     <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>350</td>
-                                    <td>450</td>
-                                    <td>456</td>
+                                    <td id="w1_pending_text"></td>
+                                    <td id="w2_pending_text"></td>
+                                    <td id="w3_pending_text"></td>
+                                    <td id="w4_pending_text"></td>
+                                    <td id="w5_pending_text"></td>
+                                    <td id="total_pending_text"></td>
                                 </tr>
                                 <tr class="bg-warning text-white">
                                     <td colspan="2"><h6>WAITING FOR BID</h6></td>
                                     <td></td>
                                     <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>350</td>
-                                    <td>450</td>
-                                    <td>236</td>
+                                    <td id="w1_wfd_text"></td>
+                                    <td id="w2_wfd_text"></td>
+                                    <td id="w3_wfd_text">350</td>
+                                    <td id="w4_wfd_text">450</td>
+                                    <td id="w5_wfd_text">236</td>
+                                    <td id="total_wfd_text">236</td>
                                 </tr>
                                 <tr class="bg-success text-white">
                                     <td colspan="2"><h6>Total</h6></td>
                                     <td></td>
                                     <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>350</td>
-                                    <td>450</td>
-                                    <td>243</td>
+                                    <td id="total_w1"></td>
+                                    <td id="total_w2"></td>
+                                    <td id="total_w3">350</td>
+                                    <td id="total_w4">450</td>
+                                    <td id="total_w5">243</td>
+                                    <td id="total_total">243</td>
                                 </tr>
                                 <tr class="bg-warning text-white">
                                     <td colspan="2"><h6>WEEK TARGET</h6></td>
@@ -217,6 +145,7 @@
                                     <td></td>
                                     <td>350</td>
                                     <td>450</td>
+                                    <td>324</td>
                                     <td>324</td>
                                 </tr>
                                 <tr class="bg-danger text-white">
@@ -228,68 +157,39 @@
                                     <td>350</td>
                                     <td>450</td>
                                     <td>546</td>
+                                    <td>546</td>
                                 </tr>
                                 </tfoot>
-
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+            <!-- column -->
+            <div class="col-lg-12">
+                <div class="card" >
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 pt-1">
+                                <h4 class="card-title">Day wise Pending Bids</h4>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <div class="btn-group mb-2 mr-2" role="group" aria-label="Button group with nested dropdown">
+                                    <select class="btn btn-outline-info departments-selectors"></select>
+                                    <input type="text" class="btn btn-info search e-find" placeholder="Search..." style="background: transparent !important; cursor: initial;" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <div style="overflow: auto;">
+                            <table class="table table-hover table-self-x table-bordered" style="color: #ffffff;">
+                                <thead></thead>
+                                <tbody></tbody>
+                                <tfoot style="background: transparent;"></tfoot>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-            {#            <div class="col-lg-4">#}
-            {#                <div class="card">#}
-            {#                    <div class="card-body">#}
-            {#                        <div class="d-flex no-block">#}
-            {#                            <h4 class="card-title">Weather Report</h4>#}
-            {#                            <div class="ml-auto">#}
-            {#                                <select class="custom-select">#}
-            {#                                    <option selected>Today</option>#}
-            {#                                    <option value="1">Weekly</option>#}
-            {#                                </select>#}
-            {#                            </div>#}
-            {#                        </div>#}
-            {#                        <div class="d-flex align-items-center flex-row mt-4">#}
-            {#                            <div class="p-2 display-5 text-info"><i class="wi wi-day-showers"></i> <span>73<sup>°</sup></span>#}
-            {#                            </div>#}
-            {#                            <div class="p-2">#}
-            {#                                <h3 class="mb-0">Saturday</h3><small>Ahmedabad, India</small></div>#}
-            {#                        </div>#}
-            {#                        <table class="table no-border">#}
-            {#                            <tr>#}
-            {#                                <td>Wind</td>#}
-            {#                                <td class="font-medium">ESE 17 mph</td>#}
-            {#                            </tr>#}
-            {#                            <tr>#}
-            {#                                <td>Humidity</td>#}
-            {#                                <td class="font-medium">83%</td>#}
-            {#                            </tr>#}
-            {#                            <tr>#}
-            {#                                <td>Pressure</td>#}
-            {#                                <td class="font-medium">28.56 in</td>#}
-            {#                            </tr>#}
-            {#                            <tr>#}
-            {#                                <td>Cloud Cover</td>#}
-            {#                                <td class="font-medium">78%</td>#}
-            {#                            </tr>#}
-            {#                            <tr>#}
-            {#                                <td>Ceiling</td>#}
-            {#                                <td class="font-medium">25760 ft</td>#}
-            {#                            </tr>#}
-            {#                        </table>#}
-            {#                        <hr/>#}
-            {#                        <ul class="list-unstyled row text-center city-weather-days">#}
-            {#                            <li class="col"><i class="wi wi-day-sunny"></i><span>09:30</span>#}
-            {#                                <h3>70<sup>°</sup></h3></li>#}
-            {#                            <li class="col"><i class="wi wi-day-cloudy"></i><span>11:30</span>#}
-            {#                                <h3>72<sup>°</sup></h3></li>#}
-            {#                            <li class="col"><i class="wi wi-day-hail"></i><span>13:30</span>#}
-            {#                                <h3>75<sup>°</sup></h3></li>#}
-            {#                            <li class="col"><i class="wi wi-day-sprinkle"></i><span>15:30</span>#}
-            {#                                <h3>76<sup>°</sup></h3></li>#}
-            {#                        </ul>#}
-            {#                    </div>#}
-            {#                </div>#}
-            {#            </div>#}
         </div>
     </div>
 
@@ -297,16 +197,359 @@
 
 {% block page_scripts %}
     <!--OFX Core JavaScript -->
-    <script src="/static/ofx/core.js"></script>
+    <script src="{% static 'ofx/core.js' %}"></script>
     <!-- ============================================================== -->
     <!-- This page plugins -->
     <!-- ============================================================== -->
     <!-- chartist chart -->
-    <script src="/static/third_party/ChartJs/Chart.min.js"></script>
-
-    <!-- Date range Plugin JavaScript -->
-    <script src="/static/template/assets/plugins/moment/moment.js"></script>
-    <script src="/static/template/assets/plugins/daterangepicker/daterangepicker.js"></script>
 
 
+
+
+    <script src="{% static 'template/assets/plugins/flot/jquery.flot.js' %}"></script>
+    <script src="{% static 'template/assets/plugins/flot/jquery.flot.pie.js' %}"></script>
+    <script src="{% static 'template/assets/plugins/flot.tooltip/js/jquery.flot.tooltip.min.js' %}"></script>
+
+
+    <script type="text/javascript">
+        // Pie Chart
+        //Flot Pie Chart
+        function getBgColor(range=100,valX=10){
+            rDx = (100/range)*valX;
+            let lx = ['danger','warning','info','primary','success'], status = parseInt(rDx);
+            return (`<span class="text-`+lx[(status<25 ? 4 : (status<50 ? 3 : (status<75 ? 2 : (status<100 ? 1 : 0))))]+`" >` + parseFloat(valX.toFixed(2)).toFixed(2) + `</span>`);
+            }
+
+        $(document).ready(function () {
+            var pbidsTable =  $(".table-self-x"),
+                specialStatusCodes = ['OMT','HLD'],
+                uPar = [];
+            
+            $(document).on('change keyup', '.e-find, .departments-selectors', function(e){
+                var varTotlC = [];
+                var dep = $('.departments-selectors').val(), ksr = $('.e-find').val().trim();
+                $('.table-self-x > tbody tr').each(function(e){
+                    let dt = JSON.parse($(this).attr('data-data')), isIn = false;
+                    isIn = String(dt.department)==String(dep)||dep=="showall";
+                    if(isIn&&$('.e-find').val().trim().length>0){
+                        isIn = false;
+                        $.each(dt,function(z,xd){
+                            if(z!="department"&&xd!=null&&xd.trim().toLowerCase().replace(/&nbsp;/g, ' ').replace(/\t/g, '').includes(ksr.toLowerCase())){
+                                isIn = true;
+                                }
+                            });
+                        }
+                    if(isIn){
+                        $(this).find('.rt-data').each(function(e){
+                            let colId = parseInt($(this).attr('data-col')),
+                                coldata = JSON.parse($(this).attr('data-data'));
+                            if(typeof varTotlC[colId] == "undefined"){
+                                varTotlC[colId] = {bid:0,achieved:0};
+                                }
+                            if(coldata.bid!=null){ varTotlC[colId].bid = varTotlC[colId].bid + coldata.bid; }
+                            if(coldata.achieved!=null){ varTotlC[colId].achieved = varTotlC[colId].achieved + coldata.achieved; }
+                            });
+                        $(this).removeAttr('style');
+                        }else{
+                            $(this).css('display','none');
+                            }
+                    });
+                $('.table-self-x > tfoot tr > .rtt-data').each(function(e){
+                    let colId = parseInt($(this).attr('data-col'));
+                    if(typeof varTotlC[colId] != "undefined"){
+                        $(this).attr('title',`Bid Days: `+varTotlC[colId].bid.toFixed(2)+(typeof $(this).attr("data-date") != "undefined"?`\nDate:`+$(this).attr("data-date"):''));
+                        if(varTotlC[colId].bid>0){
+                            $(this).html(getBgColor(varTotlC[colId].bid,varTotlC[colId].bid-varTotlC[colId].achieved));
+                            }else{
+                                $(this).html(`<span class="text-warning" style="color: #36393b !important;" >N/A</span>`);
+                                }
+                        }
+                    });
+                });
+            $.each(ofx_page_data.StatusCodes,function(x,er){
+                if(!er.isApproved&&specialStatusCodes.indexOf(er.code)==-1){
+                    uPar.push(er.code);
+                    }
+                });
+
+            $.ajax({
+                url: "/api/v2/shot/",
+                type: 'GET',
+                dataType: "json",
+                data: {
+                    status__code__in: uPar.join("|")
+                    },
+                contentType: 'application/json; charset=utf-8',
+                "dataSrc": "",
+                "async": true, //displays data after loading the page
+                beforeSend: function(request) {
+                    request.setRequestHeader("required", JSON.stringify(['task_type__id','task_type__name','team_lead__id','team_lead__fullName','team_lead__employee_id','bid_days','achieved_mandays','eta']));
+                    },
+                success: function (r_shots) {
+                    var sts = {},
+                        deptmts = {
+                            key_0:{
+                                id: "showall",
+                                name: 'All Departments'
+                                }
+                            },
+                        rowNull = false,
+                        colNull = false,
+                        minTime = null,
+                        maxTime = null,
+                        listOfDates = [];
+                    $.each(r_shots,function(_z,_e){
+                        if(moment(_e.eta).isValid()&&(minTime==null||minTime.diff(moment(_e.eta), 'days')>0)){
+                            minTime = moment(_e.eta);
+                            }
+                        if(moment(_e.eta).isValid()&&(maxTime==null||moment(_e.eta).diff(maxTime, 'days')>0)){
+                            maxTime = moment(_e.eta);
+                            }
+                        if(moment(_e.eta).isValid()&&listOfDates.indexOf(moment(_e.eta).format('YYYY-MM-DD'))==-1){
+                            listOfDates.push(moment(_e.eta).format('YYYY-MM-DD'));
+                            }
+                        if(_e.team_lead==null){
+                            rowNull = true;
+                            }
+                        if(_e.eta==null){
+                            colNull = true;
+                            }
+                        var _key = _e.team_lead!=null?'key_'+_e.team_lead.id:'key_null',
+                            _datekey = 'key_'+(moment(_e.eta).isValid()?moment(_e.eta).format('YYYY_MM_DD'):'null');
+                        if(_e.task_type != null && typeof deptmts['key_'+_e.task_type.id] == "undefined"){
+                            if(_key=='key_null'){
+                                deptmts['key_null'] = {id:'key_null', name:'Blank'};
+                                }else{
+                                    deptmts['key_'+_e.task_type.id] = _e.task_type;
+                                    }
+                            }
+                        if(typeof sts[_key] == "undefined"){
+                            sts[_key] = {
+                                team_lead: _e.team_lead!=null?JSON.parse(JSON.stringify(_e.team_lead)):{id:null, fullName: 'Blank', employee_id: 'Blank'},
+                                task_type: _e.team_lead!=null?_e.task_type:{id:'key_null', name:'Blank'},
+                                data:{}
+                                };
+                            }
+                        if(typeof sts[_key].data[_datekey] == "undefined"){
+                            sts[_key].data[_datekey] = {
+                                achieved_mandays: 0,
+                                bid_days: 0
+                                }
+                            }
+                        sts[_key].data[_datekey].achieved_mandays = sts[_key].data[_datekey].achieved_mandays + _e.achieved_mandays;
+                        sts[_key].data[_datekey].bid_days = sts[_key].data[_datekey].bid_days + _e.bid_days;
+                        });
+                    listOfDates.sort();
+                    if(colNull){
+                        listOfDates.push('key_null');
+                        }
+                    
+                    var thisDate = null, trdx = [`<th class="pt-1 pb-1" title="Team Lead"><div class="th-inner">Team Lead</div></th>`,`<th class="pt-1 pb-1" title="Department"><div class="th-inner">Department</div></th>`];
+                    $.each(listOfDates,function(_d,_dx){
+                        thisDate = moment(_dx).isValid()?moment(_dx).format('Do MMM YYYY'):'Blank';
+                        trdx.push(`<th class="pt-1 pb-1" title="`+thisDate+`" style="text-align: center;"><div class="th-inner">`+thisDate+`</div></th>`);
+                        });
+                    trdx.push(`<th class="pt-1 pb-1" title="Grand Total" style="text-align: center;"><div class="th-inner">Grand Total</div></th>`);
+                    $(pbidsTable).find('thead').append(`<tr style="font-size: small;">`+trdx+`</tr>`);
+                    var colCount = {
+                        total: {
+                            achieved_mandays: 0,
+                            bid_days: 0
+                            }
+                        };
+                    $.each(sts,function(_z,_x){
+                        var rCount = {achieved_mandays: 0, bid_days: 0}, tdx = `<tr data-data='`+JSON.stringify({name:_x.team_lead.fullName, eid: _x.team_lead.employee_id, department: _x.task_type.id})+`' >`;
+                        tdx = tdx+`<td class="pt-1 pb-1" style="white-space: nowrap; font-weight: 500;"><a style="color: #ffffff;" href="#">`+_x.team_lead.fullName+`</a></td><td style="text-align: center; font-weight: 500;" class="pt-1 pb-1" >`+_x.task_type.name+`</td>`;
+                        $.each(listOfDates,function(_d,_dx){
+                            thisDate = "key_"+(moment(_dx).isValid()?moment(_dx).format('YYYY_MM_DD'):'null');
+                            if(typeof colCount[thisDate] == "undefined"){
+                                colCount[thisDate] = {
+                                    achieved_mandays: 0,
+                                    bid_days: 0
+                                    };
+                                }
+                            if(typeof _x.data[thisDate] != "undefined"){
+                                tdx = tdx+`<td style="text-align: center; font-weight: 500;" class="pt-1 pb-1 rt-data" data-row="`+_z+`" data-col="`+_d+`" data-data='`+JSON.stringify({bid:_x.data[thisDate].bid_days,achieved:_x.data[thisDate].achieved_mandays})+`' title="Team Lead: `+_x.team_lead.fullName+`\nBid Days: `+_x.data[thisDate].bid_days.toFixed(2)+`\nDate:`+(moment(_dx).isValid()?moment(_dx).format('Do MMM YYYY'):'N/A')+`">`+getBgColor(_x.data[thisDate].bid_days,_x.data[thisDate].bid_days-_x.data[thisDate].achieved_mandays)+`</td>`;
+                                colCount[thisDate].achieved_mandays = colCount[thisDate].achieved_mandays+_x.data[thisDate].achieved_mandays;
+                                colCount[thisDate].bid_days = colCount[thisDate].bid_days+_x.data[thisDate].bid_days;
+                                rCount.achieved_mandays = rCount.achieved_mandays+_x.data[thisDate].achieved_mandays;
+                                rCount.bid_days = rCount.bid_days+_x.data[thisDate].bid_days;
+                                }else{
+                                    tdx = tdx+`<td style="text-align: center; font-weight: 500;" class="pt-1 pb-1 rt-data" data-row="`+_z+`" data-col="`+_d+`" data-data='`+JSON.stringify({bid:null,achieved:null})+`'  ><span class="text-warning" style="color: #36393b !important;" >N/A</span></td>`;
+                                    }
+                            });
+                        tdx = tdx+`<td style="text-align: center; font-weight: 500;" class="pt-1 pb-1 rt-data" data-row="`+_z+`" data-col="`+listOfDates.length+`" data-data='`+JSON.stringify({bid:rCount.bid_days,achieved:rCount.achieved_mandays})+`'  title="Team Lead: `+_x.team_lead.fullName+`\nBid Days: `+rCount.bid_days.toFixed(2)+`">`+getBgColor(rCount.bid_days,rCount.bid_days-rCount.achieved_mandays)+`</td>`;
+                        colCount['total'].achieved_mandays = colCount['total'].achieved_mandays + rCount.achieved_mandays;
+                        colCount['total'].bid_days = colCount['total'].bid_days + rCount.bid_days;
+                        $(pbidsTable).find('tbody').append(tdx+`</tr>`);
+                        });
+                    
+                    var tdx = `<tr><td class="pt-1 pb-1" style="white-space: nowrap; border-color: #fff; font-weight: 500;">Grand Total</td><td style="border-color: #fff; font-weight: 500;" class="pt-1 pb-1" >Department</td>`;
+                    $.each(listOfDates,function(_d,_dx){
+                        thisDate = "key_"+(moment(_dx).isValid()?moment(_dx).format('YYYY_MM_DD'):'null');
+                        if(typeof colCount[thisDate] != "undefined"){
+                            tdx = tdx+`<td style="text-align: center; border-color: #fff; font-weight: 500;" class="pt-1 pb-1 rtt-data" data-col="`+_d+`" data-date="`+(moment(_dx).isValid()?moment(_dx).format('Do MMM YYYY'):'N/A')+`" title="Bid Days: `+colCount[thisDate].bid_days.toFixed(2)+`\nDate:`+(moment(_dx).isValid()?moment(_dx).format('Do MMM YYYY'):'N/A')+`">`+getBgColor(colCount[thisDate].bid_days,colCount[thisDate].bid_days-colCount[thisDate].achieved_mandays)+`</td>`;
+                            }else{
+                                tdx = tdx+`<td style="text-align: center; border-color: #fff; font-weight: 500;" class="pt-1 pb-1 rtt-data" data-col="`+_d+`"><span class="text-warning" style="color: #36393b !important;" >N/A</span></td>`;
+                                }
+                        });
+                    tdx = tdx+`<td style="text-align: center; border-color: #fff; font-weight: 500;" class="pt-1 pb-1 rtt-data" data-col="`+listOfDates.length+`" title="Bid Days: `+colCount.total.bid_days.toFixed(2)+`">`+getBgColor(colCount.total.bid_days,colCount.total.bid_days-colCount.total.achieved_mandays)+`</td>`;
+                    $(pbidsTable).find('tfoot').append(tdx+`</tr>`);
+                    let depTag = $('.departments-selectors');
+                    $.each(deptmts,function(x,e){
+                        $(depTag).append($(`<option value="`+e.id+`" >`+e.name+`</option>`));
+                        });
+                    },
+                error: function (jqXHR, exception) {
+                    console.log(jqXHR.responseText);
+                    }
+                });
+
+                /*
+
+            var _data = [{
+                label: "PAINT"
+                , data: 100
+                , color: "#e55c14"
+                ,
+            }, {
+                label: "ROTO"
+                , data: 130
+                , color: "#0be322"
+                ,
+            }, {
+                label: "MATCH MOVE"
+                , data: 32
+                , color: "#009efb"
+                ,
+            }, {
+                label: "COMP"
+                , data: 45
+                , color: "#7460ee"
+                ,
+            },
+            {
+                label: "ON LEAVE"
+                , data: 23
+                , color: "#e33e28"
+                ,
+            }];
+            var plotObj = $.plot($("#flot-pie-chart"), _data, {
+                series: {
+                    pie: {
+                        show: true,
+                        radius: 1,
+                        label: {
+                            show: true,
+                            radius: 3 / 4,
+                            formatter: function (label, series) {
+                                return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + label + '<br/>' + series.data[0][1] + '</div>';
+                            },
+                            background: {
+                                opacity: 0.5
+                            },
+
+                        }
+                    },
+
+                }
+                , grid: {
+                    hoverable: true
+                },
+                legend: {
+                    show: false
+                }
+
+            });
+
+            let w1_pending_mandays = 0
+            let w2_pending_mandays = 0
+            let w3_pending_mandays = 0
+            let w4_pending_mandays = 0
+            let w5_pending_mandays = 0
+
+            let w1_wfd_mandays = 0
+            let w2_wfd_mandays = 0
+            let w3_wfd_mandays = 0
+            let w4_wfd_mandays = 0
+            let w5_wfd_mandays = 0
+            $.ajax({
+                url: "/api/production/mandayavailabilty/",
+                type: 'GET',
+                dataType: 'json', // added data type
+                success: function (res) {
+                    load_data(res)
+                }
+            });
+            $.ajax({
+                url: "/api/production/waitingforbids/",
+                type: 'GET',
+                dataType: 'json', // added data type
+                success: function (res) {
+                    load_wfd(res)
+                }
+            });
+
+            function load_data(manday_data) {
+
+                for (let i = 0; i < manday_data.length; i++) {
+                    w1_pending_mandays += manday_data[i]['w1_pending_mandays']
+                    w2_pending_mandays += manday_data[i]['w2_pending_mandays']
+                    w3_pending_mandays += manday_data[i]['w3_pending_mandays']
+                    w4_pending_mandays += manday_data[i]['w4_pending_mandays']
+                    w5_pending_mandays += manday_data[i]['w5_pending_mandays']
+                    let totalmonth = manday_data[i]['w1_pending_mandays'] + manday_data[i]['w2_pending_mandays'] + manday_data[i]['w3_pending_mandays'] + manday_data[i]['w4_pending_mandays'] + manday_data[i]['w5_pending_mandays']
+                    tl = `<tr>
+                                    <td style="width:50px;"><span class="round">` + manday_data[i]['teamlead'].split("", 1) + `</span></td>
+                                    <td>
+                                        <h6>` + manday_data[i]['teamlead'] + `</h6>
+                                    </td>
+                                    <td class="text-success">` + manday_data[i]['mtd_target'] + `</td>
+                                    <td class="text-danger">` + manday_data[i]['mtd_actuals'] + `</td>
+                                    <td>` + manday_data[i]['w1_pending_mandays'] + `</td>
+                                    <td>` + manday_data[i]['w2_pending_mandays'] + `</td>
+                                    <td class="text-warning">` + manday_data[i]['w3_pending_mandays'] + `</td>
+                                    <td>` + manday_data[i]['w4_pending_mandays'] + `</td>
+                                    <td>` + manday_data[i]['w5_pending_mandays'] + `</td>
+                                    <td>` + totalmonth + `</td>
+                                </tr>`
+                    $('#resource_table_tbody').append(tl)
+                }
+
+                $('#w1_pending_text').text(w1_pending_mandays)
+                $('#w2_pending_text').text(w2_pending_mandays)
+                $('#w3_pending_text').text(w3_pending_mandays)
+                $('#w4_pending_text').text(w4_pending_mandays)
+                $('#w5_pending_text').text(w5_pending_mandays)
+                $('#total_pending_text').text(w1_pending_mandays + w2_pending_mandays + w3_pending_mandays + w4_pending_mandays + w5_pending_mandays)
+            }
+
+            function load_wfd(wfd) {
+
+                for (let i = 0; i < wfd.length; i++) {
+                    w1_wfd_mandays += wfd[i]['w1']
+                    w2_wfd_mandays += wfd[i]['w2']
+                    w3_wfd_mandays += wfd[i]['w3']
+                    w4_wfd_mandays += wfd[i]['w4']
+                    w5_wfd_mandays += wfd[i]['w5']
+                }
+                $('#w1_wfd_text').text(w1_wfd_mandays)
+                $('#w2_wfd_text').text(w2_wfd_mandays)
+                $('#w3_wfd_text').text(w3_wfd_mandays)
+                $('#w4_wfd_text').text(w4_wfd_mandays)
+                $('#w5_wfd_text').text(w5_wfd_mandays)
+                $('#total_wfd_text').text(w1_wfd_mandays + w2_wfd_mandays + w3_wfd_mandays + w4_wfd_mandays + w5_wfd_mandays)
+
+                // Total Values Calculating
+                $('#total_w1').text(w1_pending_mandays + w1_wfd_mandays)
+                $('#total_w2').text(w2_pending_mandays + w2_wfd_mandays)
+                $('#total_w3').text(w3_pending_mandays + w3_wfd_mandays)
+                $('#total_w4').text(w4_pending_mandays + w4_wfd_mandays)
+                $('#total_w5').text(w5_pending_mandays + w5_wfd_mandays)
+                $('#total_total').text(parseInt($('#total_pending_text').text()) + parseInt($('#total_wfd_text').text()))
+            }
+            */
+            });
+
+    </script>
 {% endblock page_scripts %}

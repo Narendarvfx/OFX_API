@@ -1,3 +1,7 @@
+#  Copyright (c) 2023.
+#  Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+#  All rights reserved.
+
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView

@@ -1,5 +1,11 @@
 
 
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 jQuery('#world-map-markers').vectorMap(
 {
     map: 'world_mill_en',

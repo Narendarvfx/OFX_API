@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body style="margin:0px; background: #f8f8f8; ">
+<div width="100%"
+     style="background: #f8f8f8; padding: 0px 0px; font-family:arial; line-height:28px; height:100%;  width: 100%; color: #514d6a;">
+    <div style="max-width: 700px; padding:50px 0;  margin: 0px auto; font-size: 14px">
+        <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 20px">
+            <tbody>
+            <tr>
+                <td style="vertical-align: top; " align="center" ;><a href="#" target="_blank"><img
+                        src="http://shotbuzz.oscarfx.com/static/template/assets/images/shotbuzz_dark_logo.png" alt="Shotbuzz"
+                        style="border:none;width:300px"><br/>
+                </a></td>
+            </tr>
+            </tbody>
+        </table>
+        <table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+            <tbody>
+            <tr>
+                <td style="background:#ea7746; padding:20px; color:#fff; text-align:center;font-size: x-large"> Upload
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div style="padding: 40px; background: #fff;">
+            <table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+                <tbody>
+                <tr>
+                    <td>Shot</td>
+                    <td align="right"> {{ shot }}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="padding:20px 0; border-top:1px solid #f6f6f6;">
+                        <div>
+                            <table width="100%" cellpadding="0" cellspacing="0">
+                                <tbody>
+                                <tr>
+                                    <td style="font-family: 'arial'; font-size: 14px; vertical-align: middle; margin: 0; padding: 9px 0;">
+                                        Client
+                                    </td>
+                                    <td style="font-family: 'arial'; font-size: 14px; vertical-align: middle; margin: 0; padding: 9px 0;"
+                                        align="right">{{ client }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-family: 'arial'; font-size: 14px; vertical-align: middle; border-top-width: 1px; border-top-color: #f6f6f6; border-top-style: solid; margin: 0; padding: 9px 0;">
+                                        Project
+                                    </td>
+                                    <td style="font-family: 'arial'; font-size: 14px; vertical-align: middle; border-top-width: 1px; border-top-color: #f6f6f6; border-top-style: solid; margin: 0; padding: 9px 0;"
+                                        align="right">{{ project }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-family: 'arial'; font-size: 14px; vertical-align: middle; border-top-width: 1px; border-top-color: #f6f6f6; border-top-style: solid; margin: 0; padding: 9px 0;">
+                                        Sequence
+                                    </td>
+                                    <td style="font-family: 'arial'; font-size: 14px; vertical-align: middle; border-top-width: 1px; border-top-color: #f6f6f6; border-top-style: solid; margin: 0; padding: 9px 0;"
+                                        align="right">{{ sequence }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-family: 'arial'; font-size: 14px; vertical-align: middle; border-top-width: 1px; border-top-color: #f6f6f6; border-top-style: solid; margin: 0; padding: 9px 0;">
+                                        Work type/Task name
+                                    </td>
+                                    <td style="font-family: 'arial'; font-size: 14px; vertical-align: middle; border-top-width: 1px; border-top-color: #f6f6f6; border-top-style: solid; margin: 0; padding: 9px 0;"
+                                        align="right">{{ task_type }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-family: 'arial'; font-size: 14px; vertical-align: middle; border-top-width: 1px; border-top-color: #f6f6f6; border-top-style: solid; margin: 0; padding: 9px 0;">
+                                        Version
+                                    </td>
+                                    <td style="font-family: 'arial'; font-size: 14px; vertical-align: middle; border-top-width: 1px; border-top-color: #f6f6f6; border-top-style: solid; margin: 0; padding: 9px 0;"
+                                        align="right">{{ version }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-family: 'arial'; font-size: 14px; vertical-align: middle; border-top-width: 1px; border-top-color: #f6f6f6; border-top-style: solid; margin: 0; padding: 9px 0;">
+                                        Approved By
+                                    </td>
+                                    <td style="font-family: 'arial'; font-size: 14px; vertical-align: middle; border-top-width: 1px; border-top-color: #f6f6f6; border-top-style: solid; margin: 0; padding: 9px 0;"
+                                        align="right">{{ verified_by }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-family: 'arial'; font-size: 14px; vertical-align: middle; border-top-width: 1px; border-top-color: #f6f6f6; border-top-style: solid; margin: 0; padding: 9px 0;">
+                                        Approved Date Time
+                                    </td>
+                                    <td style="font-family: 'arial'; font-size: 14px; vertical-align: middle; border-top-width: 1px; border-top-color: #f6f6f6; border-top-style: solid; margin: 0; padding: 9px 0;"
+                                        align="right">{{ verfied_date }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-family: 'arial'; font-size: 14px; vertical-align: middle; border-top-width: 1px; border-top-color: #f6f6f6; border-top-style: solid; margin: 0; padding: 9px 0;">
+                                        Output Path
+                                    </td>
+                                    <td style="font-family: 'arial'; font-size: 14px; vertical-align: middle; border-top-width: 1px; border-top-color: #f6f6f6; border-top-style: solid; margin: 0; padding: 9px 0;"
+                                        align="right"><textarea name="" id="" cols="45" rows="5"
+                                                                readonly>{{ output_path }}</textarea></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-family: 'arial'; font-size: 14px; vertical-align: middle; border-top-width: 1px; border-top-color: #f6f6f6; border-top-style: solid; margin: 0; padding: 9px 0;">
+                                        Submission Notes
+                                    </td>
+                                    <td style="font-family: 'arial'; font-size: 14px; vertical-align: middle; border-top-width: 1px; border-top-color: #f6f6f6; border-top-style: solid; margin: 0; padding: 9px 0;"
+                                        align="right"><textarea name="" id="" cols="45" rows="5"
+                                                                readonly>{{ submission_notes }}</textarea></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <b>- Thanks (Shotbuzz Team)</b></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="text-align: center; font-size: 12px; color: #b2b2b5; margin-top: 20px">
+            <p> Powered by Oscarfx Private Limited <br>
+            </p>
+        </div>
+    </div>
+</div>
+<div>
+    <p>Do not reply to this email. This is automated email notification from ShotBuzz Automated Email System.</p>
+    <p>This message and any attachment(s) is intended only for the use of the addressee(s) and may contain information
+        that is PRIVILEGED and CONFIDENTIAL. If you are not the intended addressee(s), you are hereby notified that any
+        use, distribution, disclosure or copying of this communication is strictly prohibited. If you have received this
+        communication in error, please erase all copies of the message and its attachment(s) and notify the sender
+        immediately.</p>
+</div>
+</body>
+</html>

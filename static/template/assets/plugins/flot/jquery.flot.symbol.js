@@ -1,17 +1,8 @@
-/* Flot plugin that adds some extra symbols for plotting points.
-
-Copyright (c) 2007-2014 IOLA and Ole Laursen.
-Licensed under the MIT license.
-
-The symbols are accessed as strings through the standard symbol options:
-
-	series: {
-		points: {
-			symbol: "square" // or "diamond", "triangle", "cross"
-		}
-	}
-
-*/
+/*
+ * Copyright (c) 2007-2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
 
 (function ($) {
     function processRawData(plot, series, datapoints) {
