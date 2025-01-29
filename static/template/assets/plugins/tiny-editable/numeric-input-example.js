@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 /* global $ */
 /* this is an example for validation and change events */
 $.fn.numericInputExample = function () {

@@ -1,4 +1,10 @@
 /*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
+/*
 Holder.js - client side image placeholders
 © 2012-2014 Ivan Malopinsky - http://imsky.co
 */

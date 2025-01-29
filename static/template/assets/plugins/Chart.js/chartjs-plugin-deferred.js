@@ -1,11 +1,7 @@
-/*!
- * chartjs-plugin-deferred
- * http://chartjs.org/
- * Version: 0.2.0
- *
- * Copyright 2016 Simon Brunel
- * Released under the MIT license
- * https://github.com/chartjs/chartjs-plugin-deferred/blob/master/LICENSE.md
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
  */
 /* global window: false */
 'use strict';

@@ -1,0 +1,839 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block bread_crumb %}
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/DataTables-1.12.1/css/jquery.dataTables.min.css' %}"
+          type="text/css"/>
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/Responsive-2.3.0/css/responsive.dataTables.min.css' %}"
+          type="text/css"/>
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/Responsive-2.3.0/css/responsive.bootstrap5.min.css' %}"
+          type="text/css"/>
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/Buttons-2.2.3/css/buttons.dataTables.min.css' %}"
+          type="text/css"/>
+    <link rel='stylesheet' href="{% static 'template/assets/plugins/multiselect/css/multi-select.css' %}"
+          type="text/css"/>
+    <link rel="stylesheet"
+          href="{% static 'template/assets/plugins/toast-master/css/jquery.toast.css' %}" type="text/css"/>
+    <link rel="stylesheet"
+          href="{% static 'third_party/DataTables/custom_css/datables_searchpane.css' %}" type="text/css"/>
+    <link rel="stylesheet"
+          href="{% static 'third_party/DataTables/Select-1.4.0/css/select.dataTables.min.css' %}" type="text/css"/>
+    <link href="{% static 'third_party/DataTables/DataTables-1.12.1/css/dataTables.jqueryui.css' %}" rel="stylesheet"
+          type="text/css"/>
+<!--?    <link href="https://cdn.datatables.net/colreorder/1.5.6/css/colReorder.dataTables.min.css' %}" rel="stylesheet"-->
+<!--?          type="text/css"/>-->
+
+    <style>
+        .form-control {
+            color: #fffcfc !important;
+        }
+
+        .container-fluid {
+            padding: 10px !important;
+        }
+
+        .row {
+            margin: 0px !important;
+        }
+
+        /* An ugly trick to use a filter icon */
+        .ui-icon-volume-off.ui-icon-filter {
+            -ms-transform: rotate(270deg);
+            -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+        }
+
+        .card {
+            padding: 10px;
+            background: #272c33 !important;
+            color: white;
+            margin-bottom: 10px !important;
+        }
+
+        #filter_div {
+            padding: 10px;
+            background: #0f0f10 !important;
+            color: white;
+        }
+
+        .col-lg-12 {
+            padding: 0px !important;
+        }
+
+        .col-lg-10 {
+            padding: 0px !important;
+        }
+
+        .card-body {
+            padding: 0rem !important;
+        }
+
+        .dt-buttons .dt-button {
+            border-radius: 4px;
+            background: orange;
+            color: #ffffff
+        }
+
+        table.dataTable tbody tr {
+            background-color: #272c33 !important;
+            font-size: small;
+            font-weight: normal;
+        }
+
+        table.dataTable tr.odd {
+            background-color: #2b3038 !important;
+        }
+
+        table.dataTable td {
+            border-bottom: 0.2px !important;
+            border-color: grey !important;
+        }
+
+        table.dataTable thead {
+            color: #f6f5f5;
+            font-weight: normal;
+            font-size: small;
+        }
+
+        #versions_table_length, #versions_table_info, #versions_table_filter {
+            color: #a2a1a1 !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 2px;
+            background: white;
+        }
+
+        tfoot input {
+            width: 100% !important;
+            padding: 3px !important;
+            box-sizing: border-box !important;
+        }
+
+        table.dataTable tfoot th, table.dataTable tfoot td {
+            padding: 5px;
+            border-top: 0px;
+        }
+
+        .page-titles {
+            padding-bottom: 0px;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            color: #ccc8c8 !important;
+            background-color: inherit;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            color: #dad8d8 !important;
+        }
+
+        table.dataTable tbody tr.selected {
+            background-color: #315eb1 !important;
+            color: white !important;
+        }
+
+        label {
+            margin-bottom: 0px !important;
+        }
+
+        .multiselect-container > li > a > label {
+            padding: 4px 20px 3px 20px;
+        }
+
+        table.dataTable tbody th, table.dataTable tbody td {
+            padding: 7px;
+        }
+
+        .column_vis {
+            height: 20px;
+        }
+
+        /* width */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #383f48;
+            border-radius: 5px;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #2965b9;
+            border-radius: 5px;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        svg {
+            width: 100px;
+            height: 100px;
+            margin: 20px;
+            display: inline-block;
+            background-color: #0A0A0A;
+        }
+
+        div.dtsp-verticalContainer {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-content: flex-start;
+            align-items: flex-start;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes,
+        div.dtsp-verticalContainer div.container {
+            width: 20%;
+            flex-grow: 0;
+            flex-shrink: 0;
+            flex-basis: 0;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes {
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: 26%;
+        }
+
+        div.dtsp-verticalPanes {
+            margin-right: 10px;
+        }
+
+        div.dtsp-title {
+            margin-right: 0px !important;
+            margin-top: 13px !important;
+        }
+
+        input.dtsp-search {
+            min-width: 0px !important;
+            padding-left: 0px !important;
+            margin: 0px !important;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes div.dtsp-searchPanes {
+            flex-direction: column;
+            flex-basis: 0px;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes div.dtsp-searchPanes div.dtsp-searchPane {
+            flex-basis: 0px;
+        }
+
+        div.dtsp-verticalContainer div.container {
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: 80%;
+        }
+
+        div.dtsp-panesContainer {
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 5px;
+        }
+    </style>
+    <div class="row page-titles">
+        <div class="col-md-4 col-6 align-self-center">
+            <h3 class="text-themecolor mb-0 mt-0">Version Report</h3>
+        </div>
+        <div class="col-md-8 col-8 align-self-center">
+            <div class="float-right" style="margin-left: 5px">
+                <button class="btn float-right btn-primary" onclick="export_to_excel()"><i
+                        class="mdi mdi-cloud-download"></i> Export
+                </button>
+            </div>
+            <div class="float-right" style="margin-left: 5px">
+                <select id="shot_taskType_select" class="form-control">
+                    <option value="0">TaskType</option>
+                    {% for task_ty in task_type %}
+                        <option value="{{ task_ty.id }}">{{ task_ty.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="float-right" style="margin-left: 5px">
+                <select id="shot_project_select" class="form-control">
+                    <option value="0">Project</option>
+                    {% for project in projects %}
+                        <option value={{ project.id }}>{{ project.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="float-right" style="margin-left: 5px">
+                <select id="shot_client_select" class="form-control">
+                    <option value="0">Client</option>
+                    {% for client in clients %}
+                        <option value={{ client.id }}>{{ client.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+{% endblock bread_crumb %}
+
+
+{% block content %}
+    <div class="container-fluid row">
+
+        <!-- Shots Table View -->
+        <div class="col-lg-12" id="versions_list_view">
+            <div class="card">
+
+                <table id="versions_table" class="table display no-wrap" style="width:100%">
+
+                </table>
+
+            </div>
+        </div>
+        <div class="col-lg-2 card" id="filter_div" style="display: none;height:1000px;overflow-y: auto">
+            <h6><i onclick="header_vis(this)" class="ti-angle-right"></i> Header Visibility</h6>
+            <div class="card" id="header_filter" style="display: none; height:200px; overflow-y: scroll">
+                <div class="card-body">
+                    <input type="text" class="form-control column_vis" id="search_header" onkeyup="search_column()"
+                           placeholder="Search for...">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox1" data-column="1"
+                               value="check" checked>
+                        <label class="custom-control-label" for="checkbox1">CLIENT</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox2" data-column="2"
+                               value="check" checked>
+                        <label class="custom-control-label" for="checkbox2">PROJECT</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox3" data-column="3"
+                               value="check" checked>
+                        <label class="custom-control-label" for="checkbox3">SEQUENCE</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox4" data-column="4"
+                               value="check" checked>
+                        <label class="custom-control-label" for="checkbox4">SHOT</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox5" data-column="5"
+                               value="check" checked>
+                        <label class="custom-control-label" for="checkbox5">TYPE</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox6" data-column="6"
+                               value="check" checked>
+                        <label class="custom-control-label" for="checkbox6">TASK TYPE</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox7" data-column="7"
+                               value="check" checked>
+                        <label class="custom-control-label" for="checkbox7">COMPLEXITY</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox8" data-column="8"
+                               value="check" checked>
+                        <label class="custom-control-label" for="checkbox8">STATUS</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox9" data-column="9"
+                               value="check" checked>
+                        <label class="custom-control-label" for="checkbox9">PROGRESS</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox10" data-column="10"
+                               value="check" checked>
+                        <label class="custom-control-label" for="checkbox10">ACTUAL BIDS</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox11" data-column="11"
+                               value="check" checked>
+                        <label class="custom-control-label" for="checkbox11">CONSUMED BIDS</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox12" data-column="12"
+                               value="check" checked>
+                        <label class="custom-control-label" for="checkbox12">ETA</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox16" data-column="16"
+                               value="check" checked>
+                        <label class="custom-control-label" for="checkbox16">TEAM LEAD</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox17" data-column="17"
+                               value="check" checked>
+                        <label class="custom-control-label" for="checkbox17">LOCATION</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox18" data-column="18"
+                               value="check" checked>
+                        <label class="custom-control-label" for="checkbox18">LOCALITY</label>
+                    </div>
+                </div>
+            </div>
+            <h6><i onclick="client_vis(this)" class="ti-angle-right"></i> Client Filter</h6>
+            <div class="card" id="client_filter" style="display: none; height:200px; overflow-y: scroll">
+                <div class="card-body">
+                    <input type="text" class="form-control column_vis" id="search_header" onkeyup="search_column()"
+                           placeholder="Search for...">
+                    {% for client in clients %}
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input toggle-vis"
+                                   id="checkbox{{ forloop.counter0 }}"
+                                   data-column={{ forloop.counter0 }} value={{ client.id }} checked>
+                            <label class="custom-control-label"
+                                   for="checkbox{{ forloop.counter0 }}">{{ client.name }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        <div class="dtsp-verticalContainer">
+                    <div class="dtsp-verticalPanes"></div>
+                    <div class="container">
+                    </div>
+        </div>
+
+        </div>
+    </div>
+    <div id="select_lead_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Select Team Lead</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form">
+                        {% csrf_token %}
+                        <div class="form-body" id="select_lead">
+                            <select id="shot_lead_select" class="form-control">
+                                <option value="0">Select Team Lead</option>
+                                {% for lead in leads %}
+                                    <option value={{ lead.id }}>{{ lead.fullName }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" name="save" class="btn btn-success waves-effect waves-light"
+                            onclick="assign_lead()">Assign
+                    </button>
+                    <button type="button" name="close" class="btn btn-default waves-effect" data-dismiss="modal"
+                            onclick="close_assign_modal()">Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="custom_preloader"
+         style="display: inline-block;position: fixed;top: 0;bottom: 0;left: 0;right: 0;width: 200px;height: 100px;margin: auto;">
+        <svg version="1.1" id="L2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+             y="0px"
+             viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+<circle fill="none" stroke="#fff" stroke-width="4" stroke-miterlimit="10" cx="50" cy="50" r="48"/>
+            <line fill="none" stroke-linecap="round" stroke="#fff" stroke-width="4" stroke-miterlimit="10" x1="50"
+                  y1="50" x2="85" y2="50.5">
+  <animateTransform
+          attributeName="transform"
+          dur="2s"
+          type="rotate"
+          from="0 50 50"
+          to="360 50 50"
+          repeatCount="indefinite"/>
+</line>
+            <line fill="none" stroke-linecap="round" stroke="#fff" stroke-width="4" stroke-miterlimit="10" x1="50"
+                  y1="50" x2="49.5" y2="74">
+  <animateTransform
+          attributeName="transform"
+          dur="15s"
+          type="rotate"
+          from="0 50 50"
+          to="360 50 50"
+          repeatCount="indefinite"/>
+</line>
+</svg>
+    </div>
+
+{% endblock content %}
+
+
+
+{% block page_scripts %}
+    <!--OFX Core JavaScript -->
+    <script src="{% static 'ofx/core.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/DataTables-1.12.1/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Responsive-2.3.0/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Responsive-2.3.0/js/responsive.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Buttons-2.2.3/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Buttons-2.2.3/js/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Bootstrap-5-5.1.3/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'template/assets/plugins/popper/popper.min.js' %}"></script>
+    <script src="{% static 'template/assets/plugins/toast-master/js/jquery.toast.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/custom_js/datatables_searchPane.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Select-1.4.0/js/dataTables.select.min.js' %}"></script>
+    <!-- <script src="{% static 'template/assets/plugins/moment/moment.js' %}"></script> -->
+<!--?    <script src="https://cdn.datatables.net/colreorder/1.5.6/js/dataTables.colReorder.min.js' %}"></script>-->
+
+    <script>
+        $(".column_filter").click(function (e) {
+            var x = document.getElementById("filter_div");
+            if (x.style.display === "none") {
+                $('.col-lg-12').addClass('col-lg-10').removeClass('col-lg-12')
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+                $('.col-lg-10').addClass('col-lg-12').removeClass('col-lg-10')
+            }
+        });
+        $(window).click(function (e) {
+            $("#filters-modal").modal('hide');
+        });
+
+        function header_vis(x) {
+            x.classList.toggle("ti-angle-down");
+            var s = document.getElementById("header_filter");
+            if (s.style.display === "none") {
+                s.style.display = "block";
+            } else {
+                s.style.display = "none";
+            }
+        }
+
+        function client_vis(x) {
+            x.classList.toggle("ti-angle-down");
+            var s = document.getElementById("client_filter");
+            if (s.style.display === "none") {
+                s.style.display = "block";
+            } else {
+                s.style.display = "none";
+            }
+        }
+
+        function search_column() {
+            var input = document.getElementById("search_header");
+            var filter = input.value.toLowerCase();
+            var nodes = document.getElementsByClassName('custom-checkbox');
+
+            for (i = 0; i < nodes.length; i++) {
+                if (nodes[i].innerText.toLowerCase().includes(filter)) {
+                    nodes[i].style.display = "block";
+                } else {
+                    nodes[i].style.display = "none";
+                }
+            }
+        }
+
+        let client_id = 0;
+        let project_id = 0;
+        let status_id = 0
+        let location_id = 0
+        let locality_id = 0
+        let task_type_id = 0
+
+        //  Load Shots Information
+        status_list = "YTA|ATL|YTS|STQ|WIP|IRT|QIP|CRT|IAP|LAP|LRT|HLD|OMT"
+
+        var shotId_arr = [];
+        var table = ""
+        $(document).ready(function () {
+            $(".custom_preloader").hide()
+            table = $('#versions_table').DataTable({
+                columnDefs: [
+                    {
+                        searchPanes: {
+                            show: false
+                        },
+                        targets: [0]
+                    },
+                    {
+                        searchPanes: {
+                            show: false
+                        },
+                        targets: [3]
+                    },
+                    {
+                        searchPanes: {
+                            show: false
+                        },
+                        targets: [4]
+                    },
+                    {
+                        searchPanes: {
+                            show: false
+                        },
+                        targets: [8]
+                    },
+                    {
+                        searchPanes: {
+                            show: false
+                        },
+                        targets: [9]
+                    },
+                    {
+                        searchPanes: {
+                            show: false
+                        },
+                        targets: [10]
+                    },
+                    {
+                        searchPanes: {
+                            show: false
+                        },
+                        targets: [12]
+                    },
+                    {
+                        searchPanes: {
+                            show: false
+                        },
+                        targets: [13]
+                    },
+                    {
+                        searchPanes: {
+                            show: false
+                        },
+                        targets: [14]
+                    },
+                    {
+                        searchPanes: {
+                            show: false
+                        },
+                        targets: [15]
+                    },
+                ],
+                searchPanes: {
+                    cascadePanes: true,
+                    layout: 'columns-1'
+                },
+
+                dom: '<"dtsp-dataTable"frtip>',
+                responsive: false,
+                colReorder: true,
+                "searching": true,
+                "ajax": {
+                    "processing": true,
+                    "url": "/api/production/production_sheet/?status=" + status_list + "/",
+                    "type": "GET",
+                    "dataSrc": ""
+                },
+                'language': {
+                    'loadingRecords': '&nbsp;',
+                    'processing': 'Loading...'
+                },
+                columns: [
+                    {
+                        data: "id",
+                        render: function (data, type, row, meta) {
+                            return (
+                                '<input type="checkbox" name="shotCheckbox" class="shot_checkbox"  value="' +
+                                data +
+                                '">'
+                            );
+                        },
+                    },
+                    {title: "CLIENT", data: 'sequence.project.client.name'},
+                    {title: "PROJECT", data: 'sequence.project.name'},
+                    {title: "SEQUENCE", data: 'sequence.name'},
+                    {title: "SHOT CODE", data: 'name'},
+                    {title: "TASK TYPE", data: 'task_type'},
+                    {title: "TYPE", data: 'type'},
+                    {title: "COMPLEXITY", data: 'complexity'},
+                    {
+                        title: "STATUS", data: 'status',
+                        render: function (data, type, row, meta) {
+                            return (
+                                '<span class="badge" style="color:white;padding:3px 10px;font-size:1em; background-color:' + data.color + '">' + data.code + '</span>'
+                            );
+                        },
+                    },
+                    {title: "VERSION", data: 'version'},
+                    {title: "SUBMITTED DATE",
+                    render: function (data, type, row, meta) {
+                            return moment(data).format("DD-MM-YYYY");
+                        },
+                    },
+                    {
+                        title: "PROGRESS", data: 'progress',
+                        render: function (data, type, row, meta) {
+                            return (
+                                `<div class="progress" style="height: 15px;">
+                        <div class="progress-bar" style="width:` + data + `%;background-color:red;color: white;font-weight: bold" role="progressbar">` + data + `%</div>
+                    </div>`
+                            )
+                        }
+                    },
+                    {title: "ACTUAL BIDS", data: 'bid_days'},
+                    {
+                        title: "CONSUMED BIDS", data: 'total_spent',
+                        render: function (data, type, row, meta) {
+                            return data.toFixed(2)
+                        }
+                    },
+                    {
+                        title: "ETA", data: 'eta',
+                        render: function (data, type, row, meta) {
+                            return moment(data).format("DD-MM-YYYY");
+                        }
+                    },
+                    {title: "TEAM LEAD", data: 'team_lead'},
+                    {title: "ARTIST", data: 'artist'},
+                    {title: "LOCATION", data: 'location'},
+                ],
+                select: true,
+                order: [[1, 'asc']],
+                scrollResize: true,
+                scrollX: true,
+                scrollCollapse: true,
+                buttons: [],
+                "paging": true,
+                "pageLength": 25,
+                "bSortClasses": false,
+                stateSave: false,
+                deferLoading: 10,
+            });
+
+            table.searchPanes()
+            $("div.dtsp-verticalPanes").append(table.searchPanes.container());
+            {#$(".dtsp-panesContainer").show()#}
+            $(".assign_leads").click(function (e) {
+                shotId_arr.length = 0
+                $("input:checkbox[class=shot_checkbox]:checked").each(function () {
+                    shotId_arr.push($(this).val());
+                });
+
+                if (shotId_arr.length > 0) {
+                    $('#select_lead_modal').modal('show');
+                } else {
+                    alert("No Shots are Selected")
+                }
+            });
+
+            $('input.toggle-vis').on('click', function (e) {
+                {#e.preventDefault();#}
+
+                // Get the column API object
+                var column = table.column($(this).attr('data-column'));
+
+                // Toggle the visibility
+                column.visible(!column.visible());
+            });
+
+            $('#shot_client_select').on('change', function () {
+                const client = $('#shot_client_select option:selected').text().trim();
+                client_id = $('#shot_client_select option:selected').val();
+                if (client_id != 0) {
+                    table.columns(1).search(client).draw();
+                    const all_projects_json = $.ajax({
+                        type: "GET",
+                        url: "/api/production/projects/" + client_id + "/",
+                        dataType: "application/json",
+                        async: false,
+                        error: function (xhr, status, err) {
+                        },
+                    }).responseText;
+                    const all_projects = JSON.parse(all_projects_json);
+                    $('#shot_project_select').empty()
+                    $('#shot_project_select').append(`<option value="0">
+                                               Project
+                                          </option>`);
+                    all_projects.forEach(function (project) {
+                        optionText = project['name'];
+                        optionValue = project['id'];
+                        $('#shot_project_select').append(`<option value="${optionValue}">
+                                               ${optionText}
+                                          </option>`);
+                    })
+                } else {
+                    table.columns(1).search(client).draw();
+                    $('#shot_project_select').empty()
+                    $('#shot_project_select').append(`<option value="0">
+                                               Project
+                                          </option>`);
+                    {% for project in projects %}
+                        $('#shot_project_select').append(`<option value='{{ project.name }}'>
+                                               {{ project.name }}
+                                          </option>`);
+                    {% endfor %}
+                }
+            });
+            $('#shot_project_select').on('change', function () {
+                const project = $("#shot_project_select :selected").text().trim();
+                project_id = $('#shot_project_select option:selected').val();
+                table.columns(2).search(project).draw();
+            });
+            $('#shot_taskType_select').on('change', function () {
+                let taskType = $('#shot_taskType_select :selected').text().trim()
+                task_type_id = $('#shot_taskType_select option:selected').val()
+                if (task_type_id == 0) {
+                    taskType = ""
+                }
+                table.columns(5).search(taskType).draw();
+            });
+            $('#shot_status_select').on('change', function () {
+                let status = $('#shot_status_select :selected').text().trim();
+                status_id = $('#shot_status_select option:selected').val();
+                if (status_id == 0) {
+                    status = ""
+                }
+                table.columns(8).search(status).draw();
+            });
+            $('#shot_location_select').on('change', function () {
+                let location = $('#shot_location_select :selected').text().trim();
+                location_id = $('#shot_location_select option:selected').val();
+                if (location_id == 0) {
+                    location = ""
+                }
+                table.columns(19).search(location).draw();
+            });
+            $('#shot_locality_select').on('change', function () {
+                let locality = $("#shot_locality_select :selected").text().trim();
+                locality_id = $("#shot_locality_select option:selected").val();
+                if (locality_id != 0) {
+                    table.columns(20).search(locality).draw();
+                    const all_clients_json = $.ajax({
+                        type: "GET",
+                        url: "/api/production/clients/?locality=" + locality,
+                        dataType: "application/json",
+                        async: false,
+                        error: function (xhr, status, err) {
+                        },
+                    }).responseText;
+                    const all_clients = JSON.parse(all_clients_json);
+                    $('#shot_client_select').empty()
+                    $('#shot_client_select').append(`<option value="0">
+                                               Client
+                                          </option>`);
+                    all_clients.forEach(function (client) {
+                        optionText = client['name'];
+                        optionValue = client['id'];
+                        $('#shot_client_select').append(`<option value="${optionValue}">
+                                               ${optionText}
+                                          </option>`);
+                    })
+                } else {
+                    locality = ""
+                    table.columns(20).search(locality).draw();
+                    $('#shot_client_select').empty()
+                    $('#shot_client_select').append(`<option value="0">
+                                               Client
+                                          </option>`);
+                    {% for client in clients %}
+                        $('#shot_client_select').append(`<option value='{{ client.name }}'>
+                                               {{ client.name }}
+                                          </option>`);
+                    {% endfor %}
+                }
+
+            });
+        });
+
+        function export_to_excel() {
+            window.location = "/production/export_ver_report/?client=" + client_id + "&project=" + project_id + "&task_type=" + task_type_id
+        }
+    </script>
+{% endblock page_scripts %}

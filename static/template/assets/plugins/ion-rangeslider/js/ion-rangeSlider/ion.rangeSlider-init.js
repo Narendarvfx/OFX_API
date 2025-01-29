@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 $("#range_01").ionRangeSlider();
 
 $("#range_02").ionRangeSlider({

@@ -1,10 +1,8 @@
-/**
-* jQuery asColor v0.3.4
-* https://github.com/amazingSurge/asColor
-*
-* Copyright (c) amazingSurge
-* Released under the LGPL-3.0 license
-*/
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
 (function(global, factory) {
   if (typeof define === "function" && define.amd) {
     define('AsColor', ['exports', 'jquery'], factory);

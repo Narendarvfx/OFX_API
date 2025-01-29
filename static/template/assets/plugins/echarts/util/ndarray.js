@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 /**
  * Numpy like n-dimensional array proccessing class
  * http://docs.scipy.org/doc/numpy/reference/arrays.ndarray.html

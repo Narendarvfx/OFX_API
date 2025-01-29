@@ -1,4 +1,10 @@
 /*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
+/*
  * This combined file was created by the DataTables downloader builder:
  *   https://datatables.net/download
  *
@@ -10,11 +16,6 @@
  *   Bootstrap 5 5.1.3, DataTables 1.12.1, Buttons 2.2.3, Column visibility 2.2.3, ColReorder 1.5.6, DateTime 1.1.2, FixedColumns 4.1.0, FixedHeader 3.2.4, KeyTable 2.7.0, Responsive 2.3.0, RowGroup 1.2.0, RowReorder 1.2.8, Scroller 2.0.7, SearchBuilder 1.3.4, SearchPanes 2.0.2, Select 1.4.0, StateRestore 1.1.1
  */
 
-/*!
-  * Bootstrap v5.1.3 (https://getbootstrap.com/)
-  * Copyright 2011-2021 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
-  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
-  */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :

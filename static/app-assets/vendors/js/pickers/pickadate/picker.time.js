@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 /*!
  * Time picker for pickadate.js v3.6.4
  * http://amsul.github.io/pickadate.js/time.htm

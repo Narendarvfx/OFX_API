@@ -1,0 +1,613 @@
+<html lang="en">
+<head>
+    <title>WS Doc</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+    <meta name="author" content="IngeniousPro Team">
+    <link href="/static/template/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/template/main/light/scss/icons/font-awesome/css/fontawesome-all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <style>.wnoty-notification, .wnoty-notification *, .wnoty-notification *:after, .wnoty-notification *:before {
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    .wnoty-notification.wnoty-hide {
+        -webkit-animation-name: animFade;
+        animation-name: animFade;
+        -webkit-animation-duration: .25s;
+        animation-duration: .25s;
+        -webkit-animation-direction: reverse;
+        animation-direction: reverse;
+    }
+
+    .wnoty-top-left .wnoty-notification.wnoty-show, .wnoty-bottom-left .wnoty-notification.wnoty-show {
+        -webkit-animation-name: slideInLeft;
+        animation-name: slideInLeft;
+        -webkit-animation-duration: .2s;
+        animation-duration: .2s;
+        -webkit-animation-timing-function: linear;
+        animation-timing-function: linear;
+    }
+
+    .wnoty-top-right .wnoty-notification.wnoty-show, .wnoty-bottom-right .wnoty-notification.wnoty-show {
+        -webkit-animation-name: slideInRight;
+        animation-name: slideInRight;
+        -webkit-animation-duration: .2s;
+        animation-duration: .2s;
+        -webkit-animation-timing-function: linear;
+        animation-timing-function: linear;
+    }
+
+    .wnoty-notification {
+        position: relative;
+        border-radius: 5px;
+        background: #ffffff;
+        padding: 25px;
+        line-height: 1.4;
+        z-index: 1000;
+        pointer-events: none;
+        color: rgba(250, 251, 255, 0.95);
+        font-size: 90%;
+        font-family: 'Helvetica Neue', 'Segoe UI', Helvetica, Arial, sans-serif;
+        max-width: 370px;
+        z-index: 9999999999999;
+        box-shadow: 1px 7px 14px -5px rgba(0, 0, 0, 0.2);
+        margin: 5px 0;
+        pointer-events: auto;
+    }
+
+    .wnoty-notification p {
+        margin: 0;
+        line-height: 1.3;
+        font-size: 14px;
+        color: #000;
+        font-weight: 300;
+    }
+
+    .wnoty-notification a {
+        opacity: .7;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .wnoty-notification a:hover, .wnoty-notification a:focus {
+        color: #fff !important;
+        opacity: 1;
+    }
+
+    .wnoty-close {
+        width: 27px;
+        height: 27px;
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        overflow: hidden;
+        text-indent: 100%;
+        cursor: pointer;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        margin-top: -14px;
+        opacity: 0.3;
+        transition: 0.3s linear;
+    }
+
+    .wnoty-close::before, .wnoty-close::after {
+        content: '';
+        position: absolute;
+        width: 1px;
+        height: 60%;
+        top: 50%;
+        left: 50%;
+        background: #6e6e6e;
+    }
+
+    .wnoty-close::after {
+        -webkit-transform: translate(-50%, -50%) rotate(-45deg);
+        transform: translate(-50%, -50%) rotate(-45deg);
+    }
+
+    .wnoty-close::before {
+        -webkit-transform: translate(-50%, -50%) rotate(45deg);
+        transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    .wnoty-close:hover, .wnoty-close:focus {
+        outline: 0;
+        opacity: 1;
+    }
+
+    @-webkit-keyframes animFade {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes animFade {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideInLeft {
+        0% {
+            transform: translate3d(-100%, 0, 0);
+            visibility: visible
+        }
+        to {
+            transform: translateZ(0)
+        }
+    }
+
+    @keyframes slideInRight {
+        0% {
+            transform: translate3d(100%, 0, 0);
+            visibility: visible
+        }
+        to {
+            transform: translateZ(0)
+        }
+    }
+
+    .wnoty-notification .wnoty-wrapper i.fa.wnoty-icon, .wnoty-notification .wnoty-wrapper i.fas.wnoty-icon {
+        position: absolute;
+        left: 17px;
+        top: 50%;
+        font-size: 24px;
+        margin-top: -12px;
+    }
+
+    .wnoty-wrapper {
+        padding-left: 25px;
+        padding-right: 30px;
+    }
+
+    .wnoty-notification .wnoty-close::before, .wnoty-notification .wnoty-close::after {
+        background: #000000;
+    }
+
+    .wnoty-notification.wnoty-info {
+        border-left: 5px solid #2196f3;
+        color: #2196f3;
+    }
+
+    .wnoty-notification.wnoty-info a {
+        color: #004780;
+    }
+
+    .wnoty-notification.wnoty-success {
+        border-left: 5px solid #3ec569;
+        color: #3ec569;
+    }
+
+    .wnoty-notification.wnoty-success a {
+        color: #007330;
+    }
+
+    .wnoty-notification.wnoty-error {
+        border-left: 5px solid #e43e3e;
+        color: #e43e3e;
+    }
+
+    .wnoty-notification.wnoty-error a {
+        color: #7c1313;
+    }
+
+    .wnoty-notification.wnoty-warning {
+        border-left: 5px solid #ffe008;
+        color: #ffe008;
+    }
+
+    .wnoty-notification.wnoty-warning a {
+        color: #a97515;
+    }
+
+    .wnoty-block {
+        position: fixed;
+        z-index: 99999;
+    }
+
+    .wnoty-block.wnoty-top-left {
+        top: 30px;
+        left: 30px;
+    }
+
+    .wnoty-block.wnoty-top-right {
+        top: 30px;
+        right: 30px;
+    }
+
+    .wnoty-block.wnoty-bottom-left {
+        bottom: 30px;
+        left: 30px;
+    }
+
+    .wnoty-block.wnoty-bottom-right {
+        bottom: 30px;
+        right: 30px;
+    } </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>!(function ($, win, doc) {
+        "use strict";
+        var _doc = $(doc), _win = $(win), wnoty = doc.createElement("div"), notify = "wnoty", _notify = "#",
+            error = function (e) {
+                throw "error: Cannot Notify => " + e;
+            }, warn = function (l) {
+                (console.warn == "undefiend") ? console.log("Notify Warning: " + l) : console.warn("Notify Warning: " + l);
+            }, in_array = function (array, value) {
+                for (var i = 0; i < array.length; i++) {
+                    if (array[i] === value) return true;
+                }
+                return false;
+            }, PrefixedEvent = function (element, type, callback) {
+                var pfx = ["webkit", "moz", "MS", "o", ""];
+                for (var p = 0; p < pfx.length; p++) {
+                    if (!pfx[p]) type = type.toLowerCase();
+                    _doc.on(pfx[p] + type, element, callback);
+                }
+            }, closeNotify = function (button) {
+                button.parents("." + notify + "-notification").removeClass("" + notify + "-show");
+                setTimeout(function () {
+                    button.parents("." + notify + "-notification").addClass("" + notify + "-hide")
+                }, 25);
+            }, initialize = function (set) {
+                var main = doc.createElement("div"), wrapper = doc.createElement("div"), icon = doc.createElement("i"),
+                    text = doc.createElement("p"), close = doc.createElement("span");
+                for (var g = 0; g < $("." + notify + "-notification").length; g++) {
+                    var g = g;
+                }
+                wnoty.className = "" + notify + "-block " + notify + "-" + set.position;
+                main.className = "" + notify + "-notification " + notify + "-" + set.type + " leight-" + g;
+                main.id = "leight-" + g;
+                wrapper.className = notify + "-wrapper";
+                if (set.type == "error") {
+                    icon.className = notify + "-icon fa fa-times-circle";
+                } else if (set.type == "success") {
+                    icon.className = notify + "-icon fa fa-check-circle";
+                } else if (set.type == "warning") {
+                    icon.className = notify + "-icon fa fa-exclamation-triangle";
+                } else if (set.type == "info") {
+                    icon.className = notify + "-icon fas fa-info-circle";
+                }
+                ;close.className = "wnoty-close";
+                doc.body.append(wnoty);
+                wnoty.prepend(main);
+                main.appendChild(wrapper);
+                main.appendChild(close);
+                wrapper.appendChild(icon);
+                wrapper.appendChild(text);
+                text.innerHTML = set.message;
+                $("." + notify + "-notification").removeClass("wnoty-show");
+                $("#leight-" + g).addClass("wnoty-show");
+                if (set.autohide == true) {
+                    setTimeout(function () {
+                        closeNotify($(close));
+                    }, set.autohideDelay)
+                }
+            };
+        $.wnoty = function (options) {
+            var positions = ["top-left", "bottom-left", "top-right", "bottom-right"],
+                types = ["error", "success", "warning", "info"], defaults = {position: positions[2]},
+                settings = {message: "", type: "", autohide: true, autohideDelay: 2500, position: positions[2],};
+            $.extend(settings, options);
+            if (settings.type == "" && !settings.type.length) error("Type is not defined!");
+            if (!in_array(types, settings.type)) error("Uhh, invalid notify type!");
+            if (settings.message == "" && !settings.message.length) error("Hmmm, Message seems to be empty or not defined!");
+            if (!in_array(positions, settings.position)) {
+                warn("Oh, Invalid position switching to default!");
+                settings.position = defaults.position;
+            }
+            if ($("." + notify + "-notification").length >= 10) {
+                $("." + notify + "-notification:last").remove();
+            }
+            initialize(settings);
+        };
+        PrefixedEvent($("." + notify + "-notification"), "AnimationEnd", function () {
+            $(".wnoty-notification.wnoty-hide").remove();
+        });
+        _doc.on("click", ".wnoty-close", function () {
+            closeNotify($(this));
+        });
+    })(window.jQuery, window, document)</script>
+    <script src="/static/template/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <style>
+        select > optgroup > option:first-child {
+            margin-top: -20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Hello {% if name %}{{ name }}{% else %}Bot{% endif %}</h1>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <div class="col-md-12 mb-3">
+                <label class="form-label">Client</label>
+                <select class="form-control client-id is-invalid">
+                    <option value="" disabled selected="selected">Selct Client</option>
+                    {% for id, data in users.items %}
+                        <option value="{{ id }}">{{ data.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-12 mb-3">
+                <label class="form-label">Send From Group</label>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" name="sendGroup" value="" class="send-group-from">
+                            <label class="custom-control-label">No Group</label>
+                        </div>
+                    </div>
+                    {% for id, data in groups.items %}
+                        <div class="col-md-6 mb-3">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" name="sendGroup" value="{{ id }}" class="send-group-from">
+                                <label class="custom-control-label">Group - {{ data.name }}</label>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <label class="form-label">Send To</label>
+                <select multiple class="form-control sent-to" style="min-height: 150px;">
+                    {% for id, data in groups.items %}
+                        <option value="{{ id }}" data-type="groups">Group - {{ data.name }}</option>
+                        <optgroup label="">
+                            {% for idx, datax in users.items %}
+                                {% if id in datax.groups %}
+                                    <option value="{{ idx }}" data-type="clients">Client - {{ datax.name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </optgroup>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-12 mb-3">
+                <label>Your Message</label>
+                <textarea class="form-control message" placeholder="Required example textarea" required
+                          style="min-height: 150px;"></textarea>
+            </div>
+            <div class="col-md-12 mb-3">
+                <button class="btn btn-primary send-msg">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="display: none;">
+    <div class="users-list">{{ users|json_script:"users" }}</div>
+    <div class="groups-list">{{ groups|json_script:"groups" }}</div>
+</div>
+<script type="text/javascript">
+    var users = JSON.parse(document.getElementById('users').textContent);
+    var groups = JSON.parse(document.getElementById('groups').textContent);
+    // console.log('users',users);
+    // console.log('groups',groups);
+    // function makeId(length){
+    //     var result           = [];
+    //     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    //     var charactersLength = characters.length;
+    //     for ( var i = 0; i < length; i++ ) {
+    //     result.push(characters.charAt(Math.floor(Math.random() *
+    //     charactersLength)));
+    //     }
+    //     return result.join('');
+    //     }
+    $wsClient = {
+        network: true,
+        isBooted: true,
+        reconnectTimeOut: 1000,
+        allowReconncet: true,
+        apiPath: `http://${window.location.host}/wsapi/getwstoken/`,
+        wsHost: `ws://${window.location.host}/ws/data/`,
+        apiKey: null,
+        lastSync: new Date(),
+        ws: {},
+        connectClient: function (apiKey = '', force = false) {
+            if (apiKey.length > 0) {
+                this.allowReconncet = false;
+                this.apiKey = apiKey;
+                $.ajax({
+                    url: this.apiPath + '?apiKey=' + this.apiKey,
+                    type: 'GET',
+                    data: {},
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        var response = JSON.parse(data);
+                        if (typeof response == 'object' && typeof response.status != "undefined") {
+                            $wsClient.connect(response.wsToken, force);
+                        } else {
+                            if (typeof response == 'object') {
+                                $.wnoty({
+                                    type: 'info',
+                                    message: response.message,
+                                    autohideDelay: 2500
+                                });
+                            } else {
+                                $wsClient.connectClient($wsClient.apiKey, force);
+                                $.wnoty({
+                                    type: 'error',
+                                    message: 'Unable to get wsToken',
+                                    autohideDelay: 2500
+                                });
+                            }
+                        }
+                    },
+                    error: function (data) {
+                        $wsClient.connectClient($wsClient.apiKey, force);
+                        $.wnoty({
+                            type: 'error',
+                            message: 'Unable to get wsToken',
+                            autohideDelay: 2500
+                        });
+                    }
+                });
+            }
+        },
+        chkConnection: function () {
+            if (this.network != navigator.onLine) {
+                this.network = navigator.onLine;
+                if (!this.network && typeof this.ws.readyState !== 'undefined' && this.ws.readyState == 1) {
+                    this.ws.close();
+                }
+                if (this.isBooted === true) {
+                    if (this.network) {
+                        $.wnoty({
+                            type: 'success',
+                            message: 'Internet connection restored',
+                            autohideDelay: 2500
+                        });
+                    } else {
+                        $.wnoty({
+                            type: 'error',
+                            message: 'Internet connection lost',
+                            autohideDelay: 2500
+                        });
+                    }
+                }
+                this.isBooted = false;
+            }
+        },
+        incomingData: [],
+        connect: function (wsToken = '', force = false) {
+            this.chkConnection();
+            if (this.network) {
+                if (force === true && typeof this.ws.readyState !== 'undefined') {
+                    this.ws.close();
+                }
+                try {
+                    this.ws = new WebSocket(this.wsHost + this.apiKey + '/' + wsToken + '/');
+                    this.ws.binaryType = "arraybuffer";
+                    this.ws.onopen = function () {
+                        $wsClient.allowReconncet = true;
+                        $('.client-id').removeClass('is-invalid is-valid');
+                        $('.client-id').addClass('is-valid');
+                        // $.wnoty({
+                        //     type: 'success',
+                        //     message: 'Connected',
+                        //     autohideDelay: 2500
+                        //     });
+                    };
+                    this.ws.onmessage = function (evt) {
+                        $wsClient.lastSync = new Date();
+                        $wsClient.readData(evt);
+                    };
+                    this.ws.onclose = function () {
+                        $('.client-id').removeClass('is-invalid is-valid');
+                        $('.client-id').addClass('is-invalid');
+                        $.wnoty({
+                            type: 'error',
+                            message: 'Disconnected',
+                            autohideDelay: 2500
+                        });
+                        if ($wsClient.allowReconncet) {
+                            $wsClient.connectClient($wsClient.apiKey, true);
+                        }
+                    };
+                } catch (exception) {
+                    console.log('socket', exception);
+                }
+            } else {
+                $.wnoty({
+                    type: 'error',
+                    message: 'No Internet connection',
+                    autohideDelay: 2500
+                });
+            }
+        },
+        sendData: function (targetUsers = [], targetGroups = [], data = {}, saveData = null) {
+            if (this.network && typeof this.ws.readyState !== 'undefined' && this.ws.readyState == 1) {
+                this.ws.send(JSON.stringify({
+                    type: "data",
+                    targetUsers: targetUsers,
+                    targetGroups: targetGroups,
+                    data: data,
+                    "__SAVE__": saveData
+                }));
+            }
+        },
+        readData: function (e) {
+            let data = JSON.parse(e.data);
+            if (typeof data.status != "undefined") {
+                if (data.status == "conncetd") {
+                    $.wnoty({
+                        type: 'success',
+                        message: data.message,
+                        autohideDelay: 2500
+                    });
+                } else if (data.status == "clientoffline") {
+                    $.wnoty({
+                        type: 'info',
+                        message: '<strong>' + users[data.clientId].name + ':</strong><br>Offline',
+                        autohideDelay: 2500
+                    });
+                }
+            } else if (typeof data.data.message != "undefined") {
+                if (jQuery.inArray(data.dataId, $wsClient.incomingData) == -1) {
+                    $wsClient.incomingData.push(data.dataId);
+                    $.wnoty({
+                        type: 'success',
+                        message: '<strong>' + ((typeof data.data.fromGroup != "undefined" && data.data.fromGroup.length > 0) ? "Group - " + groups[data.data.fromGroup].name : users[data.from].name) + ':</strong><br>' + data.data.message,
+                        autohideDelay: 2500
+                    });
+                }
+            }
+            //var users = JSON.parse(document.getElementById('users').textContent);
+            // var groups = JSON.parse(document.getElementById('groups').textContent);
+            console.log('Incoming:', data);
+        }
+
+    };
+    $(document).on('change', 'select.client-id', function () {
+        $wsClient.connectClient(
+            $(this).find(":selected").val(), //apiKey
+            true
+        );
+    });
+    $(document).on('click', '.send-msg', function (e) {
+        let users = [], groups = [];
+        $('select.sent-to').find(":selected").each(function (x) {
+            if ($(this).attr('data-type') == 'clients') {
+                users.push($(this).val());
+            } else {
+                groups.push($(this).val());
+            }
+        });
+        let fromGroup = '';
+        $('.send-group-from:checked').each(function (x) {
+            fromGroup = $(this).val();
+        });
+        $wsClient.sendData(users, groups, {
+            'fromGroup': fromGroup,
+            'message': $('textarea.message').val()
+        }, {test: 'I am OK'})
+    });
+    // console.log($wsClient);
+
+    // $(document).ready(function(){
+    //     let type = window.location.pathname;
+    //     let apiKey = makeId(32);//'MrcW6ZMFYlzcLA8',
+    //         wsToken = makeId(10);//'EVSTQN3';
+    //     let endPoint = `ws://${window.location.host}/ws/wsnotifications${(type=='/async/'?'_async':'')}/${apiKey}/${wsToken}/`;
+    //     // let endPoint = `ws://${window.location.host}/ws/notifications_async/${apiKey}/${wsToken}/`;
+    //     // let endPoint = `ws://${window.location.host}/ws/wsnotifications/`;
+    //     const ws = new WebSocket(endPoint);
+    //     ws.onmessage = function(e){
+    //         let data = JSON.parse(e.data);
+    //         console.log('Incoming:',data);
+    //         };
+    //     });
+</script>
+</body>
+</html>

@@ -1,4 +1,10 @@
-// ============================================================== 
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
+// ==============================================================
 // Bar chart option
 // ============================================================== 
 var myChart = echarts.init(document.getElementById('bar-chart'));

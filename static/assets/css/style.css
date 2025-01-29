@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 /*================================================================================
 	Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
 	Version: 2.0
@@ -9,3 +15,52 @@ NOTE:
 ------
 PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
 WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
+html{
+    background: #373f48;
+}
+ul.ofx-notbtns{
+	position: relative;
+    margin: auto;
+    list-style-type: none;
+	text-align: right;
+	padding: 0px;
+}
+ul.ofx-notbtns > li{
+	display: inline-block;
+	position: relative;
+    margin: auto;
+}
+ul.ofx-notbtns > li > div,
+ul.ofx-notbtns > li > div:hover,
+ul.ofx-notbtns > li > div:focus{
+ background-color: transparent;
+ border: none;
+
+}
+ul.ofx-notbtns > li > div,
+ul.ofx-notbtns > li > button{
+	width: 40px;
+    height: 40px;
+}
+ul.ofx-notbtns > li > div::before{
+	position: absolute;
+    margin: auto;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    width: 15px;
+    height: 15px;
+}
+ul.ofx-notbtns > li > div > input{
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    margin: auto;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    opacity: 0;
+    bottom: 0px;
+	cursor: pointer;
+}

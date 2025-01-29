@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 /*=========================================================================================
     File Name: pickers.js
     Description: Pick a date/time Picker, Date Range Picker JS

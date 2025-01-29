@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 $(document).on('click', '[data-wizard]', function(e){
     var href;
     var $this = $(this);

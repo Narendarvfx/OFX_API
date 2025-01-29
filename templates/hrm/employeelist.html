@@ -1,0 +1,55 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+     <div class="container-fluid">
+                <!-- ============================================================== -->
+                <!-- Bread crumb and right sidebar toggle -->
+                <!-- ============================================================== -->
+                <div class="row page-titles">
+                    <div class="col-md-6 col-8 align-self-center">
+                        <h3 class="text-themecolor mb-0 mt-0">Employee List</h3>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                            <li class="breadcrumb-item active">Employee</li>
+                        </ol>
+                    </div>
+                <div class="col-md-6 col-4 align-self-center">
+                    <button class="btn float-right hidden-sm-down btn-success"><i class="mdi mdi-plus-circle"></i> <a href="/profile">Create</a></button>
+                    </div>
+                </div>
+
+     <!-- ============================================================== -->
+                <!-- Start Page Content -->
+                <!-- ============================================================== -->
+                <!-- .row -->
+                <div class="row">
+                    <!-- .col -->
+                    {% for employee in employees %}
+                    <div class="col-md-6 col-lg-6 col-xlg-4">
+                        <div class="card card-body">
+                            <div class="row">
+                                <div class="col-md-4 col-lg-3 text-center">
+                                    <a href="#"><img src= "{{ user.employee.photo.url }}"style = "width:120px; height:120px"
+                                                              alt="user"/></a>
+                                </div>
+                                <div class="col-md-8 col-lg-9">
+                                    <h4 class="mb-0">{{ employee.fullName }}</h4>
+                                    <small>{{ employee.role}}</small>
+                                    <address>
+                                        {{ employee.address }}
+                                        <br/>
+                                        <br/>
+                                        <abbr title="Phone">P:</abbr> {{ employee.contact }}
+                                    </address>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                    <!-- /.col -->
+     </div>
+
+
+   {% endblock content %}>
+

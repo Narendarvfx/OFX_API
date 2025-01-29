@@ -1,4 +1,8 @@
-  // Autoload the jQuery bindings
+  /*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */  // Autoload the jQuery bindings
   // We know that all of the modules exist above this, so we're safe
   var select2 = S2.require('jquery.select2');
 

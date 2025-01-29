@@ -1,13 +1,12 @@
 {% extends 'main/base.html' %}
-
+{% load static %}
 
 {% block bread_crumb %}
     <!-- ============================================================== -->
     <!-- Bread crumb and right sidebar toggle -->
     <!-- ============================================================== -->
-    {#        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css' type="text/css"/>#}
-    <!-- chartist CSS -->
-    <link rel="stylesheet" href="/static/template/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css"
+
+    <link rel="stylesheet" href="{% static 'template/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css' %}"
           type="text/css">
     <style>
         .datepicker .datepicker-days tr td.active ~ td,
@@ -156,18 +155,18 @@
 
 {% block page_scripts %}
     <!--OFX Core JavaScript -->
-    <script src="/static/ofx/core.js"></script>
-    {#    <script src="/static/template/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>#}
-    {#    <script src="/static/template/assets/plugins/bootstrap/js/bootstrap.min.js"></script>#}
+    <script src="{% static 'ofx/core.js' %}"></script>
+    {#    <script src="{% static 'template/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js' %}"></script>#}
+    {#    <script src="{% static 'template/assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>#}
     <!-- chartist chart -->
-    <script src="/static/template/assets/plugins/moment/moment.js"></script>
-    <script src="/static/template/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="/static/template/assets/plugins/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js"></script>
-    <script src="/static/template/assets/plugins/jquery.easy-pie-chart/easy-pie-chart.init.js"></script>
-    {#    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>#}
-    {#    <script src="/static/template/assets/plugins/jquery/jquery.min.js"></script>#}
+    <!-- <script src="{% static 'template/assets/plugins/moment/moment.js' %}"></script> -->
+    <script src="{% static 'template/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js' %}"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js' %}"></script>
+    <script src="{% static 'template/assets/plugins/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js' %}"></script>
+    <script src="{% static 'template/assets/plugins/jquery.easy-pie-chart/easy-pie-chart.init.js' %}"></script>
+    {#    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js' %}"></script>#}
+    {#    <script src="{% static 'template/assets/plugins/jquery/jquery.min.js' %}"></script>#}
     <!-- Bootstrap tether Core JavaScript -->
     <script type="text/javascript">
         $(function () {

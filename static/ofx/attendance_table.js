@@ -1,4 +1,10 @@
 
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 //DAY INFO TABLE DATA
 function show_day_info(uname, date){
   var day_data_json = $.ajax({

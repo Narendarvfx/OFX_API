@@ -1,3 +1,9 @@
+<!--
+  - Copyright (c) 2023.
+  - Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+  - All rights reserved.
+  -->
+
 <svg xmlns="http://www.w3.org/2000/svg" height="480" width="640">
     <path fill="#c4272f" d="M0 0h640v480H0z"/>
     <path fill="#015197" d="M213.333 0h213.333v480H213.333z"/>

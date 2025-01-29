@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 /**
  * echarts地图一般投射算法
  * modify from GeoMap v0.5.3 https://github.com/x6doooo/GeoMap

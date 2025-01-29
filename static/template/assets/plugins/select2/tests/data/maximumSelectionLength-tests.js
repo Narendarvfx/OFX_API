@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 module('Data adapters - Maximum selection length');
 
 var MaximumSelectionLength = require('select2/data/maximumSelectionLength');

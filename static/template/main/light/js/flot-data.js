@@ -1,4 +1,10 @@
 /*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
+/*
 Template Name: Monster Admin
 Author: Themedesigner
 Email: niravjoshi87@gmail.com

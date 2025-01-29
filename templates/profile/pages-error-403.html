@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 
 <head>
@@ -9,14 +10,14 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="/static/template/assets/images/favicon.png">
-    <title>OSCARFX API 0.59</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'template/assets/images/favicon_new.png' %}">
+    <title>SHOTBUZZ</title>
     <!-- Bootstrap Core CSS -->
-    <link href="/static/template/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'template/assets/plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="/static/template/main/dark/css/style.css" rel="stylesheet">
+    <link href="{% static 'template/main/dark/css/style.css' %}" rel="stylesheet">
     <!-- You can change the theme colors from here -->
-    <link href="/static/template/main/dark/css/colors/megna-dark.css" id="theme" rel="stylesheet">
+    <link href="{% static 'template/main/dark/css/colors/megna-dark.css' %}" id="theme" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -45,12 +46,12 @@
     <!-- ============================================================== -->
     <!-- All Jquery -->
     <!-- ============================================================== -->
-    <script src="/static/template/assets/plugins/jquery/jquery.min.js"></script>
+    <script src="{% static 'template/assets/plugins/jquery/jquery.min.js' %}"></script>
     <!-- Bootstrap tether Core JavaScript -->
-    <script src="/static/template/assets/plugins/bootstrap/js/popper.min.js"></script>
-    <script src="/static/template/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="{% static 'template/assets/plugins/bootstrap/js/popper.min.js' %}"></script>
+    <script src="{% static 'template/assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
     <!--Wave Effects -->
-    <script src="/static/template/main/dark/js/js/waves.js"></script>
+    <script src="{% static 'template/main/dark/js/js/waves.js"></script>
 </body>
 
 </html>

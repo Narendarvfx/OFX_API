@@ -2,6 +2,10 @@
 This Script is used to import data in Oscarfx Pipeline System
 """
 
+#  Copyright (c) 2023.
+#  Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+#  All rights reserved.
+
 import datetime
 import csv
 import requests

@@ -1,3 +1,9 @@
+<!--
+  - Copyright (c) 2023.
+  - Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+  - All rights reserved.
+  -->
+
 <svg viewbox="0 0 18 18">
   <ellipse class="ql-fill" cx="10.5" cy="14" rx="2.5" ry="2"></ellipse>
   <path class="ql-stroke" d="M12,14V3c0,1.5,3,2.021,3,5"></path>

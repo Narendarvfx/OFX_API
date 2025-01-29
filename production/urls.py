@@ -1,33 +1,47 @@
+#  Copyright (c) 2023.
+#  Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+#  All rights reserved.
+
 from django.conf.urls import url
 from . import api, views
 from .api import ShotsDataFilter
 
 urlpatterns = [
     ################## Web Urls ######################
+    
+    url(r'^production/myreport/$', views.lead_report, name='Lead Report'),
+    url(r'^production/allreports/$', views.all_reports_page, name='All Reports'),
+    url(r'^production/mandaysavailability/$', views.mandays_availability, name='Mandays Availability'),
+    url(r'^production/resource/$', views.resource_availability, name='Resource Availability'),
+    url(r'^production/scheduling/$', views.scheduling, name='Resource Availability'),
     url(r'^production/shots/$', views.production_reports, name='Client reports'),
-    url(r'^production/export_prod_report/$', views.export_prod_report, name='Client reports'),
-    url(r'^production/export_ver_report/$', views.export_ver_report, name='Version reports'),
-    url(r'^production/teamleadreports$', views.teamlead_report, name="Team Lead Reports"),
-    url(r'^production/studio_reports$', views.studio_report, name="Studio Reports"),
-    url(r'^production/department_reports$', views.department_report, name="Team Lead Reports"),
-    url(r'^production/artist_reports$', views.artist_report, name="Artist Reports"),
-    url(r'^production/version_reports$', views.version_report, name="Version Reports"),
-    url(r'^production/teamleadreports_export/$', views.export_teamlead_report, name='TeamLeadReports'),
-    url(r'^production/artistreports_export/$', views.export_artist_report, name='Artist Reports'),
-    url(r'^production/dept_reports_export/$', views.export_dept_report, name='TeamLeadReports'),
-    url(r'^production/studio_reports_export/$', views.export_studio_report, name='StudioReports'),
-    url(r'^production/client_report/$', views.reports, name="Multi Reports"),
-    url(r'^production/reports/multi_export/$', views.reports_export, name="Multi Reports"),
-
+    # url(r'^production/shotsassignments/$', views.shotsAssignments, name='Shots Management & Assignment'),
+    url(r'^production/shots/view/$', views.shots_view, name='Shot Details View'),
     url(r'^production/projects/', views.projects, name="Projects"),
+    url(r'^production/client/projects/(?P<client_id>\d+)/$', views.clientProjects, name="Client Projects"),
     url(r'^production/clients/', views.clients, name="Clients"),
-
+    url(r'^production/my_team/', views.my_team, name='My Team'),
+    url(r'^production/my_task/', views.my_task, name='My Task'),
+    url(r'^production/task_daylogs/', views.task_daylogs, name='TASK DAY LOGS'),
+    url(r'^production/shot_daylogs/', views.shot_daylogs, name='Shot Day Logs'),
     url(r'^production/time_card/$',views.time_card, name="Time Card"),
+    url(r'^production/artists_statistics/$',views.artists_statistics, name="Artists Statistics"),
+	url(r'^production/attendance/$',views.attendance, name="Attendance"),
+    url(r'^production/leaves/$',views.leaves, name="LEAVES"),
+    url(r'^production/shot_daylogs/$', views.shot_daylogs, name="Shot Day Logs"),
+    url(r'^calendar/$',views.calendar, name="Calendar"),
+    url(r'^production/default.json',views.DefaultJson.as_view(), name="Default Js File"),
+    url(r'^production/default.js',views.default_js, name="Default Js File"),
+
+
 
     ########## API URLS #################
     url(r'^api/production/status/$', api.StatusInfo.as_view(), name='Status API'),
     url(r'^api/production/localities/$', api.LocalityInfo.as_view(), name='Locality API'),
     url(r'^api/production/complexity/$', api.ComplexityInfo.as_view(), name='Complexity API'),
+    url(r'^api/production/tasktypes/$', api.TaskTypeInfo.as_view(), name='TaskType API'),
+    url(r'^api/production/types/$', api.TypeInfo.as_view(), name='Type API'),
+
 
     # Client Urls
     url(r'^api/production/clients/$', api.ClientDetail.as_view(), name='Client API'),
@@ -110,12 +124,10 @@ urlpatterns = [
     url(r'^api/production/shot/timecards/(?P<shotId>\d+)$', api.ShotTimeCardData.as_view(), name='Get Shot TimeLogs API'),
     url(r'^api/production/timecards/(?P<taskId>\d+)$', api.UpdateTimeCard.as_view(), name='Update TimeLogs API'),
     url(r'^api/production/lightboxdata/$', api.LightBoxData.as_view(), name='TimeLogs API'),
+    url(r'^api/production/taskdaylogsfilter/$', api.TaskdaylogsFilter.as_view(), name='Task day logs Filter'),
     # url(r'^api/production/daylogs/(?P<shotId>\d+)/$', api.DayLogsByShot.as_view(), name='DayLogs API'),
 
     #Teamlead Report Urls
-    url(r'^api/production/teamleadreports/$', api.TeamLeadReports.as_view(), name='TeamLeadReports'),
-
-    #Department Report Urls
     url(r'^api/production/teamleadreports/$', api.TeamLeadReports.as_view(), name='TeamLeadReports'),
 
     ## Team Lead Urls
@@ -123,6 +135,7 @@ urlpatterns = [
 
     ## Artist Urls
     url(r'api/production/custom/artist_reports/$', api.CustomArtistReports.as_view(), name="Custom Lead Reports"),
+    url(r'api/production/custom/artist_id_reports/$', api.CustomArtistIdReports.as_view(), name="Custom Lead Reports"),
 
     #Department Urls
     url(r'api/production/custom/dep_reports/$', api.CustomDeptReports.as_view(), name="Custom Dept Reports"),
@@ -131,5 +144,49 @@ urlpatterns = [
     url(r'api/production/custom/studio_reports/$', api.CustomStudioReports.as_view(), name="Custom Studio Reports"),
 
     ## Chart Urls
-    url(r'api/production/status_count/$', api.StatusCount.as_view(), name="Status Count")
+    url(r'api/production/status_count/$', api.StatusCount.as_view(), name="Status Count"),
+
+    ##Elements Urls
+    url(r'^api/production/elements/$', api.ElementsData.as_view(), name='Elements API'),
+    # url(r'^api/production/elements/(?P<element_id>\d+)$$', api.ElementsData.as_view(), name='Elements API'),
+
+    ## Export Urls
+    url(r'^production/export_prod_report/$', views.export_prod_sheet, name='Client reports'),
+    url(r'^production/export_ver_report/$', views.export_ver_report, name='Version reports'),
+    url(r'^production/teamleadreports/$', views.teamlead_report, name="Team Lead Reports"),
+    url(r'^production/leadreports/$', views.leads_report, name="Lead Reports"),
+    url(r'^production/studio_reports$', views.studio_report, name="Studio Reports"),
+    url(r'^production/department_reports$', views.department_report, name="Team Lead Reports"),
+    url(r'^production/artist_reports/$', views.artist_report, name="Artist Reports"),
+    url(r'^production/version_reports$', views.version_report, name="Version Reports"),
+    url(r'^production/teamleadreports_export/$', views.export_teamlead_report, name='TeamLeadReports'),
+    url(r'^production/leadreports_export/$', views.export_leads_report, name='Leads Reports Export'),
+    url(r'^production/artistreports_export/$', views.export_artist_report, name='Artist Reports'),
+    url(r'^production/dept_reports_export/$', views.export_dept_report, name='TeamLeadReports'),
+    url(r'^production/studio_reports_export/$', views.export_studio_report, name='StudioReports'),
+    url(r'^production/client_report/$', views.reports, name="Client Report"),
+    url(r'^production/reports/multi_export/$', views.reports_export, name="Multi Reports"),
+    url(r'^production/shot/tasks_export/$', views.tasks_export, name="Shot Task Reports"),
+    url(r'^production/shot/shotdaylogs_export/$', views.shotdaylogs_export, name="Shot Day Log Reports"),
+    url(r'^production/task/taskdaylogs_export/$', views.taskdaylogs_export, name="Task Day Log Reports"),
+    url(r'^production/leaves_export/$', views.leaves_export, name="Leaves Reports"),
+    url(r'^production/shot_day_logs_export/$', views.shot_day_logs_export, name="Shot Day Logs Reports"),
+    url(r'^production/attendance_export/$', views.attendance_export, name="Attendance Reports"),
+    url(r'^production/taskday_logs_export/$', views.taskday_logs_export, name="Task Day Logs Reports"),
+    url(r'^production/allartistlist_export/$', views.allartistlist, name='All Artist List'),
+    url(r'^production/export/versionreport/$', views.export_versionreport.as_view(), name='Version reports'),
+    url(r'^production/export/clientreport/$', views.export_clientreport.as_view(), name='Version reports'),
+    url(r'^production/export_department_lite_report/$', views.export_department_lite_report.as_view(), name='Department Lite Report'),
+    url(r'^production/export_studio_lite_report/$', views.export_studio_lite_report.as_view(), name='Studio Lite Report'),
+
+    url(r'api/production/employeedailystatistics/$', api.employeeStatistics.as_view(), name='OFX Employee Daily Statistics'),
+    url(r'api/v1/shots/$', api.ShotsApi.as_view(), name='Shots Filtered Data '),
+
+    # Estimation urls
+    url(r'^production/estimationId/$', views.EstimationId, name='Estimation Ids'),
+    url(r'api/production/estimation/$', api.Estimation.as_view(), name='Estimation id'),
+    url(r'api/production/estimationData/$', api.EstimationData.as_view(), name='estimation_data'),
+
+
+
 ]

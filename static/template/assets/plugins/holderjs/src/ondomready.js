@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 /*!
  * onDomReady.js 1.4.0 (c) 2013 Tubal Martin - MIT license
  *

@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 // 由于大多数shape默认的isCover都是相同的逻辑
 // 所以在echarts里临时抽象一个module，用于isCover method
 // TODO: 对zrender的isCover和getRect方法进行抽象，重新整理该逻辑

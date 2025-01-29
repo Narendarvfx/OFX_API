@@ -1,3 +1,7 @@
+#  Copyright (c) 2023.
+#  Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+#  All rights reserved.
+
 import asyncio
 import json
 from django.contrib.auth import get_user_model

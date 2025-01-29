@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    command: gunicorn OFX_API.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - .:/ofx_api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - memcached
+    env_file:
+      - OFX_API/.env
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./static:/static
+    depends_on:
+      - web
+
+  memcached:
+    image: memcached:latest
+    ports:
+      - "11211:11211"

@@ -1,14 +1,7 @@
-/**
- * Switchery 0.8.1
- * http://abpetkov.github.io/switchery/
- *
- * Authored by Alexander Petkov
- * https://github.com/abpetkov
- *
- * Copyright 2013-2015, Alexander Petkov
- * License: The MIT License (MIT)
- * http://opensource.org/licenses/MIT
- *
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
  */
 
 /**

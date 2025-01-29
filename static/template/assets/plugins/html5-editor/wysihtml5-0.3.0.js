@@ -1,12 +1,7 @@
-/**
- * @license wysihtml5 v0.3.0
- * https://github.com/xing/wysihtml5
- *
- * Author: Christopher Blum (https://github.com/tiff)
- *
- * Copyright (C) 2012 XING AG
- * Licensed under the MIT license (MIT)
- *
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
  */
 var wysihtml5 = {
   version: "0.3.0",

@@ -1,0 +1,37 @@
+from django.conf.urls import url
+from . import api
+
+urlpatterns = [
+    url(r'^api/v2/employeerolebinding/$',api.employee_role_binding.as_view(), name="Artist Role Binding"),
+    url(r'^api/v2/tasktype/$', api.tasktype.as_view(), name='Shots v2'),
+    url(r'^api/v2/shot/$', api.shotsAPI_v2.as_view(), name='Shots v2'),
+    url(r'^api/v2/helpshot/$', api.helpShots.as_view(), name='Help Shots'),
+    url(r'^api/v2/shot/task/$', api.shotTasks.as_view(), name='Shot Task v2'),
+    url(r'^api/v2/shots/leads_filter/$', api.shotLeadsFilter.as_view(), name='Shots Leads Filter v2'),
+    url(r'^api/v2/shots/leadsassignments/$', api.shotAssignments.as_view(), name='Shots Leads Filter v2'),
+    url(r'^api/v2/rolepipelinesteps/$', api.rolePipelineSteps.as_view(), name='Role Pipeline Steps v2'),
+    # url(r'^api/v2/assignmentstepsorder/$', api.assignmentStepsOrders.as_view(), name='Assignment Steps Order v2'),
+    url(r'^api/v2/employeedailystatistics/$', api.employeeStatistics.as_view(), name='OFX Employee Daily Statistics'),
+    url(r'^api/v2/employeedailystatisticslite/$', api.EmployeeDailyStatisticsLite.as_view(), name='OFX Employee Daily Statistics'),
+    url(r'^api/v2/mandaysavailability/$', api.mandaysavailability.as_view(), name='Mandays Availability'),
+    url(r'^api/v2/taskdaylogsfilter/$', api.taskdaylogsFilter.as_view(), name='Task Daylogs Filter'),
+    url(r'^api/v2/shotdaylogsfilter/$', api.shotdaylogsFilter.as_view(), name='Shot Daylogs Filter'),
+    url(r'^api/v2/teamleaddailystatistics/$', api.teamLeaadstatistics.as_view(), name='Team Lead Daily Statistics'),
+    url(r'^api/v2/leaddailystatistics/$', api.leadstatistics.as_view(), name='Lead Daily Statistics'),
+    url(r'^api/v2/clientversions/$', api.clientversion.as_view(), name='Client Versions'),
+    url(r'^api/v2/attendance/$', api.attendance.as_view(), name='Attendence'),
+    url(r'^api/v2/leaves/$', api.leaves.as_view(), name='Leaves'),
+    url(r'^api/v2/history/shot/$', api.shots_history.as_view(), name='Shots History'),
+    url(r'^api/v2/history/shotdaylogs/$', api.shotsDayLogs_history.as_view(), name='Shot Day Logs History'),
+    url(r'^api/v2/history/mytask/$', api.mytask_history.as_view(), name='My Task History'),
+    url(r'^api/v2/history/taskdaylogs/$', api.taskdaylogs_history.as_view(), name='Task Day Logs History'),
+    url(r'^api/v2/locations/$', api.alllocations.as_view(), name='Task Day Logs History'),
+    url(r'^api/v2/getrecordscount/$', api.recordsCount.as_view(), name='Task Day Logs History'),
+    url(r'^api/v2/reports/versionindexcount/$', api.versionIndexCount.as_view(), name='Task Day Logs History'),
+    url(r'^api/v2/reports/versionreports/$', api.versionReports.as_view(), name='Task Day Logs History'),
+    url(r'^api/v2/reports/clientreports/$', api.clientReports.as_view(), name='Client Reports'),
+    url(r'^api/v2/sanitizeshotsandtakslogs/$', api.sanitizeshotsandtakslogsApi.as_view(), name='Test API'),
+    url(r'^api/v2/test/$', api.testApi.as_view(), name='Test API'),
+    url(r'^api/v2/test2/$', api.testApi2.as_view(), name='Test API'),
+    url(r'^api/v2/test3/$', api.testApi3.as_view(), name='Test API')
+    ]

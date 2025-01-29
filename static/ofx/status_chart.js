@@ -1,4 +1,10 @@
-        var yValues = [];
+        /*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
+var yValues = [];
         let client_id = 0;
         let project_id = 0;
 

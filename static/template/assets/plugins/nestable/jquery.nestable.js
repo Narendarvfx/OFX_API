@@ -1,6 +1,7 @@
-/*!
- * Nestable jQuery Plugin - Copyright (c) 2012 David Bushell - http://dbushell.com/
- * Dual-licensed under the BSD or MIT licenses
+/*
+ * Copyright (c) 2012-2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
  */
 ;(function($, window, document, undefined)
 {

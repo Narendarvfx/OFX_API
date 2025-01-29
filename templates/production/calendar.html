@@ -1,0 +1,1321 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block bread_crumb %}
+        
+    <link rel='stylesheet' href="{% static 'template/assets/plugins/multiselect/css/multi-select.css' %}" type="text/css"/>
+    <link rel='stylesheet' href="{% static 'template/assets/plugins/calendar/dist/fullcalendar.css' %}" type="text/css"/>
+
+    <link href="{% static 'main/jquery-ui-themes-1.11.1/themes/south-street/jquery-ui.min.css' %}" rel="stylesheet" type="text/css"/>
+
+    <link rel='stylesheet' href="{% static 'assets/css/style.css' %}" type="text/css"/>
+    <style>
+        .form-control {
+            color: #fffcfc !important;
+        }
+
+        .container-fluid {
+            padding: 10px !important;
+        }
+
+        .row {
+            margin: 0px !important;
+        }
+
+        /* An ugly trick to use a filter icon */
+        .ui-icon-volume-off.ui-icon-filter {
+            -ms-transform: rotate(270deg);
+            -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+        }
+
+        .card {
+            padding: 10px 1px;
+            background: #272c33 !important;
+            color: white;
+            margin-bottom: 10px !important;
+        }
+
+        #filter_div {
+            padding: 10px;
+            background: #272c33 !important;
+            color: white;
+        }
+
+        .col-lg-12 {
+            padding: 0px !important;
+        }
+
+        .col-lg-10 {
+            padding: 0px !important;
+        }
+
+        .card-body {
+            padding: 0rem !important;
+        }
+
+        .dt-buttons .dt-button {
+            border-radius: 4px;
+            background: orange;
+            color: #ffffff
+        }
+
+        table.dataTable tbody tr {
+            background-color: #272c33 !important;
+            font-size: small;
+            font-weight: normal;
+        }
+
+        table.dataTable tr.odd {
+            background-color: #343a40 !important;
+        }
+
+        table.dataTable td {
+            border-bottom: 0.2px !important;
+            border-color: grey !important;
+        }
+
+        table.dataTable thead {
+            color: #f6f5f5;
+            font-weight: normal;
+            font-size: small;
+        }
+
+        #shots_table_length, #shots_table_info, #shots_table_filter {
+            color: #a2a1a1 !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 2px;
+            background: white !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            color: #fff5f5 !important;
+            background-color: #e5711d !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background-color: rgb(183, 110, 5) !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .ellipsis {
+            color: white;
+        }
+
+        tfoot input {
+            width: 100% !important;
+            padding: 3px !important;
+            box-sizing: border-box !important;
+        }
+
+        table.dataTable tfoot th, table.dataTable tfoot td {
+            padding: 5px;
+            border-top: 0px;
+        }
+
+        .page-titles {
+            padding-bottom: 0px;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            color: #ccc8c8 !important;
+            background-color: inherit;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            color: #dad8d8 !important;
+        }
+
+
+        table.dataTable tbody tr.selected {
+            background-color: #315eb1 !important;
+            color: white !important;
+        }
+
+        label {
+            margin-bottom: 0px !important;
+        }
+
+        .multiselect-container > li > a > label {
+            padding: 4px 20px 3px 20px;
+        }
+
+        table.dataTable tbody th, table.dataTable tbody td {
+            padding: 7px;
+        }
+
+        .column_vis {
+            height: 20px;
+        }
+
+        /* width */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #383f48;
+            border-radius: 5px;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #2965b9;
+            border-radius: 5px;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+
+        div.dtsp-verticalContainer {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-content: flex-start;
+            align-items: flex-start;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes,
+        div.dtsp-verticalContainer div.container {
+            width: 20%;
+            flex-grow: 0;
+            flex-shrink: 0;
+            flex-basis: 0;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes {
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: 26%;
+        }
+
+        div.dtsp-verticalPanes {
+            margin-right: 10px;
+        }
+
+        div.dtsp-title {
+            margin-right: 0px !important;
+            margin-top: 13px !important;
+        }
+
+        input.dtsp-search {
+            min-width: 0px !important;
+            padding-left: 0px !important;
+            margin: 0px !important;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes div.dtsp-searchPanes {
+            flex-direction: column;
+            flex-basis: 0px;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes div.dtsp-searchPanes div.dtsp-searchPane {
+            flex-basis: 0px;
+        }
+
+        div.dtsp-verticalContainer div.container {
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: 80%;
+        }
+
+        div.dtsp-panesContainer {
+            border: 1px solid transparent;
+            border-radius: 6px;
+            padding: 5px;
+        }
+
+        select {
+            -webkit-appearance: none;
+        }
+
+        div.dtsp-narrow {
+            flex-direction: column !important;
+            background-color: #343a40;
+        }
+
+        div.dtsp-panesContainer button.dtsp-clearAll, div.dtsp-panesContainer button.dtsp-collapseAll, div.dtsp-panesContainer button.dtsp-showAll {
+            border: none;
+            background-color: #343a40;
+            padding: 3px;
+            border-radius: 5px;
+        }
+
+        div.dtsp-panesContainer button.dtsp-disabledButton {
+            cursor: default !important;
+            background-color: #343a40;
+            padding: 3px;
+            border-radius: 10px;
+            color: white;
+        }
+
+        div.dtsp-panesContainer div.dataTables_wrapper div.dataTables_scrollBody {
+            background: #343a40 !important;
+            border-bottom: none;
+        }
+
+        /* An ugly trick to use a filter icon */
+        .ui-icon-volume-off.ui-icon-filter {
+            -ms-transform: rotate(270deg);
+            -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+        }
+
+        .modal.right .modal-dialog {
+            position: fixed;
+            margin: auto;
+            width: 700px;
+            height: 100%;
+            -webkit-transform: translate3d(0%, 0, 0);
+            -ms-transform: translate3d(0%, 0, 0);
+            -o-transform: translate3d(0%, 0, 0);
+            transform: translate3d(0%, 0, 0);
+        }
+
+        .modal.right .modal-content {
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .modal.right .modal-body {
+            padding: 15px 15px 15px;
+        }
+
+        .modal.right.fade .modal-dialog {
+            right: 0px;
+            -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+            -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+            -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+            transition: opacity 0.3s linear, right 0.3s ease-out;
+        }
+
+        .modal.right.fade.in .modal-dialog {
+            right: 0;
+        }
+
+        /* ----- MODAL STYLE ----- */
+        .modal-content {
+            border-radius: 0;
+            border: none;
+        }
+
+        .modal-header {
+            border-bottom-color: #EEEEEE;
+            background-color: #e5711d;
+        }
+
+        input.dtsp-search::placeholder {
+            color: #a4a4a8 !important;
+        }
+    </style>
+    <div class="row page-titles">
+        <div class="col-md-6 col-4 float-left">
+            <h3 class="text-themecolor mb-0 mt-2">Calendar</h3>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- End Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+{% endblock bread_crumb %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12 row ml-2 mr-2">
+        <div class="col-md-12 calender-div">
+            <div class="card">
+                <div class="card-body">
+                    <div class="fc fc-unthemed fc-ltr pl-3 pr-3">
+                        <div class="fc-toolbar fc-header-toolbar">
+                            <div class="fc-left">
+                                <div class="btn-group mb-2 mr-2" role="group" aria-label="Button group with nested dropdown" >
+                                    <button type="button" class="btn btn-secondary text-dark calendar-arrow" data-data="left"><span class="fc-icon fc-icon-left-single-arrow"></span></button>
+                                    <button type="button" class="btn btn-secondary text-dark calendar-arrow" data-data="right"><span class="fc-icon fc-icon-right-single-arrow"></span></button>
+                                </div>
+                                <div class="btn-group mb-2 mr-2" role="group" aria-label="Button group with nested dropdown" >
+                                    <select class="btn btn-secondary text-dark calendar-type" style="padding: 0px 10px; height: 34px; display: none;">
+                                        <option value="mine" selected="selected">My Calendar</option>
+                                        <option value="org" >Organization Calendar</option>
+                                    </select>
+                                </div>
+                                <div class="btn-group mb-2 mr-2" role="group" aria-label="Button group with nested dropdown" >
+                                    <select class="btn btn-secondary text-dark calendar-location" style="padding: 0px 10px; height: 34px; display: none;">
+                                        <option value="mine" selected="selected">My Calendar</option>
+                                        <option value="org" >Organization Calendar</option>
+                                    </select>
+                                </div>
+                                <div class="btn-group mb-2 mr-2" role="group" aria-label="Button group with nested dropdown" >
+                                    <button type="button" class="add-new-calendar-eevent btn btn-secondary text-dark" ><span class="mdi mdi-plus"></span></button>
+                                </div>
+                            </div>
+                            <div class="fc-right">
+                                <div class="btn-group mb-2 mr-2" role="group" aria-label="Button group with nested dropdown" >
+                                    <button type="button" class="btn btn-secondary text-dark calendar-today" >Now</button>
+                                    <select class="btn btn-secondary text-dark calendar-month" style="padding: 0px 10px; height: 34px;">
+                                    </select>
+                                    <select class="btn btn-secondary text-dark calendar-year" style="padding: 0px 10px; height: 34px;"></select>
+                                </div>
+                            </div>
+                            <div class="fc-center"><h2 class="running-calender"></h2></div>
+                            <div class="fc-clear"></div>
+                        </div>
+                        <div class="fc-view-container" >
+                            <div class="fc-view fc-month-view fc-basic-view" >
+                                <table>
+                                    <thead class="fc-head">
+                                        <tr>
+                                            <td class="fc-head-container fc-widget-header">
+                                                <div class="fc-row fc-widget-header">
+                                                    <table>
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="fc-day-header fc-widget-header fc-sun"><span>Sun</span></th>
+                                                                <th class="fc-day-header fc-widget-header fc-mon"><span>Mon</span></th>
+                                                                <th class="fc-day-header fc-widget-header fc-tue"><span>Tue</span></th>
+                                                                <th class="fc-day-header fc-widget-header fc-wed"><span>Wed</span></th>
+                                                                <th class="fc-day-header fc-widget-header fc-thu"><span>Thu</span></th>
+                                                                <th class="fc-day-header fc-widget-header fc-fri"><span>Fri</span></th>
+                                                                <th class="fc-day-header fc-widget-header fc-sat"><span>Sat</span></th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="fc-body">
+                                        <tr>
+                                            <td class="fc-widget-content">
+                                                <div class="fc-scroller fc-day-grid-container" style="overflow: hidden; height: 469px;">
+                                                    <div class="fc-day-grid fc-unselectable calendar-data"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="calender-date-info">
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block page_scripts %}
+    <!--OFX Core JavaScript -->
+    <script src="{% static 'ofx/core.js' %}"></script>
+
+    <script src="{% static 'main/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'main/jquery.ui-contextmenu.min.js' %}"></script>
+
+    <script>
+        let weekday = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            months = {
+                    "jan": {
+                        "name": "January",
+                        "short": "Jan",
+                        "number": 1,
+                        "days": 31
+                    },
+                    "feb": {
+                        "name": "February",
+                        "short": "Feb",
+                        "number": 2,
+                        "days": 28
+                    },
+                    "mar": {
+                        "name": "March",
+                        "short": "Mar",
+                        "number": 3,
+                        "days": 31
+                    },
+                    "apr": {
+                        "name": "April",
+                        "short": "Apr",
+                        "number": 4,
+                        "days": 30
+                    },
+                    "may": {
+                        "name": "May",
+                        "short": "May",
+                        "number": 5,
+                        "days": 31
+                    },
+                    "jun": {
+                        "name": "June",
+                        "short": "Jun",
+                        "number": 6,
+                        "days": 30
+                    },
+                    "jul": {
+                        "name": "July",
+                        "short": "Jul",
+                        "number": 7,
+                        "days": 31
+                    },
+                    "aug": {
+                        "name": "August",
+                        "short": "Aug",
+                        "number": 8,
+                        "days": 31
+                    },
+                    "sep": {
+                        "name": "September",
+                        "short": "Sep",
+                        "number": 9,
+                        "days": 30
+                    },
+                    "oct": {
+                        "name": "October",
+                        "short": "Oct",
+                        "number": 10,
+                        "days": 31
+                    },
+                    "nov": {
+                        "name": "November",
+                        "short": "Nov",
+                        "number": 11,
+                        "days": 30
+                    },
+                    "dec": {
+                        "name": "December",
+                        "short": "Dec",
+                        "number": 12,
+                        "days": 31
+                    }
+                    };
+        function CalenderCalc(month=1,year=2023){
+            let format = 'YYYY-MM-DD';
+            let date = moment(year+'-'+((month<=9?'0':'')+month)+'-01',format);
+            let dateX = (moment(year+'-'+((month<=9?'0':'')+month)+'-01',format)).format(format);
+            let subDate = date.day()==0? date : moment(year+'-'+((month<=9?'0':'')+month)+'-01',format).subtract(date.day(), "days");
+            let subDateX = (date.day()==0? date : moment(year+'-'+((month<=9?'0':'')+month)+'-01',format).subtract(date.day(), "days")).format(format);
+            return {
+                'formDate': subDateX,
+                'date': dateX,
+                'toDate': (date.day()==0? date : moment(year+'-'+((month<=9?'0':'')+month)+'-01',format).subtract(date.day(), "days")).add(41,"days").format(format),
+                };
+            }
+        function setCalenderDaysInfo(parent=null,type="holidays",data){
+            let maper = {
+                holidays:{
+                    parentClass:{
+                        remove:'bg-success bg-info bg-warning',
+                        add:'bg-success',
+                        },
+                    tartgetClass:{
+                        remove:'bg-success bg-info bg-warning',
+                        add:'bg-success',
+                        }
+                    },
+                deptworkingdays:{
+                    parentClass:{
+                        remove:'bg-success bg-info bg-warning',
+                        add:'bg-info',
+                        },
+                    tartgetClass:{
+                        remove:'bg-success bg-info bg-warning',
+                        add:'bg-info',
+                        }
+                    },
+                empworkingdays:{
+                    parentClass:{
+                        remove:'bg-success bg-info bg-warning',
+                        add:'bg-warning',
+                        },
+                    tartgetClass:{
+                        remove:'bg-success bg-info bg-warning',
+                        add:'bg-warning',
+                        }
+                    },
+                },
+                format = 'YYYY-MM-DD',
+                target = maper[type];
+            $.each(data,function(z,ex){
+                $(parent).find('td.fc-day[data-date="'+moment(ex['targetDate'],format).format(format)+'"]').removeClass(target.parentClass.remove).addClass(target.parentClass.add).css('opacity','0.5');
+                let tag2 = $(parent).find('td.date-comment[data-date="'+moment(ex['targetDate'],format).format(format)+'"]');
+                let dax = typeof $(tag2).attr('data-data')!="undefined"?JSON.parse($(tag2).attr('data-data')):{
+                    holidays:[],deptworkingdays:[],empworkingdays:[]
+                    };
+                dax[type].push(ex);
+                $(tag2).attr('data-data',JSON.stringify(dax));
+                if($(tag2).html().length>0){
+                    if($(tag2).find('.fc-more').length==0){
+                        $(tag2).append(`<a class="fc-more show-date-info"></a>`);
+                        }
+                    // $(tag2).find('.fc-day-grid-event').removeClass(target.tartgetClass.remove).addClass(target.tartgetClass.add);
+                    $(tag2).find('.fc-more').html(`<a class="fc-more show-date-info">+`+((dax.holidays.length+dax.deptworkingdays.length+dax.empworkingdays.length)-1)+` More</a>`);
+                    }else{
+                        $(tag2).html(`<a class="fc-day-grid-event `+target.tartgetClass.add+` fc-h-event fc-event fc-start fc-end fc-draggable show-date-info">
+                                <div class="fc-content">
+                                    <span class="fc-title">`+ex.name+`</span>
+                                </div></a>`);
+                        }
+                });
+            }
+        if(allowAllActions||userPermissions.indexOf('can_manage_calender')!=-1){
+            $('select.calendar-type').show();
+            $('select.calendar-location').empty();
+            $.each(ofx_page_data.locations,function(x,l){
+                $('select.calendar-location').append(`<option value="`+l.name+`" `+(((ofx_page_data.user.location==null&&ofx_make_key(l.name)==ofx_make_key("HYDERABAD"))||ofx_make_key(l.name)==ofx_make_key(ofx_page_data.user.location))?`selected="selected"`:``)+`>`+l.name+`</option>`);
+                });
+            }
+        function setCalenderData(parent=null,month=1,year=2023){
+            let caltype = 'mine',
+                calLocation = ofx_page_data.user.location;
+            if($('.calendar-type > option:selected').length>0){
+                caltype = $('.calendar-type').val();
+                }
+            if($('.calendar-location > option:selected').length>0){
+                calLocation = $('.calendar-location').val();
+                }
+            // console.log(caltype);
+            
+            
+            let caldr = CalenderCalc(month,year);
+            let q_data = Object.assign(JSON.parse(JSON.stringify({
+                // from_date: String(date.format('YYYY-MM-DD')),
+                from_date: caldr.formDate,
+                })),JSON.parse(JSON.stringify({
+                    // to_date: String(date.add(1,'month').format('YYYY-MM-DD')),
+                    to_date: caldr.toDate,
+                    })));
+            var rq = [];
+            rq.push(Object.assign(JSON.parse(JSON.stringify({type:"holidays",last:false, url: '/api/calendar/holidays/',
+                    q: Object.assign(JSON.parse(JSON.stringify(q_data)),{ })           
+                    })),{}));
+                    //department=PAINT&from_date=2023-01-09T00:00:00&to_date=2023-02-10T23:59:59
+            rq.push(Object.assign(JSON.parse(JSON.stringify({type:"deptworkingdays",last:false, url: '/api/calendar/deptworkingdays/', q: Object.assign((caltype == 'org'?{}:{
+                    department: '{{ user.employee.department }}'
+                    }),JSON.parse(JSON.stringify(q_data))) })),{}));
+            rq.push(Object.assign(JSON.parse(JSON.stringify({type:"empworkingdays", last:true, url: '/api/calendar/empworkingdays/', q: Object.assign(JSON.parse(JSON.stringify(q_data)),(caltype == 'org'?{}:{
+                    employee_id: '{{ user.employee.id }}'
+                    })) })),{}));
+            $.each(rq,function(x,e){
+                $.ajax({
+                    url: e.url,
+                    type: 'get',
+                    dataType: "json",
+                    contentType: 'application/json; charset=utf-8',
+                    data: Object.assign(e.q,{location:calLocation}),
+                    success: function (response) {
+                        setCalenderDaysInfo($(parent),e.type,response);
+                        if(showInfoDate!=null&&e.last==true){
+                            let tagx = $('td.date-comment[data-date="'+showInfoDate+'"]').find('a.show-date-info');
+                            if($(tagx).length>0 && $(tagx).hasClass('show-date-info')){
+                                $(tagx).click();
+                                }else{
+                                    $('.close-date-info').click();
+                                    }
+                            showInfoDate = null
+                            }
+                        // console.log(e.type,response); 
+                        },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR.responseText)
+                    }
+                    });
+                });
+            }
+        var showInfoDate = null;
+        function syncCalender(month=1,year=2023){
+            var calWorkingDays = {},
+                targetLocation = $('.calendar-location').val();
+            $.each(calenderWorkingDays[ofx_make_key(targetLocation)],function(x,rr){
+                if(ofx_make_key(rr.location)==ofx_make_key(targetLocation)){
+                    calWorkingDays[x] = JSON.parse(JSON.stringify(rr));
+                    }
+                });
+            if(Object.keys(calWorkingDays).length!=7){
+                console.log("WorkingDays not satisfying:", targetLocation);
+                console.log("Using default:", "HYDERABAD");
+                $.each(calenderWorkingDays[ofx_make_key("HYDERABAD")],function(x,rr){
+                    if(ofx_make_key(rr.location)==ofx_make_key("HYDERABAD")&&typeof calWorkingDays[x] == "undefined"){
+                        calWorkingDays[x] = JSON.parse(JSON.stringify(rr));
+                        calWorkingDays[x].isWorkingDay = true;
+                        }
+                    });
+                }
+            if(!$('.calendar-month').hasClass('wait-to-change')){
+                let caltype = 'mine';
+                if($('.calendar-type > option:selected').length>0){
+                    caltype = $('.calendar-type').val();
+                    }
+                if(caltype == 'org'){
+                    $('.add-new-calendar-eevent').parent().removeAttr('style');
+                    }else{
+                        $('.add-new-calendar-eevent').parent().css('display',"none");
+                        }
+                let caldr = CalenderCalc(month,year);
+                let format = 'YYYY-MM-DD';
+                let parent = $('.calendar-data');
+                $('.running-calender').html(moment(caldr['date'],format).format('MMMM YYYY'));
+                let days = moment(caldr['formDate'],format).diff(moment(caldr['toDate'],format), 'days');
+                let rows = '', bDy1='',bDy2='',bDy3='';
+                for(let i = 1; i < 7; i++){
+                    bDy1='';
+                    bDy2='';
+                    bDy3='';
+                    showOf = -1;
+                    for(let j = ((i-1)*7); j < (i*7); j++){
+                        if(moment(caldr['formDate'],format).add(j,"days").format(format),moment(moment(caldr['formDate'],format).add(j,"days").format(format),format).diff(moment(),'days')>=0){
+                            showOf = showOf+1;
+                            }
+                        bDy1 = bDy1 + `<td class="fc-day fc-widget-content `+((typeof calWorkingDays[weekday[moment(caldr['formDate'],format).add(j,"days").day()].toLowerCase()] == "undefined"||calWorkingDays[weekday[moment(caldr['formDate'],format).add(j,"days").day()].toLowerCase()].isWorkingDay==false)?'not-working-day':'working-day')+` fc-`+weekday[moment(caldr['formDate'],format).add(j,"days").day()].toLowerCase()+` fc-past`+(moment(caldr['formDate'],format).add(j,"days").format('MM')!=moment(caldr['date'],format).format('MM')?" not-same-month":"")+`" data-date="`+moment(caldr['formDate'],format).add(j,"days").format(format)+`"></td>`;
+                        bDy2 = bDy2 + `<td class="fc-day-top fc-`+weekday[moment(caldr['formDate'],format).add(j,"days").day()].toLowerCase()+` fc-past" data-date="`+moment(caldr['formDate'],format).add(j,"days").format(format)+`"><span class="fc-day-number">`+moment(caldr['formDate'],format).add(j,"days").format('DD')+' '+(moment(caldr['formDate'],format).add(j,"days").format('MM')!=moment(caldr['date'],format).format('MM')?"":"")+`</span>`+(caltype=='org'?`<button class="add-new-calendar-eevent"`+(showOf<=0?' style="display:none;" ':'')+`data-date="`+moment(caldr['formDate'],format).add(j,"days").format(format)+`" ><i class="mdi mdi-plus" ></i></button>`:``)+`</td>`;
+                        bDy3 = bDy3 + `<td class="date-comment `+(showOf<=0?`no-edit`:'')+` fc-`+weekday[moment(caldr['formDate'],format).add(j,"days").day()].toLowerCase()+`" data-date="`+moment(caldr['formDate'],format).add(j,"days").format(format)+`"></td>`;
+                        }
+                    rows = rows+`<div class="fc-row fc-week fc-widget-content fc-rigid" style="height: 78px;">
+                                    <div class="fc-bg">
+                                        <table>
+                                            <tbody>
+                                                <tr>`+bDy1+`</tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="fc-content-skeleton">
+                                        <table>
+                                            <thead>
+                                                <tr>`+bDy2+`</tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>`+bDy3+`</tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>`;
+                    }
+                $(parent).html(rows);
+                setCalenderData($(parent),month,year);
+                }
+            }
+        $(document).ready(function () {
+            $.each(months,function(z,x){
+                $('.calendar-month').append($(`<option value="`+z+`" `+(moment().format('MMMM').substring(0,3).toLowerCase()==z.toLowerCase()?'selected="selected"':"")+`>`+x.name+`</option>`));
+                });
+            for(let i = 2023; i < moment().year() + 1; i++ ){
+                $('.calendar-year').append($(`<option value="`+i+`" `+(moment().year()==i?'selected="selected"':"")+`>`+i+`</option>`));
+                }
+            syncCalender(Object.keys(months).indexOf($('.calendar-month > option:selected').val())+1,parseInt($('.calendar-year > option:selected').val()));
+            $(document).on('change', '.calendar-type, .calendar-location, .calendar-month, .calendar-year', function(e){
+                if($('.calendar-type').val()=="mine"){
+                    $('select.calendar-location').hide();
+                    $('select.calendar-location').val(ofx_page_data.user.location==null?"HYDERABAD":ofx_page_data.user.location);
+                    }else{
+                        $('select.calendar-location').show();
+                        }
+                $('.calender-div').removeClass('col-md-12 col-md-6').addClass('col-md-12');
+                $('.calender-date-info').removeClass('col-md-6 pl-0').html('');
+                syncCalender(Object.keys(months).indexOf($('.calendar-month > option:selected').val())+1,parseInt($('.calendar-year > option:selected').val()));
+                });
+            $(document).on('click', '.calendar-today', function(e){
+                let year = moment().year();
+                let month = moment().month();
+                $('.calendar-month').addClass('wait-to-change');
+                $('.calendar-month').val(Object.keys(months)[month]).change();
+                $('.calendar-month').removeClass('wait-to-change');
+                $('.calendar-year').val(year).change();
+                });
+            $(document).on('click', '.calendar-arrow', function(e){
+                let format = 'YYYY-MM-DD', monthX = (Object.keys(months).indexOf($('.calendar-month > option:selected').val())+1), yearX = parseInt($('.calendar-year > option:selected').val());
+                let date = moment(yearX+'-'+((monthX<=9?'0':'')+monthX)+'-01',format);
+                if($(this).attr('data-data')=='left'){
+                    date = date.subtract(1, "months");
+                    if(parseInt($('.calendar-year > option:first-child').val())>parseInt(date.year())){
+                        return false;
+                        }
+                    }else{
+                        date = date.add(1, "months");
+                        if(parseInt($('.calendar-year > option:last-child').val())<parseInt(date.year())){
+                            return false;
+                            }
+                        }
+                $('.calendar-month').addClass('wait-to-change');
+                $('.calendar-month').val(Object.keys(months)[date.month()]).change();
+                $('.calendar-month').removeClass('wait-to-change');
+                $('.calendar-year').val(date.year()).change();
+                    
+                });
+            $(document).on('click', '.show-date-info', function(e){
+                let data = JSON.parse($(this).parents('td.date-comment').attr('data-data')),
+                    isEditable = !$(this).parents('td.date-comment').hasClass('no-edit');
+                $('.calender-div').removeClass('col-md-12 col-md-6').addClass('col-md-6');
+                let parent = $('.calender-date-info');
+                $(parent).removeClass('col-md-6 pl-0').addClass('col-md-6 pl-0');
+                let bodx = '';
+                let maper = {
+                    holidays:'bg-success',
+                    deptworkingdays:'bg-info',
+                    empworkingdays:'bg-warning',
+                    };
+                let caltype = 'mine';
+                if($('.calendar-type > option:selected').length>0){
+                    caltype = $('.calendar-type').val();
+                    }
+                $.each(data,function(dep,exv){
+                    $.each(exv,function(_z,ex_v){
+                        let extraArg = '';
+                        if(caltype=='org'){
+                            // extraArg = '<p class="mb-1">';
+                            if("deptworkingdays"==dep){
+                                let deports = [];
+                                $.each(ex_v.department==null?{}:ex_v.department,function(_t,et){
+                                    deports.push(et.name);
+                                    });
+                                // console.log(ex_v,deports);
+                                extraArg = extraArg + `<span class="text-muted" style="font-size: small; padding-left: 10px;"><strong>Assigned To:</strong> `+deports.join(", ")+`</span>`;
+                                }else if(typeof ex_v.employee != "undefined" && ex_v.employee != null){
+                                    extraArg = extraArg + `<span class="text-muted" style="font-size: small; padding-left: 10px;"><strong>Assigned To:</strong> `+(ex_v.employee==null?'':ex_v.employee.fullName+` (`+ex_v.employee.employee_id+`)`)+`</span>`;
+                                    }
+                            // extraArg = extraArg+'</p>';
+                            }
+                        let rId = makeid(10);
+                        bodx = bodx + `<div class="comment-text w-100 mb-1 tag-row`+rId+`" style="position: relative; z-index: 1;">
+                                            <div class="`+maper[dep]+`" style="position: absolute; margin: auto; width: 100%; height: 100%; top: 0px; left: 0px; z-index: -1; opacity: 0.3; "></div>
+                                            <h5><span>`+ex_v.name+`</span>`+extraArg+`<span class="text-muted float-right">`+moment(ex_v.creationDate).format("MMM Do YYYY, h:mm a")+`</span></h5>
+                                            <p class="mb-1">`+ex_v.description+`</p>
+                                            <div class="comment-footer row file-x">
+                                                `+((typeof ex_v.isSystem != "undefined" && ex_v.isSystem==true)?`<span class="text-muted float-right" style="font-size: small; padding-right: 10px;"><strong>Created By:</strong> System</span> `:'')+`
+                                                `+((typeof ex_v.createdBy != "undefined" && ex_v.createdBy!=null)?`<span class="text-muted float-right" style="font-size: small; padding-right: 10px;"><strong>Created By:</strong> `+ex_v.createdBy+`</span> `:'')+`
+                                                `+((typeof ex_v.assignedBy != "undefined" && ex_v.assignedBy!=null)?`<span class="text-muted float-right" style="font-size: small; padding-right: 10px;"><strong>Assigned By:</strong> `+ex_v.assignedBy+`</span> `:'')+`
+                                                `+((typeof ex_v.updatedBy != "undefined" && ex_v.updatedBy!=null)?`<span class="text-muted float-right" style="font-size: small;"><strong>Updated By:</strong> `+ex_v.updatedBy+`</span>`:'')+`
+                                                `+((caltype=='org'&&isEditable)?`
+                                                <ul class="gne-action-icons">
+                                                    <li><button title="Edit Event" data-data='`+JSON.stringify({type:dep,targetDate:ex_v.targetDate,data:ex_v,tag:'.tag-btn'+rId})+`' class="edit-calender-eevent tag-btn`+rId+`"><i class="mdi mdi-pencil"></i></button></li>
+                                                    <li><button title="Delete Event" data-data='`+JSON.stringify({type:dep,targetDate:ex_v.targetDate,data:ex_v,tag:'.tag-row'+rId})+`' class="delete-calender-eevent"><i class="mdi mdi-delete"></i></button></li>
+                                                </ul>`:``)+`
+                                            </div>
+                                        </div>`;          
+                        });
+                    });
+                $(parent).html(`<div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title pl-3 pr-3 pt-2">`+moment($(this).parents('td.date-comment').attr('data-date'),'YYYY-MM-DD').format("MMM Do YYYY")+`</h4>
+                                        <button class="btn btn-pinterest waves-effect waves-light close-date-info" type="button" style="position: absolute; margin: auto; right: 10px; top: 10px;"> <i class="fa fa-times"></i></button>
+                                        <div class="pl-2 pr-2">`+bodx+`</div>
+                                    </div>
+                                </div>`);
+                });
+            $(document).on('click', '.close-date-info', function(e){
+                $('.calender-div').removeClass('col-md-12 col-md-6').addClass('col-md-12');
+                $('.calender-date-info').removeClass('col-md-6 pl-0').html('');
+                });
+            $(document).on('click', '.calender-day-modal-close, .modal-bg', function(e){
+                $(this).parents('.modal').css('display','none');
+                // $('.calender-day-modal').css('display','none');
+                });
+            $(document).on('click', '.add-new-calendar-eevent', function(e){
+                let vx = (typeof $(this).attr('data-date') != "undefined" ? $(this).attr('data-date') : moment().add(1, 'days').format("YYYY-MM-DD") ), parent = $('.calender-day-modal');
+                $(parent).find('.modal-title').html('Add New Calendar Event');
+                $(parent).css('display','block');
+                departmentOptions = '';
+                $.each(ofx_page_data.departments,function(x,e){
+                    departmentOptions = departmentOptions + `<option value="`+e.id+`" >`+e.name+`</option>`;
+                    });
+                let organizationHolidayTypes = '';
+                $.each(ofx_page_data.organizationHolidayTypes,function(x,e){
+                    organizationHolidayTypes = organizationHolidayTypes + `<option value="`+e.id+`" >`+e.name+`</option>`;
+                    });
+                let workingDayTypes = '';
+                $.each(ofx_page_data.workingDayTypes,function(x,e){
+                    workingDayTypes = workingDayTypes + `<option value="`+e.id+`" >`+e.sessionType+`</option>`;
+                    });
+                if(typeof vx != "undefined"){
+                    let organizationHolidayTypesSessionType = `<div class="form-group">
+                                    <label for="exampleInputEmail2">Holiday Type</label>
+                                    <div class="input-group">
+                                        <select class="form-control read-tag" name="type" ><option value="" disabled="disabled" selected="selected" >Select Holiday Type</option>`+organizationHolidayTypes+`</select>
+                                        <div class="input-group-append"><span class="input-group-text" ><i class="ti-list"></i></span></div>
+                                    </div>
+                                </div>`,
+                        workingDayTypesSessionType = `<div class="form-group">
+                                    <label for="exampleInputEmail2">Session Type</label>
+                                    <div class="input-group">
+                                        <select class="form-control read-tag" name="sessionType" ><option value="" disabled="disabled" selected="selected" >Select Session Type</option>`+workingDayTypes+`</select>
+                                        <div class="input-group-append"><span class="input-group-text" ><i class="ti-list"></i></span></div>
+                                    </div>
+                                </div>`,
+                        tagDate = `<div class="form-group">
+                                    <label for="exampleInputuname2">Date</label>
+                                    <div class="input-group">
+                                        <input class="form-control read-tag" name="targetDate" type="date" value="`+vx+`" min="`+moment().add(1, 'days').format("YYYY-MM-DD")+`" >
+                                        <div class="input-group-append"><span class="input-group-text" ><i class="ti-calendar"></i></span></div>
+                                    </div>
+                                </div>`,
+                        tagTitle = `<div class="form-group">
+                                    <label for="exampleInputpwd2">Title</label>
+                                    <div class="input-group">
+                                        <input type="text" name="name" class="form-control read-tag" placeholder="Enter Event Title">
+                                        <div class="input-group-append"><span class="input-group-text" ><i class="ti-info"></i></span></div>
+                                    </div>
+                                </div>`,
+                        tagDescription = `<div class="form-group">
+                                    <label for="exampleInputpwd3">Description</label>
+                                    <div class="input-group">
+                                        <textarea name="description" class="form-control read-tag" placeholder="Enter About Event" spellcheck="false"></textarea>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" >
+                                                <i class="ti-file"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>`,
+                        tagDepartment = `<div class="form-group">
+                                    <label for="exampleInputEmail2">Department <code class="department-cout pl-2"></code></label>
+                                    <div class="input-group">
+                                        <select class="form-control read-tag" name="department" multiple="">`+departmentOptions+`</select>
+                                        <div class="input-group-append"><span class="input-group-text" ><i class="ti-list"></i></span></div>
+                                    </div>
+                                </div>`,
+                        tagDepartment2 = `<div class="form-group">
+                                    <label for="exampleInputEmail2">Department</label>
+                                    <div class="input-group">
+                                        <select class="form-control get-dept-employes" ><option value="" disabled="disabled" selected="selected" >Select Department</option>`+departmentOptions+`</select>
+                                        <div class="input-group-append"><span class="input-group-text" ><i class="ti-pin"></i></span></div>
+                                    </div>
+                                </div>`,
+                        artistsX = `<div class="form-group">
+                                    <label for="exampleInputEmail2">Employees <code class="employees-cout pl-2"></code></label>
+                                    <div class="input-group">
+                                        <div style="width: calc(100% - 43px); margin-right: 1px;">
+                                            <input type="text" name="name" class="form-control e-find" placeholder="Search..." style="border-bottom-left-radius: 0px; border-bottom-right-radius: 0px; border-top-right-radius: 0px;">
+                                            <select class="form-control read-tag" name="employee" multiple="" style="overflow-y: auto; border-top-left-radius: 0px; border-top-right-radius: 0px; border-bottom-right-radius: 0px;"></select>
+                                        </div>
+                                        <div class="input-group-append"><span class="input-group-text" ><i class="ti-user"></i></span></div>
+                                    </div>
+                                </div>`;
+                    $(parent).find('.modal-body').html(`<ul class="nav nav-tabs customtab" role="tablist">
+                        <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#holiday" role="tab">Holiday</a></li>
+                        <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#working" role="tab">Working</a></li>
+                        <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#employee" role="tab">Employees</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="holiday" role="tabpanel">
+                            <div class="form p-3">`+tagDate+tagTitle+organizationHolidayTypesSessionType+workingDayTypesSessionType+tagDescription+`</div>
+                        </div>
+                        <div class="tab-pane" id="working" role="tabpanel">
+                            <div class="form p-3">`+tagDate+tagTitle+workingDayTypesSessionType+tagDescription+tagDepartment+`</div>
+                        </div>
+                        <div class="tab-pane" id="employee" role="tabpanel">
+                            <div class="form p-3">`+tagDate+tagTitle+workingDayTypesSessionType+tagDescription+tagDepartment2+artistsX+`</div>
+                        </div>
+                    </div>`);
+                    }
+                });
+            });
+            $(document).on('change keyup', '.e-find', function(e){
+                let keSearch = $(this).val().trim();
+                $('select.read-tag[name="employee"] > option').each(function(e){
+                    let dt = JSON.parse($(this).attr('data-data')), isIn = false;
+                    $.each(dt,function(z,xd){
+                        if(xd!=null&&xd.trim().toLowerCase().replace(/&nbsp;/g, ' ').includes(keSearch.toLowerCase())){
+                            isIn = true;
+                            }
+                        });
+                    if(isIn){
+                        $(this).removeAttr('style');
+                        }else{
+                            $(this).css('display','none');
+                            }
+                    });
+                // $('select.read-tag[name="employee"] > option:selected').each(function(e){
+                //     let dt = JSON.parse($(this).attr('data-data'));
+                //     console.log(dt.fullName,dt);
+                //     });
+                });
+            $(document).on('change', 'select.read-tag[name="employee"]', function(e){
+                $('.employees-cout').html($('select.read-tag[name="employee"] > option:selected').length);
+                });
+            $(document).on('change', 'select.read-tag[name="department"]', function(e){
+                $('.department-cout').html($('select.read-tag[name="department"] > option:selected').length);
+                });
+            $(document).on('change', '.get-dept-employes', function(e){
+                let d_id = String($(this).val()), deptData = {};
+                $.each(ofx_page_data.departments,function(x,ee){
+                    if(String(ee.id) == d_id){
+                        deptData = JSON.parse(JSON.stringify(ee));
+                        }
+                    });
+                $('.e-find').val('');
+                let emptag = $('select.read-tag[name="employee"]');
+                $(emptag).html('');
+                $('.employees-cout').html('');
+                $.ajax({
+                    url: '/api/hrm/employee/?dept='+deptData.name,
+                    type: 'get',
+                    dataType: "json",
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (response) {
+                        $.each(response,function(z,e){
+                            $(emptag).append(`<option value="`+e.id+`" data-data='`+JSON.stringify({employee_id:e.employee_id, fullName: e.fullName})+`' >`+e.fullName+` (`+e.employee_id+`)</option>`);
+                            });
+                        },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR.responseText)
+                        }
+                    }); 
+                });
+            $(document).on('click', '.delete-calender-eevent', function(e){
+                let data = JSON.parse($(this).attr("data-data"));
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if(result.value) {
+                            let formTarget = typeof data.data.department != "undefined"?"working":(typeof data.data.employee != "undefined"?"employees":"holiday"),
+                                targetURL = {
+                                    holiday: '/api/calendar/holidays/',
+                                    working: '/api/calendar/deptworkingdays/',
+                                    employees: '/api/calendar/empworkingdays/',
+                                    };
+                            $.ajax({
+                                url: targetURL[formTarget]+'?id='+data.data.id,
+                                type: 'DELETE',
+                                dataType: "json",
+                                contentType: 'application/json; charset=utf-8',
+                                // data: JSON.stringify(data),
+                                success: function (response) {
+                                    $.toast({
+                                        heading: 'Deleted',
+                                        showHideTransition: 'slide',
+                                        text: 'Calender Event Deleted Successfully',
+                                        icon: 'success',
+                                        position: 'bottom-right',
+                                        loader: true,        // Change it to false to disable loader
+                                        loaderBg: '#da7b1c',// To change the background
+                                        bgColor: '#1d6de5',
+                                        textColor: 'white',
+                                        hideAfter: 5000   // in milli seconds
+                                        });
+                                    showInfoDate = data.data.targetDate;
+                                    syncCalender(Object.keys(months).indexOf($('.calendar-month > option:selected').val())+1,parseInt($('.calendar-year > option:selected').val()));
+                                    },
+                                error: function (jqXHR, exception) {
+                                    console.log(jqXHR.responseText)
+                                    }
+                                });
+                            }
+                        });
+                });
+            $(document).on('click', '.edit-calender-eevent', function(e){
+                let data = JSON.parse($(this).attr("data-data")), parent = $('.calender-day-modal-update');
+                $(parent).find('.modal-title').html(data.data.name+' Update');
+                $(parent).css('display','block');
+                let tags = [], departmentOptions = '', selctdeps = [], rId = makeid(10);
+                tags.push(`<div class="form-group">
+                                <input class="form-control read-tag-info" name="tagDate" type="hidden" value="`+data.targetDate+`" >
+                                <input class="form-control read-tag-info" name="type" type="hidden" value="`+data.type+`" >
+                                <input class="form-control read-tag-info" name="tag" type="hidden" value="`+data.tag+`" >
+                                <input class="form-control read-tag-info" name="id" type="hidden" value="`+data.data.id+`" >
+                                <label for="exampleInputuname2">Date</label>
+                                <div class="input-group">
+                                    <input class="form-control read-tag" name="targetDate" type="date" value="`+data.data.targetDate+`" min="`+moment().add(1, 'days').format("YYYY-MM-DD")+`" >
+                                    <div class="input-group-append"><span class="input-group-text" ><i class="ti-calendar"></i></span></div>
+                                </div>
+                            </div>`);
+                tags.push(`<div class="form-group">
+                                <label for="exampleInputpwd2">Title</label>
+                                <div class="input-group">
+                                    <input type="text" name="name" class="form-control read-tag" value="`+data.data.name+`" placeholder="Enter Event Title">
+                                    <div class="input-group-append"><span class="input-group-text" ><i class="ti-info"></i></span></div>
+                                </div>
+                            </div>`);
+                let organizationHolidayTypes = '';
+                $.each(ofx_page_data.organizationHolidayTypes,function(x,e){
+                    organizationHolidayTypes = organizationHolidayTypes + `<option value="`+e.id+`" `+((data.data.type!=null&&String(e.name)==String(data.data.type))?'selected="selected"':'')+` >`+e.name+`</option>`;
+                    });
+                let workingDayTypes = '';
+                $.each(ofx_page_data.workingDayTypes,function(x,e){
+                    workingDayTypes = workingDayTypes + `<option value="`+e.id+`" `+((data.data.sessionType!=null&&String(e.sessionType)==String(data.data.sessionType))?'selected="selected"':'')+` >`+e.sessionType+`</option>`;
+                    });
+                tags.push(`<div class="form-group">
+                                <label for="exampleInputEmail2">Session Type</label>
+                                <div class="input-group">
+                                    <select class="form-control read-tag" name="sessionType" >`+workingDayTypes+`</select>
+                                    <div class="input-group-append"><span class="input-group-text" ><i class="ti-list"></i></span></div>
+                                </div>
+                            </div>`);
+                if(!(data.type=="deptworkingdays"||data.type=="empworkingdays")){
+                    tags.push(`<div class="form-group">
+                                <label for="exampleInputEmail2">Holiday Type</label>
+                                <div class="input-group">
+                                    <select class="form-control read-tag" name="type" >`+organizationHolidayTypes+`</select>
+                                    <div class="input-group-append"><span class="input-group-text" ><i class="ti-list"></i></span></div>
+                                </div>
+                            </div>`);
+                    }
+                tags.push(`<div class="form-group">
+                                <label for="exampleInputpwd3">Description</label>
+                                <div class="input-group">
+                                    <textarea name="description" class="form-control read-tag" placeholder="Enter About Event" spellcheck="false">`+data.data.description+`</textarea>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" >
+                                            <i class="ti-file"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>`);
+                if(data.type=="deptworkingdays"){
+                    $.each((data.data.department!=null?data.data.department:[]),function(x,e){
+                        selctdeps.push(e.id);
+                        });
+                    $.each(ofx_page_data.departments,function(x,e){
+                        departmentOptions = departmentOptions + `<option value="`+e.id+`" `+(jQuery.inArray(e.id,selctdeps)!=-1?'selected="selected"':'')+` >`+e.name+`</option>`;
+                        });
+                    tags.push(`<div class="form-group">
+                                <label for="exampleInputEmail2">Department <code class="department-cout pl-2">`+selctdeps.length+`</code></label>
+                                <div class="input-group">
+                                    <select class="form-control read-tag" name="department" multiple="">`+departmentOptions+`</select>
+                                    <div class="input-group-append"><span class="input-group-text" ><i class="ti-list"></i></span></div>
+                                </div>
+                            </div>`);
+                    }else if(data.type=="empworkingdays"){
+                        $.each(ofx_page_data.departments,function(x,e){
+                            departmentOptions = departmentOptions + `<option value="`+e.id+`" `+(String(e.id)==String(data.data.employee.department.id)?'selected="selected"':'')+` >`+e.name+`</option>`;
+                            });
+                        tags.push(`<div class="form-group">
+                                    <label for="exampleInputEmail2">Department</label>
+                                    <div class="input-group">
+                                        <select class="form-control get-dept-employes" ><option value="" disabled="disabled" selected="selected" >Select Department</option>`+departmentOptions+`</select>
+                                        <div class="input-group-append"><span class="input-group-text" ><i class="ti-pin"></i></span></div>
+                                    </div>
+                                </div>`);
+                        tags.push(`<div class="form-group">
+                                    <label for="exampleInputEmail2">Employee</label>
+                                    <div class="input-group">
+                                        <select class="form-control read-tag stag-`+rId+`" data-data="`+data.data.employee.id+`" name="employee" style="overflow-y: auto; border-top-left-radius: 0px; border-top-right-radius: 0px; border-bottom-right-radius: 0px;"></select>
+                                        <div class="input-group-append"><span class="input-group-text" ><i class="ti-user"></i></span></div>
+                                    </div>
+                                </div>`);
+                        }
+                $(parent).find('.modal-body').html(`<div class="form p-3">`+tags.join('')+`</div>`);
+                if(data.type=="empworkingdays"){
+                    $.ajax({
+                        url: '/api/hrm/employee/?dept='+data.data.employee.department.name,
+                        type: 'get',
+                        dataType: "json",
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (response) {
+                            $.each(response,function(z,e){
+                                $('.stag-'+rId).append(`<option value="`+e.id+`" data-data='`+JSON.stringify({employee_id:e.employee_id, fullName: e.fullName})+`' `+(String($('.stag-'+rId).attr('data-data'))==String(e.id)?'selected="selected"':'')+` >`+e.fullName+` (`+e.employee_id+`)</option>`);
+                                });
+                            },
+                        error: function (jqXHR, exception) {
+                            console.log(jqXHR.responseText)
+                            }
+                        }); 
+                    }
+
+                //
+                // showInfoDate = data.targetDate;
+                //syncCalender(Object.keys(months).indexOf($('.calendar-month > option:selected').val())+1,parseInt($('.calendar-year > option:selected').val()));
+                });
+            $(document).on('click', '.submit-calendar-form', function(e){
+                let data = {};
+                $('.calender-day-modal .tab-pane.active .read-tag').each(function(e){
+                    let name = $(this).attr('name');
+                    if($(this).prop("tagName") == 'SELECT'  && $(this).attr('name')!='sessionType' && $(this).attr('name')!='type'){
+                        data[name] = [];
+                        $(this).find('option:selected').each(function(xe){
+                            data[name].push($(this).attr('value'));
+                            });
+                        }else{
+                            data[name] = $(this).val();
+                            }
+                    });
+                let formTarget = typeof data.department != "undefined"?"working":(typeof data.employee != "undefined"?"employees":"holiday"),
+                    targetURL = {
+                        holiday: '/api/calendar/holidays/',
+                        working: '/api/calendar/deptworkingdays/',
+                        employees: '/api/calendar/empworkingdays/',
+                        };
+                let datarequired = false;
+                $.each(data,function(z,e){
+                    if(e.length==0){
+                        datarequired = true;
+                        }
+                    });
+                if(!datarequired){
+                    data[formTarget=='holiday'?'createdBy':'assignedBy'] = '{{ user.employee.id }}';
+                    data['location'] = $('select.calendar-location').val();
+                if(formTarget=="employees"){
+                    let nData = JSON.parse(JSON.stringify(data));
+                    $.each(data.employee,function(z,x){
+                        nData = Object.assign(nData,{employee:x});
+                        $.ajax({
+                            url: targetURL[formTarget],
+                            type: 'POST',
+                            dataType: "json",
+                            contentType: 'application/json; charset=utf-8',
+                            data: JSON.stringify([nData]),
+                            success: function (response) {
+                                if(data.employee.length==z+1){
+                                    $.toast({
+                                        heading: 'Created',
+                                        showHideTransition: 'slide',
+                                        text: 'Calender Event Created Successfully',
+                                        icon: 'success',
+                                        position: 'bottom-right',
+                                        loader: true,        // Change it to false to disable loader
+                                        loaderBg: '#da7b1c',// To change the background
+                                        bgColor: '#1d6de5',
+                                        textColor: 'white',
+                                        hideAfter: 5000   // in milli seconds
+                                        });
+                                    $('.calender-day-modal').css('display','none');
+                                    syncCalender(Object.keys(months).indexOf($('.calendar-month > option:selected').val())+1,parseInt($('.calendar-year > option:selected').val()));
+                                    }
+                            },
+                            error: function (jqXHR, exception) {
+                                console.log(jqXHR.responseText)
+                            }
+                            });
+                        });
+                    }else{
+                        $.ajax({
+                                url: targetURL[formTarget],
+                                type: 'POST',
+                                dataType: "json",
+                                contentType: 'application/json; charset=utf-8',
+                                data: JSON.stringify([data]),
+                                success: function (response) {
+                                    $.toast({
+                                        heading: 'Created',
+                                        showHideTransition: 'slide',
+                                        text: 'Calender Event Created Successfully',
+                                        icon: 'success',
+                                        position: 'bottom-right',
+                                        loader: true,        // Change it to false to disable loader
+                                        loaderBg: '#da7b1c',// To change the background
+                                        bgColor: '#1d6de5',
+                                        textColor: 'white',
+                                        hideAfter: 5000   // in milli seconds
+                                        });
+                                    $('.calender-day-modal').css('display','none');
+                                    syncCalender(Object.keys(months).indexOf($('.calendar-month > option:selected').val())+1,parseInt($('.calendar-year > option:selected').val()));
+                                },
+                                error: function (jqXHR, exception) {
+                                    console.log(jqXHR.responseText)
+                                }
+                            });
+                        }
+                    }else{
+                        alert('All fields are mandatory to fill.');
+                        }
+                
+                });
+            $(document).on('click', '.submit-calendar-update-form', function(e){
+                let data = {};
+                $('.calender-day-modal-update .read-tag').each(function(e){
+                    let name = $(this).attr('name');
+                    if($(this).prop("tagName") == 'SELECT' && $(this).attr('name')!='sessionType' && $(this).attr('name')!='type'){
+                        data[name] = [];
+                        $(this).find('option:selected').each(function(xe){
+                            data[name].push($(this).attr('value'));
+                            });
+                        }else{
+                            data[name] = $(this).val();
+                            }
+                    });
+                let formTarget = typeof data.department != "undefined"?"working":(typeof data.employee != "undefined"?"employees":"holiday"),
+                    targetURL = {
+                        holiday: '/api/calendar/holidays/',
+                        working: '/api/calendar/deptworkingdays/',
+                        employees: '/api/calendar/empworkingdays/',
+                        };
+                let datarequired = false;
+                $.each(data,function(z,e){
+                    if(e.length==0){
+                        datarequired = true;
+                        }
+                    });
+                if(typeof data.employee != "undefined"){
+                    data.employee = data.employee[0];
+                    }
+                if(!datarequired){
+                    data.updatedBy = '{{ user.employee.id }}';
+                    $.ajax({
+                        url: targetURL[formTarget]+'?id='+$('.calender-day-modal-update .read-tag-info[name="id"]').val(),
+                        type: 'PUT',
+                        dataType: "json",
+                        contentType: 'application/json; charset=utf-8',
+                        data: JSON.stringify(data),
+                        success: function (response) {
+                            $.toast({
+                                heading: 'Updated',
+                                showHideTransition: 'slide',
+                                text: 'Calender Event Updated Successfully',
+                                icon: 'success',
+                                position: 'bottom-right',
+                                loader: true,        // Change it to false to disable loader
+                                loaderBg: '#da7b1c',// To change the background
+                                bgColor: '#1d6de5',
+                                textColor: 'white',
+                                hideAfter: 5000   // in milli seconds
+                                });
+                            showInfoDate = $('.calender-day-modal-update .read-tag-info[name="tagDate"]').val();
+                            $('.calender-day-modal-update').css('display','none');
+                            syncCalender(Object.keys(months).indexOf($('.calendar-month > option:selected').val())+1,parseInt($('.calendar-year > option:selected').val()));
+                            },
+                        error: function (jqXHR, exception) {
+                            console.log(jqXHR.responseText)
+                            }
+                        });
+                    }else{
+                        alert('All fields are mandatory to fill.');
+                        }
+                });
+    </script>
+    <style>
+        .calender-day-modal-update > .modal-bg,
+        .calender-day-modal > .modal-bg{
+            position: absolute;
+            margin: auto;
+            width: 100%;
+            height: 100%;
+            top: 0px;
+            left: 0px;
+            }
+    </style>
+    <div class="modal fade show calender-day-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none; background: #000000a8;">
+        <div class="modal-bg"></div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header"><h4 class="modal-title"></h4></div>
+                <div class="modal-body p-0"></div>
+                <div class="modal-footer">
+                    <button type="button" name="save" class="btn btn-success waves-effect waves-light submit-calendar-form" >Add</button>
+                    <button type="button" name="close" class="btn btn-default waves-effect calender-day-modal-close" data-dismiss="modal" >Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade show calender-day-modal-update" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none; background: #000000a8;">
+        <div class="modal-bg"></div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header"><h4 class="modal-title"></h4></div>
+                <div class="modal-body p-0"></div>
+                <div class="modal-footer">
+                    <button type="button" name="save" class="btn btn-success waves-effect waves-light submit-calendar-update-form" >Update</button>
+                    <button type="button" name="close" class="btn btn-default waves-effect calender-day-modal-close" data-dismiss="modal" >Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock page_scripts %}

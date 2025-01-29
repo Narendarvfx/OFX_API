@@ -1,4 +1,8 @@
-        //pie
+        /*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */        //pie
             $("span.pie").peity("pie",{
                 width: 50,
                 height: 50 

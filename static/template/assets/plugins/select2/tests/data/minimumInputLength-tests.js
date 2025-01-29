@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 module('Data adapters - Minimum input length');
 
 var MinimumInputLength = require('select2/data/minimumInputLength');

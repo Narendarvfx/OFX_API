@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 'use strict';
 
 import fs from 'graceful-fs';
@@ -78,7 +84,7 @@ export default {
       notify: {
         title: pkg.title
       },
-      
+
       env: 'development',
       production: production,
       setEnv: function(env) {

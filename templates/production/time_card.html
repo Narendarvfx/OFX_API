@@ -1,14 +1,14 @@
 {% extends 'main/base.html' %}
-
+{% load static %}
 
 {% block bread_crumb %}
     <!-- ============================================================== -->
     <!-- Bread crumb and right sidebar toggle -->
     <!-- ============================================================== -->
-    <link rel="stylesheet" href="/static/third_party/dhtmlx/dhtmlxGantt/dhtmlxgantt_broadway.css"
+    <link rel="stylesheet" href="{% static 'third_party/dhtmlx/dhtmlxGantt/dhtmlxgantt_broadway.css' %}"
           type="text/css"/>
     <link rel="stylesheet"
-          href="/static/template/assets/plugins/toast-master/css/jquery.toast.css" type="text/css"/>
+          href="{% static 'template/assets/plugins/toast-master/css/jquery.toast.css' %}" type="text/css"/>
 
 
 {% endblock bread_crumb %}
@@ -287,9 +287,9 @@
 
 {% block page_scripts %}
 
-    <script src="/static/third_party/dhtmlx/dhtmlxGantt/edge/dhtmlxgantt.js"></script>
-    <script src="/static/template/assets/plugins/popper/popper.min.js"></script>
-    <script src="/static/template/assets/plugins/toast-master/js/jquery.toast.js"></script>
+    <script src="{% static 'third_party/dhtmlx/dhtmlxGantt/edge/dhtmlxgantt.js' %}"></script>
+    <script src="{% static 'template/assets/plugins/popper/popper.min.js' %}"></script>
+    <script src="{% static 'template/assets/plugins/toast-master/js/jquery.toast.js' %}"></script>
     <script>
         // Validation script
         !function (window, document, $) {
@@ -532,7 +532,7 @@
                 'spent_hours': parseFloat(document.getElementById("spent_hours_val").value),
                 'others_hours': parseFloat(document.getElementById("other_hours_val").value),
                 'total_hours': parseFloat(document.getElementById("spent_hours_val").value) + parseFloat(document.getElementById("other_hours_val").value),
-                'approved_by': "{{ user.profile.employee.fullName }}"
+                'approved_by': "{{ user.employee.fullName }}"
             }
             $.ajax({
                 type: "PUT",

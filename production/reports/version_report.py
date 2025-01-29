@@ -1,3 +1,7 @@
+#  Copyright (c) 2023.
+#  Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+#  All rights reserved.
+
 import datetime
 import json
 
@@ -19,7 +23,6 @@ def get_data(dept):
     # print(json.dumps(serializer.data))
     dataa = json.dumps(serializer.data)
     return json.loads(dataa)
-
 
 def write_to_excel(workbook, worksheet, shots_data):
     # Add a bold format to use to highlight cells.
@@ -51,56 +54,64 @@ def write_to_excel(workbook, worksheet, shots_data):
     # # Start from the first cell below the headers.
     col = 0
     row = 0
-    for shot_data in shots_data:
-        shot_status = ''
-        if shot_data['status']['code'] in ['YTA', 'ATL', 'YTS']:
-            shot_status = "YTS"
-        elif shot_data['status']['code'] in ['WIP', 'STC', 'LRT']:
-            shot_status = "WIP"
-        elif shot_data['status']['code'] in ['STQ', 'IRT','LAP']:
-            shot_status = "QC"
-        elif shot_data['status']['code'] == "IAP":
-            shot_status = "IAP"
-        elif shot_data['status']['code'] == "CRT":
-            shot_status = "RETAKE"
+    try:
+        for shot_data in shots_data:
+            shot_status = ''
+            if shot_data['status']['code'] in ['YTA', 'ATL', 'YTS']:
+                shot_status = "YTS"
+            elif shot_data['status']['code'] in ['WIP', 'STC', 'LRT']:
+                shot_status = "WIP"
+            elif shot_data['status']['code'] in ['STQ', 'IRT','LAP']:
+                shot_status = "QC"
+            elif shot_data['status']['code'] == "IAP":
+                shot_status = "IAP"
+            elif shot_data['status']['code'] == "CRT":
+                shot_status = "RETAKE"
 
-        if shot_data['type'] == "RETAKE":
-            bid_days = 0
-            percentile = 0
-        else:
-            bid_days = float(shot_data['bid_days'])
-            percentile = shot_data['progress'] / 100
+            if shot_data['type'] == "RETAKE":
+                bid_days = 0
+                percentile = 0
+            else:
+                bid_days = float(shot_data['bid_days'])
+                percentile = shot_data['progress'] / 100
 
-        bid_column = 'H{}'.format(row + 2)
-        progress_column = 'I{}'.format(row + 2)
-        total_frames = shot_data['actual_end_frame'] - shot_data['actual_start_frame'] + 1
-        if shot_data['eta']:
-            due_date = datetime.datetime.strptime(shot_data['eta'], '%Y-%m-%dT%H:%M:%S')
-        else:
-            due_date = ""
-        worksheet.write(row + 1, col, shot_data['sequence']['project']['client']['name'], border)
-        worksheet.write(row + 1, col + 1, shot_data['sequence']['project']['name'], border)
-        worksheet.write(row + 1, col + 2, shot_data['name'], border)
-        worksheet.write(row + 1, col + 3, shot_data['task_type'], border)
-        worksheet.write(row + 1, col + 4, shot_data['complexity'], border)
-        worksheet.write(row + 1, col + 5, shot_status, border)
-        worksheet.write(row + 1, col + 6, bid_days, border)
-        worksheet.write(row + 1, col + 7, percentile, percent)
-        worksheet.write(row + 1, col + 8, due_date, date_format)
-        worksheet.write(row + 1, col + 9, shot_data['qc_name'], border)
-        worksheet.write(row + 1, col + 10, shot_data['team_lead'], border)
-        worksheet.write(row + 1, col + 11, shot_data['artist'], border)
-        in_date = datetime.datetime.strptime(shot_data['creation_date'], '%Y-%m-%dT%H:%M:%S.%f')
-        worksheet.write(row + 1, col + 12, in_date, date_format)
-        if shot_data['submitted_date']:
-            submitted_date = datetime.datetime.strptime(shot_data['submitted_date'], '%Y-%m-%dT%H:%M:%S.%f')
-        else:
-            submitted_date = ""
+            bid_column = 'H{}'.format(row + 2)
+            progress_column = 'I{}'.format(row + 2)
+            total_frames = shot_data['actual_end_frame'] - shot_data['actual_start_frame'] + 1
+            if shot_data['eta']:
+                due_date = datetime.datetime.strptime(shot_data['eta'], '%Y-%m-%dT%H:%M:%S')
+            else:
+                due_date = ""
+            worksheet.write(row + 1, col, shot_data['sequence']['project']['client']['name'], border)
+            worksheet.write(row + 1, col + 1, shot_data['sequence']['project']['name'], border)
+            worksheet.write(row + 1, col + 2, shot_data['name'], border)
+            worksheet.write(row + 1, col + 3, shot_data['task_type'], border)
+            worksheet.write(row + 1, col + 4, shot_data['complexity'], border)
+            worksheet.write(row + 1, col + 5, shot_status, border)
+            worksheet.write(row + 1, col + 6, bid_days, border)
+            worksheet.write(row + 1, col + 7, percentile, percent)
+            worksheet.write(row + 1, col + 8, due_date, date_format)
+            worksheet.write(row + 1, col + 9, shot_data['qc_name'], border)
+            worksheet.write(row + 1, col + 10, shot_data['team_lead'], border)
+            worksheet.write(row + 1, col + 11, shot_data['artist'], border)
+            in_date = datetime.datetime.strptime(shot_data['creation_date'], '%Y-%m-%dT%H:%M:%S.%f')
+            worksheet.write(row + 1, col + 12, in_date, date_format)
+            if shot_data['submitted_date']:
+                try:
+                    submitted_date = datetime.datetime.strptime(shot_data['submitted_date'], '%Y-%m-%dT%H:%M:%S.%f')
+                except:
+                    submitted_date = datetime.datetime.strptime(shot_data['submitted_date'], '%Y-%m-%dT%H:%M:%S')
+                    pass
+            else:
+                submitted_date = ""
 
-        worksheet.write(row + 1, col + 13, shot_data['version'], border)
-        worksheet.write(row + 1, col + 14, submitted_date, border)
+            worksheet.write(row + 1, col + 13, shot_data['version'], border)
+            worksheet.write(row + 1, col + 14, submitted_date, border)
 
-        row += 1
+            row += 1
+    except Exception as e:
+        print("Version Error:", e)
+        pass
 
 
 # write_to_excel()

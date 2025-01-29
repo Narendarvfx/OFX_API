@@ -1,3 +1,6 @@
+#  Copyright (c) 2023.
+#  Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+#  All rights reserved.
 from django.db.models import signals
 from django.db import models
 from django.contrib.auth.models import User
@@ -13,5 +16,3 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
-
-# signals.post_save.connect(create_user_profile_signal, sender=User, dispatch_uid='profiles.models')

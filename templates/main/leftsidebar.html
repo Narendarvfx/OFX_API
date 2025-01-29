@@ -8,157 +8,361 @@
         <!-- User profile -->
         <div class="user-profile">
             <!-- User profile image -->
-            <div class="profile-img"> <img src="{{ user.profile.employee.photo.url }}" onerror="this.src='/media/profiles/photo/default.png'" alt="user" /> </div>
+            <div class="profile-img"><img src="{{ user.employee.photo.url}}" onerror="this.onerror=null; this.src='/media/profiles/photo/default.png'" alt=""/></div>
+
             <!-- User profile text-->
-            <div class="profile-text"> <a href="#" class="dropdown-toggle link u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">{{ user.profile.employee }}<span class="caret"></span></a>
-                <div class="dropdown-menu animated flipInY">
-                    <a href="/profile" class="dropdown-item"><i class="ti-user"></i> My Profile</a>
-                    <a href="#" class="dropdown-item"><i class="ti-wallet"></i> My Balance</a>
-                    <a href="#" class="dropdown-item"><i class="ti-email"></i> Inbox</a>
-                    <div class="dropdown-divider"></div> <a href="#" class="dropdown-item"><i class="ti-settings"></i> Account Setting</a>
-                    <div class="dropdown-divider"></div> <a href="/logout" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
-                </div>
+            <div class="profile-text">{{ user.employee }}<span class="caret"></span>
+<!--?                <div class="dropdown-menu animated flipInY">-->
+<!--?                    <a href="/profile" class="dropdown-item"><i class="ti-user"></i> My Profile</a>-->
+<!--?                    <a href="#" class="dropdown-item"><i class="ti-wallet"></i> My Balance</a>-->
+<!--?                    <a href="#" class="dropdown-item"><i class="ti-email"></i> Inbox</a>-->
+<!--?                    <div class="dropdown-divider"></div>-->
+<!--?                    <a href="#" class="dropdown-item"><i class="ti-settings"></i> Account Setting</a>-->
+<!--?                    <div class="dropdown-divider"></div>-->
+<!--?                    <a href="/logout" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>-->
+<!--?                </div>-->
             </div>
         </div>
         <!-- End User profile text-->
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav">
             <ul id="sidebarnav">
-                <li class="nav-small-cap">APPS</li>
-                <li>
-                    <a class="has-arrow12" href="/" aria-expanded="false"><i class="mdi mdi-gauge"></i><span class="hide-menu">Dashboard </span></a>
+                {% if user.employee.role.name == "CENTRAL PRODUCTION MANAGER" or request.user|has_group:"Developers" %}
+                    <li>
+                        <a class="has-arrow12" href="/" aria-expanded="false"><i class="mdi mdi-view-dashboard" style="color: coral !important;"></i><span class="hide-menu">Dashboard </span></a>
+                    </li>
+                {% endif %}
+                <li id="navleftmyreport" style="display:none;">
+                    <a class="has-arrow12" href="/production/myreport/" aria-expanded="false"><i class="mdi mdi-av-timer" style="color: #38dff5 !important;"></i><span class="hide-menu">My Report</span></a>
                 </li>
-                <li>
-                    <a class="has-arrow12" href="/production/clients" aria-expanded="false"><i class="mdi mdi-image-filter-black-white"></i><span class="hide-menu">Clients </span></a>
+                <script>
+                    if ((userPermissions.indexOf("can_view_nav_myreport")!= -1)){
+                        document.getElementById("navleftmyreport").style.display = "block";
+                        }
+                </script>
+                <li id="navleftmandaysavailability" style="display:none;">
+                    <a class="has-arrow12" href="/production/mandaysavailability/" aria-expanded="false"><i class="mdi mdi-clock" style="color: #3897f5 !important;"></i><span class="hide-menu">Mandays Availability</span></a>
                 </li>
-                <li>
-                    <a class="has-arrow12" href="/production/projects" aria-expanded="false"><i class="mdi mdi-image-filter-black-white"></i><span class="hide-menu">Projects </span></a>
+                <script>
+                    if ((userPermissions.indexOf("can_view_nav_mandaysavailability")!= -1)){
+                        document.getElementById("navleftmandaysavailability").style.display = "block";
+                        }
+                </script>
+
+                <li id="navleftresourceavailability" style="display:none;">
+                    <a class="has-arrow12" href="/production/resource/" aria-expanded="false"><i
+                            class="mdi mdi-gauge" style="color: #3848f5 !important;"></i><span class="hide-menu">Resource Availability </span></a>
                 </li>
-                <li>
-                    <a class="has-arrow12" href="/production/shots" aria-expanded="false"><i class="mdi mdi-image-filter-black-white"></i><span class="hide-menu">Shots</span></a>
+                <script>
+                    if ((userPermissions.indexOf("can_view_nav_resourceavailability")!= -1)){
+                        document.getElementById("navleftresourceavailability").style.display = "block";
+                        }
+                </script>
+                <li id="navleftscheduling" style="display:none;">
+                    <a class="has-arrow12" href="/production/scheduling/" aria-expanded="false"><i
+                            class="mdi mdi-image-filter-black-white"></i><span class="hide-menu">Scheduling</span></a>
                 </li>
-                <li>
-                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-bullseye"></i><span class="hide-menu">Reports</span></a>
+                <script>
+                    if ((userPermissions.indexOf("can_view_nav_scheduling")!= -1)){
+                        document.getElementById("navleftscheduling").style.display = "block";
+                        }
+                </script>
+                <li id="navleftclients" style="display:none;">
+                    <a class="has-arrow12" href="/production/clients/" aria-expanded="false"><i class="mdi mdi-account-star-variant" style="color: #f34a69 !important;"></i><span class="hide-menu">Clients </span></a>
+                </li>
+                <script>
+                    if ((userPermissions.indexOf("can_view_nav_clients")!= -1)){
+                        document.getElementById("navleftclients").style.display = "block";
+                        }
+                </script>
+                <li id="navleftprojects" style="display:none;">
+                    <a class="has-arrow12" href="/production/projects/" aria-expanded="false"><i
+                            class="mdi mdi-image-filter-black-white" style="color: #ac4af3 !important;"></i><span class="hide-menu">Projects </span></a>
+                </li>
+                <script>
+                    if ((userPermissions.indexOf("can_view_nav_projects")!= -1)){
+                        document.getElementById("navleftprojects").style.display = "block";
+                        }
+                </script>
+                <li id="navleftshots" style="display:none;">
+                    <a class="has-arrow12" href="/production/shots/" aria-expanded="false"><i class="mdi mdi-folder-multiple-image" style="color: #136ef6 !important;"></i><span class="hide-menu">Shots</span></a>
+                </li>
+                <script>
+                    if ((userPermissions.indexOf("can_view_nav_shots")!= -1)){
+                        document.getElementById("navleftshots").style.display = "block";
+                        }
+                </script>
+                <!-- <li>
+                    <a class="has-arrow12" href="/production/shotsassignments/" aria-expanded="false"><i class="mdi mdi-image-filter-black-white"></i><span class="hide-menu">Shots Assignments</span></a>
+                </li> -->
+                <li id="navleftartistsstatistics" style="display:none;">
+                    <a class="has-arrow12" href="/production/artists_statistics/" aria-expanded="false"><i
+                            class="mdi mdi-chart-pie" style="color: #d72711 !important;"></i><span class="hide-menu">Artists Statistics</span></a>
+                </li>
+                <script>
+                    if ((userPermissions.indexOf("can_view_nav_artists_statistics")!= -1)){
+                        document.getElementById("navleftartistsstatistics").style.display = "block";
+                        }
+                </script>
+
+                <li id="navleftlogss" >
+                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-file-document-box" style="color: #1687c4 !important;"></i><span
+                            class="hide-menu">Logs</span></a>
                     <ul aria-expanded="false" class="collapse">
-                        <li><a href="/production/client_report">Client Report</a></li>
-                        <li><a href="/production/department_reports">Department Report</a></li>
-                        <li><a href="/production/teamleadreports">Team Lead Report</a></li>
-                        <li><a href="/production/artist_reports">Artist Report</a></li>
-                        <li><a href="/production/version_reports">Version Report</a></li>
-                        <li><a href="/production/studio_reports">Studio Report</a></li>
+                        <li id="navleftshotdaylogs"><a href="/production/shot_daylogs/">Shot Day Logs</a></li>
+                        <script>
+                            if ((userPermissions.indexOf("can_view_nav_shotday_logs")!= -1)){
+                                document.getElementById("navleftshotdaylogs").style.display = "block";
+                                }
+                        </script>
+                        <li id="navlefttaskdaylogs"><a href="/production/task_daylogs/">Task Day Logs</a></li>
+                        <script>
+                            if ((userPermissions.indexOf("can_view_nav_taskday_logs")!= -1)){
+                                document.getElementById("navlefttaskdaylogs").style.display = "block";
+                                }
+                        </script>
                     </ul>
                 </li>
+                <li id="navleftattendance" >
+                    <a class="has-arrow12" href="/production/attendance/" aria-expanded="false"><i
+                            class="mdi mdi-account-check" style="color: #56f83d !important;"></i><span class="hide-menu">Attendance</span></a>
+                </li>
+                <script>
+                    if ((userPermissions.indexOf("can_view_nav_attendance")!= -1)){
+                        document.getElementById("navleftattendance").style.display = "block";
+                        }
+                </script>
+                <li id="navleftleaves" >
+                    <a class="has-arrow12" href="/production/leaves/" aria-expanded="false"><i
+                            class="mdi mdi-account-off" style="color: #f61e1e !important;"></i><span class="hide-menu">Leaves</span></a>
+                </li>
+                <script>
+                    if ((userPermissions.indexOf("can_view_nav_leaves")!= -1)){
+                        document.getElementById("navleftleaves").style.display = "block";
+                        }
+                </script>
                 <li>
-                    <a class="has-arrow12" href="/production/time_card" aria-expanded="false"><i class="mdi mdi-image-filter-black-white"></i><span class="hide-menu">Time Card </span></a>
+                    <a class="has-arrow12" href="/calendar/" aria-expanded="false"><i class="mdi mdi-calendar-range" style="color: #137cf8 !important;"></i><span class="hide-menu">Calendar</span></a>
+                </li>
+                <li id="team-available" style="display:none;">
+                    <a class="has-arrow12" href="/production/my_team" aria-expanded="false"><i class="mdi mdi-image-filter-black-white"></i><span class="hide-menu">My Team</span></a>
+                </li>
+                <script>
+                    if ((userPermissions.indexOf("view_my_team")!= -1)||(userPermissions.indexOf("view_lead_team")!= -1)||(userPermissions.indexOf("view_departments")!= -1)){
+                        document.getElementById("team-available").style.display = "block";
+                    }
+                </script>
+                {% if user.employee.role.name == "VFX ARTIST" or request.user|has_group:"Developers" %}
+                    <li>
+                        <a class="has-arrow12" href="/production/my_task/" aria-expanded="false"><i class="mdi mdi-clipboard-text" style="color: #f31147 !important;"></i><span class="hide-menu">My Task</span></a>
+                    </li>
+                {% endif %}
+                <li id="navleftreports2" style="display:none;">
+                    <a class="has-arrow12" href="/production/allreports/" aria-expanded="false"><i
+                            class="mdi mdi-chart-areaspline" style="color: #ff0066 !important;"></i><span class="hide-menu">Reports</span></a>
+                </li>
+                <script>
+                    if (userPermissions.indexOf("can_view_nav_reports")!= -1||userPermissions.indexOf("can_view_nav_studio_reports")!= -1||userPermissions.indexOf("can_view_nav_version_reports")!= -1||userPermissions.indexOf("can_view_nav_artist_reports")!= -1||userPermissions.indexOf("can_view_nav_team_lead_reports")!= -1||userPermissions.indexOf("can_view_nav_department_reports")!= -1||userPermissions.indexOf("can_view_nav_client_reports")!= -1){
+                        document.getElementById("navleftreports2").style.display = "block";
+                        }
+                </script>
+                <!-- <li id="navleftreports" style="display:none;">
+                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-bullseye"></i><span
+                            class="hide-menu">Reports</span></a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li id="navleftclientreports" style="display:none;"><a href="/production/client_report">Client Report</a></li>
+                        <script>
+                            if ((userPermissions.indexOf("can_view_nav_client_reports")!= -1)){
+                                document.getElementById("navleftclientreports").style.display = "block";
+                                }
+                        </script>
+                        <li id="navleftdepartmentreports" style="display:none;"><a href="/production/department_reports">Department Report</a></li>
+                        <script>
+                            if ((userPermissions.indexOf("can_view_nav_department_reports")!= -1)){
+                                document.getElementById("navleftdepartmentreports").style.display = "block";
+                                }
+                        </script>
+                        <li id="navleftteamleadreports" style="display:none;"><a href="/production/teamleadreports/">Team Lead Report</a></li>
+                        <script>
+                            if ((userPermissions.indexOf("can_view_nav_team_lead_reports")!= -1)){
+                                document.getElementById("navleftteamleadreports").style.display = "block";
+                                }
+                        </script>
+                        <li id="navleftartistreports" style="display:none;"><a href="/production/artist_reports/">Artist Report</a></li>
+                        <script>
+                            if ((userPermissions.indexOf("can_view_nav_artist_reports")!= -1)){
+                                document.getElementById("navleftartistreports").style.display = "block";
+                                }
+                        </script>
+                        <li id="navleftversionreports" style="display:none;"><a href="/production/version_reports">Version Report</a></li>
+                        <li id="navleftversionreports" style="display:none;"><a href="/production/version_reports">Version Report</a></li>
+                        <script>
+                            if ((userPermissions.indexOf("can_view_nav_version_reports")!= -1)){
+                                document.getElementById("navleftversionreports").style.display = "block";
+                                }
+                        </script>
+                        <li id="navleftstudioreports" style="display:none;"><a href="/production/studio_reports">Studio Report</a></li>
+                        <script>
+                            if ((userPermissions.indexOf("can_view_nav_studio_reports")!= -1)){
+                                document.getElementById("navleftstudioreports").style.display = "block";
+                                }
+                        </script>
+                    </ul>
+                </li>
+                <script>
+                    if (userPermissions.indexOf("can_view_nav_reports")!= -1||userPermissions.indexOf("can_view_nav_studio_reports")!= -1||userPermissions.indexOf("can_view_nav_version_reports")!= -1||userPermissions.indexOf("can_view_nav_artist_reports")!= -1||userPermissions.indexOf("can_view_nav_team_lead_reports")!= -1||userPermissions.indexOf("can_view_nav_department_reports")!= -1||userPermissions.indexOf("can_view_nav_client_reports")!= -1){
+                        document.getElementById("navleftreports").style.display = "block";
+                        }
+                </script> -->
+                <li>
+                    <a class="has-arrow12" href="/production/estimationId/" aria-expanded="false">
+                        <i class="fas fa-book" style="color: #56f83d !important;"></i><span class="hide-menu">Estimation</span></a>
+                </li>
+                <li>
+                    <a class="has-arrow12" href="/notifications/" aria-expanded="false"><i
+                            class="mdi mdi-bell-ring"></i><span class="hide-menu">Notifications </span></a>
                 </li>
 
+                <li id="navlefttimecard" style="display:none;">
+                    <a class="has-arrow12" href="/production/time_card/" aria-expanded="false"><i
+                            class="mdi mdi-image-filter-black-white"></i><span class="hide-menu">Time Card </span></a>
+                </li>
+
+                <script>
+                    if (userPermissions.indexOf("can_view_nav_time_card")!= -1){
+                        document.getElementById("navlefttimecard").style.display = "block";
+                        }
+                </script>
+                {% if request.user|has_group:"Developers" %}
 {#                <li>#}
-{#                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-clipboard-account"></i><span class="hide-menu">HRM <span class="label label-rounded label-success">New</span></span></a>#}
+{#                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-clipboard-account"></i><span#}
+{#                            class="hide-menu">HRM <span class="label label-rounded label-success">New</span></span></a>#}
 {#                    <ul aria-expanded="false" class="collapse">#}
-{#                        <li><a href="/hrm/employee">Employee List</a></li>#}
-{#                        <li><a href="/hrm/leaves">Leaves Portal</a></li>#}
-{#                        <li><a href="/hrm/my_record">My Records</a></li>#}
+{#                        <li><a href="/hrm/employeelist/">Employee List</a></li>#}
+{#                        <li><a href="/hrm/leaves/">Leaves Portal</a></li>#}
+{#                        <li><a href="/hrm/my_record/">My Records</a></li>#}
 {#                    </ul>#}
 {#                </li>#}
 {#                <li>#}
-{#                    <a class="has-arrow" href="#" aria-expanded="false"><i class="mdi mdi-chart-bubble"></i><span class="hide-menu">Profile <span class="label label-rounded label-success">New</span></span></a>#}
+{#                    <a class="has-arrow" href="#" aria-expanded="false"><i class="mdi mdi-chart-bubble"></i><span#}
+{#                            class="hide-menu">Profile <span class="label label-rounded label-success">New</span></span></a>#}
 {#                    <ul aria-expanded="false" class="collapse">#}
-{#                        <li><a href="/profile/timeline/{{ user.id }}">Timeline</a></li>#}
-{#                        <li><a href="/profile/system-usage/{{ user.id }}">System Usage</a></li>#}
-{#                        <li><a href="/profile/attendance/{{ user.username }}">Attendance</a></li>#}
-{#                        <li><a href="/profile/performance/{{ user.id }}">Performance</a></li>#}
+{#                        <li><a href="/profile/timeline/{{ user.id }}/">Timeline</a></li>#}
+{#                        <li><a href="/profile/system-usage/{{ user.id }}/">System Usage</a></li>#}
+{#                        <li><a href="/profile/attendance/{{ user.username }}/">Attendance</a></li>#}
+{#                        <li><a href="/profile/performance/{{ user.id }}/">Performance</a></li>#}
 {##}
 {#                    </ul>#}
 {#                </li>#}
 {#                <li class="nav-devider"></li>#}
-{#                {% if request.user|has_group:"Developers" %}#}
-{#                <li class="nav-small-cap">Settings</li>#}
-{#                <li>#}
-{#                    <a class="has-arrow" href="#" aria-expanded="false"><i class="mdi mdi-file"></i><span class="hide-menu">Production</span></a>#}
-{#                    <ul aria-expanded="false" class="collapse">#}
-{#                        <li><a href="form-basic.html">Status</a></li>#}
-{#                        <li><a href="form-layout.html">Complexity</a></li>#}
-{#                        <li><a href="form-addons.html">Task</a></li>#}
-{#                    </ul>#}
-{#                </li>#}
-{#                <li>#}
-{#                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-clipboard-account"></i><span class="hide-menu">HRM</span></a>#}
-{#                    <ul aria-expanded="false" class="collapse">#}
-{#                        <li><a href="table-basic.html">Employment Status</a></li>#}
-{#                        <li><a href="table-layout.html">Department</a></li>#}
-{#                        <li><a href="table-data-table.html">Designation</a></li>#}
-{#                    </ul>#}
-{#                </li>#}
-{#                <li>#}
-{#                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-widgets"></i><span class="hide-menu">Inventory</span></a>#}
-{#                    <ul aria-expanded="false" class="collapse">#}
-{#                        <li><a href="widget-apps.html">Desk Number</a></li>#}
-{#                        <li><a href="widget-data.html">Computer</a></li>#}
-{#                        <li><a href="widget-charts.html">Software</a></li>#}
-{#                    </ul>#}
-{#                </li>#}
-{#                <li class="nav-devider"></li>#}
-{#                <li class="nav-small-cap">Administration</li>#}
-{#                <li>#}
-{#                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-account-multiple-outline"></i><span class="hide-menu">Users</span></a>#}
-{#                    <ul aria-expanded="false" class="collapse">#}
-{#                        <li><a href="/users">Users List</a></li>#}
-{#                    </ul>#}
-{#                </li>#}
-{#                <li>#}
-{#                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-book-open-variant"></i><span class="hide-menu">Groups</span></a>#}
-{#                    <ul aria-expanded="false" class="collapse">#}
-{#                        <li><a href="starter-kit.html">Groups</a></li>#}
-{#                        <li><a href="pages-blank.html">Permissions</a></li>#}
-{#                        <li><a href="pages-profile.html">Roles</a></li>#}
-{#                    </ul>#}
-{#                </li>#}
-{#                <li>#}
-{#                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-message-alert"></i><span class="hide-menu">Alert</span></a>#}
-{#                    <ul aria-expanded="false" class="collapse">#}
-{#                        <li><a href="chart-morris.html">Web Notification</a></li>#}
-{#                        <li><a href="chart-chartist.html">Email Notification</a></li>#}
-{#                        <li><a href="chart-echart.html">Desktop Notification</a></li>#}
-{#                    </ul>#}
-{#                </li>#}
-{#                <li>#}
-{#                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-folder"></i><span class="hide-menu">Location</span></a>#}
-{#                    <ul aria-expanded="false" class="collapse">#}
-{#                        <li><a href="icon-material.html">Media</a></li>#}
-{#                        <li><a href="icon-fontawesome.html">Database</a></li>#}
-{#                        <li><a href="icon-themify.html">Backup</a></li>#}
-{#                        <li><a href="icon-linea.html">Cache</a></li>#}
-{#                    </ul>#}
-{#                </li>#}
-{#                <li>#}
-{#                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-database"></i><span class="hide-menu">Database Settings</span></a>#}
-{#                    <ul aria-expanded="false" class="collapse">#}
-{#                        <li><a href="map-google.html">Main Database</a></li>#}
-{#                        <li><a href="map-vector.html">Cache Database</a></li>#}
-{#                    </ul>#}
-{#                </li>#}
-{#                <li>#}
-{#                    <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-json"></i><span class="hide-menu">Logs</span></a>#}
-{#                    <ul aria-expanded="false" class="collapse">#}
-{#                        <li><a href="#">Warnings</a></li>#}
-{#                        <li><a href="#">Errors</a></li>#}
-{#                    </ul>#}
-{#                </li>#}
-{#                {% endif %}#}
+{#                #}
+{#                    <li class="nav-small-cap">Settings</li>#}
+{#                    <li>#}
+{#                        <a class="has-arrow" href="#" aria-expanded="false"><i class="mdi mdi-file"></i><span#}
+{#                                class="hide-menu">Production</span></a>#}
+{#                        <ul aria-expanded="false" class="collapse">#}
+{#                            <li><a href="form-basic.html">Status</a></li>#}
+{#                            <li><a href="form-layout.html">Complexity</a></li>#}
+{#                            <li><a href="form-addons.html">Task</a></li>#}
+{#                        </ul>#}
+{#                    </li>#}
+{#                    <li>#}
+{#                        <a class="has-arrow " href="#" aria-expanded="false"><i#}
+{#                                class="mdi mdi-clipboard-account"></i><span class="hide-menu">HRM</span></a>#}
+{#                        <ul aria-expanded="false" class="collapse">#}
+{#                            <li><a href="table-basic.html">Employment Status</a></li>#}
+{#                            <li><a href="table-layout.html">Department</a></li>#}
+{#                            <li><a href="table-data-table.html">Designation</a></li>#}
+{#                        </ul>#}
+{#                    </li>#}
+{#                    <li>#}
+{#                        <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-widgets"></i><span#}
+{#                                class="hide-menu">Inventory</span></a>#}
+{#                        <ul aria-expanded="false" class="collapse">#}
+{#                            <li><a href="widget-apps.html">Desk Number</a></li>#}
+{#                            <li><a href="widget-data.html">Computer</a></li>#}
+{#                            <li><a href="widget-charts.html">Software</a></li>#}
+{#                        </ul>#}
+{#                    </li>#}
+                    {% if request.user|has_group:"Developers" %}
+                    <li class="nav-devider"></li>
+                    <li class="nav-small-cap">Developers</li>
+                    <li>
+                        <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-folder"></i><span class="hide-menu">Assignments</span></a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li><a href="/shotassignments/">Shot Assignment order</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    <li class="nav-devider"></li>
+                    <li class="nav-small-cap">Administration</li>
+                    <li>
+                        <a class="has-arrow " href="#" aria-expanded="false"><i
+                                class="mdi mdi-account-multiple-outline"></i><span class="hide-menu">Users</span></a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li><a href="/users">Users List</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow " href="#" aria-expanded="false"><i
+                                class="mdi mdi-book-open-variant"></i><span class="hide-menu">Groups</span></a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li><a href="starter-kit.html">Groups</a></li>
+                            <li><a href="pages-blank.html">Permissions</a></li>
+                            <li><a href="pages-profile.html">Roles</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-message-alert"></i><span
+                                class="hide-menu">Alert</span></a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li><a href="chart-morris.html">Web Notification</a></li>
+                            <li><a href="chart-chartist.html">Email Notification</a></li>
+                            <li><a href="chart-echart.html">Desktop Notification</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-folder"></i><span
+                                class="hide-menu">Location</span></a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li><a href="icon-material.html">Media</a></li>
+                            <li><a href="icon-fontawesome.html">Database</a></li>
+                            <li><a href="icon-themify.html">Backup</a></li>
+                            <li><a href="icon-linea.html">Cache</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-database"></i><span
+                                class="hide-menu">Database Settings</span></a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li><a href="map-google.html">Main Database</a></li>
+                            <li><a href="map-vector.html">Cache Database</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-json"></i><span
+                                class="hide-menu">Logs</span></a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li><a href="#">Warnings</a></li>
+                            <li><a href="#">Errors</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
             </ul>
         </nav>
         <!-- End Sidebar navigation -->
     </div>
     <!-- End Sidebar scroll-->
     <!-- Bottom points-->
-{#    <div class="sidebar-footer">#}
-{#        <!-- item-->#}
-{#        <a href="" class="link" data-toggle="tooltip" title="Settings"><i class="ti-settings"></i></a>#}
-{#        <!-- item-->#}
-{#        <a href="" class="link" data-toggle="tooltip" title="Email"><i class="mdi mdi-gmail"></i></a>#}
-{#        <!-- item-->#}
-{#        <a href="" class="link" data-toggle="tooltip" title="Logout"><i class="mdi mdi-power"></i></a>#}
-{#    </div>#}
+    <div class="sidebar-footer">
+        <!-- item-->
+        <a href="" class="link" data-toggle="tooltip" title="Settings"><i class="ti-settings"></i></a>
+        <!-- item-->
+        <a href="mailto: vfx-pipeline@oscarfx.com" class="link" data-toggle="tooltip" title="Email"><i
+                class="mdi mdi-gmail"></i></a>
+        <!-- item-->
+        <a href="" class="link" data-toggle="tooltip" title="Logout"><i class="mdi mdi-power"></i></a>
+    </div>
     <!-- End Bottom points-->
 </aside>
 <!-- ============================================================== -->
