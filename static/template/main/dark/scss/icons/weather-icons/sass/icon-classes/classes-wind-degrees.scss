@@ -1,3 +1,9 @@
+/*!
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 .#{$wi-css-prefix}-wind {
   &.towards-0-deg {@include wind-rotate(0deg);}
   &.towards-1-deg {@include wind-rotate(1deg);}

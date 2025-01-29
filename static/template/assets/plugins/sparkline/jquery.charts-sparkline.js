@@ -1,4 +1,10 @@
   
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 $(document).ready(function() {
    var sparklineLogin = function() { 
         $("#sparkline1").sparkline([5,6,2,8,9,4,7,10,11,12,10], {

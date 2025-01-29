@@ -1,24 +1,11 @@
-/*! FixedHeader 3.2.4
- * ©2009-2022 SpryMedia Ltd - datatables.net/license
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
  */
 
-/**
- * @summary     FixedHeader
- * @description Fix a table's header or footer, so it is always visible while
- *              scrolling
- * @version     3.2.4
- * @author      SpryMedia Ltd (www.sprymedia.co.uk)
- * @contact     www.sprymedia.co.uk
- * @copyright   SpryMedia Ltd.
- *
- * This source file is free software, available under the following license:
- *   MIT license - http://datatables.net/license/mit
- *
- * This source file is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
- *
- * For details please refer to: http://www.datatables.net
+/*! FixedHeader 3.2.4
+ * ©2009-2022 SpryMedia Ltd - datatables.net/license
  */
 
 (function( factory ){

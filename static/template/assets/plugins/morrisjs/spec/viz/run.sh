@@ -1,5 +1,11 @@
 #!/bin/sh
 
+#
+# Copyright (c) 2023.
+# Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+# All rights reserved.
+#
+
 # visual_specs.js creates output in output/XXX.png
 phantomjs visual_specs.js
 

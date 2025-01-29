@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 var gdpData = {
   "AF": 16.63,
   "AL": 11.58,

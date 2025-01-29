@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 /*! Bootstrap 3 styling wrapper for FixedHeader
  * ©2018 SpryMedia Ltd - datatables.net/license
  */

@@ -1,0 +1,1537 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block bread_crumb %}
+
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/DataTables-1.12.1/css/jquery.dataTables.min.css' %}"
+          type="text/css"/>
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/Responsive-2.3.0/css/responsive.dataTables.min.css' %}"
+          type="text/css"/>
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/Responsive-2.3.0/css/responsive.bootstrap5.min.css' %}"
+          type="text/css"/>
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/Buttons-2.2.3/css/buttons.dataTables.min.css' %}"
+          type="text/css"/>
+    <link rel='stylesheet' href="{% static 'template/assets/plugins/multiselect/css/multi-select.css' %}"
+          type="text/css"/>
+    <link rel="stylesheet"
+          href="{% static 'third_party/DataTables/custom_css/datables_searchpane.css' %}" type="text/css"/>
+    <link rel="stylesheet"
+          href="{% static 'third_party/DataTables/Select-1.4.0/css/select.dataTables.min.css' %}" type="text/css"/>
+    <link href="{% static 'third_party/DataTables/DataTables-1.12.1/css/dataTables.jqueryui.css' %}" rel="stylesheet"
+          type="text/css"/>
+    <link href="{% static 'third_party/DataTables/DateTime-1.1.2/css/dataTables.dateTime.min.css' %}" rel="stylesheet"
+          type="text/css"/>
+    <link href="{% static 'main/jquery-ui-themes-1.11.1/themes/south-street/jquery-ui.min.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'main/dataTables.jqueryui.css' %}" rel="stylesheet" type="text/css"/>
+    <link rel='stylesheet' href="{% static 'assets/css/style.css' %}" type="text/css"/>
+    <style>
+        .form-control {
+            color: #fffcfc !important;
+        }
+
+        .container-fluid {
+            padding: 10px !important;
+        }
+
+        .row {
+            margin: 0px !important;
+        }
+
+        /* An ugly trick to use a filter icon */
+        .ui-icon-volume-off.ui-icon-filter {
+            -ms-transform: rotate(270deg);
+            -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+        }
+
+        .card {
+            padding: 10px 1px;
+            background: #272c33 !important;
+            color: white;
+            margin-bottom: 10px !important;
+        }
+
+        #filter_div {
+            padding: 10px;
+            background: #272c33 !important;
+            color: white;
+        }
+
+        .col-lg-12 {
+            padding: 0px !important;
+        }
+
+        .col-lg-10 {
+            padding: 0px !important;
+        }
+
+        .card-body {
+            padding: 0rem !important;
+        }
+
+        .dt-buttons .dt-button {
+            border-radius: 4px;
+            background: orange;
+            color: #ffffff
+        }
+
+        table.dataTable tbody tr {
+            background-color: #272c33 !important;
+            font-size: small;
+            font-weight: normal;
+        }
+
+        table.dataTable tr.odd {
+            background-color: #343a40 !important;
+        }
+
+        table.dataTable td {
+            border-bottom: 0.2px !important;
+            border-color: grey !important;
+        }
+
+        table.dataTable thead {
+            color: #f6f5f5;
+            font-weight: normal;
+            font-size: small;
+        }
+
+        #shots_table_length, #shots_table_info, #shots_table_filter {
+            color: #a2a1a1 !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 2px;
+            background: white !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            color: #fff5f5 !important;
+            background-color: #e5711d !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background-color: rgb(183, 110, 5) !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .ellipsis {
+            color: white;
+        }
+
+        tfoot input {
+            width: 100% !important;
+            padding: 3px !important;
+            box-sizing: border-box !important;
+        }
+
+        table.dataTable tfoot th, table.dataTable tfoot td {
+            padding: 5px;
+            border-top: 0px;
+        }
+
+        .page-titles {
+            padding-bottom: 0px;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            color: #ccc8c8 !important;
+            background-color: inherit;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            color: #dad8d8 !important;
+        }
+
+
+        table.dataTable tbody tr.selected {
+            background-color: #315eb1 !important;
+            color: white !important;
+        }
+
+        label {
+            margin-bottom: 0px !important;
+        }
+
+        .multiselect-container > li > a > label {
+            padding: 4px 20px 3px 20px;
+        }
+
+        table.dataTable tbody th, table.dataTable tbody td {
+            padding: 7px;
+        }
+
+        .column_vis {
+            height: 20px;
+        }
+
+        /* width */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #383f48;
+            border-radius: 5px;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #2965b9;
+            border-radius: 5px;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+
+        div.dtsp-verticalContainer {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-content: flex-start;
+            align-items: flex-start;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes,
+        div.dtsp-verticalContainer div.container {
+            width: 20%;
+            flex-grow: 0;
+            flex-shrink: 0;
+            flex-basis: 0;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes {
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: 26%;
+        }
+
+        div.dtsp-verticalPanes {
+            margin-right: 10px;
+        }
+
+        div.dtsp-title {
+            margin-right: 0px !important;
+            margin-top: 13px !important;
+        }
+
+        input.dtsp-search {
+            min-width: 0px !important;
+            padding-left: 0px !important;
+            margin: 0px !important;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes div.dtsp-searchPanes {
+            flex-direction: column;
+            flex-basis: 0px;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes div.dtsp-searchPanes div.dtsp-searchPane {
+            flex-basis: 0px;
+        }
+
+        div.dtsp-verticalContainer div.container {
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: 80%;
+        }
+
+        div.dtsp-panesContainer {
+            border: 1px solid transparent;
+            border-radius: 6px;
+            padding: 5px;
+        }
+
+        select {
+            -webkit-appearance: none;
+        }
+
+        div.dtsp-narrow {
+            flex-direction: column !important;
+            background-color: #343a40;
+        }
+
+        div.dtsp-panesContainer button.dtsp-clearAll, div.dtsp-panesContainer button.dtsp-collapseAll, div.dtsp-panesContainer button.dtsp-showAll {
+            border: none;
+            background-color: #343a40;
+            padding: 3px;
+            border-radius: 5px;
+        }
+
+        div.dtsp-panesContainer button.dtsp-disabledButton {
+            cursor: default !important;
+            background-color: #343a40;
+            padding: 3px;
+            border-radius: 10px;
+            color: white;
+        }
+
+        div.dtsp-panesContainer div.dataTables_wrapper div.dataTables_scrollBody {
+            background: #343a40 !important;
+            border-bottom: none;
+        }
+
+        /* An ugly trick to use a filter icon */
+        .ui-icon-volume-off.ui-icon-filter {
+            -ms-transform: rotate(270deg);
+            -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+        }
+
+        .modal.right .modal-dialog {
+            position: fixed;
+            margin: auto;
+            width: 700px;
+            height: 100%;
+            -webkit-transform: translate3d(0%, 0, 0);
+            -ms-transform: translate3d(0%, 0, 0);
+            -o-transform: translate3d(0%, 0, 0);
+            transform: translate3d(0%, 0, 0);
+        }
+
+        .modal.right .modal-content {
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .modal.right .modal-body {
+            padding: 15px 15px 15px;
+        }
+
+        .modal.right.fade .modal-dialog {
+            right: 0px;
+            -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+            -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+            -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+            transition: opacity 0.3s linear, right 0.3s ease-out;
+        }
+
+        .modal.right.fade.in .modal-dialog {
+            right: 0;
+        }
+
+        /* ----- MODAL STYLE ----- */
+        .modal-content {
+            border-radius: 0;
+            border: none;
+        }
+
+        .modal-header {
+            border-bottom-color: #EEEEEE;
+            background-color: #e5711d;
+        }
+
+        input.dtsp-search::placeholder {
+            color: #a4a4a8 !important;
+        }
+        .dataTables_length, .dataTables_info, .dataTables_filter {
+            color: #a2a1a1 !important;
+        }
+    </style>
+    <div class="row page-titles">
+        <div class="col-md-6 col-4 float-left">
+            <h3 class="text-themecolor mb-2 mt-2">My Task</h3>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- End Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+{% endblock bread_crumb %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12 row ml-2 mr-2">
+        <div class="col-md-4 col-lg-3 mb-1 pl-2 pr-2 running-quater">
+            <div class="col-md-12 pl-0 pr-0 mb-3">
+                <div class="card pl-3 pr-3">
+                    <div class="card-body">
+                        <h4 class="card-title">Filter &amp; Download Reports</h4>
+                        <h5 class="card-subtitle">Download Reports By Range</h5>
+                        <div class="input-group mb-3">
+                            <input type="date" name="from_date" class="form-control date-inputmask" placeholder="dd/mm/yyyy" value="">
+                            <input type="date" name="to_date" class="form-control" placeholder="dd/mm/yyyy" value="">
+                            <div class="btn-group input-group-append">
+                                <button type="button" class="input-group-text run-filter"><i class="mdi mdi-arrow-right"></i></button>
+                                <button type="button" class="input-group-text dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(67px, 39px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                    <a class="dropdown-item export-statistics" data-data="month" href="#"><i class="mdi mdi-cloud-download"></i> Monthly</a>
+                                    <a class="dropdown-item export-statistics" data-data="week" href="#"><i class="mdi mdi-cloud-download"></i> Weekly</a>
+                                    <a class="dropdown-item export-statistics" data-data="selected" href="#"><i class="mdi mdi-cloud-download"></i> Selected</a>
+                                </div>
+                            </div>
+                            <!-- <div class="input-group-append run-filter">
+                                <span class="input-group-text"><i class="mdi mdi-cloud-download"></i></span>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card text-white bg-light pt-0 mt-2 mb-2 border border-round pb-0">
+                <div class="card-header text-center">
+                    <h4 class="mb-0 text-white" style="font-weight: 600; font-size: 25px;">Current Month</h4>
+                    <span class="this-month-range"></span>
+                </div>
+                <script>
+                    $( document ).ready(function() {
+                        $('.this-month-range').html(genUIDateFormat(moment().startOf('month').format('YYYY-MM-DD'),moment().endOf('month').format('YYYY-MM-DD'),{date:"Do",month:"MMM",year:"YYYY"}));
+                        });
+                </script>
+                <div class="card-body">
+                    <div class="pt-4 pl-2 pr-2 row">
+                        <div class="col-md-12 pl-0 pr-0 mb-3">
+                            <div class="card pl-3 pr-3">
+                                <div class="card-body">
+                                    <h4 class="card-title">Activity Timings</h4>
+                                    <div class="row">
+                                        <div class="col-4 pl-1 pr-0 text-center">
+                                            <span class="display-6 text-primary running-quater-rwh">0</span>
+                                            <h5 style="font-size: 14px;">Required Working Hours</h5>
+                                        </div>
+                                        <div class="col-4 pl-1 pr-1 text-center">
+                                            <span class="display-6 text-primary running-quater-aeh">0</span>
+                                            <h5 style="font-size: 14px;">Available/ESSL Hours</h5>
+                                        </div>
+                                        <div class="col-4 pl-1 pr-1 text-center">
+                                            <span class="display-6 text-primary running-quater-ash">0</span>
+                                            <h5 style="font-size: 14px;">Active/System Hours</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 pl-0 pr-0 mb-3">
+                            <div class="card bg-info">
+                                <div class="card-body text-center">
+                                    <h1 class="font-light text-white running-quater-tmd">0</h1>
+                                    <h6 class="text-white">Target Mandays</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 pl-0 pr-0 mb-3">
+                            <div class="card bg-success">
+                                <div class="card-body text-center">
+                                    
+                                    <h1 class="font-light text-white running-quater-amd">0</h1>
+                                    <h6 class="text-white">Achieved Mandays</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 pl-0 pr-0 mb-3">
+                            <div class="card bg-primary">
+                                <div class="card-body text-center">
+                                    
+                                    <h1 class="font-light text-white running-quater-leaves">0</h1>
+                                    <h6 class="text-white">Leaves</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 pl-0 pr-0 mb-3" style="display: none;">
+                            <div class="card bg-warning">
+                                <div class="card-body text-center">
+                                    <h1 class="font-light text-white">0</h1>
+                                    <h6 class="text-white">Missing ETA's</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 col-lg-9 mb-1 pl-2 pr-2">
+            <div class="card pt-0 pb-0">
+                <ul class="nav nav-tabs customtab" role="tablist">
+                    <li class="nav-item"> <a class="nav-link show active" data-toggle="tab" href="#task" role="tab" aria-selected="true"> <span class="hidden-xs-down">Tasks</span></a></li>
+                    <li class="nav-item"> <a class="nav-link show" data-toggle="tab" href="#home1" role="tab" aria-selected="false"> <span class="hidden-xs-down">Weekly Statistics</span></a></li>
+                    <li class="nav-item"> <a class="nav-link show" data-toggle="tab" href="#home2" role="tab" aria-selected="false"> <span class="hidden-xs-down">Monthly Statistics</span></a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane p-3 pt-2 show active" id="task" role="tabpanel" style="position: relative;">
+                        <div class="btn-group mb-2 mr-2" role="group" aria-label="Button group with nested dropdown" style="position: absolute;margin: auto;top: -47px;z-index: 10;right: 10px;">
+                            <select class="btn btn-warning r-active select-get-sort" data-data="pending">
+                                <option value="pending">LIVE</option>
+                                <option value="approved">APPROVED</option>
+                                <option value="all">ALL</option>
+                            </select>
+                            <a href="#" class="btn r-active column_filter btn-warning" ><i class="mdi mdi-filter"></i>FILTERS</a>
+                            <a href="#" class="btn r-active btn-warning" title="Export to Excel" onclick="export_to_excel()" ><i class="mdi mdi-cloud-download"></i> MY REPORT</a>
+                        </div>
+                        <script>
+                            var sortFilterStoreKey = 'sortFilterMyTaskPage';
+                            let sortFilterLC = localStorage.getItem(sortFilterStoreKey);
+                            sortFilterLC = sortFilterLC==null?"pending":sortFilterLC;
+                            localStorage.setItem(sortFilterStoreKey,sortFilterLC);
+                            var specialStatusCodes = ['OMT','HLD'];
+                            $.each(specialStatusCodes,function(x,z){
+                                $('.select-get-sort').append(`<option value="`+z+`">`+z+`</option>`);
+                                });
+                            let selectGetSort = $('.select-get-sort');
+                            $(selectGetSort).removeClass('select-get-sort');
+                            $(selectGetSort).val("approved");
+                            $(selectGetSort).find('option').each(function(e){
+                                if($(this).attr('value')==sortFilterLC){
+                                    $(selectGetSort).val(sortFilterLC);
+                                    }
+                                });
+                            $(selectGetSort).addClass('select-get-sort');
+                        </script>
+                        <div class="row">
+                            <div class="col-12 p-0 table-bdy" id="shots_list_view">
+                                <div class="card p-0 table-x-viewer">
+                    
+                                    <table id="shots_table" class="table display no-wrap" style="width:100%">
+                    
+                                    </table>
+                    
+                                </div>
+                            </div>
+                            <div class="col-4 table-filter" id="filter_div" style="display: none;height:1000px;overflow-y: auto;margin: 0px; border-left: 1px solid #969696;">
+                                <h6><i onclick="header_vis(this)" class="ti-angle-right"></i> Header Visibility</h6>
+                                <div class="card" id="header_filter" style="display: none; height:200px; overflow-y: scroll; border-bottom: 1px solid #494848;border-radius: 0px">
+                                    <div class="card-body">
+                                        <input type="text" class="form-control column_vis" id="search_header" onkeyup="search_column()" placeholder="Search for...">
+                                        
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="form-group row">
+                                            <label for="min" class="col-4 col-form-label">ETA FROM</label>
+                                            <div class="col-8">
+                                                <input class="form-control" type="text" id="min" name="min">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="max" class="col-4 col-form-label">ETA TO</label>
+                                            <div class="col-8">
+                                                <input class="form-control" type="text" id="max" name="max">
+                                            </div>
+                                        </div>
+                                        <div class="dtsp-verticalContainer">
+                                            <div class="dtsp-verticalPanes">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane show" id="home1" role="tabpanel" style="overflow-x: auto;">
+                        <div class="pt-1 pl-2 pr-2 task-hs task-weeks"></div>
+                    </div>
+                    <div class="tab-pane show" id="home2" role="tabpanel" style="overflow-x: auto;">
+                        <div class="pt-1 pl-2 pr-2 task-hs task-months">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="select_lead_modal2" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Select Client & Project</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label >Select Client</label>
+                        <div class="input-group">
+                            <select class="form-control read-s-tag" name="client"></select>
+                            <div class="input-group-append"><span class="input-group-text"><i class="ti-list"></i></span></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label >Select Project</label>
+                        <div class="input-group">
+                            <select class="form-control read-s-tag" name="project"></select>
+                            <div class="input-group-append"><span class="input-group-text"><i class="ti-list"></i></span></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" name="save" class="btn btn-success waves-effect waves-light get-shorts" >Get</button>
+                <button type="button" name="close" class="btn btn-default waves-effect" data-dismiss="modal" onclick="close_assign_modal()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block page_scripts %}
+    <!--OFX Core JavaScript -->
+    <script src="{% static 'ofx/core.js' %}"></script>
+    <!-- End Core Javascript -->
+    <script src="{% static 'template/assets/plugins/popper/popper.min.js' %}"></script>
+
+    <script src="{% static 'third_party/DataTables/DataTables-1.12.1/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Responsive-2.3.0/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Responsive-2.3.0/js/responsive.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Buttons-2.2.3/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Buttons-2.2.3/js/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Bootstrap-5-5.1.3/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/custom_js/datatables_searchPane.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Select-1.4.0/js/dataTables.select.min.js' %}"></script>
+    <!-- <script src="{% static 'template/assets/plugins/moment/moment.js' %}"></script> -->
+    <script src="{% static 'third_party/DataTables/DateTime-1.1.2/js/dataTables.dateTime.min.js' %}"></script>
+
+    <script src="{% static 'main/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'main/jquery.ui-contextmenu.min.js' %}"></script>
+    <script src="{% static 'main/dataTables.colReorder.min.js' %}"></script>
+    <script src="{% static 'main/fnFilterClear.js' %}"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script> -->
+    <script>
+        var artist_id = getGetParam({
+            'artist_id': ofx_page_data.user.id,
+            })['artist_id'];
+        // console.log(artist_id);
+        var artistData = {};
+        if(artist_id!=ofx_page_data.user.id){
+            $.ajax({
+                url: '/api/hrm/myprofile/' + artist_id + '/',
+                type: 'GET',
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                async: false,
+                // data: JSON.stringify(data),
+                success: function (response) {
+                    $('.page-titles .text-themecolor').html(response.fullName+' Task');
+                    artistData = response;
+                    },
+                error: function (jqXHR, exception) {
+                    console.log(jqXHR.responseText)
+                    }
+                });
+            }else{
+                artistData = ofx_page_data.user;
+                }
+        // Custom filtering function which will search data in column tweleve between two values
+        $.fn.dataTable.ext.search.push(
+            function (settings, data, dataIndex) {
+                var min = minDate.val();
+                var max = maxDate.val();
+                var date = new Date(data[12]);
+
+                if (
+                    (min === null && max === null) ||
+                    (min === null && date <= max) ||
+                    (min <= date && max === null) ||
+                    (min <= date && date <= max)
+                ) {
+                    return true;
+                }
+                return false;
+            }
+        );
+
+        $(".column_filter").click(function (e) {
+            var x = document.getElementById("filter_div");
+            if (x.style.display === "none") {
+                $('.table-bdy').removeClass('col-8 col-12 pr-3').addClass('col-8 pr-3');
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+                $('.table-bdy').removeClass('col-8 col-12 pr-3').addClass('col-12');
+            }
+        });
+
+        $(window).click(function (e) {
+            $("#filters-modal").modal('hide');
+        });
+
+        function header_vis(x) {
+            x.classList.toggle("ti-angle-down");
+            var s = document.getElementById("header_filter");
+            if (s.style.display === "none") {
+                s.style.display = "block";
+            } else {
+                s.style.display = "none";
+            }
+        }
+
+        function search_column() {
+            var input = document.getElementById("search_header");
+            var filter = input.value.toLowerCase();
+            var nodes = document.getElementsByClassName('custom-checkbox');
+
+            for (i = 0; i < nodes.length; i++) {
+                if (nodes[i].innerText.toLowerCase().includes(filter)) {
+                    nodes[i].style.display = "block";
+                } else {
+                    nodes[i].style.display = "none";
+                }
+            }
+        }
+
+        let client_id = 0;
+        let project_id = 0;
+        let status_id = 0
+        let location_id = 0
+        let locality_id = 0
+        let task_type_id = 0
+
+        //  Load Shots Information
+        // status_list = "YTA|ATL|YTS|STQ|WIP|IRT|QIP|CRT|IAP|LAP|LRT|HLD|OMT"
+
+        var shotId_arr = [];
+        var shotInfo_arr = {};
+
+        minDate = new DateTime($('#min'), {
+            format: 'MMMM Do YYYY'
+        });
+        maxDate = new DateTime($('#max'), {
+            format: 'MMMM Do YYYY'
+        });
+        var tableParent = $('.table-x-viewer'),
+            tableFilter = $('.dtsp-verticalPanes'),
+            table = null;
+        var tableColms = [];
+        tableColms.push({
+            cell: {
+                name: "client",
+                title: "CLIENT", data: 'shot.sequence.project.client.name',
+                render: function (data, type, row, meta) {
+                    var rowX = row.shot;
+                    return (`<a style="color: #ffffff;" href="/production/shots/view/?shot_id=`+rowX.id+`" ><span data-data="`+rowX.id+`" >` + data + `</span></a>`);
+                    },
+                },
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            class:"",//shot_view
+            });
+        tableColms.push({
+            cell: {name: "project", title: "PROJECT", data: 'shot.sequence.project.name'},
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "seq", title: "SEQUENCE", data: 'shot.sequence.name'},
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {
+                name: "shot",
+                title: "SHOT CODE", data: 'shot.name',
+                render: function (data, type, row, meta) {
+                    var rowX = row.shot;
+                    return (`<span data-data='`+JSON.stringify(rowX)+`' data-row="`+row.id+`" >` + data + `</span>`);
+                    },
+                },
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            class:"",//shot_class
+            });
+        tableColms.push({
+            cell: {name: "task_type", title: "TASK TYPE", data: 'shot.task_type'},
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "type", title: "TYPE", data: 'shot.type'},
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "complexity", title: "COMPLEXITY", data: 'shot.complexity'},
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "captain", title: "CAPTAIN", data: 'shot',
+                render: function (data, type, row, meta) {
+                    var iti = [];
+                    $.each(data.artists,function(_z,_x){ iti.push(_x.fullName); });
+                    return (`<span title="`+(iti.length>0?iti.join('\n'):'N/A')+`">`+(data.artist!=null?data.artist:'N/A')+`</span>`);
+                    },
+                },
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {
+                    name: "status",
+                    title: "STATUS", data: 'task_status',
+                    render: function (data, type, row, meta) {
+                        var rowX = row.shot;
+                        var isComp = (ofx_page_data.user.fullName!=null&&rowX.artist!=null&&ofx_make_key(ofx_page_data.user.fullName)==ofx_make_key(rowX.artist)),
+                            isVFXArtist = (ofx_page_data.user.role!=null&&ofx_make_key(ofx_page_data.user.role)==ofx_make_key("VFX ARTIST"));
+                        return ((isVFXArtist&&userPermissions.indexOf("can_update_task_status")!=-1)?`<div class="mytask-status-options `+(isComp?'compiler':'')+`" >`+ofx_shot_status_dropdown(ofx_page_data.user.department,ofx_page_data.user.role,data.code,data.color,(isComp?{/*shot_id:rowX.id,*/task_id:row.id}:{task_id:row.id}))+`</div>`:`<div class="btn-group"><button type="button" class="btn " title="`+data.name+`" style="color:white;padding: 3px 16px;font-size:1em;background-color:`+data.color+`;">`+data.code+`</button></div>`);
+                        // return (((ofx_page_data.user.fullName!=null&&rowX.artist!=null&&ofx_make_key(ofx_page_data.user.fullName)==ofx_make_key(rowX.artist))||(ofx_page_data.user.role!=null&&ofx_make_key(ofx_page_data.user.role)!=ofx_make_key("VFX ARTIST")))?ofx_shot_status_dropdown(ofx_page_data.user.department,ofx_page_data.user.role,data.code,data.color,{shot_id:rowX.id}):`<div class="btn-group"><button type="button" class="btn " title="`+data.name+`" style="color:white;padding: 3px 16px;font-size:1em;background-color:`+data.color+`;">`+data.code+`</button></div>`);
+                    },
+                },
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {
+                        name: "progress",
+                        title: "PROGRESS", data: 'art_percentage',
+                        render: function (data, type, row, meta) {
+                            let lx = ['danger','warning','info','primary','success'], status = parseInt(data);
+                            return (
+                                `<div class="table-input-field" style="position: relative;">
+                                    <input class="read-x-input shot_percentage form-control" data-data='`+JSON.stringify({task_id:row.id,/*shot_id:row.shot.id,*/assigned_bids:row.assigned_bids})+`' type="number" min="0" max="100" value="`+status+`" step="1" style="width: 94px;top: -11px;left: 0px;" data-default="`+status+`" >
+                                    <div class="progress" style="height: 15px;">
+                                        <div class="progress-bar bg-`+lx[(status<25 ? 0 : (status<50 ? 1 : (status<75 ? 2 : (status<100 ? 3 : 4))))]+`" style="width:` + data + `%; color: white;font-weight: bold" role="progressbar">` + data + `%</div>
+                                    </div>
+                                </div>`
+                            )
+                        }
+                    },
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "assigned_bids", title: "ACTUAL BIDS", data: 'assigned_bids'},
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {
+                        name: "eta",
+                        title: "ETA", data: 'eta',
+                        render: function (data, type, row, meta) {
+                            return moment(data).format("YYYY-MM-DD");
+                        }
+                    },
+            isETAFilter: true,
+            isFilter: true,
+            headerVisibility: true,
+            class:"",
+            }); 
+        tableColms.push({
+            cell: {name: "frame_in", title: "START FRAME", data: 'shot.actual_start_frame'},
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "frame_out", title: "END FRAME", data: 'shot.actual_end_frame'},
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {
+                        name: "duration",
+                        title: "DURATION", data: null,
+                        render: function (data, type, row, meta) {
+                            return (row.shot.actual_end_frame - row.shot.actual_start_frame)+1;
+                        }
+                    },
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "supervisor", title: "SUPERVISOR", data: 'shot.supervisor',
+                    render: function (data, type, row, meta) {
+                        return data!=null?data:'N/A';
+                        }
+                    },
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "team_lead", title: "TEAM LEAD", data: 'shot.team_lead',
+                    render: function (data, type, row, meta) {
+                        return data!=null?data:'N/A';
+                        }
+                    },
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "version", title: "VERSION", data: 'shot.version'},
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            class:"",
+            }); 
+        tableColms.push({
+            cell: {
+                    name: "location",
+                    title: "LOCATION", data: 'shot.location',
+                    render: function (data, type, row, meta) {
+                        return data!=null?data.name:'N/A';
+                    }
+                },
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            class:"",
+            }); 
+        tableColms.push({
+            cell: {name: "locality", title: "LOCALITY", data: 'shot.sequence.project.client.locality'},
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            class:"",
+            }); 
+        $.each(tableColms,function(z,e){
+            var parent = $("#header_filter > .card-body");
+            if(e.headerVisibility){
+                $(parent).append(`<div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="`+e.cell.name+`" data-column="`+z+`" value="check" checked="">
+                        <label class="custom-control-label" for="`+e.cell.name+`">`+e.cell.title+`</label>
+                    </div>`);
+                }
+            });
+        var ETA_filter_index = 0;
+        function setTable(){
+            shotId_arr = [];
+            shotInfo_arr = {};
+            var tableX = $(`<table id="shots_table_t23" class="table display no-wrap" style="width:100%"></table>`);
+            $(tableParent).html('');
+            $(tableFilter).html('');
+            $(tableParent).append($('<div class="reload-table-row"></div>'));
+            $(tableParent).append($(tableX));
+            var uPar = [];
+            localStorage.setItem(sortFilterStoreKey,sortFilter);
+            if(sortFilter=="pending"||sortFilter==null){
+                $.each(ofx_page_data.StatusCodes,function(x,er){
+                    if(!er.isApproved&&specialStatusCodes.indexOf(er.code)==-1){
+                        uPar.push(er.code);
+                        }
+                    });
+                uPar = uPar.join("|");
+                }else if(sortFilter=='all'){
+                    $.each(ofx_page_data.StatusCodes,function(x,er){
+                        uPar.push(er.code);
+                        });
+                    uPar = uPar.join("|");
+                    }else if(specialStatusCodes.indexOf(sortFilter)!=-1){
+                        uPar = sortFilter;
+                        }else{
+                            $.each(ofx_page_data.StatusCodes,function(x,er){
+                                if(er.isApproved&&specialStatusCodes.indexOf(er.code)==-1){
+                                    uPar.push(er.code);
+                                    }
+                                });
+                            uPar = uPar.join("|")+"&"+sortFilter;
+                            let pr = $('.select-get-sort');
+                            $(pr).attr('data-data',$(pr).val());
+                            $('#select_lead_modal2').modal('hide');
+                            }
+                            
+            var cols = [], searchPanes = [], _addClass = [];
+            $.each(tableColms,function(z,e){
+                cols.push(e.cell);
+                if(e.isETAFilter){
+                    ETA_filter_index = parseInt(z);
+                    }
+                if(!e.isFilter){
+                    searchPanes.push(parseInt(z));
+                    }
+                if(e.class.length>0){
+                    _addClass.push({className: e.class, "targets": [parseInt(z)]});
+                    }
+                });
+            
+            var columnDefs = [{
+                            searchPanes: {
+                                show: false
+                            },
+                            // targets: [3, 4, 9, 10, 11, 12, 13, 14, 15, 18]
+                            targets: searchPanes
+                            }];
+            $.each(_addClass,function(z,e){
+                columnDefs.push(e);
+                });
+            // console.log("searchPanes",_addClass);
+            table = $(tableX).DataTable({
+                columnDefs: columnDefs,
+                searchPanes: {
+                    initCollapsed: true,
+                    cascadePanes: true,
+                    layout: 'columns-1',
+                    controls: false
+                },
+                dom: '<"dtsp-dataTable"frtip>',
+                "searching": true,
+
+                "ajax": {
+                    "processing": false,
+                    // "url": "/api/production/production_sheet/?status=" + status_list + "&dept="+getDeps.join('|'),
+                    "url": "/api/production/mytask/artist/" +  artistData.id + "/?status="+uPar,
+                    "type": "GET",
+                    "dataSrc": "",
+                    "async": true //displays data after loading the page
+                    },
+                columns: cols,
+                select: true,
+                order: [[1, 'asc']],
+                scrollResize: true,
+                scrollX: true,
+                scrollCollapse: true,
+                buttons: ["pageLength"],
+                dom: 'Bfrtip',
+                lengthMenu:[
+                    [10,25,50,100],
+                    ['10','25','50','100'],
+                    ],
+                "paging": true,
+                "pageLength": 10,
+                "bSortClasses": false,
+                stateSave: true,
+                deferLoading: 10,
+                });
+
+            table.searchPanes();
+            // Below code saves boolean type  in localstorage for header visibility
+            var all_columns = table.settings().init().columns;
+            var visible_columns = [];
+            for (var i in all_columns) {
+                if (table.column(all_columns[i].name + ':name').visible()) {
+                    localStorage.setItem(all_columns[i].name, true)
+                    $('#' + all_columns[i].name).prop('checked', true)
+                    visible_columns.push(all_columns[i].name);
+                } else {
+                    localStorage.setItem(all_columns[i].name, false)
+                    $('#' + all_columns[i].name).prop('checked', false)
+                }
+                }
+            $(tableFilter).append(table.searchPanes.container());
+            }
+        $(document).on('click','.reload-table-row',function(e){
+            setTable();
+            });
+        $(document).ready(function () { setTable(); });
+        $('#min, #max').on('change', function () {
+            table.draw();
+            });
+        $(document).on('click', 'input.toggle-vis', function(e){
+            // Get the column API object
+            var column = table.column($(this).attr('data-column'));
+            // Toggle the visibility
+            column.visible(!column.visible());
+            });
+        var sortFilter = localStorage.getItem(sortFilterStoreKey);
+        $(document).on('change', '.read-s-tag[name="client"]', function(e){
+            let client = $(this).val();
+            if(client.length>0){
+                var oPtions = '<option value="">Select Project</option>';
+                $.ajax({
+                    url: '/api/production/projects/'+client+'/',
+                    type: 'GET',
+                    dataType: "json",
+                    contentType: 'application/json; charset=utf-8',
+                    async: true, //displays data after loading the page
+                    processing: false,
+                    // data: {status:"IN PROGRESS"},
+                    success: function (response) {
+                        $.each(response,function(z,e){
+                            oPtions = oPtions+`<option value="`+e.id+`">`+e.name+`</option>`;
+                            });
+                        $('.read-s-tag[name="project"]').html(oPtions);
+                        },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR.responseText)
+                        }
+                    });
+                }
+            });
+        $(document).on('click', '.get-shorts', function(e){
+            var project = $('.read-s-tag[name="project"]').val();
+            if(project.length){
+                sortFilter = 'project_id='+project;
+                setTable();
+                }else{
+                    alert('Fields must be selected');
+                    sortFilter = null;
+                    } 
+            }); 
+        $(document).on('change', '.select-get-sort', function(e){
+            if($(this).val()=="approved"){
+                var oPtions = '<option value="">Select Client</option>';
+                $.ajax({
+                    url: '/api/production/clients/',
+                    type: 'GET',
+                    dataType: "json",
+                    contentType: 'application/json; charset=utf-8',
+                    async: true, //displays data after loading the page
+                    processing: false,
+                    data: {status:"IN PROGRESS"},
+                    success: function (response) {
+                        $.each(response,function(z,e){
+                            oPtions = oPtions+`<option value="`+e.id+`">`+e.name+`</option>`;
+                            });
+                        $('.read-s-tag[name="client"]').html(oPtions);
+                        $('#select_lead_modal2').modal('show');
+                        },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR.responseText)
+                        }
+                    });
+                }else{
+                    $(this).attr('data-data',$(this).val());
+                    sortFilter = $(this).val();
+                    setTable();
+                    }
+            });
+        
+        /*$(document).ready(function () {
+
+            // Create date inputs
+            minDate = new DateTime($('#min'), {
+                format: 'MMMM Do YYYY'
+            });
+            maxDate = new DateTime($('#max'), {
+                format: 'MMMM Do YYYY'
+            });
+
+            
+            {#console.log(table.state())#}
+            $("#shots_table ").dataTable().find("tbody").on('click', 'tr', function () {
+                console.log(table.row(this.rowIndex).data());
+            });
+            table.searchPanes()
+
+            
+        
+
+             
+ 
+            $("div.dtsp-verticalPanes").append(table.searchPanes.container());
+        });*/
+
+        /*function setTaskData(info={},data={}){
+            $.ajax({
+                url: '/api/production/mytask/'+info.task_id+'/',
+                type: 'PUT',
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data),
+                success: function (response) {
+                    $.toast({
+                        heading: 'Updated',
+                        showHideTransition: 'slide',
+                        text: 'Task Details Updated Successfully',
+                        icon: 'success',
+                        position: 'bottom-right',
+                        loader: true,        // Change it to false to disable loader
+                        loaderBg: '#da7b1c',// To change the background
+                        bgColor: '#1d6de5',
+                        textColor: 'white',
+                        hideAfter: 5000   // in milli seconds
+                    });
+                },
+                error: function (jqXHR, exception) {
+                    console.log(jqXHR.responseText)
+                }
+            });
+            // console.log(info,data);
+            }
+        $(document).on('click','.change-shot-status',function(e){
+            let prnt = $(this).parents('.btn-group').parent();
+            setTaskData(JSON.parse($(this).attr('data-data')),{task_status:JSON.parse($(this).attr('data-set'))["status"]});
+            $(prnt).html(ofx_shot_status_dropdown("{{user.employee.department}}","{{user.employee.role}}",JSON.parse($(this).attr('data-set'))["status"],$(this).attr('data-bgcolor'),JSON.parse($(this).attr('data-data'))));
+            });*/
+
+        
+        //TeamLead Assignments Modal Show
+        // $(".assign_leads").click(function (e) {
+        //     shotId_arr.length = 0
+        //     $("input:checkbox[class=shot_checkbox]:checked").each(function () {
+        //         shotId_arr.push($(this).val());
+        //     });
+
+        //     if (shotId_arr.length > 0) {
+        //         $('#select_lead_modal').modal('show');
+        //     } else {
+        //         alert("No Shots are Selected")
+        //     }
+        // });
+
+        // $("#modal_close").click(function () {
+        //     $('#myModal2').modal('toggle')
+        // })
+        
+        // TeamLead Assignments Post Data Function
+        // function assign_lead() {
+        //     post_data = [];
+        //     var notifyData = [];
+        //     for (i = 0; i < shotId_arr.length; i++) {
+        //         shotData = {
+        //             "shot": shotId_arr[i],
+        //             "lead": $('#shot_lead_select option:selected').val(),
+        //             "assigned_by": {{ user.employee.id }}
+        //         };
+        //         post_data.push(shotData)
+
+        //         notifyData.push({
+        //             referenceId: shotId_arr[i],
+        //             reference_type: "SHOT",
+        //             to_users: [$('#shot_lead_select option:selected').val()],
+        //             message: "Assigned By: " + $('#shot_lead_select option:selected').innerText,
+        //         });
+        //     }
+
+        //     $.ajax({
+        //         url: '/api/production/shot/assignments/',
+        //         type: 'POST',
+        //         dataType: "json",
+        //         contentType: 'application/json; charset=utf-8',
+        //         data: JSON.stringify(post_data),
+        //         success: function (response) {
+        //             /*$.each(notifyData,function(k,e){
+        //                 shotId:shotId_arr[i],
+        //             reference_type:"SHOT",
+        //             to_users=[$('#shot_lead_select option:selected').attr("data-apikey")],
+        //             message:"Assigned By: "+$('#shot_lead_select option:selected').innerText
+
+        //                 ofx_ws_set_task(e.shotId,e.reference_type,"",e.to_users,[],e.message,attachments=null,notification=true,ws_data={},savedata=null);
+        //             });*/
+
+        //         },
+        //         error: function (jqXHR, exception) {
+        //             console.log(jqXHR.responseText)
+        //         }
+        //     });
+        //     ofx_notify_save(notifyData);
+
+        //     //Send Notification
+        //     $wsClient.sendMessage("", "", [$('#shot_lead_select option:selected').attr("data-apikey")], [], {
+        //         title: "{{ user.employee.fullName }}",
+        //         message: shotId_arr.length + " Shot's Assigned"
+        //     }, null);
+        //     table.ajax.reload(null, false)
+        //     $('#select_lead_modal').modal('hide');
+        // }
+
+        // TeamLead Assignments Modal Close
+        // function close_assign_modal() {
+        //     $('#select_lead_modal').modal('hide');
+        // }
+        
+        /*
+        var shot_id = 0;
+        
+        function addComment(parent, response) {
+            $.each(response, function (x, e) {
+                let files = '';
+                $.each(e.attachments, function (z, xe) {
+                    files = files + `<div class="col-6">
+                            <a class="btn waves-effect waves-light btn-block btn-dark" href="#" onclick="window.location = '/attachments/notes/download/` + xe.id + `/';" title="` + xe.file_name + `">
+                                <p class="fas ` + (typeof fas_file_icons[xe.file_type] != "undefined" ? fas_file_icons[xe.file_type] : fas_file_icons['default']) + `"></p>
+                                <p>
+                                    <span class="file-name">` + xe.file_name + `</span>
+                                    <span class="file-info">
+                                        <i>` + formatBytes(xe.file_size, 2) + `</i>
+                                        ` + (false ? `<i>File: ` + xe.file_type + `</i>` : '') + `
+                                    </span>
+                                </p>
+                            </a>
+                        </div>`;
+                });
+                $(parent).append(`<div class="d-flex flex-row comment-row conent-abc">
+                                    <div class="p-2"><span class="round">
+                                        <img src="` + e.from_user.photo + `" alt="` + e.from_user.fullName + `" onerror="this.src='/media/profiles/photo/default.png'" width="50"></span>
+                                    </div>
+                                    <div class="comment-text w-100">
+                                        <h5>
+                                            <span>` + e.from_user.fullName + `</span>
+                                            <span class="text-muted float-right">` + moment(e.creation_date).format("MMM Do YYYY, h:mm a") + `</span>
+                                        </h5>
+                                        <p class="mb-1">` + e.message + `</p>
+                                        <div class="comment-footer row file-x">` + files + `
+                                            ` + (false ? `<span class="text-muted float-right">` + moment(e.creation_date).format("MMM Do YYYY, h:mm a") + `</span>
+                                            <span class="action-icons">
+                                                <a href="#"><i class="ti-pencil-alt"></i></a>
+                                            </span>` : '') + `
+                                        </div>
+                                    </div>
+                                </div>`);
+            });
+            let hit = 0;
+            $(parent).find('.comment-row').each(function (e) {
+                hit = hit + $(this).outerHeight();
+            });
+
+            $(parent).animate({
+                scrollTop: hit
+            }, 200, function () {
+                // if you need a callback function
+            });
+            // console.log($(parent).outerHeight());
+            // $(parent).scrollTop($(parent).scrollHeight);
+            // $(parent).scrollTop($(parent).outerHeight());
+        }
+
+        $('#shots_table').on('click', 'td.shot_view', function (e) {
+            window.location = '/production/shots/view/?shot_id='+table.row(this).data().shot.id;
+            });
+        
+        // TODO: Enable to view the shots data in modal
+        // Table On Row Click
+        $('#shots_table').on('click', 'td.shot_class', function () {
+
+            $('#shot_details').addClass('active')
+            $('#shot_details_tab').addClass('active')
+            $('#shot_notes_tab').removeClass('active')
+            $("#myModal2").modal('show');
+            shot_id = table.row(this).data().shot.id
+            $("#myModalLabel2").text(table.row(this).data().shot.name)
+            $("#clientt").text(table.row(this).data().shot.sequence.project.client.name)
+            $("#projectt").text(table.row(this).data().shot.sequence.project.name)
+            $("#sequencee").text(table.row(this).data().shot.sequence.name)
+            $("#task_typee").text(table.row(this).data().shot.task_type)
+            $("#typee").text(table.row(this).data().shot.type)
+
+            $("#bidss").text(table.row(this).data().shot.bid_days)
+            $("#team_leadd").text(table.row(this).data().shot.team_lead)
+            var now = new Date(table.row(this).data().shot.eta);
+            var day = ("0" + now.getDate()).slice(-2);
+            var month = ("0" + (now.getMonth() + 1)).slice(-2);
+            var eta_date = (day) + "-" + (month) + "-" + now.getFullYear();
+            $("#etaa").text(eta_date)
+            var int_now = new Date(table.row(this).data().shot.internal_eta);
+            var int_day = ("0" + int_now.getDate()).slice(-2);
+            var int_month = ("0" + (int_now.getMonth() + 1)).slice(-2);
+            var int_eta_date = int_now.getFullYear() + "-" + (int_month) + "-" + (int_day);
+            $("#int_etaa").val(int_eta_date)
+            $("#shot_notes_msg").attr('data-id', shot_id);
+            $("#shot_notes_msg").attr('data-type', table.row(this).data().shot.task_type);
+            $("#int_bidss").val(table.row(this).data().shot.internal_bid_days)
+            $("#statuss").html(`<span class="badge" style="color:white;padding:3px 10px;font-size:1em; background-color:` + table.row(this).data().shot.status.color + `">` + table.row(this).data().shot.status.code + `</span>`)
+            $("#complexityy").html(`<span class="badge" style="color:white;padding:3px 10px;font-size:1em; background-color:red"> ` + table.row(this).data().shot.complexity + `</span>`)
+            $("#progresss").html(`<div class="progress" style="height: 15px;">
+                        <div class="progress-bar" style="width:` + table.row(this).data().shot.progress + `%; color: white;font-weight: bold" role="progressbar">` + table.row(this).data().shot.progress + `%</div>
+                    </div>`);
+            $('#progresss .progress-bar').setProgressColor({ status:parseInt(table.row(this).data().shot.progress), prefix:'bg-' });
+            let parent = $(".comment-widgets");
+            $(parent).html('');
+        })
+
+        function shot_notes_tab() {
+            $.ajax({
+                // url: '/api/wsnotifications/notificationlogs/?reference_type=SHOT&referenceId='+shot_id,
+                url: '/api/wsnotifications/notificationlogs/',
+                type: 'GET',
+                data: {
+                    'reference_type': 'SHOT',
+                    'referenceId': shot_id,
+                },
+                success: function (response) {
+                    let parent = $(".comment-widgets");
+                    $(parent).html('');
+                    addComment(parent, response);
+                }
+            });
+        }
+
+
+        function shot_update() {
+            data = {
+                "internal_eta": $("#int_etaa").val(),
+                "internal_bid_days": $("#int_bidss").val()
+            }
+            $.ajax({
+                url: '/api/production/shots/' + shot_id + '/',
+                type: 'PUT',
+                data: data,
+                success: function (response) {
+                    //...
+                }
+            });
+        }
+        */
+        // Export Production sheet to Excel
+        function export_to_excel() {
+            alert("Feature coming soon");
+            // var shots = [];
+            // table.rows( { filter: 'applied' } ).every( function () {
+            //     shots.push(this.data().shot.id);
+            //     });
+            // // console.log(shots.length,shots);
+            // var from = $(`<form action="/production/export_prod_report/" method="POST" target="_blank" style="display:none;">
+            //     {% csrf_token %}
+            //     <input name="shot_ids" value="`+shots.join('|')+`"/>
+            //     </form>`);
+            // $('body').append(from);
+            // $(from).submit();
+            // $(from).remove();
+            }
+
+        // $wsClient.sendMessage(dataId='',fromGroup = ''/*if user leave it blank*/, toUsers = ['qcpe0euzf1arzrzihroexhbfmpaeoyvh'], toGroups = [], message = message, savedata = null)
+
+        /*    <a href="javascript:void(0)"><i class="ti-pencil-alt"></i></a>
+                                                    <a href="javascript:void(0)"><i class="ti-check"></i></a>
+                                                    <a href="javascript:void(0)"><i class="ti-heart"></i></a>
+                                                */
+        /* $($(this).closest(".card").find(".comment-widgets")).append(`<div class="d-flex flex-row comment-row">
+                                                    <div class="p-2"><span class="round"><img
+                                                            src="/media/profiles/photo/default.png" alt="user"
+                                                            width="50"></span></div>
+                                                    <div class="comment-text w-100">
+                                                        <h5>Srinivas Reni</h5>
+                                                        <p class="mb-1">HI Narendar</p>
+                                                        <div class="comment-footer">
+                                                            <span class="text-muted float-right">April 14, 2016</span>
+                                                            <span class="label label-light-info">Pending</span>
+                                                            <span class="action-icons">
+<a href="javascript:void(0)"><i class="ti-pencil-alt"></i></a>
+                                                    <a href="javascript:void(0)"><i class="ti-check"></i></a>
+                                                    <a href="javascript:void(0)"><i class="ti-heart"></i></a>
+
+                                                </span>
+                                                        </div>
+                                                    </div>
+                                                </div>`); */
+    
+
+    var type = window.location.hash.substring(1);
+    var getKeys = getGetParam({
+        'from_date':moment().startOf('month').subtract(3, 'months').format('YYYY-MM-DD')+'T00:00:00.000000',
+        'to_date': moment().endOf('week').format("YYYY-MM-DD")+'T23:59:59.999999'
+        });
+    // var table_parent = $('.inbox-center > table > tbody');
+    // $(table_parent).html('');
+    $.each(getKeys,function(x,e){
+        $('input[name="'+x+'"]').attr("value",moment(e).format('YYYY-MM-DD'));
+        });
+</script>
+<script src="{% static 'ofx/artistsStatistics.js' %}"></script>
+<script>
+    function taskdata(from_date,to_date,boolen=true){
+        var monthDates = dateSanitization(from_date,to_date,'month'),
+            weekDates = dateSanitization(from_date,to_date,'week'),
+            _from_date = moment(monthDates.from_date).diff(moment(weekDates.from_date), 'days')  < 0 ? monthDates.from_date : weekDates.from_date,
+            _to_date = moment(monthDates.to_date).diff(moment(weekDates.to_date), 'days') > 0 ? monthDates.to_date : weekDates.to_date;
+        $.ajax({
+            type:"GET",
+            // url:"/api/v2/employeedailystatistics/",
+            url:"/api/v2/employeedailystatistics/",
+            dataType: "json",
+            // data:{logDate__range__from_date:moment(from_date).format('YYYY-MM-DD'),logDate__range__to_date:moment(to_date).format('YYYY-MM-DD'),employee__profile__id:ofx_page_data.user.id},
+            data:{from_date:moment(_from_date).format('YYYY-MM-DD'),to_date:moment(_to_date).format('YYYY-MM-DD'),ofx_id:artistData.employee_id},
+            contentType: 'application/json; charset=utf-8',
+            "dataSrc": "",
+            "async": true,
+            // beforeSend: function(request) {
+            //     request.setRequestHeader("required", JSON.stringify(["employee__employee_id","employee__fullName","tmd", "amd", "rwh", "aeh", "ash", "leaves", "logDate"]));
+            //     },
+            success: function (response) {
+                $('.task-weeks, .task-months').empty();
+                if(response.length>0){
+                    var statistics = sortDailyStatistics(response,from_date,to_date),
+                        lend = 0;
+                    statistics = statistics[Object.keys(statistics)[0]];
+                    $.each(statistics.week,function(_z,_e){
+                        if(Object.keys(_e).length>0){
+                            lend = lend + 1;
+                            }
+                        });
+                    $.each(['week',"month"],function(z,e){
+                        $.each(statistics[e],function(_z,_e){
+                            if(Object.keys(_e).length>0){
+                                let ex = addDailyStatisticsLogs(_e),
+                                    dtx = dateSanitization(moment().format('YYYY-MM-DD'),moment().format('YYYY-MM-DD'),e);
+                                if(e=="month"&&boolen&&moment(ex.range.from_date).diff(moment(),'months')==0&&moment(ex.range.to_date).diff(moment(),'months')==0){
+                                    $.each(["tmd", "amd", "rwh", "aeh", "ash", "leaves"],function(cx,cy){
+                                        $('.running-quater-'+cy).html(parseFloat(ex.data[cy].toFixed(2)).toFixed(2));
+                                        });
+                                    //
+                                    }else{
+                                        addStatisticsToBody(
+                                            $('.task-'+e+'s'),
+                                            {
+                                                title: genUIDateFormatV2(ex.range.from_date,ex.range.to_date),
+                                                // title: e=="month"?moment(ex.range.from_date). format('MMM YYYY').toUpperCase():"Week-"+lend,
+                                                // hover:(moment(ex.range.from_date).diff(moment(dtx.from_date),e+'s')==0&&moment(dtx.to_date).diff(moment(ex.range.to_date),e+'s')==0)?"Running "+e:moment(ex.range.from_date).format("Do MMM YYYY")+' - '+moment(ex.range.to_date).format("Do MMM YYYY")
+                                                hover: moment(ex.range.from_date).format("Do MMM YYYY")+' - '+moment(ex.range.to_date).format("Do MMM YYYY")
+                                                },
+                                            ex.data);
+                                        lend = lend - 1;
+                                        }
+                                
+                                }
+                            });
+                        });
+                    }
+                },
+            error: function (jqXHR, exception) {
+                console.log(jqXHR.responseText)
+                }
+            });
+        }
+    $(document).ready(function () {
+        taskdata(getKeys['from_date'],getKeys['to_date'],true);
+        });
+    
+
+    $(document).on('click', '.run-filter',function(e){
+        var fil = {};
+        $(this).parents('.input-group').find('input').each(function(e){
+            if($(this).val().length>0){
+                if($(this).attr('name')==='from_date'){
+                    fil[$(this).attr('name')] = $(this).val()+'T00:00:00.000000';
+                    }else if($(this).attr('name')==='to_date'){
+                        fil[$(this).attr('name')] = $(this).val()+'T23:59:59.999999';
+                        }else{
+                            fil[$(this).attr('name')] = $(this).val();
+                            }
+                }
+            });
+        taskdata(fil['from_date'],fil['to_date'],false);
+        });
+    $(document).on('click', '.export-statistics', function(e){
+        alert("Feature coming soon");
+        var fil = {
+                type: $(this).attr('data-data')
+                };
+        $(this).parents('.input-group').find('input').each(function(e){
+            if($(this).val().length>0){
+                if($(this).attr('name')==='from_date'){
+                    fil[$(this).attr('name')] = $(this).val();
+                    }else if($(this).attr('name')==='to_date'){
+                        fil[$(this).attr('name')] = $(this).val();
+                        }else{
+                            fil[$(this).attr('name')] = $(this).val();
+                            }
+                }
+            });
+        if($(this).attr('data-data')!="selecetd"){
+            fil = Object.assign(fil,JSON.parse(JSON.stringify(dateSanitization(fil['from_date'],fil['to_date'],fil['type']))));
+            }
+        // console.log(fil);
+        });
+</script>
+{% endblock page_scripts %}

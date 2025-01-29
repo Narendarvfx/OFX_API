@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 /**
  * gridstack.js 0.3.0-dev
  * http://troolee.github.io/gridstack.js/

@@ -1,24 +1,32 @@
+{% load static %}
+{% load ofx_tags %}
 <!-- ============================================================== -->
 <!-- All Jquery -->
 <!-- ============================================================== -->
-<script src="/static/template/assets/plugins/jquery/jquery.min.js"></script>
+<!-- Ofx Sockets Scripts -->
+
+
 <!-- Bootstrap tether Core JavaScript -->
-<script src="/static/template/assets/plugins/bootstrap/js/popper.min.js"></script>
-<script src="/static/template/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{% static 'template/assets/plugins/bootstrap/js/popper.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'template/assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
 <!-- slimscrollbar scrollbar JavaScript -->
-<script src="/static/template/main/dark/js/jquery.slimscroll.js"></script>
+<script type="text/javascript" src="{% static 'template/main/dark/js/jquery.slimscroll.js' %}"></script>
 <!--Wave Effects -->
-<script src="/static/template/main/dark/js/waves.js"></script>
+<script type="text/javascript" src="{% static 'template/main/dark/js/waves.js' %}"></script>
 <!--Menu sidebar -->
-<script src="/static/template/main/dark/js/sidebarmenu.js"></script>
+<script type="text/javascript" src="{% static 'template/main/dark/js/sidebarmenu.js' %}"></script>
 <!--stickey kit -->
-<script src="/static/template/assets/plugins/sticky-kit-master/dist/sticky-kit.min.js"></script>
+<script type="text/javascript" src="{% static 'template/assets/plugins/sticky-kit-master/dist/sticky-kit.min.js' %}"></script>
 <!--Custom JavaScript -->
-<script src="/static/template/main/dark/js/custom.min.js"></script>
-<script src="/static/template/main/dark/js/validation.js"></script>
+<script type="text/javascript" src="{% static 'template/main/dark/js/custom.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'template/main/dark/js/validation.js' %}"></script>
 <!--OFX Core JavaScript -->
-<script src="/static/ofx/core.js"></script>
+<script type="text/javascript" src="{% static 'ofx/core.js' %}"></script>
 <!-- ============================================================== -->
 <!-- Style switcher -->
 <!-- ============================================================== -->
-<script src="/static/template/assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
+<script type="text/javascript" src="{% static 'template/assets/plugins/styleswitcher/jQuery.style.switcher.js' %}"></script>
+<script type="text/javascript" src="{% static 'template/assets/plugins/toast-master/js/jquery.toast.js' %}"></script>
+
+
+

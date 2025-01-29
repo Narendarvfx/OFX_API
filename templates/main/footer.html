@@ -1,9 +1,82 @@
+{% load static %}
 <!-- ============================================================== -->
 <!-- footer -->
 <!-- ============================================================== -->
 <footer class="footer">
-    © 2022 {% include 'main/version.html' %}
+    © 2023 {% include 'main/version.html' %}
 </footer>
 <!-- ============================================================== -->
 <!-- End footer -->
 <!-- ============================================================== -->
+
+<script>
+    let user_id = {{ user.employee.id }};
+</script>
+
+<script src="{% static 'ofx/ofx_sockets.js' %}?abcxyz=trjh"></script>
+<script src="{% static 'ofx/ofx_notifications.js' %}?abcxyz=update3"></script>
+<script>
+    function addNotifications(parent,e={},append=true){
+        let row = `<a href="#" class="`+($.inArray(user_id,e.read_recipients)==-1?'active':'')+`" >
+                        <div class="btn btn-circle" style="padding:0px;">
+                            <img src="` + ((e.from_user != null && typeof e.from_user.photo != "undefined")?e.from_user.photo:'/media/profiles/photo/default.png') + `" alt="` + ((e.from_user != null && typeof e.from_user.fullName != "undefined")?e.from_user.fullName:'Unknown User') + `" title="` + ((e.from_user != null && typeof e.from_user.fullName != "undefined")?e.from_user.fullName:'Unknown User') + `" onerror="this.src='/media/profiles/photo/default.png'" class="profile-pic" width="50" style="width: 100%;">
+                        </div>
+                        <div class="mail-contnet">
+                            <h5>` + (e.message_title==null?((e.from_user != null && typeof e.from_user.fullName != "undefined")?e.from_user.fullName:'Unknown User'):e.message_title) + `</h5>
+                            <span class="mail-desc">` + e.message + `</span>
+                            <span class="time">` + moment(e.creation_date).format("MMM Do YYYY, h:mm a") + `</span>
+                            <div class="action-icons">
+                                <button title="Mark as read" data-id="` + e.dataId + `" class="notification-read"><i class="mdi mdi-check-all"></i></button>
+                                <button title="Go to Shot" onclick="window.location = '/production/shots/view/?shot_id=` + e.referenceId + `'; return false;" ><i class="mdi mdi-image-filter-black-white"></i></button>
+                                <button title="Go to Notification" onclick="window.location = '/notifications/view/?data_id=` + e.dataId + `'; return false;" ><i class="mdi mdi-arrow-right-bold"></i></button>
+                            </div>
+                        </div>
+                    </a>`;
+        if(append){
+            $(parent).append(row);
+            }else{
+                $(parent).prepend(row);
+                }
+        }
+    // $(document).ready(function(){
+    //     $.ajax({
+    //         url: '/api/notifications/?user_id='+user_id+'&read=False&limit=10',
+    //         type: 'GET',
+    //         dataType: "json",
+    //         contentType: 'application/json; charset=utf-8',
+    //         // data: JSON.stringify(post_data),
+    //         success: function (response) {
+    //             let parent = $('.notification-bell-hold > .message-center');
+    //             $(parent).html('');
+    //             $.each(response,function(z,e){
+    //                 addNotifications($(parent),e,true);
+    //                 });
+    //         },
+    //         error: function (jqXHR, exception) {
+    //             console.log(jqXHR.responseText)
+    //         }
+    //     });
+    // });
+    $(document).on('click', '.notification-read',function(e){
+        let rx = $(this).parents('a');
+        if($(rx).hasClass('active')){
+            $(rx).removeClass('active');
+            $.ajax({
+                url: '/api/notifications/?user_id='+user_id+'&data_id='+$(this).attr('data-id'),
+                type: 'PUT',
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({
+                    // user_id: user_id,
+                    // data_id: $(msgRo).attr('data-id'),
+                    read: true
+                    }),
+                success: function (response) { },
+                error: function (jqXHR, exception) {
+                    console.log(jqXHR.responseText)
+                }
+            });
+        }
+        return false;
+        });
+</script>

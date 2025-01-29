@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 /*=========================================================================================
 	File Name: form-quill-editor.js
 	Description: Quill is a modern rich text editor built for compatibility and extensibility.

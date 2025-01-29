@@ -1,15 +1,7 @@
-/*!
- * jQuery blockUI plugin
- * Version 2.70.0-2014.11.23
- * Requires jQuery v1.7 or later
- *
- * Examples at: http://malsup.com/jquery/block/
- * Copyright (c) 2007-2013 M. Alsup
- * Dual licensed under the MIT and GPL licenses:
- * http://www.opensource.org/licenses/mit-license.php
- * http://www.gnu.org/licenses/gpl.html
- *
- * Thanks to Amir-Hossein Sobhi for some excellent contributions!
+/*
+ * Copyright (c) 2007-2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
  */
 
 ;(function() {
@@ -32,14 +24,14 @@
 		$.blockUI   = function(opts) { install(window, opts); };
 		$.unblockUI = function(opts) { remove(window, opts); };
 
-		// convenience method for quick growl-like notifications  (http://www.google.com/search?q=growl)
+		// convenience method for quick growl-like wsnotifications  (http://www.google.com/search?q=growl)
 		$.growlUI = function(title, message, timeout, onClose) {
 			var $m = $('<div class="growlUI"></div>');
 			if (title) $m.append('<h1>'+title+'</h1>');
 			if (message) $m.append('<h2>'+message+'</h2>');
 			if (timeout === undefined) timeout = 3000;
 
-			// Added by konapun: Set timeout to 30 seconds if this growl is moused over, like normal toast notifications
+			// Added by konapun: Set timeout to 30 seconds if this growl is moused over, like normal toast wsnotifications
 			var callBlock = function(opts) {
 				opts = opts || {};
 

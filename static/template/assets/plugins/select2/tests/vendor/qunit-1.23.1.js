@@ -1,12 +1,7 @@
-/*!
- * QUnit 1.23.1
- * https://qunitjs.com/
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license
- * https://jquery.org/license
- *
- * Date: 2016-04-12T17:29Z
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
  */
 
 ( function( global ) {

@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 $.extend(Wizard.prototype, {
     Constructor: Wizard,
     initialize: function(){
@@ -77,7 +83,7 @@ $.extend(Wizard.prototype, {
         var self = this;
 
         $.each(this.steps, function(i, step){
-            
+
             if(i > self._current){
                 step.leave('error');
                 step.leave('active');
@@ -156,13 +162,13 @@ $.extend(Wizard.prototype, {
                     current.enter('done');
                 }
             }
-        }     
+        }
 
         var self = this;
         var process = function (){
             self.trigger('beforeChange', current, to);
             self.transitioning = true;
-            
+
             current.hide();
             to.show(function(){
                 self._current = index;

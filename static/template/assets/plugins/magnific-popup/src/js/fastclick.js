@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 /**
  * FastClick event implementation. (removes 300ms delay on touch devices)
  * Based on https://developers.google.com/mobile/articles/fast_buttons

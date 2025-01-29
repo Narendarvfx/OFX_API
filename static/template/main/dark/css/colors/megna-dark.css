@@ -1,4 +1,10 @@
 /*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
+/*
 Template Name: Monster Admin
 Author: Themedesigner
 Email: niravjoshi87@gmail.com
@@ -10,7 +16,6 @@ Author: Themedesigner
 Email: niravjoshi87@gmail.com
 File: scss
 */
-@import 'https://fonts.googleapis.com/css?family=Rubik:300,400,500,700,900';
 /*Theme Colors*/
 /*bootstrap Color*/
 /*Light colors*/
@@ -58,6 +63,7 @@ File: scss
 .topbar .top-navbar .navbar-header .navbar-brand .light-logo {
   display: inline-block;
   color: rgba(255, 255, 255, 0.8);
+  height: 30px;
 }
 
 .topbar .navbar-light .navbar-nav .nav-item > a.nav-link {
@@ -175,7 +181,7 @@ a.link:hover, a.link:focus {
 }
 
 .sidebar-nav ul li a {
-  color: #a2a1a1 !important;
+  color: #bbbec1 !important;
 }
 
 .sidebar-nav ul li a.active, .sidebar-nav ul li a:hover {

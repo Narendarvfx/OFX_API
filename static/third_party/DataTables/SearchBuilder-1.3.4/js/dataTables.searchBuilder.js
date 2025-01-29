@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 /*! SearchBuilder 1.3.4
  * ©SpryMedia Ltd - datatables.net/license/mit
  */

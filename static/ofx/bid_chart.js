@@ -1,4 +1,10 @@
-        var bid_yValues = [];
+        /*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
+var bid_yValues = [];
         var actual_yValues = [];
         let bid_client_id = 0;
         let bid_project_id = 0;

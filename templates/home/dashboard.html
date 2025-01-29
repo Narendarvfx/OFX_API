@@ -1,11 +1,12 @@
 {% extends 'main/base.html' %}
+{% load static%}
 {% block bread_crumb %}
-    <link href="/static/template/assets/plugins/timepicker/bootstrap-timepicker.min.css" rel="stylesheet">
-    <link href="/static/template/assets/plugins/daterangepicker/daterangepicker.css" rel="stylesheet">
+    <link href="{% static 'template/assets/plugins/timepicker/bootstrap-timepicker.min.css' %}" rel="stylesheet">
+    <link href="{% static 'template/assets/plugins/daterangepicker/daterangepicker.css' %}" rel="stylesheet">
 {% endblock bread_crumb %}
 {% block content %}
 
-    <h3>Hello {{ user.profile.employee.fullName }}</h3>
+    <h3>Hello {{ user.employee.fullName }}</h3>
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-6">
@@ -74,23 +75,23 @@
 
 {% block page_scripts %}
     <!--OFX Core JavaScript -->
-    <script src="/static/ofx/core.js"></script>
+    <script href="{% static 'ofx/core.js' %}"></script>
     <!-- ============================================================== -->
     <!-- This page plugins -->
     <!-- ============================================================== -->
     <!-- chartist chart -->
-    <script src="/static/third_party/ChartJs/Chart.min.js"></script>
+    <script href="{% static 'third_party/ChartJs/Chart.min.js' %}"></script>
 
     <!-- Date range Plugin JavaScript -->
-    <script src="/static/template/assets/plugins/moment/moment.js"></script>
-    <script src="/static/template/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- <script href="{% static 'template/assets/plugins/moment/moment.js' %}"></script> -->
+    <script href="{% static 'template/assets/plugins/daterangepicker/daterangepicker.js' %}"></script>
     <!-- ============================================================== -->
     <!-- Style switcher -->
     <!-- ============================================================== -->
-    <script src="/static/template/assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
+    <script href="{% static 'template/assets/plugins/styleswitcher/jQuery.style.switcher.js' %}"></script>
 
     <!-- OFX Status Chart Javascript -->
-    <script src="/static/ofx/status_chart.js"></script>
-    <script src="/static/ofx/bid_chart.js"></script>
+    <script href="{% static 'ofx/status_chart.js' %}"></script>
+    <script href="{% static 'ofx/bid_chart.js' %}"></script>
 
 {% endblock page_scripts %}

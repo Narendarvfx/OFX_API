@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 /*!
  * Column visibility buttons for Buttons and DataTables.
  * 2016 SpryMedia Ltd - datatables.net/license

@@ -1,27 +1,28 @@
 {% extends 'main/base.html' %}
-
+{% load static %}
 
 {% block bread_crumb %}
-    <link rel='stylesheet' href='/static/third_party/DataTables/DataTables-1.12.1/css/jquery.dataTables.min.css'
+    <link href="{% static 'template/assets/plugins/daterangepicker/daterangepicker.css' %}" rel="stylesheet">
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/DataTables-1.12.1/css/jquery.dataTables.min.css' %}"
           type="text/css"/>
-    <link rel='stylesheet' href='/static/third_party/DataTables/Responsive-2.3.0/css/responsive.dataTables.min.css'
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/Responsive-2.3.0/css/responsive.dataTables.min.css' %}"
           type="text/css"/>
-    <link rel='stylesheet' href='/static/third_party/DataTables/Responsive-2.3.0/css/responsive.bootstrap5.min.css'
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/Responsive-2.3.0/css/responsive.bootstrap5.min.css' %}"
           type="text/css"/>
-    <link rel='stylesheet' href='/static/third_party/DataTables/Buttons-2.2.3/css/buttons.dataTables.min.css'
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/Buttons-2.2.3/css/buttons.dataTables.min.css' %}"
           type="text/css"/>
-    <link rel='stylesheet' href='/static/template/assets/plugins/multiselect/css/multi-select.css'
+    <link rel='stylesheet' href="{% static 'template/assets/plugins/multiselect/css/multi-select.css' %}"
           type="text/css"/>
     <link rel="stylesheet"
-          href="/static/template/assets/plugins/toast-master/css/jquery.toast.css" type="text/css"/>
+          href="{% static 'template/assets/plugins/toast-master/css/jquery.toast.css' %}" type="text/css"/>
     <link rel="stylesheet"
-          href="/static/third_party/DataTables/custom_css/datables_searchpane.css" type="text/css"/>
+          href="{% static 'third_party/DataTables/custom_css/datables_searchpane.css' %}" type="text/css"/>
     <link rel="stylesheet"
-          href="/static/third_party/DataTables/Select-1.4.0/css/select.dataTables.min.css" type="text/css"/>
-    <link href="/static/third_party/DataTables/DataTables-1.12.1/css/dataTables.jqueryui.css" rel="stylesheet"
+          href="{% static 'third_party/DataTables/Select-1.4.0/css/select.dataTables.min.css' %}" type="text/css"/>
+    <link href="{% static 'third_party/DataTables/DataTables-1.12.1/css/dataTables.jqueryui.css' %}" rel="stylesheet"
           type="text/css"/>
-    <link href="https://cdn.datatables.net/colreorder/1.5.6/css/colReorder.dataTables.min.css" rel="stylesheet"
-          type="text/css"/>
+<!--?    <link href="https://cdn.datatables.net/colreorder/1.5.6/css/colReorder.dataTables.min.css' %}" rel="stylesheet"-->
+<!--?          type="text/css"/>-->
 
     <style>
         .form-control {
@@ -50,9 +51,21 @@
             margin-bottom: 10px !important;
         }
 
+        .col-md-12 {
+            padding: 0px !important;
+        }
+
+        .col-lg-10 {
+            padding: 0px !important;
+        }
+
+        .card-body {
+            padding: 0rem !important;
+        }
+
         #filter_div {
             padding: 10px;
-            background: #0f0f10 !important;
+            background: #272c33 !important;
             color: white;
         }
 
@@ -67,12 +80,15 @@
         .card-body {
             padding: 0rem !important;
         }
-
-        .dt-buttons .dt-button {
-            border-radius: 4px;
-            background: orange;
-            color: #ffffff
-        }
+        div.dt-button-collection button.dt-button:active:not(.disabled),
+        div.dt-button-collection button.dt-button.active:not(.disabled),
+        div.dt-button-collection div.dt-button:active:not(.disabled),
+        div.dt-button-collection div.dt-button.active:not(.disabled),
+        div.dt-button-collection a.dt-button:active:not(.disabled),
+        div.dt-button-collection a.dt-button.active:not(.disabled){
+            background-color: #272c33!important;
+            background: #272c33!important;
+            }
 
         table.dataTable tbody tr {
             background-color: #272c33 !important;
@@ -81,7 +97,7 @@
         }
 
         table.dataTable tr.odd {
-            background-color: #2b3038 !important;
+            background-color: #343a40 !important;
         }
 
         table.dataTable td {
@@ -95,13 +111,26 @@
             font-size: small;
         }
 
-        #versions_table_length, #versions_table_info, #versions_table_filter {
+        .dataTables_length, .dataTables_info, .dataTables_filter {
             color: #a2a1a1 !important;
         }
 
         .dataTables_wrapper .dataTables_paginate .paginate_button {
             padding: 2px;
-            background: white;
+            background: white !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            color: #fff5f5 !important;
+            background-color: #e5711d !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background-color: rgb(183, 110, 5) !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .ellipsis {
+            color: white;
         }
 
         tfoot input {
@@ -127,6 +156,7 @@
         .dataTables_wrapper .dataTables_filter input {
             color: #dad8d8 !important;
         }
+
 
         table.dataTable tbody tr.selected {
             background-color: #315eb1 !important;
@@ -233,44 +263,97 @@
         }
 
         div.dtsp-panesContainer {
-            border: 1px solid #ccc;
+            border: 1px solid transparent;
             border-radius: 6px;
             padding: 5px;
         }
+
+        select {
+            -webkit-appearance: none;
+        }
+
+        div.dtsp-narrow {
+            flex-direction: column !important;
+            background-color: #343a40;
+        }
+
+        div.dtsp-panesContainer button.dtsp-clearAll, div.dtsp-panesContainer button.dtsp-collapseAll, div.dtsp-panesContainer button.dtsp-showAll {
+            border: none;
+            background-color: #343a40;
+            padding: 3px;
+            border-radius: 5px;
+        }
+
+        div.dtsp-panesContainer button.dtsp-disabledButton {
+            cursor: default !important;
+            background-color: #343a40;
+            padding: 3px;
+            border-radius: 10px;
+            color: white;
+        }
+
+        div.dtsp-panesContainer div.dataTables_wrapper div.dataTables_scrollBody {
+            background: #343a40 !important;
+            border-bottom: none;
+        }
+        .view-shot-version.active{
+            background-color: #009efb !important;
+            }
+        .dtsp-nameCont img{
+            max-width: 25px;
+            }
+        .version-item > button{
+            position: absolute;
+            margin: auto;
+            bottom: 20px;
+            right: 10px;
+            width: 40px;
+            height: 40px;
+            opacity: 0;
+            -webkit-transition: .4s;
+            transition: .4s;
+            }
+        .version-item:hover > button{
+            opacity: 1;
+            }
+
     </style>
-    <div class="row page-titles">
-        <div class="col-md-4 col-6 align-self-center">
-            <h3 class="text-themecolor mb-0 mt-0">Version Report</h3>
+    <div class="row page-titles" style="margin-left: -10px !important; margin-right: -10px !important; margin-top: -10px !important; background: #272c33; padding-top: 5px;">
+        <div class="col-2 float-left">
+            <h3 class="text-themecolor mb-0 mt-2 re-seletct">Version Report</h3>
         </div>
-        <div class="col-md-8 col-8 align-self-center">
-            <div class="float-right" style="margin-left: 5px">
-                <button class="btn float-right btn-primary" onclick="export_to_excel()"><i
-                        class="mdi mdi-cloud-download"></i> Export
-                </button>
+        <div class="col-10 text-right pt-1">
+            <div class="btn-group mb-2 mr-2" role="group" aria-label="Button group with nested dropdown">
+                <!-- <button class="column_filter btn btn-warning" title="Filters" data-toggle="button" aria-pressed="true"><i class="mdi mdi-filter" ></i> Filters</button> -->
+                <button class="btn btn-primary export-to-excel" title="Export to Excel" ><i class="mdi mdi-cloud-download" ></i> Export to EXCEL</button>
             </div>
-            <div class="float-right" style="margin-left: 5px">
-                <select id="shot_taskType_select" class="form-control">
-                    <option value="0">TaskType</option>
-                    {% for task_ty in task_type %}
-                        <option value="{{ task_ty.id }}">{{ task_ty.name }}</option>
-                    {% endfor %}
+        </div>
+        <div class="col-12 d-flex justify-content-center pt-2 pb-0" style="border-top: 1px solid #5e6773;">
+            <div class="btn-group mb-2 mr-2">
+                <select name="shot__sequence__project__client__id" style="text-align: left; height: 33px; padding: 0px 10px;" class="btn btn-outline-info version-report-input-tag"></select>
+            <!-- </div>
+            <div class="btn-group mb-2 mr-2"> -->
+                <select name="shot__sequence__project__id" style="text-align: left; height: 33px; padding: 0px 10px;" class="btn btn-outline-info version-report-input-tag"><option value="">All Projects</option></select>
+            </div>
+            <div class="btn-group mb-2 mr-2">
+                <select name="shot__task_type__id" style="text-align: left; height: 33px; padding: 0px 10px;" class="btn btn-outline-info version-report-input-tag"><option value="">All Department</option></select>
+            </div>
+            <div class="btn-group mb-2 mr-2">
+                <select name="num_type" style="text-align: left; height: 33px; padding: 0px 10px;" class="btn btn-outline-info version-report-input-tag">
+                    <option value="-1">Get All Versions</option>
+                    <option value="1">Equal to</option>
+                    <option value="2">Greater than</option>
+                    <option value="3">Greater than or Equal to</option>
+                    <option value="4">Less than</option>
+                    <option value="5">Less than or Equal to</option>
+                    <option value="0">Range</option>
                 </select>
             </div>
-            <div class="float-right" style="margin-left: 5px">
-                <select id="shot_project_select" class="form-control">
-                    <option value="0">Project</option>
-                    {% for project in projects %}
-                        <option value={{ project.id }}>{{ project.name }}</option>
-                    {% endfor %}
-                </select>
+            <div class="btn-group mb-2 mr-2">
+                <input type='text' style="text-align: left; height: 33px; padding: 0px 10px;" name="modified_date__range" data-type="date-range" class="btn btn-outline-info daterange notset" value="All Dates" />
             </div>
-            <div class="float-right" style="margin-left: 5px">
-                <select id="shot_client_select" class="form-control">
-                    <option value="0">Client</option>
-                    {% for client in clients %}
-                        <option value={{ client.id }}>{{ client.name }}</option>
-                    {% endfor %}
-                </select>
+            <div class="btn-group mb-2 mr-2">
+                <button type="button" style="height: 33px;padding: 0px 10px;" class="btn btn-info run-filter">Apply <i class="mdi mdi-arrow-right"></i></button>
             </div>
         </div>
     </div>
@@ -282,606 +365,846 @@
 
 {% block content %}
     <div class="container-fluid row">
-
-        <!-- Shots Table View -->
-        <div class="col-lg-12" id="versions_list_view">
-            <div class="card">
-
-                <table id="versions_table" class="table display no-wrap" style="width:100%">
-
-                </table>
-
+        <div class="col-md-12 reports-view">
+            <div class="row" style="margin-right: -15px!important; margin-left: -15px!important;">
+                <div class="text-center" style="position: relative;margin: auto;top: 100px;width: 100%;">
+                    <h3 class="text-uppercase">Welcome!</h3>
+                    <p class="text-muted mt-4 mb-4">Please Select Client and click on Apply to get Versions Report</p>
+              </div>
             </div>
         </div>
-        <div class="col-lg-2 card" id="filter_div" style="display: none;height:1000px;overflow-y: auto">
-            <h6><i onclick="header_vis(this)" class="ti-angle-right"></i> Header Visibility</h6>
-            <div class="card" id="header_filter" style="display: none; height:200px; overflow-y: scroll">
-                <div class="card-body">
-                    <input type="text" class="form-control column_vis" id="search_header" onkeyup="search_column()"
-                           placeholder="Search for...">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox1" data-column="1"
-                               value="check" checked>
-                        <label class="custom-control-label" for="checkbox1">CLIENT</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox2" data-column="2"
-                               value="check" checked>
-                        <label class="custom-control-label" for="checkbox2">PROJECT</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox3" data-column="3"
-                               value="check" checked>
-                        <label class="custom-control-label" for="checkbox3">SEQUENCE</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox4" data-column="4"
-                               value="check" checked>
-                        <label class="custom-control-label" for="checkbox4">SHOT</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox5" data-column="5"
-                               value="check" checked>
-                        <label class="custom-control-label" for="checkbox5">TYPE</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox6" data-column="6"
-                               value="check" checked>
-                        <label class="custom-control-label" for="checkbox6">TASK TYPE</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox7" data-column="7"
-                               value="check" checked>
-                        <label class="custom-control-label" for="checkbox7">COMPLEXITY</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox8" data-column="8"
-                               value="check" checked>
-                        <label class="custom-control-label" for="checkbox8">STATUS</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox9" data-column="9"
-                               value="check" checked>
-                        <label class="custom-control-label" for="checkbox9">PROGRESS</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox10" data-column="10"
-                               value="check" checked>
-                        <label class="custom-control-label" for="checkbox10">ACTUAL BIDS</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox11" data-column="11"
-                               value="check" checked>
-                        <label class="custom-control-label" for="checkbox11">CONSUMED BIDS</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox12" data-column="12"
-                               value="check" checked>
-                        <label class="custom-control-label" for="checkbox12">ETA</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox16" data-column="16"
-                               value="check" checked>
-                        <label class="custom-control-label" for="checkbox16">TEAM LEAD</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox17" data-column="17"
-                               value="check" checked>
-                        <label class="custom-control-label" for="checkbox17">LOCATION</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input toggle-vis" id="checkbox18" data-column="18"
-                               value="check" checked>
-                        <label class="custom-control-label" for="checkbox18">LOCALITY</label>
-                    </div>
-                </div>
-            </div>
-            <h6><i onclick="client_vis(this)" class="ti-angle-right"></i> Client Filter</h6>
-            <div class="card" id="client_filter" style="display: none; height:200px; overflow-y: scroll">
-                <div class="card-body">
-                    <input type="text" class="form-control column_vis" id="search_header" onkeyup="search_column()"
-                           placeholder="Search for...">
-                    {% for client in clients %}
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input toggle-vis"
-                                   id="checkbox{{ forloop.counter0 }}"
-                                   data-column={{ forloop.counter0 }} value={{ client.id }} checked>
-                            <label class="custom-control-label"
-                                   for="checkbox{{ forloop.counter0 }}">{{ client.name }}</label>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-        <div class="dtsp-verticalContainer">
-                    <div class="dtsp-verticalPanes"></div>
-                    <div class="container">
-                    </div>
-        </div>
-
+        <div class="reports-table-view col-md-6" style="display: none;">
         </div>
     </div>
-    <div id="select_lead_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-         aria-hidden="true" style="display: none;">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Select Team Lead</h4>
-                </div>
-                <div class="modal-body">
-                    <form class="form-horizontal" role="form">
-                        {% csrf_token %}
-                        <div class="form-body" id="select_lead">
-                            <select id="shot_lead_select" class="form-control">
-                                <option value="0">Select Team Lead</option>
-                                {% for lead in leads %}
-                                    <option value={{ lead.id }}>{{ lead.fullName }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" name="save" class="btn btn-success waves-effect waves-light"
-                            onclick="assign_lead()">Assign
-                    </button>
-                    <button type="button" name="close" class="btn btn-default waves-effect" data-dismiss="modal"
-                            onclick="close_assign_modal()">Close
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="custom_preloader"
-         style="display: inline-block;position: fixed;top: 0;bottom: 0;left: 0;right: 0;width: 200px;height: 100px;margin: auto;">
-        <svg version="1.1" id="L2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-             y="0px"
-             viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
-<circle fill="none" stroke="#fff" stroke-width="4" stroke-miterlimit="10" cx="50" cy="50" r="48"/>
-            <line fill="none" stroke-linecap="round" stroke="#fff" stroke-width="4" stroke-miterlimit="10" x1="50"
-                  y1="50" x2="85" y2="50.5">
-  <animateTransform
-          attributeName="transform"
-          dur="2s"
-          type="rotate"
-          from="0 50 50"
-          to="360 50 50"
-          repeatCount="indefinite"/>
-</line>
-            <line fill="none" stroke-linecap="round" stroke="#fff" stroke-width="4" stroke-miterlimit="10" x1="50"
-                  y1="50" x2="49.5" y2="74">
-  <animateTransform
-          attributeName="transform"
-          dur="15s"
-          type="rotate"
-          from="0 50 50"
-          to="360 50 50"
-          repeatCount="indefinite"/>
-</line>
-</svg>
-    </div>
-
 {% endblock content %}
-
-
-
 {% block page_scripts %}
     <!--OFX Core JavaScript -->
-    <script src="/static/ofx/core.js"></script>
-    <script src="/static/third_party/DataTables/DataTables-1.12.1/js/jquery.dataTables.min.js"></script>
-    <script src="/static/third_party/DataTables/Responsive-2.3.0/js/dataTables.responsive.min.js"></script>
-    <script src="/static/third_party/DataTables/Responsive-2.3.0/js/responsive.bootstrap5.min.js"></script>
-    <script src="/static/third_party/DataTables/Buttons-2.2.3/js/dataTables.buttons.min.js"></script>
-    <script src="/static/third_party/DataTables/Buttons-2.2.3/js/buttons.html5.min.js"></script>
-    <script src="/static/third_party/DataTables/Bootstrap-5-5.1.3/js/bootstrap.bundle.min.js"></script>
-    <script src="/static/template/assets/plugins/popper/popper.min.js"></script>
-    <script src="/static/template/assets/plugins/toast-master/js/jquery.toast.js"></script>
-    <script src="/static/third_party/DataTables/custom_js/datatables_searchPane.js"></script>
-    <script src="/static/third_party/DataTables/Select-1.4.0/js/dataTables.select.min.js"></script>
-    <script src="/static/template/assets/plugins/moment/moment.js"></script>
-    <script src="https://cdn.datatables.net/colreorder/1.5.6/js/dataTables.colReorder.min.js"></script>
-
+    <script src="{% static 'ofx/core.js' %}"></script>
+    <script src="{% static 'template/assets/plugins/daterangepicker/daterangepicker.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/DataTables-1.12.1/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Responsive-2.3.0/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Responsive-2.3.0/js/responsive.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Buttons-2.2.3/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Buttons-2.2.3/js/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Bootstrap-5-5.1.3/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'template/assets/plugins/popper/popper.min.js' %}"></script>
+    <script src="{% static 'template/assets/plugins/toast-master/js/jquery.toast.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/custom_js/datatables_searchPane.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Select-1.4.0/js/dataTables.select.min.js' %}"></script>
+    <script src="{% static 'main/dataTables.colReorder.min.js' %}"></script>
+    <!-- <script src="{% static 'template/assets/plugins/moment/moment.js' %}"></script> -->
+<!--?    <script src="https://cdn.datatables.net/colreorder/1.5.6/js/dataTables.colReorder.min.js' %}"></script>-->
+    {% csrf_token %}
     <script>
-        $(".column_filter").click(function (e) {
-            var x = document.getElementById("filter_div");
-            if (x.style.display === "none") {
-                $('.col-lg-12').addClass('col-lg-10').removeClass('col-lg-12')
-                x.style.display = "block";
-            } else {
-                x.style.display = "none";
-                $('.col-lg-10').addClass('col-lg-12').removeClass('col-lg-10')
-            }
-        });
-        $(window).click(function (e) {
-            $("#filters-modal").modal('hide');
-        });
+        var reportsTab = $('.reports-view > .row'),
+            reportsTableTab = $('.reports-table-view');
 
+        function addReportVersion(e=null,clear=false){
+            if(clear){
+                $(reportsTab).empty();
+                clearTable();
+                }
+            if(e!=null){
+                $(reportsTab).prepend(`<div class="col-md-2 version-item p-1">
+                        <a href="#" data-target="`+e.name+`" class="card view-shot-version">
+                            <div class="box text-center">
+                                <h1 class="font-light text-white r-tmd">`+e.name+`</h1>
+                                <h6 class="text-white">Shots: `+e.shots.length+`</h6>
+                            </div>
+                        </a>
+                        <button class="btn btn-info mdi mdi-cloud-download export-to-excel only-this" data-target="`+e.name+`" title="Export to Excel" ></button>
+                    </div>`);
+                }
+            }
+        function genVNumbers(str, max, isEnd = true){
+            str = str.toString();
+            return (isEnd?'V':'')+(str.length < max ? genVNumbers("0" + str, max,false) : str);
+            }
+        // console.log("genVNumbers",genVNumbers(1,3))
+        var maxVersionCount = null;
+        
+        
+
+        var stateSaveTagPrefix = 'version_report_input_',
+            stateSaveFilters = {
+                // 'modified_date__range': [
+                //     moment().subtract(2, 'month').startOf('month').format("YYYY-MM-DD")+' 00:00:00.000000',
+                //     moment().endOf('month').format("YYYY-MM-DD")+' 23:59:59.999999'
+                //     ],
+                'version__in':['','']
+            };
+        function setClientOptions(){
+            var thisTag = $('.version-report-input-tag[name="shot__sequence__project__client__id"]'), thisTagName = $(thisTag).attr("name");
+            var savedValue = localStorage.getItem(stateSaveTagPrefix+thisTagName);
+            savedValue = savedValue==null?'':String(savedValue);
+            stateSaveFilters[thisTagName] = savedValue;
+            var oPtions = '<option value="">Select Client</option>';
+            $.ajax({
+                url: '/api/production/clients/',
+                type: 'GET',
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                async: true, //displays data after loading the page
+                processing: false,
+                data: {},
+                success: function (response) {
+                    var sortX = {};
+                    $.each(response,function(x,e){
+                        sortX[e.name] = JSON.parse(JSON.stringify(e));
+                        });
+                    const ordered = Object.keys(sortX).sort().reduce(
+                        (obj, key) => { 
+                            obj[key] = sortX[key]; 
+                            return obj;
+                        }, 
+                        {}
+                        );
+                    $.each(ordered,function(z,e){
+                        oPtions = oPtions+`<option value="`+e.id+`" >`+e.name+`</option>`;
+                        });
+                    $(thisTag).html(oPtions);
+                    $(thisTag).val(savedValue);
+                    },
+                error: function (jqXHR, exception) {
+                    console.log(jqXHR.responseText)
+                    }
+                });
+            }
+        setClientOptions();
+        function setProjectOptions(client=''){
+            var thisTag = $('.version-report-input-tag[name="shot__sequence__project__id"]'), thisTagName = $(thisTag).attr("name");
+            var savedValue = localStorage.getItem(stateSaveTagPrefix+thisTagName);
+            savedValue = savedValue==null?'':String(savedValue);
+            stateSaveFilters[thisTagName] = savedValue;
+            var oPtions = '<option value="">All Projects</option>';
+            if(client.length>0){
+                $.ajax({
+                    url: '/api/production/projects/'+client+'/',
+                    type: 'GET',
+                    dataType: "json",
+                    contentType: 'application/json; charset=utf-8',
+                    async: true, //displays data after loading the page
+                    processing: false,
+                    // data: {status:"IN PROGRESS"},
+                    success: function (response) {
+                        var sortX = {};
+                        $.each(response,function(x,e){
+                            sortX[e.name] = JSON.parse(JSON.stringify(e));
+                            });
+                        const ordered = Object.keys(sortX).sort().reduce(
+                            (obj, key) => { 
+                                obj[key] = sortX[key]; 
+                                return obj;
+                            }, 
+                            {}
+                            );
+                        $('.run-filter').parent().show();
+                        $.each(ordered,function(z,e){
+                            oPtions = oPtions+`<option value="`+e.id+`" >`+e.name+`</option>`;
+                            });
+                        $(thisTag).html(oPtions);
+                        $(thisTag).val(savedValue);
+                        },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR.responseText)
+                        }
+                    });
+                }else{
+                    $(thisTag).html(oPtions);
+                    $(thisTag).val("");
+                    }
+            }
+        setProjectOptions(stateSaveFilters["shot__sequence__project__client__id"]);
+        $(document).on('change','.version-report-input-tag[name="shot__sequence__project__client__id"]',function(e){
+            stateSaveFilters[$(this).attr("name")] = $(this).val();
+            localStorage.setItem(stateSaveTagPrefix+$(this).attr("name"),$(this).val());
+            stateSaveFilters["shot__sequence__project__id"] = '';
+            localStorage.setItem(stateSaveTagPrefix+"shot__sequence__project__id",stateSaveFilters["shot__sequence__project__id"]);
+            setProjectOptions($(this).val());
+            });
+        $(document).on('change','.version-report-input-tag[name="shot__sequence__project__id"]',function(e){
+            stateSaveFilters[$(this).attr("name")] = $(this).val();
+            localStorage.setItem(stateSaveTagPrefix+$(this).attr("name"),$(this).val());
+            });
+        
+        function setDepartmentOptions(){
+            var thisTag = $('.version-report-input-tag[name="shot__task_type__id"]'), thisTagName = $(thisTag).attr("name");
+            var savedValue = localStorage.getItem(stateSaveTagPrefix+thisTagName);
+            savedValue = savedValue==null?'':String(savedValue);
+            stateSaveFilters[thisTagName] = savedValue;
+            var oPtions = '<option value="">All Department</option>';
+            $.each(ofx_page_data.taskTypes,function(z,e){
+                oPtions = oPtions+`<option value="`+e.id+`" >`+e.name+`</option>`;
+                });
+            $(thisTag).html(oPtions);
+            $(thisTag).val(savedValue);
+            }
+        setDepartmentOptions();
+        $(document).on('change','.version-report-input-tag[name="shot__task_type__id"]',function(e){
+            stateSaveFilters[$(this).attr("name")] = $(this).val();
+            localStorage.setItem(stateSaveTagPrefix+$(this).attr("name"),$(this).val());
+            });
+        var lastPassX = false;
+        function chkAndSetNumRange(bootCall=false){
+            var options = '<option value="">Select Version</option>';
+            if(maxVersionCount!=null){
+                for($i=1;$i<=maxVersionCount;$i++){
+                    options = options+`<option value="`+$i+`">`+genVNumbers($i,3)+`</option>`;
+                    }
+                }
+            var thisTag = $('.version-report-input-tag[name="num_type"]'), thisTagName = $(thisTag).attr("name");
+            var savedValue = localStorage.getItem(stateSaveTagPrefix+thisTagName);
+            var num_type = savedValue==null?0:parseInt(savedValue);
+            stateSaveFilters[$(thisTag).attr("name")] = num_type;
+            if(bootCall==false){
+                if(lastPassX != (num_type>0?true:false)){
+                    stateSaveFilters['version__in'] = ['',''];
+                    }
+                }else{
+                    $(thisTag).val(String(num_type));
+                    var savedValue2 = localStorage.getItem(stateSaveTagPrefix+'version__in');
+                    stateSaveFilters['version__in'] = savedValue2==null?stateSaveFilters['version__in']:JSON.parse(savedValue2);
+                    }
+            lastPassX = num_type>0?true:false;
+            $(thisTag).parent().find('.version-report-input-tag[name="version__in"]').remove();
+            if(stateSaveFilters['version__in'][0]==null||num_type<0){
+                stateSaveFilters['version__in'][0] = '';
+                }
+            if(stateSaveFilters['version__in'][1]==null||num_type<0){
+                stateSaveFilters['version__in'][1] = '';
+                }
+            localStorage.setItem(stateSaveTagPrefix+'version__in',JSON.stringify(stateSaveFilters['version__in']));
+            if(num_type>=0){
+                $(thisTag).parent().append(`<select style="text-align: left; height: 33px; padding: 0px 10px;" name="version__in" data-index="0" class="btn btn-outline-info version-report-input-tag" >`+options+`</select>`);
+                $('.version-report-input-tag[name="version__in"][data-index="0"]').val(stateSaveFilters['version__in'][0]);
+                }
+            if(num_type==0){
+                $(thisTag).parent().append(`<select style="text-align: left; height: 33px; padding: 0px 10px;" name="version__in" data-index="1" class="btn btn-outline-info version-report-input-tag" >`+options+`</select>`);
+                $('.version-report-input-tag[name="version__in"][data-index="1"]').val(stateSaveFilters['version__in'][1]);
+                }
+            }
+        // chkAndSetNumRange(true);
+        $(document).on('change','.version-report-input-tag[name="num_type"]',function(e){
+            stateSaveFilters[$(this).attr("name")] = $(this).val();
+            localStorage.setItem(stateSaveTagPrefix+$(this).attr("name"),$(this).val());
+            chkAndSetNumRange(false);
+            });
+        // var saved2 = localStorage.getItem(stateSaveTagPrefix+'modified_date__range');
+        // stateSaveFilters['modified_date__range'] = saved2==null?stateSaveFilters['modified_date__range']:JSON.parse(saved2);
+        // localStorage.setItem(stateSaveTagPrefix+'modified_date__range',JSON.stringify(stateSaveFilters['modified_date__range']));
+        $(document).on('click','.daterange.notset',function(e){
+            $(this).removeClass('notset');
+            $(this).daterangepicker({
+                // startDate: moment(stateSaveFilters['modified_date__range'][0]).format("DD/MM/YYYY"),
+                // endDate: moment(stateSaveFilters['modified_date__range'][1]).format("DD/MM/YYYY"),
+                startDate: moment().format("DD-MM-YYYY"),
+                endDate: moment().format("DD-MM-YYYY"),
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                },
+                locale: {
+                    format: 'DD/MM/YYYY'
+                    },
+                autoApply: false
+                }, function (start, end, label) {
+                    stateSaveFilters['modified_date__range'] = [];
+                    stateSaveFilters['modified_date__range'][0] = start.format("YYYY-MM-DD")+' 00:00:00.000000';
+                    stateSaveFilters['modified_date__range'][1] = end.format("YYYY-MM-DD")+' 23:59:59.999999';
+                    // localStorage.setItem(stateSaveTagPrefix+'modified_date__range',JSON.stringify(stateSaveFilters['modified_date__range']));
+                    });
+                $(this).click();
+                });
+        
+        $(document).on('keyup change','.version-report-input-tag[name="version__in"]',function(e){
+            var name = $(this).attr("name");
+            $(this).val($(this).val().replace(/\D/g, ''));
+            stateSaveFilters['version__in'][parseInt($(this).attr('data-index'))] = $(this).val();
+            localStorage.setItem(stateSaveTagPrefix+name,JSON.stringify(stateSaveFilters['version__in']));
+            });
+        $.ajax({
+            url: '/api/v2/reports/versionindexcount/',
+            type: 'GET',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            async: true, //displays data after loading the page
+            processing: false,
+            data: {},
+            success: function (response) {
+                if(response.count>0){
+                    maxVersionCount = response.count;
+                    }
+                chkAndSetNumRange(true);
+                },
+            error: function (jqXHR, exception) {
+                console.log(jqXHR.responseText)
+                }
+            });
+        var pageDataX = {};
+        var lastqData = null;
+        function getVersions(qData={}){
+            lastqData = JSON.parse(JSON.stringify(qData));
+            $.ajax({
+                url: '/api/v2/reports/versionreports/',
+                type: 'POST',
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                async: true, //displays data after loading the page
+                processing: false,
+                data: JSON.stringify(qData),
+                beforeSend: function(request) {
+                    var $crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+                    request.setRequestHeader("X-CSRFToken",$crf_token);
+                    request.setRequestHeader("required", JSON.stringify([
+                        'id',
+                        'version',
+                        'shot__id',
+                        'shot__name',
+                        'shot__sequence__id',
+                        'shot__sequence__name',
+                        'shot__sequence__project__id',
+                        'shot__sequence__project__name',
+                        'shot__task_type__id',
+                        'shot__task_type__name',
+                        'shot__artist__id',
+                        'shot__artist__fullName',
+                        'shot__artists__id',
+                        'shot__artists__fullName',
+                        'shot__supervisor__id',
+                        'shot__supervisor__fullName',
+                        'shot__team_lead__id',
+                        'shot__team_lead__fullName',
+                        'shot__hod__id',
+                        'shot__hod__fullName',
+                        'shot__location__id',
+                        'shot__location__name',
+                        'shot__version',
+                        'shot__bid_days',
+                        'shot__package_id',
+                        'modified_date'
+                        ]));
+                    },
+                success: function (response) {
+                    cVTarget = null;
+                    addReportVersion(null,true);
+                    pageDataX = {};
+                    $.each(response,function(x,e){
+                        if(typeof pageDataX[e.version] == "undefined"){
+                            pageDataX[e.version] = {
+                                name: e.version,
+                                shots: []
+                                };
+                            }
+                        pageDataX[e.version].shots.push(JSON.parse(JSON.stringify(e)));
+                        });
+                    const ordered = Object.keys(pageDataX).sort().reduce(
+                        (obj, key) => { 
+                            obj[key] = pageDataX[key]; 
+                            return obj;
+                        }, 
+                        {}
+                        );
+                    $.each(ordered,function(x,e){
+                        addReportVersion(e);
+                        });
+                    // console.log(pageDataX);
+                    },
+                error: function (jqXHR, exception) {
+                    console.log(jqXHR.responseText)
+                    }
+                });
+            }
+        $(document).on('click','.run-filter',function(e){
+            var qData = {shot__isSubShot:false};
+            $.each(stateSaveFilters,function(k,v){
+                if(['num_type','modified_date__range','version__in'].indexOf(k)!=-1){
+                    if(k=='modified_date__range'){
+                        qData[k] = v.join('|');
+                        }else if(k=='version__in'){
+                            /*
+                            stateSaveFilters.num_type is
+                            0: Range
+                            1: Equal to
+                            2: Greater than
+                            3: Greater than or Equal to
+                            4: Less than
+                            5: Less than or Equal to
+                            */
+                            v[0] = parseInt(v[0]);
+                            v[1] = parseInt(v[1]);
+                            if((stateSaveFilters.num_type==0&&v[0]>0&&v[1]>0)||(stateSaveFilters.num_type!=0&&v[0]>0)){
+                                v[0] = v[0] > maxVersionCount?maxVersionCount:v[0]
+                                if(stateSaveFilters.num_type==0){
+                                    v[1] = v[1] > maxVersionCount?maxVersionCount:v[1]
+                                    }
+                                var rx = [];
+                                switch(parseInt(stateSaveFilters.num_type)) {
+                                    case 1:
+                                        qData[k] = genVNumbers(v[0],3);
+                                        // code block
+                                        break;
+                                    case 2:
+                                        for($i=v[0]+1;$i<=maxVersionCount;$i++){
+                                            rx.push(genVNumbers($i,3));
+                                            } 
+                                        qData[k] = rx.join("|");
+                                        // code block
+                                        break;
+                                    case 3:
+                                        for($i=v[0];$i<=maxVersionCount;$i++){
+                                            rx.push(genVNumbers($i,3));
+                                            } 
+                                        qData[k] = rx.join("|");
+                                        // code block
+                                        break;
+                                    case 4:
+                                        for($i=v[0]-1;$i>0;$i--){
+                                            rx.push(genVNumbers($i,3));
+                                            } 
+                                        qData[k] = rx.join("|");
+                                        // code block
+                                        break;
+                                    case 5:
+                                        for($i=v[0];$i>0;$i--){
+                                            rx.push(genVNumbers($i,3));
+                                            } 
+                                        qData[k] = rx.join("|");
+                                        // code block
+                                        break;
+                                    default:
+                                        for($i=v[0];$i<=v[1];$i++){
+                                            rx.push(genVNumbers($i,3));
+                                            } 
+                                        qData[k] = rx.join("|");
+                                        // code block
+                                    }
+                                }
+                            }
+                    }else if(v.length>0){
+                        qData[k] = v;
+                        }
+                });
+            if(typeof qData.shot__sequence__project__client__id != "undefined" && qData.shot__sequence__project__client__id.length>0){
+                if(typeof qData.modified_date__range == 'undefined'){
+                    Swal.fire({
+                        title: 'Are you sure!',
+                        html: "Would you like to get all dates versions?",
+                        type: 'info',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#c7c7c7',
+                        confirmButtonText: 'Yes, Get All',
+                        cancelButtonText: "No, I'll Select Date"
+                        }).then((result) => {
+                            if(result.value){
+                                getVersions(qData);
+                                }
+                            });
+                    }else{
+                        getVersions(qData);
+                        }
+                }
+            });
         function header_vis(x) {
             x.classList.toggle("ti-angle-down");
             var s = document.getElementById("header_filter");
             if (s.style.display === "none") {
                 s.style.display = "block";
-            } else {
-                s.style.display = "none";
+                } else {
+                    s.style.display = "none";
+                    }
             }
-        }
-
-        function client_vis(x) {
-            x.classList.toggle("ti-angle-down");
-            var s = document.getElementById("client_filter");
-            if (s.style.display === "none") {
-                s.style.display = "block";
-            } else {
-                s.style.display = "none";
-            }
-        }
-
         function search_column() {
             var input = document.getElementById("search_header");
             var filter = input.value.toLowerCase();
             var nodes = document.getElementsByClassName('custom-checkbox');
-
             for (i = 0; i < nodes.length; i++) {
                 if (nodes[i].innerText.toLowerCase().includes(filter)) {
                     nodes[i].style.display = "block";
-                } else {
-                    nodes[i].style.display = "none";
+                    } else {
+                        nodes[i].style.display = "none";
+                        }
                 }
             }
-        }
-
-        let client_id = 0;
-        let project_id = 0;
-        let status_id = 0
-        let location_id = 0
-        let locality_id = 0
-        let task_type_id = 0
-
-        //  Load Shots Information
-        status_list = "YTA|ATL|YTS|STQ|WIP|IRT|QIP|CRT|IAP|LAP|LRT|HLD|OMT"
-
-        var shotId_arr = [];
-        var table = ""
-        $(document).ready(function () {
-            $(".custom_preloader").hide()
-            table = $('#versions_table').DataTable({
-                columnDefs: [
-                    {
-                        searchPanes: {
-                            show: false
-                        },
-                        targets: [0]
+        $(document).on('click', 'input.toggle-vis', function(e){
+            // Get the column API object
+            var column = table.column($(this).attr('data-column'));
+            // Toggle the visibility
+            column.visible(!column.visible());
+            });
+        var tableParent = null, tableFilter = null, table = null;
+        function clearTable(){
+            $('.version-item').each(function(e){
+                $(this).removeClass('col-md-3 col-md-6 col-md-2').addClass('col-md-2');
+                });
+            $(reportsTab).parent().removeClass('col-md-3 col-md-6 col-md-12').addClass('col-md-12');
+            $(reportsTableTab).empty();
+            $(reportsTableTab).attr('style','display:none;');
+            $(reportsTableTab).removeClass('col-md-3 col-md-6 col-md-9').addClass('col-md-6');
+            $(reportsTableTab).html(`<div class="row">
+                <div class="col-md-12" id="shots_list_view">
+                    <div class="card table-x-viewer"><table id="shots_table" class="table display no-wrap" style="width:100%"></table></div>
+                </div>
+                <div class="col-md-4 card" id="filter_div" style="display: none; height: min-content; overflow-y: auto;margin: 0px;">
+                    <h6><i onclick="header_vis(this)" class="ti-angle-right"></i> Header Visibility</h6>
+                    <div class="card" id="header_filter" style="display: none; height:200px; overflow-y: scroll; border-bottom: 1px solid #494848;border-radius: 0px">
+                        <div class="card-body">
+                            <input type="text" class="form-control column_vis" id="search_header" onkeyup="search_column()" placeholder="Search for...">
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="dtsp-verticalContainer">
+                                <div class="dtsp-verticalPanes">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `);
+            tableParent = $('.table-x-viewer');
+            tableFilter = $('.dtsp-verticalPanes');
+            table = null;
+            }
+        var cVTarget = null;
+        
+        var tableColms = [];
+        tableColms.push({
+            cell: {
+                name: "shot",
+                title: "SHOT CODE", data: 'shot.name',
+                render: function (data, type, row, meta) {
+                    var rowX = row.shot;
+                    return (`<a style="color:#fff" class="viwe-shot-tab" href="#" data-href="/production/shots/view/?shot_id=`+rowX.id+`" >` + data + `</a>`);
                     },
-                    {
-                        searchPanes: {
-                            show: false
-                        },
-                        targets: [3]
+                },
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "project", title: "PROJECT", data: 'shot.sequence.project.name'},
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "seq", title: "SEQUENCE", data: 'shot.sequence.name'},
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "version", title: "VERSION", data: 'shot.version',
+                render: function (data, type, row, meta) {
+                    return (cVTarget!=data?`<div class="btn-group"><button type="button" class="btn" style="color:white;padding: 3px 16px;font-size:1em;background-color:#E3450B;">`+data+`</button></div>`:`<span style="width: 100%;display: block;margin: auto;text-align: center;">`+data+`</span>`);
+                    },        
+                },
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "task_type", title: "TASK TYPE", data: 'shot.task_type.name'},
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "modified_date", title: "SUBMISSION DATE", data: null,
+                    render: function (data, type, row, meta) {
+                        var rowX = row.shot;
+                        return data==null?'N/A':moment(data).format("YYYY-MM-DD");
+                        }
                     },
-                    {
-                        searchPanes: {
-                            show: false
-                        },
-                        targets: [4]
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {
+                    name: "captain",
+                    title: "CAPTAIN", data: null,
+                    render: function (data, type, row, meta) {
+                        var rowX = row.shot;
+                        var iti = [];
+                        $.each(rowX.artists,function(_z,_x){ iti.push(_x.fullName); });
+                        return (`<img src="/media/profiles/photo/default.png" alt="`+(rowX.artist!=null?rowX.artist.fullName:'N/A')+`" title="`+(rowX.artist!=null?rowX.artist.fullName:'N/A')+`" onerror="this.src='/media/profiles/photo/default.png'" class="profile-pic" style="width: 20%;"><span title="`+(iti.length>0?iti.join('\n'):'N/A')+`">`+(rowX.artist!=null?rowX.artist.fullName:'N/A')+`</span>`);
                     },
-                    {
-                        searchPanes: {
-                            show: false
-                        },
-                        targets: [8]
+                },
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {
+                name: "actual_bids",
+                title: "ACTUAL BIDS",
+                data: 'shot.bid_days',
+                render: function (data, type, row, meta) {
+                    return (data==null?"N/A":data.toFixed(2));
+                    }
+                },
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            visibility: true,
+            class:"text-center",
+            });
+        tableColms.push({
+            cell: {name: "supervisor", title: "SUPERVISOR", data: 'shot.supervisor',
+                    render: function (data, type, row, meta) {
+                        return data!=null?data.fullName:'N/A';
+                        }
                     },
-                    {
-                        searchPanes: {
-                            show: false
-                        },
-                        targets: [9]
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "team_lead", title: "TEAM LEAD", data: 'shot.team_lead',
+                    render: function (data, type, row, meta) {
+                        return data!=null?data.fullName:'N/A';
+                        }
                     },
-                    {
-                        searchPanes: {
-                            show: false
-                        },
-                        targets: [10]
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            }); 
+        tableColms.push({
+            cell: {name: "hod", title: "HOD", data: 'shot.hod',
+                    render: function (data, type, row, meta) {
+                        return data!=null?data.fullName:'N/A';
+                        }
                     },
-                    {
-                        searchPanes: {
-                            show: false
-                        },
-                        targets: [12]
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            }); 
+        tableColms.push({
+            cell: {name: "artist", title: "ARTIST", data: 'shot.artists',
+                    render: function (data, type, row, meta) {
+                        var rowX = row.shot;
+                        var iti = [];
+                        $.each(rowX.artists,function(_z,_x){ iti.push(_x.fullName); });
+                        return iti.length>0?iti.join(', '):'N/A';
+                        }
                     },
-                    {
-                        searchPanes: {
-                            show: false
-                        },
-                        targets: [13]
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "package_id", title: "PACKAGE ID", data: 'shot.package_id',
+                    render: function (data, type, row, meta) {
+                        return data!=null?data:'N/A';
+                        }
                     },
-                    {
-                        searchPanes: {
-                            show: false
-                        },
-                        targets: [14]
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "location", title: "LOCATION", data: null,
+                    render: function (data, type, row, meta) {
+                        var rowX = row.shot;
+                        return rowX.location==null?'GLOBAL':(typeof rowX.location.name != "undefined"? rowX.location.name:rowX.location);
+                        }
                     },
-                    {
-                        searchPanes: {
-                            show: false
-                        },
-                        targets: [15]
-                    },
-                ],
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            });
+        $(document).on("mouseover",'td > a.viwe-shot-tab[href="#"]',function(e){
+            $(this).attr("href",$(this).attr("data-href"));
+            });
+        $(document).on("click",'.column_filter',function(e){
+            var x = document.getElementById("filter_div");
+            if (x.style.display === "none") {
+                $('.version-item').each(function(e){
+                    $(this).removeClass('col-md-3 col-md-6 col-md-2').addClass('col-md-6');
+                    });
+                $(reportsTab).parent().removeClass('col-md-3 col-md-6 col-md-12').addClass('col-md-3');
+                $(reportsTableTab).removeClass('col-md-3 col-md-6 col-md-9').addClass('col-md-9');
+                $(reportsTableTab).find('#shots_list_view').removeClass('col-md-12 col-md-8').addClass('col-md-8');
+                x.style.display = "block";
+                } else {
+                    x.style.display = "none";
+                    $('.version-item').each(function(e){
+                        $(this).removeClass('col-md-3 col-md-6 col-md-2').addClass('col-md-3');
+                        });
+                    $(reportsTab).parent().removeClass('col-md-3 col-md-6 col-md-12').addClass('col-md-6');
+                    $(reportsTableTab).removeClass('col-md-3 col-md-6 col-md-9').addClass('col-md-6');
+                    $(reportsTableTab).find('#shots_list_view').removeClass('col-md-12 col-md-8').addClass('col-md-12');
+                    }
+            });
+        var tableX = null;
+        function setTable(_tData=[]){
+            $.each(tableColms,function(z,e){
+                var parent = $("#header_filter > .card-body");
+                if(e.headerVisibility){
+                    $(parent).append(`<div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input toggle-vis" id="`+e.cell.name+`" data-column="`+z+`" value="check" checked="">
+                            <label class="custom-control-label" for="`+e.cell.name+`">`+e.cell.title+`</label>
+                        </div>`);
+                    }
+                });
+            artistId_arr = [];
+            artistInfo_arr = {};
+            tableX = $(`<table id="shots_table_t3350" class="table display no-wrap" style="width:100%"></table>`);
+            $(tableParent).html('');
+            $(tableFilter).html('');
+            $(tableParent).append($('<div class="reload-table-row"></div>'));
+            $(tableParent).append($(tableX));
+            var cols = [], searchPanes = [], _addClass = [];
+            $.each(tableColms,function(z,e){
+                cols.push(e.cell);
+                if(!e.isFilter){
+                    searchPanes.push(parseInt(z));
+                    }
+                if(e.class.length>0){
+                    _addClass.push({className: e.class, "targets": [parseInt(z)]});
+                    }
+                });
+            console.log(tableColms);
+            console.log("searchPanes",searchPanes);
+            var columnDefs = [{
                 searchPanes: {
+                    show: false
+                    },
+                targets: searchPanes
+                    }];
+            $.each(_addClass,function(z,e){
+                columnDefs.push(e);
+                });
+            table = $(tableX).DataTable({
+                // initComplete: function (settings, json) {  
+                //     $("#DataTableID").wrap("<div style='overflow:auto; width:100%;position:relative;'></div>");            
+                //     },
+                aaData: JSON.parse(JSON.stringify(_tData)),
+                columnDefs: columnDefs,
+                searchPanes: {
+                    initCollapsed: true,
                     cascadePanes: true,
-                    layout: 'columns-1'
-                },
-
+                    layout: 'columns-1',
+                    controls: false
+                    },
                 dom: '<"dtsp-dataTable"frtip>',
-                responsive: false,
-                colReorder: true,
                 "searching": true,
-                "ajax": {
-                    "processing": true,
-                    "url": "/api/production/production_sheet/?status=" + status_list + "/",
-                    "type": "GET",
-                    "dataSrc": ""
-                },
                 'language': {
+                    'infoEmpty': "No records available - Please Select Department and Date Range to view data",
                     'loadingRecords': '&nbsp;',
                     'processing': 'Loading...'
-                },
-                columns: [
-                    {
-                        data: "id",
-                        render: function (data, type, row, meta) {
-                            return (
-                                '<input type="checkbox" name="shotCheckbox" class="shot_checkbox"  value="' +
-                                data +
-                                '">'
-                            );
-                        },
                     },
-                    {title: "CLIENT", data: 'sequence.project.client.name'},
-                    {title: "PROJECT", data: 'sequence.project.name'},
-                    {title: "SEQUENCE", data: 'sequence.name'},
-                    {title: "SHOT CODE", data: 'name'},
-                    {title: "TASK TYPE", data: 'task_type'},
-                    {title: "TYPE", data: 'type'},
-                    {title: "COMPLEXITY", data: 'complexity'},
-                    {
-                        title: "STATUS", data: 'status',
-                        render: function (data, type, row, meta) {
-                            return (
-                                '<span class="badge" style="color:white;padding:3px 10px;font-size:1em; background-color:' + data.color + '">' + data.code + '</span>'
-                            );
-                        },
-                    },
-                    {title: "VERSION", data: 'version'},
-                    {title: "SUBMITTED DATE",
-                    render: function (data, type, row, meta) {
-                            return moment(data).format("DD-MM-YYYY");
-                        },
-                    },
-                    {
-                        title: "PROGRESS", data: 'progress',
-                        render: function (data, type, row, meta) {
-                            return (
-                                `<div class="progress" style="height: 15px;">
-                        <div class="progress-bar" style="width:` + data + `%;background-color:red;color: white;font-weight: bold" role="progressbar">` + data + `%</div>
-                    </div>`
-                            )
-                        }
-                    },
-                    {title: "ACTUAL BIDS", data: 'bid_days'},
-                    {
-                        title: "CONSUMED BIDS", data: 'total_spent',
-                        render: function (data, type, row, meta) {
-                            return data.toFixed(2)
-                        }
-                    },
-                    {
-                        title: "ETA", data: 'eta',
-                        render: function (data, type, row, meta) {
-                            return moment(data).format("DD-MM-YYYY");
-                        }
-                    },
-                    {title: "TEAM LEAD", data: 'team_lead'},
-                    {title: "ARTIST", data: 'artist'},
-                    {title: "LOCATION", data: 'location'},
-                ],
-                select: true,
+                columns: cols,
+                select: false,
                 order: [[1, 'asc']],
                 scrollResize: true,
                 scrollX: true,
                 scrollCollapse: true,
-                buttons: [],
+                buttons: ["pageLength"],
+                dom: 'Bfrtip',
+                lengthMenu:[
+                    [10,25,50,100],
+                    ['10','25','50','100'],
+                    ],
                 "paging": true,
                 "pageLength": 25,
                 "bSortClasses": false,
-                stateSave: false,
+                stateSave: true,
                 deferLoading: 10,
-            });
-
-            table.searchPanes()
-            $("div.dtsp-verticalPanes").append(table.searchPanes.container());
-            {#$(".dtsp-panesContainer").show()#}
-            $(".assign_leads").click(function (e) {
-                shotId_arr.length = 0
-                $("input:checkbox[class=shot_checkbox]:checked").each(function () {
-                    shotId_arr.push($(this).val());
                 });
-
-                if (shotId_arr.length > 0) {
-                    $('#select_lead_modal').modal('show');
-                } else {
-                    alert("No Shots are Selected")
-                }
-            });
-
-            $('input.toggle-vis').on('click', function (e) {
-                {#e.preventDefault();#}
-
-                // Get the column API object
-                var column = table.column($(this).attr('data-column'));
-
-                // Toggle the visibility
-                column.visible(!column.visible());
-            });
-
-            $('#shot_client_select').on('change', function () {
-                const client = $('#shot_client_select option:selected').text().trim();
-                client_id = $('#shot_client_select option:selected').val();
-                if (client_id != 0) {
-                    table.columns(1).search(client).draw();
-                    const all_projects_json = $.ajax({
-                        type: "GET",
-                        url: "/api/production/projects/" + client_id + "/",
-                        dataType: "application/json",
-                        async: false,
-                        error: function (xhr, status, err) {
-                        },
-                    }).responseText;
-                    const all_projects = JSON.parse(all_projects_json);
-                    $('#shot_project_select').empty()
-                    $('#shot_project_select').append(`<option value="0">
-                                               Project
-                                          </option>`);
-                    all_projects.forEach(function (project) {
-                        optionText = project['name'];
-                        optionValue = project['id'];
-                        $('#shot_project_select').append(`<option value="${optionValue}">
-                                               ${optionText}
-                                          </option>`);
-                    })
-                } else {
-                    table.columns(1).search(client).draw();
-                    $('#shot_project_select').empty()
-                    $('#shot_project_select').append(`<option value="0">
-                                               Project
-                                          </option>`);
-                    {% for project in projects %}
-                        $('#shot_project_select').append(`<option value='{{ project.name }}'>
-                                               {{ project.name }}
-                                          </option>`);
-                    {% endfor %}
-                }
-            });
-            $('#shot_project_select').on('change', function () {
-                const project = $("#shot_project_select :selected").text().trim();
-                project_id = $('#shot_project_select option:selected').val();
-                table.columns(2).search(project).draw();
-            });
-            $('#shot_taskType_select').on('change', function () {
-                let taskType = $('#shot_taskType_select :selected').text().trim()
-                task_type_id = $('#shot_taskType_select option:selected').val()
-                if (task_type_id == 0) {
-                    taskType = ""
-                }
-                table.columns(5).search(taskType).draw();
-            });
-            $('#shot_status_select').on('change', function () {
-                let status = $('#shot_status_select :selected').text().trim();
-                status_id = $('#shot_status_select option:selected').val();
-                if (status_id == 0) {
-                    status = ""
-                }
-                table.columns(8).search(status).draw();
-            });
-            $('#shot_location_select').on('change', function () {
-                let location = $('#shot_location_select :selected').text().trim();
-                location_id = $('#shot_location_select option:selected').val();
-                if (location_id == 0) {
-                    location = ""
-                }
-                table.columns(19).search(location).draw();
-            });
-            $('#shot_locality_select').on('change', function () {
-                let locality = $("#shot_locality_select :selected").text().trim();
-                locality_id = $("#shot_locality_select option:selected").val();
-                if (locality_id != 0) {
-                    table.columns(20).search(locality).draw();
-                    const all_clients_json = $.ajax({
-                        type: "GET",
-                        url: "/api/production/clients/?locality=" + locality,
-                        dataType: "application/json",
-                        async: false,
-                        error: function (xhr, status, err) {
-                        },
-                    }).responseText;
-                    const all_clients = JSON.parse(all_clients_json);
-                    $('#shot_client_select').empty()
-                    $('#shot_client_select').append(`<option value="0">
-                                               Client
-                                          </option>`);
-                    all_clients.forEach(function (client) {
-                        optionText = client['name'];
-                        optionValue = client['id'];
-                        $('#shot_client_select').append(`<option value="${optionValue}">
-                                               ${optionText}
-                                          </option>`);
-                    })
-                } else {
-                    locality = ""
-                    table.columns(20).search(locality).draw();
-                    $('#shot_client_select').empty()
-                    $('#shot_client_select').append(`<option value="0">
-                                               Client
-                                          </option>`);
-                    {% for client in clients %}
-                        $('#shot_client_select').append(`<option value='{{ client.name }}'>
-                                               {{ client.name }}
-                                          </option>`);
-                    {% endfor %}
-                }
-
-            });
-        });
-
-        function assign_lead() {
-            $(".custom_preloader").show()
-            var post_count = 0;
-            for (i = 0; i < shotId_arr.length; i++) {
-                shotData = {
-                    'shot': shotId_arr[i],
-                    'lead': $('#shot_lead_select option:selected').val(),
-                    'status': 11,
-                    'assigned_by': {{ user.profile.employee.id }}
-                }
-                $.post("/api/production/shot/assignments/", shotData,
-                    function (data, status) {
-                        shot_status = {
-                            'status': "ATL"
-                        }
-                        $.ajax({
-                            url: "/api/production/shots/" + data['shot'] + "/",
-                            type: 'PUT',
-                            data: shot_status,
-                            dataType: 'json',
-                            success: function (result) {
-                                ++post_count;
-                                if (post_count == shotId_arr.length) {
-                                    table.ajax.reload(null, false)
-                                    $(".custom_preloader").hide()
-                                    $.toast({
-                                        heading: 'Success',
-                                        text: 'Assigned to' + $('#shot_lead_select option:selected').text() + '.',
-                                        position: 'top-right',
-                                        loaderBg: '#49ffbf',
-                                        icon: 'success',
-                                        hideAfter: 3000,
-                                        stack: 6
-                                    });
-                                }
-                            }
-                        });
+            table.searchPanes();
+            $.each(tableColms,function(z,e){
+                if(!e.visibility){
+                    var column = table.column(z);
+                    column.visible(0);
                     }
-                )
+                });
+            $(tableFilter).append(table.searchPanes.container());
+            $(tableParent).find('.dt-buttons').prepend(`<button class="column_filter dt-button" title="Filters" data-toggle="button" aria-pressed="false"><i class="mdi mdi-filter"></i> Filters</button>`);
+            $.each(tableColms,function(z,e){
+                var column = table.column(z);
+                $('input.toggle-vis[data-column="'+z+'"]').attr('checked',column.visible());
+                });
+            setTimeout(function () {
+                table.columns.adjust().draw();
+                }, 1);
             }
-            $('#select_lead_modal').modal('hide');
-
-        }
-
-        function close_assign_modal() {
-            $('#select_lead_modal').modal('hide');
-        }
-
-        function export_to_excel() {
-            window.location = "/production/export_ver_report/?client=" + client_id + "&project=" + project_id + "&task_type=" + task_type_id
-        }
+        $(document).on('click','.view-shot-version',function(e){
+            $('.view-shot-version').each(function(){
+                $(this).removeClass('active');
+                });
+            clearTable();
+            if(cVTarget != $(this).attr('data-target')){
+                $(this).addClass('active');
+                cVTarget = $(this).attr('data-target');
+                setTable(JSON.parse(JSON.stringify(pageDataX[cVTarget].shots)));
+                $(reportsTab).parent().removeClass('col-md-3 col-md-6 col-md-12').addClass('col-md-6');
+                $(reportsTableTab).attr('style','');
+                $(reportsTableTab).removeClass('col-md-3 col-md-6 col-md-9').addClass('col-md-6');
+                $('.version-item').each(function(e){
+                    $(this).removeClass('col-md-3 col-md-6 col-md-2').addClass('col-md-3');
+                    });
+                }else{
+                    cVTarget = null;
+                    }
+            return false;
+            });
+        $(document).on('click','.export-to-excel',function(e){
+            var vers = $(this).hasClass('only-this')?$(this).attr('data-target'):null;
+            if(lastqData!=null){
+                var exportQ = [];
+                $.each(lastqData,function(x,e){
+                    exportQ.push(`<input name="`+x+`" value="`+((x=='version__in'&&vers!=null)?vers:e)+`"/>`);
+                    });
+                if(typeof lastqData['version__in'] == "undefined"&&vers!=null){
+                    exportQ.push(`<input name="version__in" value="`+vers+`"/>`);
+                    }
+                if(vers!=null){
+                    exportQ.push(`<input name="onlyOne" value="true"/>`);
+                    }
+                var from = $(`<form action="/production/export/versionreport/" method="POST" target="_blank" style="display:none;">
+                    {% csrf_token %}
+                    `+exportQ.join('')+`
+                    </form>`);
+                $('body').append(from);
+                $(from).submit();
+                $(from).remove();
+                }else{
+                    alert("Invalid export request")
+                    } 
+            });
     </script>
 {% endblock page_scripts %}

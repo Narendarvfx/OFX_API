@@ -1,0 +1,1205 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block bread_crumb %}
+
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/DataTables-1.12.1/css/jquery.dataTables.min.css' %}"
+          type="text/css"/>
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/Responsive-2.3.0/css/responsive.dataTables.min.css' %}"
+          type="text/css"/>
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/Responsive-2.3.0/css/responsive.bootstrap5.min.css' %}"
+          type="text/css"/>
+    <link rel='stylesheet' href="{% static 'third_party/DataTables/Buttons-2.2.3/css/buttons.dataTables.min.css' %}"
+          type="text/css"/>
+    <link rel='stylesheet' href="{% static 'template/assets/plugins/multiselect/css/multi-select.css' %}"
+          type="text/css"/>
+    <link rel="stylesheet"
+          href="{% static 'third_party/DataTables/custom_css/datables_searchpane.css' %}" type="text/css"/>
+    <link rel="stylesheet"
+          href="{% static 'third_party/DataTables/Select-1.4.0/css/select.dataTables.min.css' %}" type="text/css"/>
+    <link href="{% static 'third_party/DataTables/DataTables-1.12.1/css/dataTables.jqueryui.css' %}" rel="stylesheet"
+          type="text/css"/>
+    <link href="{% static 'third_party/DataTables/DateTime-1.1.2/css/dataTables.dateTime.min.css' %}" rel="stylesheet"
+          type="text/css"/>
+    <link href="{% static 'main/jquery-ui-themes-1.11.1/themes/south-street/jquery-ui.min.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'main/dataTables.jqueryui.css' %}" rel="stylesheet" type="text/css"/>
+    <link rel='stylesheet' href="{% static 'assets/css/style.css' %}" type="text/css"/>
+    <style>
+        .form-control {
+            color: #fffcfc !important;
+        }
+
+        .container-fluid {
+            padding: 10px !important;
+        }
+
+        .row {
+            margin: 0px !important;
+        }
+
+        /* An ugly trick to use a filter icon */
+        .ui-icon-volume-off.ui-icon-filter {
+            -ms-transform: rotate(270deg);
+            -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+        }
+
+        .card {
+            padding: 10px 1px;
+            background: #272c33 !important;
+            color: white;
+            margin-bottom: 10px !important;
+        }
+
+        #filter_div {
+            padding: 10px;
+            background: #272c33 !important;
+            color: white;
+        }
+
+        .col-lg-12 {
+            padding: 0px !important;
+        }
+
+        .col-lg-10 {
+            padding: 0px !important;
+        }
+
+        .card-body {
+            padding: 0rem !important;
+        }
+        div.dt-button-collection button.dt-button:active:not(.disabled),
+        div.dt-button-collection button.dt-button.active:not(.disabled),
+        div.dt-button-collection div.dt-button:active:not(.disabled),
+        div.dt-button-collection div.dt-button.active:not(.disabled),
+        div.dt-button-collection a.dt-button:active:not(.disabled),
+        div.dt-button-collection a.dt-button.active:not(.disabled){
+            background-color: #272c33!important;
+            background: #272c33!important;
+            }
+
+        table.dataTable tbody tr {
+            background-color: #272c33 !important;
+            font-size: small;
+            font-weight: normal;
+        }
+
+        table.dataTable tr.odd {
+            background-color: #343a40 !important;
+        }
+
+        table.dataTable td {
+            border-bottom: 0.2px !important;
+            border-color: grey !important;
+        }
+
+        table.dataTable thead {
+            color: #f6f5f5;
+            font-weight: normal;
+            font-size: small;
+        }
+
+        .dataTables_length, .dataTables_info, .dataTables_filter {
+            color: #a2a1a1 !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 2px;
+            background: white !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            color: #fff5f5 !important;
+            background-color: #e5711d !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background-color: rgb(183, 110, 5) !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .ellipsis {
+            color: white;
+        }
+
+        tfoot input {
+            width: 100% !important;
+            padding: 3px !important;
+            box-sizing: border-box !important;
+        }
+
+        table.dataTable tfoot th, table.dataTable tfoot td {
+            padding: 5px;
+            border-top: 0px;
+        }
+
+        .page-titles {
+            padding-bottom: 0px;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            color: #ccc8c8 !important;
+            background-color: inherit;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            color: #dad8d8 !important;
+        }
+
+
+        table.dataTable tbody tr.selected {
+            background-color: #315eb1 !important;
+            color: white !important;
+        }
+
+        label {
+            margin-bottom: 0px !important;
+        }
+
+        .multiselect-container > li > a > label {
+            padding: 4px 20px 3px 20px;
+        }
+
+        table.dataTable tbody th, table.dataTable tbody td {
+            padding: 7px;
+        }
+
+        .column_vis {
+            height: 20px;
+        }
+
+        /* width */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #383f48;
+            border-radius: 5px;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #2965b9;
+            border-radius: 5px;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+
+        div.dtsp-verticalContainer {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-content: flex-start;
+            align-items: flex-start;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes,
+        div.dtsp-verticalContainer div.container {
+            width: 20%;
+            flex-grow: 0;
+            flex-shrink: 0;
+            flex-basis: 0;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes {
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: 26%;
+        }
+
+        div.dtsp-verticalPanes {
+            margin-right: 10px;
+        }
+
+        div.dtsp-title {
+            margin-right: 0px !important;
+            margin-top: 13px !important;
+        }
+
+        input.dtsp-search {
+            min-width: 0px !important;
+            padding-left: 0px !important;
+            margin: 0px !important;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes div.dtsp-searchPanes {
+            flex-direction: column;
+            flex-basis: 0px;
+        }
+
+        div.dtsp-verticalContainer div.dtsp-verticalPanes div.dtsp-searchPanes div.dtsp-searchPane {
+            flex-basis: 0px;
+        }
+
+        div.dtsp-verticalContainer div.container {
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: 80%;
+        }
+
+        div.dtsp-panesContainer {
+            border: 1px solid transparent;
+            border-radius: 6px;
+            padding: 5px;
+        }
+
+        select {
+            -webkit-appearance: none;
+        }
+
+        div.dtsp-narrow {
+            flex-direction: column !important;
+            background-color: #343a40;
+        }
+
+        div.dtsp-panesContainer button.dtsp-clearAll, div.dtsp-panesContainer button.dtsp-collapseAll, div.dtsp-panesContainer button.dtsp-showAll {
+            border: none;
+            background-color: #343a40;
+            padding: 3px;
+            border-radius: 5px;
+        }
+
+        div.dtsp-panesContainer button.dtsp-disabledButton {
+            cursor: default !important;
+            background-color: #343a40;
+            padding: 3px;
+            border-radius: 10px;
+            color: white;
+        }
+
+        div.dtsp-panesContainer div.dataTables_wrapper div.dataTables_scrollBody {
+            background: #343a40 !important;
+            border-bottom: none;
+        }
+
+        /* An ugly trick to use a filter icon */
+        .ui-icon-volume-off.ui-icon-filter {
+            -ms-transform: rotate(270deg);
+            -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+        }
+
+        .modal.right .modal-dialog {
+            position: fixed;
+            margin: auto;
+            width: 700px;
+            height: 100%;
+            -webkit-transform: translate3d(0%, 0, 0);
+            -ms-transform: translate3d(0%, 0, 0);
+            -o-transform: translate3d(0%, 0, 0);
+            transform: translate3d(0%, 0, 0);
+        }
+
+        .modal.right .modal-content {
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .modal.right .modal-body {
+            padding: 15px 15px 15px;
+        }
+
+        .modal.right.fade .modal-dialog {
+            right: 0px;
+            -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+            -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+            -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+            transition: opacity 0.3s linear, right 0.3s ease-out;
+        }
+
+        .modal.right.fade.in .modal-dialog {
+            right: 0;
+        }
+
+        /* ----- MODAL STYLE ----- */
+        .modal-content {
+            border-radius: 0;
+            border: none;
+        }
+
+        .modal-header {
+            border-bottom-color: #EEEEEE;
+            background-color: #e5711d;
+        }
+        input.dtsp-search::placeholder {
+            color: #a4a4a8 !important;
+        }
+        .dtsp-nameColumn .dropdown-toggle::after{
+            display: none;
+            }
+        #shots_table_t3300 tr > td{
+            text-align: center;
+            }
+        #shots_table_t3300 tr > td:nth-child(2),
+        #shots_table_t3300 tr > td:nth-child(3){
+            text-align: left;
+            }
+    </style>
+    <div class="row page-titles">
+        <div class="col-md-6 col-4 float-left">
+            <h3 class="text-themecolor mb-0 mt-2 re-seletct">Hello {{ user.employee.fullName }}</h3>
+        </div>
+        <div class="col-md-6 col-8 text-right pt-1">
+            <div class="btn-group mb-2 mr-2">
+                <input type="date" name="from_date" class="btn btn-outline-info" placeholder="dd/mm/yyyy" value="">
+                <input type="date" name="to_date" class="btn btn-outline-info" placeholder="dd/mm/yyyy" value="">
+                <button type="button" class="btn btn-info run-filter"><i class="mdi mdi-arrow-right"></i></button>
+            </div>
+            <div class="btn-group mb-2 mr-2" role="group" aria-label="Button group with nested dropdown">
+                <button class="column_filter btn btn-warning" title="Filters" data-toggle="button" aria-pressed="true"><i class="mdi mdi-filter" ></i> Filters</button>
+                <button class="btn btn-warning export-to-excel" title="Export to Excel" ><i class="mdi mdi-cloud-download" ></i> Export to EXCEL</button>
+            </div>
+        </div>
+    </div>
+{% endblock bread_crumb %}
+
+{% block content %}
+    <div class="container-fluid row">
+        <div class="col-md-12">
+            <div class="row" id="leadreport" style="margin-right: -15px!important; margin-left: -15px!important;">
+                <!-- Column -->
+                <div class="col-md-3">
+                    <div class="card bg-info ">
+                        <div class="box text-center">
+                            <div class="row ml-0 mr-0">
+                                <div class="col-6" style="border-right: 1px solid #bababa;">
+                                    <h1 class="font-light text-white r-artists" >0</h1>
+                                    <h6 class="text-white">Artists</h6>
+                                </div>
+                                <div class="col-6">
+                                    <h1 class="font-light text-white r-team-ability" >0</h1>
+                                    <h6 class="text-white">Team Ability</h6>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+                <!-- Column -->
+                <div class="col-md-3">
+                    <div class="card bg-primary">
+                        <div class="box text-center">
+                            <h1 class="font-light text-white r-tmd" >0</h1>
+                            <h6 class="text-white">Target Man Days</h6>
+                        </div>
+                    </div>
+                </div>
+                <!-- Column -->
+                <div class="col-md-3">
+                    <div class="card bg-success">
+                        <div class="box text-center">
+                            <h1 class="font-light text-white r-amd" >0</h1>
+                            <h6 class="text-white">Achieved Man Days</h6>
+                        </div>
+                    </div>
+                </div>
+                <!-- Column -->
+                <div class="col-md-3">
+                    <div class="card bg-warning" title="Achieved Man Days - Target Man Days">
+                        <div class="box text-center">
+                            <h1 class="font-light text-white r-dif" >0</h1>
+                            <h6 class="text-white">Difference</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                var qRole = getGetParam({
+                    'role': ofx_page_data.user.role,
+                    })['role'];
+                console.log(qRole);
+            </script>
+            <script src="{% static 'ofx/teamlead-report.js' %}?qxs=erhdsdfwerl"></script>
+            <script>
+                var teamlead_id = getGetParam({
+                    'teamlead_id': ofx_page_data.user.id,
+                    })['teamlead_id'];
+                // console.log(artist_id);
+                var teamleadData = {};
+                if(teamlead_id!=ofx_page_data.user.id){
+                    $.ajax({
+                        url: '/api/hrm/myprofile/' + teamlead_id + '/',
+                        type: 'GET',
+                        dataType: "json",
+                        contentType: 'application/json; charset=utf-8',
+                        async: false,
+                        // data: JSON.stringify(data),
+                        success: function (response) {
+                            $('.page-titles .text-themecolor').html(response.fullName+' Report');
+                            teamleadData = response;
+                            },
+                        error: function (jqXHR, exception) {
+                            console.log(jqXHR.responseText)
+                            }
+                        });
+                    }else{
+                        teamleadData = ofx_page_data.user;
+                        }
+                $('#leadreport').setLeadReport({
+                    emp_id: teamleadData.id,
+                    emp_location: teamleadData.location,
+                    emp_department: teamleadData.department
+                    });
+            </script>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- Shots Table View -->
+        <div class="col-lg-12" id="shots_list_view">
+            <div class="card table-x-viewer">
+                <!-- <button class="column_filter btn btn-warning" title="Filters" data-toggle="button" aria-pressed="true" style="width: max-content; position: absolute; margin: auto; left: 180px; top: 15px; z-index: 1; padding: 5px 12px;"><i class="mdi mdi-filter"></i> Filters</button> -->
+                <table id="shots_table" class="table display no-wrap" style="width:100%">
+
+                </table>
+
+            </div>
+        </div>
+        <div class="col-md-3 col-2 card" id="filter_div"
+             style="display: none; height:1000px; overflow-y: auto;margin: 0px;">
+            <h6><i onclick="header_vis(this)" class="ti-angle-right"></i> Header Visibility</h6>
+            <div class="card" id="header_filter" style="display: none; height:200px; overflow-y: scroll; border-bottom: 1px solid #494848;border-radius: 0px">
+                <div class="card-body">
+                    <input type="text" class="form-control column_vis" id="search_header" onkeyup="search_column()" placeholder="Search for...">
+                    
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label for="min" class="col-4 col-form-label">ETA FROM</label>
+                        <div class="col-8">
+                            <input class="form-control" type="text" id="min" name="min">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="max" class="col-4 col-form-label">ETA TO</label>
+                        <div class="col-8">
+                            <input class="form-control" type="text" id="max" name="max">
+                        </div>
+                    </div>
+                    <div class="dtsp-verticalContainer">
+                        <div class="dtsp-verticalPanes">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block page_scripts %}
+    <!--OFX Core JavaScript -->
+    <script src="{% static 'ofx/core.js' %}"></script>
+    <!-- End Core Javascript -->
+    <script src="{% static 'template/assets/plugins/popper/popper.min.js' %}"></script>
+
+    <script src="{% static 'third_party/DataTables/DataTables-1.12.1/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Responsive-2.3.0/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Responsive-2.3.0/js/responsive.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Buttons-2.2.3/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Buttons-2.2.3/js/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Bootstrap-5-5.1.3/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/custom_js/datatables_searchPane.js' %}"></script>
+    <script src="{% static 'third_party/DataTables/Select-1.4.0/js/dataTables.select.min.js' %}"></script>
+    <!-- <script src="{% static 'template/assets/plugins/moment/moment.js' %}"></script> -->
+    <script src="{% static 'third_party/DataTables/DateTime-1.1.2/js/dataTables.dateTime.min.js' %}"></script>
+
+    <script src="{% static 'main/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'main/jquery.ui-contextmenu.min.js' %}"></script>
+    <script src="{% static 'main/dataTables.colReorder.min.js' %}"></script>
+    <script src="{% static 'main/fnFilterClear.js' %}"></script>
+    {% csrf_token %}
+    <script>
+        // var defaultDays = 30; //Days 
+        // var instelDate = moment().subtract(defaultDays,'d').format("YYYY-MM-DD");
+        // var getKeys = getGetParam({'from_date':instelDate+'T00:00:00.000000','to_date':moment().format("YYYY-MM-DD")+'T23:59:59.999999'});
+        var getKeys = getGetParam({'from_date':moment().startOf('month').format("YYYY-MM-DD")+'T00:00:00.000000','to_date':moment().endOf('month').format("YYYY-MM-DD")+'T23:59:59.999999'});
+        $.each(getKeys,function(x,e){
+            $('input[name="'+x+'"]').attr("value",moment(e).format('YYYY-MM-DD'));
+            });
+        $(document).on('click', '.run-filter',function(e){
+            var DatDef = moment($('input[name="to_date"]').val()+'T23:59:59.999999').diff(moment($('input[name="from_date"]').val()+'T00:00:00.000000'), 'days'),
+                fil = [];
+            var getKeys = getGetParam({'teamlead_id':'NONE'});
+            if(getKeys.teamlead_id!='NONE'){
+                fil.push('teamlead_id='+getKeys.teamlead_id);
+                }
+            if(DatDef<=90){
+                $(this).parent().find('input').each(function(e){
+                    if($(this).val().length>0){
+                        if($(this).attr('name')==='from_date'){
+                            fil.push($(this).attr('name')+'='+$(this).val()+'T00:00:00.000000');
+                            }else if($(this).attr('name')==='to_date'){
+                                fil.push($(this).attr('name')+'='+$(this).val()+'T23:59:59.999999');
+                                }else{
+                                    fil.push($(this).attr('name')+'='+$(this).val());
+                                    }
+                        }
+                    });
+                var lin = fil.join("&");
+                let url = '/production/myreport/'+(fil.length>0?'?':'')+lin;
+                window.location = url;
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Date range more than 90 days not allowed',
+                        });
+                    }
+            });
+        
+        $.fn.dataTable.ext.search.push(
+            function (settings, data, dataIndex) {
+                var min = minDate.val();
+                var max = maxDate.val();
+                var date = new Date(data[ETA_filter_index]);
+
+                if (
+                    (min === null && max === null) ||
+                    (min === null && date <= max) ||
+                    (min <= date && max === null) ||
+                    (min <= date && date <= max)
+                ) {
+                    return true;
+                }
+                return false;
+            }
+        );
+        $(".column_filter").click(function (e) {
+                var x = document.getElementById("filter_div");
+                if (x.style.display === "none") {
+                    $('.col-lg-12').addClass('col-lg-9').removeClass('col-lg-12')
+                    x.style.display = "block";
+                } else {
+                    x.style.display = "none";
+                    $('.col-lg-9').addClass('col-lg-12').removeClass('col-lg-9')
+                }
+            });
+        
+        
+        function header_vis(x) {
+            x.classList.toggle("ti-angle-down");
+            var s = document.getElementById("header_filter");
+            if (s.style.display === "none") {
+                s.style.display = "block";
+            } else {
+                s.style.display = "none";
+            }
+        }
+
+        function search_column() {
+            var input = document.getElementById("search_header");
+            var filter = input.value.toLowerCase();
+            var nodes = document.getElementsByClassName('custom-checkbox');
+
+            for (i = 0; i < nodes.length; i++) {
+                if (nodes[i].innerText.toLowerCase().includes(filter)) {
+                    nodes[i].style.display = "block";
+                } else {
+                    nodes[i].style.display = "none";
+                }
+            }
+        }
+
+        var artistId_arr = [];
+        var artistInfo_arr = {};
+        
+        // Create date inputs
+        minDate = new DateTime($('#min'), {
+            format: 'MMMM Do YYYY'
+        });
+        maxDate = new DateTime($('#max'), {
+            format: 'MMMM Do YYYY'
+        });
+
+        var tableParent = $('.table-x-viewer'),
+            tableFilter = $('.dtsp-verticalPanes'),
+            table = null;
+        function getBgColor(range=100,valX=10){
+            rDx = (100/range)*valX;
+            let lx = ['danger','warning','info','primary','success'], status = parseInt(rDx);
+            return (`<span class="text-`+lx[(status<25 ? 0 : (status<50 ? 1 : (status<75 ? 2 : (status<100 ? 3 : 4))))]+`" >` + parseFloat(valX.toFixed(2)).toFixed(2) + `</span>`)
+            }
+            $('#min, #max').on('change', function () {
+            table.draw();
+            });
+        $(document).on('click', 'input.toggle-vis', function(e){
+            // Get the column API object
+            var column = table.column($(this).attr('data-column'));
+            // Toggle the visibility
+            column.visible(!column.visible());
+            });
+        var tableColms = [];
+        tableColms.push({
+            cell: {
+                    data: "id",
+                    render: function (data, type, row, meta) {
+                        return ('<input type="checkbox" name="shotCheckbox" class="shot_checkbox" value="' +data +'">');
+                    },
+                },
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: false,
+            visibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {
+                name: "client",
+                title: "CLIENT", data: 'sequence.project.client.name',
+                render: function (data, type, row, meta) {
+                    return (`<a style="color:#fff" href="/production/shots/view/?shot_id=`+row.id+`" >` + data + `</a>`);
+                    },
+                },
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "project", title: "PROJECT", data: 'sequence.project.name'},
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "seq", title: "SEQUENCE", data: 'sequence.name'},
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {
+                name: "shot",
+                title: "SHOT CODE", data: 'name',
+                render: function (data, type, row, meta) {
+                    return (`<span data-data='`+JSON.stringify(row)+`' data-row="`+row.id+`" >` + data + `</span>`);
+                    },
+                },
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "task_type", title: "TASK TYPE", data: 'task_type'},
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "type", title: "TYPE", data: 'type'},
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "complexity", title: "COMPLEXITY", data: 'complexity'},
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {
+                    name: "captain",
+                    title: "CAPTAIN", data: null,
+                    render: function (data, type, row, meta) {
+                        var iti = [];
+                        $.each(row.artists,function(_z,_x){ iti.push(_x.fullName); });
+                        return (`<span title="`+(iti.length>0?iti.join('\n'):'N/A')+`">`+(row.artist!=null?row.artist:'N/A')+`</span>`);
+                    },
+                },
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {
+                    name: "status",
+                    title: "STATUS", data: 'status',
+                    render: function (data, type, row, meta) {
+                        var rowX = row;
+                        var isVFXArtist = (ofx_page_data.user.role!=null&&ofx_make_key(ofx_page_data.user.role)==ofx_make_key("VFX ARTIST"));
+                        if(userPermissions.indexOf("can_update_shot_status")!=-1&&!isVFXArtist){
+                            return ofx_shot_status_dropdown(ofx_page_data.user.department,ofx_page_data.user.role,data.code,data.color,{shot_id:rowX.id});
+                            }else{
+                                return `<div class="btn-group"><button type="button" class="btn " title="`+data.name+`" style="color:white;padding: 3px 16px;font-size:1em;background-color:`+data.color+`;">`+data.code+`</button></div>`;
+                                }
+                        // return ( ofx_shot_status_dropdown("{{user.employee.department}}","{{user.employee.role}}",data.code,data.color,{shot_id:rowX.id}) );
+                        // return (((ofx_page_data.user.fullName!=null&&rowX.artist!=null&&ofx_make_key(ofx_page_data.user.fullName)==ofx_make_key(rowX.artist))||(ofx_page_data.user.role!=null&&ofx_make_key(ofx_page_data.user.role)!=ofx_make_key("VFX ARTIST")))?ofx_shot_status_dropdown(ofx_page_data.user.department,ofx_page_data.user.role,data.code,data.color,{shot_id:rowX.id}):`<div class="btn-group"><button type="button" class="btn " title="`+data.name+`" style="color:white;padding: 3px 16px;font-size:1em;background-color:`+data.color+`;">`+data.code+`</button></div>`);
+                    },
+                },
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {
+                        name: "progress",
+                        title: "PROGRESS", data: 'progress',
+                        render: function (data, type, row, meta) {
+                            let lx = ['danger','warning','info','primary','success'], status = parseInt(data);
+                            return (`<div class="progress" style="height: 15px;">
+                                        <div class="progress-bar bg-`+lx[(status<25 ? 0 : (status<50 ? 1 : (status<75 ? 2 : (status<100 ? 3 : 4))))]+`" style="width:` + data + `%; color: white;font-weight: bold" role="progressbar">` + data + `%</div>
+                                    </div>`)
+                        }
+                    },
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {
+                name: "actual_bids",
+                title: "ACTUAL BIDS",
+                data: 'bid_days',
+                render: function (data, type, row, meta) {
+                    return (data==null?"N/A":data);
+                    }
+                },
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {
+                name: "pending_bids",
+                title: "PENDING BIDS", data: null,
+                render: function (data, type, row, meta) {
+                    return parseFloat((row.bid_days - row.achieved_mandays).toFixed(2)).toFixed(2)
+                    }
+                },
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            });
+        // tableColms.push({
+        //     cell: {name: "internal_bids", title: "INTERNAL BIDS", data: 'internal_bid_days'},
+        //     isETAFilter: false,
+        //     isFilter: true,
+        //     });
+        tableColms.push({
+            cell: {
+                        name: "consumed_bids",
+                        title: "CONSUMED BIDS", data: 'achieved_mandays',
+                        render: function (data, type, row, meta) {
+                            return data.toFixed(2)
+                        }
+                    },
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {
+                        name: "period_consumed_bids",
+                        title: "LOGGED BIDS", data: 'consumed_man_day',
+                        render: function (data, type, row, meta) {
+                            return data!=null?data.toFixed(2):'N/A'
+                        }
+                    },
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            });
+        if(userPermissions.indexOf('can_view_client_eta')!=-1){
+            tableColms.push({
+                cell: {
+                            name: "eta",
+                            title: "ETA", data: 'eta',
+                            render: function (data, type, row, meta) {
+                                return moment(data).format("YYYY-MM-DD");
+                            }
+                        },
+                isETAFilter: true,
+                isFilter: false,
+                headerVisibility: true,
+                visibility: true,
+                class:"",
+                }); 
+            tableColms.push({
+                cell: {
+                        name: "internal_eta",
+                        title: "INTERNAL ETA", data: 'internal_eta',
+                        render: function (data, type, row, meta) {
+                            if(typeof row.internal_eta != "undefined" && (row.internal_eta == null || row.internal_eta=="1970-01-01T00:00:00")){
+                                return 'Pending';
+                                }else{
+                                    return moment(row.internal_eta).format("YYYY-MM-DD");
+                                    }
+                        }
+                    },
+                isETAFilter: false,
+                isFilter: false,
+                headerVisibility: true,
+                visibility: true,
+                class:"",
+                });
+            }else{
+                tableColms.push({
+                    cell: {
+                                name: "internal_eta",
+                                title: "ETA", data: 'internal_eta',
+                                render: function (data, type, row, meta) {
+                                    if(typeof row.internal_eta != "undefined" && (row.internal_eta == null || row.internal_eta=="1970-01-01T00:00:00")){
+                                        row.internal_eta = row.eta;
+                                        }
+                                    return moment(row.internal_eta).format("YYYY-MM-DD");
+                                }
+                            },
+                    isETAFilter: true,
+                    isFilter: false,
+                    headerVisibility: true,
+                    visibility: true,
+                    class:"",
+                    }); 
+                }
+        tableColms.push({
+            cell: {name: "frame_in", title: "START FRAME", data: 'actual_start_frame'},
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            }); 
+        tableColms.push({
+            cell: {name: "frame_out", title: "END FRAME", data: 'actual_end_frame'},
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            }); 
+        tableColms.push({
+            cell: {name: "duration", title: "DURATION", data: null, "defaultContent": ""},
+            cell: {
+                        name: "duration",
+                        title: "DURATION", data: null,
+                        render: function (data, type, row, meta) {
+                            return (row.actual_end_frame - row.actual_start_frame)+1;
+                        }
+                    },
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            }); 
+        tableColms.push({
+            cell: {name: "supervisor", title: "SUPERVISOR", data: 'supervisor',
+                    render: function (data, type, row, meta) {
+                        return data!=null?data:'N/A';
+                        }
+                    },
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            });
+        tableColms.push({
+            cell: {name: "team_lead", title: "TEAM LEAD", data: 'team_lead',
+                    render: function (data, type, row, meta) {
+                        return data!=null?data:'N/A';
+                        }
+                    },
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            }); 
+        tableColms.push({
+            cell: {name: "artist", title: "ARTIST", data: 'artist'},
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            }); 
+        tableColms.push({
+            cell: {name: "version", title: "VERSION", data: 'version'},
+            isETAFilter: false,
+            isFilter: false,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            }); 
+        tableColms.push({
+            cell: {name: "estimate_id", title: "ESTIMATE ID", data: 'estimate_id',
+                    render: function (data, type, row, meta) {
+                        return data!=null?data:'N/A';
+                        }
+                    },
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            }); 
+        tableColms.push({
+            cell: {name: "package_id", title: "PACKAGE ID", data: 'package_id',
+                    render: function (data, type, row, meta) {
+                        return data!=null?data:'N/A';
+                        }
+                    },
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            }); 
+        tableColms.push({
+            cell: {name: "locality", title: "LOCALITY", data: 'sequence.project.client.locality'},
+            isETAFilter: false,
+            isFilter: true,
+            headerVisibility: true,
+            visibility: true,
+            class:"",
+            }); 
+        $.each(tableColms,function(z,e){
+            var parent = $("#header_filter > .card-body");
+            if(e.headerVisibility){
+                $(parent).append(`<div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input toggle-vis" id="`+e.cell.name+`" data-column="`+z+`" value="check" checked="">
+                        <label class="custom-control-label" for="`+e.cell.name+`">`+e.cell.title+`</label>
+                    </div>`);
+                }
+            });
+        var ETA_filter_index = 0,
+            tableX = null;
+        function setTable(_tData=[]){
+            artistId_arr = [];
+            artistInfo_arr = {};
+            tableX = $(`<table id="shots_table_t3310" class="table display no-wrap" style="width:100%"></table>`);
+            $(tableParent).html('');
+            $(tableFilter).html('');
+            // $(tableParent).append($(`<button class="column_filter btn btn-warning" title="Filters" data-toggle="button" aria-pressed="true" style="width: max-content; position: absolute; margin: auto; left: 180px; top: 15px; z-index: 1; padding: 5px 12px;"><i class="mdi mdi-filter"></i> Filters</button>`));
+            $(tableParent).append($('<div class="reload-table-row"></div>'));
+            $(tableParent).append($(tableX));
+            var cols = [], searchPanes = [], _addClass = [];
+            $.each(tableColms,function(z,e){
+                cols.push(e.cell);
+                if(e.isETAFilter){
+                    ETA_filter_index = parseInt(z);
+                    }
+                if(!e.isFilter){
+                    searchPanes.push(parseInt(z));
+                    }
+                if(e.class.length>0){
+                    _addClass.push({className: e.class, "targets": [parseInt(z)]});
+                    }
+                });
+            
+            var columnDefs = [{
+                searchPanes: {
+                    show: false
+                    },
+                targets: searchPanes
+                    }];
+            $.each(_addClass,function(z,e){
+                columnDefs.push(e);
+                });
+            table = $(tableX).DataTable({
+                aaData: JSON.parse(JSON.stringify(_tData)),
+                columnDefs: columnDefs,
+                searchPanes: {
+                    initCollapsed: true,
+                    cascadePanes: true,
+                    layout: 'columns-1',
+                    controls: false
+                },
+                dom: '<"dtsp-dataTable"frtip>',
+                "searching": true,
+                'language': {
+                    'infoEmpty': "No records available - Please Select Department and Date Range to view data",
+                    'loadingRecords': '&nbsp;',
+                    'processing': 'Loading...'
+                    },
+                columns: cols,
+                select: false,
+                order: [[1, 'asc']],
+                scrollResize: true,
+                scrollX: true,
+                scrollCollapse: true,
+                buttons: ["pageLength"],
+                dom: 'Bfrtip',
+                lengthMenu:[
+                    [10,25,50,100],
+                    ['10','25','50','100'],
+                    ],
+                "paging": true,
+                "pageLength": 25,
+                "bSortClasses": false,
+                stateSave: true,
+                deferLoading: 10,
+                });
+            table.searchPanes();
+            $.each(tableColms,function(z,e){
+                if(!e.visibility){
+                    console.log(e);
+                    var column = table.column(z);
+                    column.visible(0);
+                    }
+                });
+            $(tableFilter).append(table.searchPanes.container());
+            
+            }
+        function setDayShots(_dayShots=[],_manDaysC={}){
+            if(_dayShots.length>0){
+                $.ajax({
+                    url: '/api/v2/shot/',
+                    type: 'POST',
+                    dataType: "json",
+                    contentType: 'application/json; charset=utf-8',
+                    async: true, //displays data after loading the page
+                    processing: false,
+                    data: JSON.stringify({shot_ids:_dayShots.join('|')}),
+                    beforeSend: function(request) {
+                        var $crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+                        request.setRequestHeader("X-CSRFToken",$crf_token);
+                        },
+                    success: function (shots) {
+                        var allShots = [];
+                        $.each(shots,function(_z,_e){
+                            var shotX = JSON.parse(JSON.stringify(_e));
+                            if(typeof _manDaysC['key'+_e['id']] != "undefined"){
+                                shotX.consumed_man_day = _manDaysC['key'+_e['id']];
+                                }else{
+                                    shotX.consumed_man_day = 0;
+                                    }
+                            allShots.push(JSON.parse(JSON.stringify(shotX)));
+                            });
+                        console.log(allShots);
+                        setTable(allShots);
+                        },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR.responseText)
+                        }
+                    });
+                }else{
+                    setTable([]);
+                    }
+            }
+        $(document).ready(function () {
+            $.ajax({
+                url: '/api/v2/shotdaylogsfilter/',
+                type: 'GET',
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                async: true, //displays data after loading the page
+                processing: false,
+                data: {updated_date__range: moment(getKeys.from_date ).format('YYYY-MM-DD')+'T00:00:00.000000|'+moment(getKeys.to_date ).format('YYYY-MM-DD')+'T23:59:59.999999'},
+                beforeSend: function(request) {
+                    request.setRequestHeader("required", JSON.stringify(["id","shot__id","shot__bid_days","shot__location__id","shot__location__name","shot__task_type__id","shot__task_type__name","consumed_man_day","updated_date","shot_biddays","updated_shot_biddays","day_percentage"]));
+                    },
+                success: function (shotdaylogs) {
+                    var _dayShots = [], _manDaysC = {};
+                    $.each(shotdaylogs,function(_z,_e){
+                        if(_dayShots.indexOf(_e['shot']['id'])==-1){
+                            _dayShots.push(_e['shot']['id']);
+                            _manDaysC['key'+_e['shot']['id']] = 0;
+                            }
+                        let _cbid = (_e.updated_shot_biddays!=null && _e.updated_shot_biddays > 0 )?_e.updated_shot_biddays:((_e.shot_biddays!=null && _e.shot_biddays > 0)?_e.shot_biddays:_e.shot.bid_days);
+                        _manDaysC['key'+_e['shot']['id']] = _manDaysC['key'+_e['shot']['id']] + ((_cbid/100)*_e.day_percentage);
+                        });
+                    if((typeof teamleadData.role == typeof {} ? teamleadData.role.name:teamleadData.role)=='HEAD OF DEPARTMENT'){
+                        _dayShots = [];
+                        $.each(shotdaylogs,function(_z,_e){
+                            if(_dayShots.indexOf(_e['shot']['id'])==-1 && _e.shot.location != null && _e.shot.location.id==teamleadData.location&&_e.shot.task_type.name==teamleadData.department){
+                                _dayShots.push(_e['shot']['id']);
+                                }
+                            });
+                        setDayShots(_dayShots,_manDaysC);
+                        }else{
+                            $.ajax({
+                                url: '/api/v2/shots/leadsassignments/',
+                                type: 'POST',
+                                dataType: "json",
+                                contentType: 'application/json; charset=utf-8',
+                                async: true, //displays data after loading the page
+                                processing: false,
+                                data: JSON.stringify({lead__id:teamleadData.id,shot__id__in:_dayShots.join('|')}),
+                                beforeSend: function(request) {
+                                    var $crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+                                    request.setRequestHeader("X-CSRFToken",$crf_token);
+                                    request.setRequestHeader("required", JSON.stringify(["id", "shot__id"]));
+                                    },
+                                success: function (leadsassignments) {
+                                    var _dayShots = [];
+                                    $.each(leadsassignments,function(_z,_e){
+                                        if(_dayShots.indexOf(_e['shot']['id'])==-1){
+                                            _dayShots.push(_e['shot']['id']);
+                                            }
+                                        });
+                                    setDayShots(_dayShots,_manDaysC);
+                                    },
+                                error: function (jqXHR, exception) {
+                                    console.log(jqXHR.responseText)
+                                    }
+                                });
+                            }
+                    },
+                error: function (jqXHR, exception) {
+                    console.log(jqXHR.responseText)
+                    }
+                });
+                    
+            });
+        $(document).on("click",".export-to-excel",function(e){
+            var inputTags = [];
+            inputTags.push(`<input name="employee_name" value="`+teamleadData.fullName+`"/>`);
+            inputTags.push(`<input name="employee" value="`+teamleadData.id+`"/>`);
+            inputTags.push(`<input name="lead" value="`+(typeof teamleadData.role == typeof {} ? teamleadData.role.name:teamleadData.role)+`"/>`);
+            inputTags.push(`<input name="from_date" value="`+moment(getKeys.from_date).format('YYYY-MM-DD')+`"/>`);
+            inputTags.push(`<input name="to_date" value="`+moment(getKeys.to_date).format('YYYY-MM-DD')+`"/>`);
+            var from = $(`<form action="/production/leadreports_export/" method="POST" target="_blank" style="display:none;">
+                {% csrf_token %}
+                `+inputTags.join('')+`
+                </form>`);
+            $('body').append(from);
+            $(from).submit();
+            $(from).remove();
+            });
+    </script>
+{% endblock page_scripts %}

@@ -1,4 +1,10 @@
-﻿div.jtable-main-container {
+﻿/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
+div.jtable-main-container {
   position: relative;
 }
 div.jtable-main-container div.jtable-title {

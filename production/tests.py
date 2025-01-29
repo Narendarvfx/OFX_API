@@ -1,43 +1,87 @@
+#  Copyright (c) 2023.
+#  Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+#  All rights reserved.
+
 import json
 from unittest import TestCase
 
-from production.models import Shots
+from django.db.models import Count, Q, Sum, Aggregate
+
+from production.models import Shots, Clients, ShotStatus
 from production.serializers import ShotsSerializer
 
 
 class DepartmentTestCase(TestCase):
     def test_dept_version(self):
-        client_version = Shots.objects.filter(task_type__name="PAINT", creation_date__range=["2022-03-04T00:00:00",
-                                                                                                      "2022-04-25T23:59:59"])
-        client_version_serializer = ShotsSerializer(client_version, many=True)
-        assign_data = client_version_serializer.data
-        length = len(assign_data)
-        n = 0
-        wip = 0
-        completed = 0
-        uploaded = 0
-        yts = 0
-        total_mandays = 0
-        while n < length:
-            if assign_data[n]["status"]['code'] in ["YTA", "YTS", "ATL"]:
-                yts += 1
-
-            if assign_data[n]["status"]['code'] in ["WIP", "STQ", "STC", "IRT", "LRT", "LAP"]:
-                wip += 1
-
-            if assign_data[n]["status"]['code'] in ["IAP", "DTC", "CAP"]:
-                completed += 1
-
-            if assign_data[n]["status"]['code'] == "DTC":
-                uploaded += 1
-
-            if n == length - 1:
-                break
-            total_mandays += assign_data[n]['bid_days']
-            n += 1
-        print("WIP:", wip)
-        print("Completed: ", completed)
-        print("Uploaded: ", uploaded)
-        print("YTS: ", yts)
-        print("Total Mandays: ", total_mandays)
-# Create your tests here.
+        clients = Clients.objects.select_related('locality').all()
+        status = Shots.objects.values('sequence__project__client','status__code').filter(sequence__project__client__name="SHP").annotate(status_count=Count('status__code')).values('sequence__project__client__name','status__code','status_count').order_by('sequence__project__client__name','sequence__project__name')
+        print(len(status))
+        for sta in status:
+            print(sta)
+        # totalshots_i = Shots.objects.select_related('sequence__project', 'sequence', 'task_type',
+        #                                           'sequence__project__client',
+        #                                           'status', 'complexity', 'team_lead', 'artist', 'qc_name', 'location',
+        #                                           'sequence__project__client__locality').filter(
+        #     sequence__project__client__in=[x.id for x in clients]).values('id', 'sequence__project__client__id')
+        # yts_i = Shots.objects.select_related('sequence__project', 'sequence', 'task_type', 'sequence__project__client',
+        #                                    'status', 'complexity', 'team_lead', 'artist', 'qc_name', 'location',
+        #                                    'sequence__project__client__locality').filter(
+        #     sequence__project__client__in=[x.id for x in clients], status__code__in=['YTA', 'ATL', 'YTS']).values('id',
+        #                                                                                                'sequence__project__client__id')
+        # wip_i = Shots.objects.select_related('sequence__project', 'sequence', 'task_type', 'sequence__project__client',
+        #                                    'status', 'complexity', 'team_lead', 'artist', 'qc_name', 'location',
+        #                                    'sequence__project__client__locality').filter(
+        #     sequence__project__client__in=[x.id for x in clients], status__code__in=['WIP', 'STC', 'LRT', 'STQ', 'IRT', 'LAP']).values('id',
+        #                                                                                                'sequence__project__client__id')
+        # completed_i = Shots.objects.select_related('sequence__project', 'sequence', 'task_type', 'sequence__project__client',
+        #                                    'status', 'complexity', 'team_lead', 'artist', 'qc_name', 'location',
+        #                                    'sequence__project__client__locality').filter(
+        #     sequence__project__client__in=[x.id for x in clients], status__code__in=['CAP', 'DTC', 'IAP']).values('id',
+        #                                                                                                           'sequence__project__client__id')
+        # r_data = {}
+        #
+        # for x in totalshots_i:
+        #     ClinetKey = 'key'+str(x['sequence__project__client__id']);
+        #     if r_data.get(ClinetKey,None) is None:
+        #         r_data[ClinetKey]={
+        #             'client_id': x['sequence__project__client__id'],
+        #             'totalshots': 0,
+        #             'yts': 0,
+        #             'wip': 0,
+        #             'completed': 0,
+        #             }
+        #     r_data[ClinetKey]['totalshots'] = r_data[ClinetKey]['totalshots'] + 1
+        # for x in yts_i:
+        #     ClinetKey = 'key'+str(x['sequence__project__client__id']);
+        #     if r_data.get(ClinetKey,None) is None:
+        #         r_data[ClinetKey]={
+        #             'client_id': x['sequence__project__client__id'],
+        #             'totalshots': 0,
+        #             'yts': 0,
+        #             'wip': 0,
+        #             'completed': 0,
+        #             }
+        #     r_data[ClinetKey]['yts'] = r_data[ClinetKey]['yts'] + 1
+        # for x in wip_i:
+        #     ClinetKey = 'key'+str(x['sequence__project__client__id']);
+        #     if r_data.get(ClinetKey,None) is None:
+        #         r_data[ClinetKey]={
+        #             'client_id': x['sequence__project__client__id'],
+        #             'totalshots': 0,
+        #             'yts': 0,
+        #             'wip': 0,
+        #             'completed': 0,
+        #             }
+        #     r_data[ClinetKey]['wip'] = r_data[ClinetKey]['wip'] + 1
+        # for x in completed_i:
+        #     ClinetKey = 'key'+str(x['sequence__project__client__id']);
+        #     if r_data.get(ClinetKey,None) is None:
+        #         r_data[ClinetKey]={
+        #             'client_id': x['sequence__project__client__id'],
+        #             'totalshots': 0,
+        #             'yts': 0,
+        #             'wip': 0,
+        #             'completed': 0,
+        #             }
+        #     r_data[ClinetKey]['completed'] = r_data[ClinetKey]['completed'] + 1
+        # print(r_data)

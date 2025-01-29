@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 // Render left side card
 function render_employee_detail_card(employee) {
     var department = 'Department';
@@ -21,7 +27,7 @@ function render_employee_detail_card(employee) {
             <div class="card">
               <div class="card-body">
               <form id="upload_file" class="form-material" role="form" enctype="multipart/form-data">
-                <center class="mt-4"> <img id="profile_pic"  src="${employee.photo}" onerror="this.src='/media/profiles/photo/default.png'" class="img-circle" width="150" />
+                <center class="mt-4"> <img id="profile_pic"  src="/media/${employee.photo}" onerror="this.src='/media/profiles/photo/default.png'" class="img-circle" width="150" />
                     <input type="file" id="FileUpload" style="display: none" />
                     <h4 class="card-title mt-2">${employee.full_name}</h4>
                     <h6 class="card-subtitle">${employee.department}</h6>

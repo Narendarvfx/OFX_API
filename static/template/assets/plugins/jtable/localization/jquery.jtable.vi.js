@@ -1,4 +1,10 @@
 ﻿/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
+/*
     jTable localization file for 'Vietnamese' language.
     Author: Lê Hoàng Hiếu
 */

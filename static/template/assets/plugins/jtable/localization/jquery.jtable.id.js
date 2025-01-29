@@ -1,4 +1,10 @@
 /*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
+/*
     jTable localization file for 'Bahasa (Indonesian)' language.
     Author: Heribertus Kristianto
     Author: Willy Sudiarto Raharjo

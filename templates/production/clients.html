@@ -2,42 +2,129 @@
 
 
 {% block bread_crumb %}
+<style>
+    .client-hide{
+        display:none;
+        }
+</style>
+<div class="row page-titles">
+    <div class="col-md-6 col-4 float-left">
+        <h3 class="text-themecolor mb-2 mt-2">Clients</h3>
+    </div>
+    <div class="col-md-6 text-right pt-1">
+        <div class="btn-group mb-2 mr-2" role="group" aria-label="Button group with nested">
+            <div class="input-group-prepend ex-at-tag">
+                <button class="btn btn-outline-info dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                <div class="dropdown-menu departments-selectors" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 37px, 0px); top: 0px; left: 0px; will-change: transform;">
+                    <a class="dropdown-item" href="/production/clients/?status=IN PROGRESS">IN PROGRESS</a>
+                    <a class="dropdown-item" href="/production/clients/?status=ARCHIVED">ARCHIVED</a>
+                </div>
+            </div>
+            <input type="text" class="btn btn-info search e-find" placeholder="Search..." style="background: transparent !important; cursor: initial;" value="">
+        </div>
+    </div>
+    <script>
+        $( document ).ready(function() {
+            var getKeys = getGetParam({'status':'IN PROGRESS'});
+            $('.ex-at-tag a').each(function(e){
+                if($(this).html()==getKeys.status){
+                    $(this).remove();
+                    $('.ex-at-tag button.dropdown-toggle').html(getKeys.status);
+                    }
+                });
+            var cUrl = '/api/production/clients/', parentTarget = $('.data-c-hold');
 
+            $.ajax({
+                url: cUrl,
+                type: 'GET',
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                success: function (response) {
+                    let tag = '';
+                    $.each(response,function(z,e){
+                        tag = tag + `<div class="col-md-2 tag-client" style="padding-left: 10px; padding-right: 10px;">
+                            <div class="card" style="margin-bottom: 15px;">
+                                <div class="el-card-item">
+                                    <div class="el-card-avatar el-overlay-1"><img src="/static/template/assets/images/ofx_logo1.png" alt="user"/>
+                                        <div class="el-overlay">
+                                            <ul class="el-info">
+                                                <li><a class="btn default btn-outline" href="/production/client/projects/`+e.id+`/"><i class="icon-link"></i></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="el-card-content">
+                                        <h3 class="box-title">`+e.name+`</h3>
+                                        <span class="label label-light-info mr-1">Total Shots: `+e.total_shots+`</span>
+                                        <span class="label label-light-danger">WIP: `+e.wip+`</span>
+                                        <br>
+                                        <span class="label label-light-warning mr-1">YTS: `+e.yts+`</span>
+                                        <span class="label label-light-success">Completed: `+e.completed+`</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                        });
+                    $(parentTarget).html(tag);
+                },
+                error: function (jqXHR, exception) {
+                    console.log(jqXHR.responseText)
+                }
+            });
+            $(document).on('change keyup', '.e-find', function(e){
+                let keSearch = $(this).val().trim();
+                $(parentTarget).find(".box-title").each(function(e){
+                    let dt = $(this).html().trim().toLowerCase().replace(/&nbsp;/g, ' '),
+                        pr = $(this).parents(".tag-client");
+                    if(dt.includes(keSearch.toLowerCase())){
+                        $(pr).removeClass('client-hide');
+                        }else{
+                            $(pr).addClass('client-hide');
+                            }
+
+                    });
+                    });
+
+
+
+
+
+        });
+    </script>
+    
+    
+</div>
 {% endblock bread_crumb %}
 
 {% block content %}
-<div class="container-fluid">
-    <div class="row el-element-overlay">
-        <div class="col-md-12">
-            <h4 class="card-title">Clients</h4>
-        </div>
-
-        {% for client in clients %}
-        <div class="card" style="margin-left:10px">
+<div class="row el-element-overlay data-c-hold">
+    <!-- { % for client in clients % }
+    <div class="col-md-2" style="padding-left: 5px; padding-right: 5px;">
+        <div class="card" style="margin-bottom: 10px;">
             <div class="el-card-item">
                 <div class="el-card-avatar el-overlay-1"><img src="/static/template/assets/images/ofx_logo1.png"
-                                                              alt="user"/>
+                                                            alt="user"/>
                     <div class="el-overlay">
                         <ul class="el-info">
-                            <li><a class="btn default btn-outline" href="javascript:void(0);"><i
-                                    class="icon-link"></i></a></li>
+                            <li><a class="btn default btn-outline" href="javascript:projects({ { client.client_id} });"><i class="icon-link"></i></a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="el-card-content">
-                    <div class="progress" style="height: 15px;width: 30%">
-                        <div class="progress-bar"
-                             style="width:70%;background-color:#806c44;color: white;font-weight: bold"
-                             role="progressbar">70%
-                        </div>
-                    </div>
-                    <h3 class="box-title">{{client.name}}</h3> <small>Total Shots: 117</small>
-                    <br/>
+                    <h3 class="box-title">{ {client.client_name} }</h3>
+                    <span class="label label-light-info mr-1">Total Shots: { {client.total_shots} }</span>
+                    <span class="label label-light-danger">WIP: { {client.wip} }</span>
+                    <br>
+                    <span class="label label-light-warning mr-1">YTS: { {client.yts} }</span>
+                    <span class="label label-light-success">Completed: { {client.completed} }</span>
                 </div>
             </div>
         </div>
-        {% endfor %}
-
     </div>
+    { % endfor % }
+    <script>
+        function projects(client_id) {
+            window.location = "/production/client/projects/"+client_id+"/"
+        }
+    </script> -->
 </div>
 {% endblock content %}>

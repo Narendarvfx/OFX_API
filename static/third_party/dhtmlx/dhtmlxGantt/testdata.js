@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 var demo_tasks = {
 	"data":[
 		{"id":11, "text":"Project #1", "start_date":"28-03-2018", "duration":"11", "progress": 0.6, "open": true},

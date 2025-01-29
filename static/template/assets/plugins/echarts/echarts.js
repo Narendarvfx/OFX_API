@@ -1,10 +1,7 @@
-/**
- * ESL (Enterprise Standard Loader)
- * Copyright 2013 Baidu Inc. All rights reserved.
- *
- * @file Browser端标准加载器，符合AMD规范
- * @author errorrik(errorrik@gmail.com)
- *         Firede(firede@firede.us)
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
  */
 
 /* jshint ignore:start */

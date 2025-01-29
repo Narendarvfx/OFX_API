@@ -1,3 +1,7 @@
+#  Copyright (c) 2023.
+#  Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+#  All rights reserved.
+
 import datetime
 import json
 from itertools import groupby
@@ -83,4 +87,6 @@ def write_to_excel(workbook, worksheet, shots_data):
         worksheet.write(row + 1, col + 6, submitted_date, border)
         worksheet.write(row + 1, col + 7, due_date, percent)
         worksheet.write(row + 1, col + 8, "", border)
+        worksheet.write(row + 1, col + 11, shot_data['artist'], border)
         row += 1
+

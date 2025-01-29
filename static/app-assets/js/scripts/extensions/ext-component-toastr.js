@@ -1,6 +1,12 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 /*=========================================================================================
 	File Name: ext-component-toastr.js
-	Description: Toastr notifications
+	Description: Toastr wsnotifications
 	----------------------------------------------------------------------------------------
 	Item Name: Vuexy  - Vuejs, HTML & Laravel Admin Dashboard Template
 	Author: Pixinvent

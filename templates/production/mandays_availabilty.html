@@ -1,0 +1,186 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block bread_crumb %}
+    <link href="{% static 'template/assets/plugins/timepicker/bootstrap-timepicker.min.css' %}" rel="stylesheet">
+    <link href="{% static 'template/assets/plugins/daterangepicker/daterangepicker.css' %}" rel="stylesheet">
+    <style>
+        .table td, .table th {
+            padding: 0.25rem;
+        }
+
+        th.rotate {
+            /* Something you can count on */
+            height: 100px;
+            white-space: nowrap;
+        }
+
+        th.rotate > div {
+            transform: /* Magic Numbers */ translate(0px, 0px) /* 45 is really 360 - 45 */ rotate(315deg);
+            width: 10px;
+        }
+
+        th.rotate > div > span {
+            border-bottom: 1px solid #ccc;
+            padding: 5px 5px;
+        }
+
+        .table thead {
+            position: sticky;
+            background-color: #383f48;
+        }
+
+        .table tfoot {
+            position: sticky;
+            color: #fff;
+        }
+
+        .table thead {
+            inset-block-start: 0; /* "bottom" */
+
+        }
+
+        .table tfoot {
+            inset-block-end: 0; /* "bottom" */
+        }
+    </style>
+{% endblock bread_crumb %}
+{% block content %}
+
+    <h3>Hello {{ user.employee.fullName }}</h3>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex no-block">
+                            <h4 class="card-title">Department Manday Availabilty</h4>
+                        </div>
+                        <div class="table-responsive" style="height: 500px">
+                            <table class="table stylish-table no-wrap resource-table">
+                                <thead>
+                                    <tr>
+                                        <th style="vertical-align: middle;"><span>Departments</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody style="overflow-y: auto" >
+                                    <!-- <tr class="bg-info text-white">
+                                        <td><h6>PAINT</h6></td>
+                                        <td style="text-align: center;">350</td>
+                                        <td style="text-align: center;">450</td>
+                                        <td style="text-align: center;">236</td>
+                                        <td style="text-align: center;">236</td>
+                                        <td style="text-align: center;">350</td>
+                                        <td style="text-align: center;">450</td>
+                                        <td style="text-align: center;">236</td>
+                                        <td style="text-align: center;">236</td>
+                                    </tr> -->
+                                </tbody>
+                                <tfoot>
+                                    <tr></tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block page_scripts %}
+    <!--OFX Core JavaScript -->
+    <script src="{% static 'ofx/core.js' %}"></script>
+    <!-- ============================================================== -->
+    <!-- This page plugins -->
+    <!-- ============================================================== -->
+    <!-- chartist chart -->
+
+
+
+
+    <script src="{% static 'template/assets/plugins/flot/jquery.flot.js' %}"></script>
+    <script src="{% static 'template/assets/plugins/flot/jquery.flot.pie.js' %}"></script>
+    <script src="{% static 'template/assets/plugins/flot.tooltip/js/jquery.flot.tooltip.min.js' %}"></script>
+    <script src="{% static 'ofx/artistsStatistics.js' %}"></script>
+    <script type="text/javascript">
+        var getKeys = getGetParam({
+            'from_date':moment().format('YYYY-MM-DD')+'T00:00:00.000000',
+            'to_date': null//moment().format("YYYY-MM-DD")+'T23:59:59.999999'
+            }), getAdditionalWeeks = 7, tableParent = $('.resource-table');
+        var isCurrent = true;
+        // if(ofx_make_key(getKeys.from_date)==ofx_make_key(moment().format('YYYY-MM-DD')+'T00:00:00.000000')){
+        //     isCurrent = true;
+        //     }
+        if(getKeys.to_date==null){
+            getKeys.to_date = moment(getKeys.from_date).add(getAdditionalWeeks,'week').format("YYYY-MM-DD");
+            }
+        var weekDates = dateSanitization(getKeys['from_date'],getKeys['to_date'],'week'),
+            diffDays = parseInt(moment(weekDates.to_date).diff(moment(weekDates.from_date), 'days')/7);
+        weekDates.from_date = moment(weekDates.from_date).format("YYYY-MM-DD")+'T00:00:00.000000';
+        weekDates.to_date = moment(weekDates.to_date).format("YYYY-MM-DD")+'T23:59:59.999999';
+        var headTr = $(tableParent).find('thead > tr');
+        for(let i=0;i<=diffDays;i++){
+            
+            // $(headTr).append(`<th style="text-align: center;"><div title="`+(moment(weekDates.from_date).add((i*7),'days').format('Do MMM YYYY'))+` - `+(moment(weekDates.from_date).add(((i*7)+6),'days').format('Do MMM YYYY'))+`"><span>Week `+(i+1)+`</span></div></th>`);
+            $(headTr).append(`<th style="text-align: center;"><div title="`+(moment(weekDates.from_date).add((i*7),'days').format('Do MMM YYYY'))+` - `+(moment(weekDates.from_date).add(((i*7)+6),'days').format('Do MMM YYYY'))+`"><span>Week `+(i+1)+`</span></br><small>`+genUIDateFormat(moment(weekDates.from_date).add((i*7),'days').format("YYYY-MM-DD"),moment(weekDates.from_date).add(((i*7)+6),'days').format("YYYY-MM-DD"), format={date:"DD",month:"MMM",year:"YYYY"})+`</small></div></th>`);
+            }
+        $(document).ready(function () {
+            $.ajax({
+                type:"GET",
+                url:"/api/v2/mandaysavailability/",
+                dataType: "json",
+                data:Object.assign({ from_date:moment(weekDates.from_date).format('YYYY-MM-DD'),to_date:moment(weekDates.to_date).format('YYYY-MM-DD')},(isCurrent?{isCurrent:true}:{})),
+                contentType: 'application/json; charset=utf-8',
+                "dataSrc": "",
+                "async": true,
+                success: function (response) {
+                    var _depDat_ = {};
+                    $.each(ofx_page_data.departments,function(x,e){
+                        _depDat_[ofx_make_key(e.name)] = {
+                            "department": e.name,
+                            "color": e.color,
+                            "data": {},
+                            };
+                        });
+                    var bodyTr = $(tableParent).find('tbody'), tCal = {}, nTcl = 0;
+                    $(bodyTr).empty();
+                    $.each(response,function(x,e){
+                        let trx = '', datekey = '';
+                        if(Object.keys(e.data).length>0){
+                            trx = trx+`<td><h6>`+e.task_type.name+`</h6></td>`;
+                            $.each(e.data,function(_x,_e){
+                                nTcl = parseFloat((/*_e.tmd-_e.bid_days*/ _e.tmd-_e.pending_mandays).toFixed(2)).toFixed(2);
+                                if(typeof tCal[_x] == "undefined"){
+                                    tCal[_x] = {
+                                        target: 0,
+                                        tmd: 0,
+                                        bids: 0,
+                                        achieved:0
+                                        };
+                                    }
+                                tCal[_x].target = tCal[_x].target + parseFloat(nTcl);
+                                tCal[_x].tmd = tCal[_x].tmd + parseFloat(_e.tmd.toFixed(2));
+                                tCal[_x].bids = tCal[_x].bids + parseFloat(_e.bid_days.toFixed(2));
+                                tCal[_x].achieved = tCal[_x].achieved + parseFloat(_e.achieved_mandays.toFixed(2));
+                                trx = trx+`<td style="text-align: center;"><span title="Date: `+(moment(_e.range.from).format('Do MMM YYYY'))+` - `+(moment(_e.range.to).format('Do MMM YYYY'))+`\nTarget Man Days: `+parseFloat(_e.tmd.toFixed(2)).toFixed(2)+`\nTotal Bid Days: `+parseFloat(_e.bid_days.toFixed(2)).toFixed(2)+`\nAchieved Mandays: `+parseFloat(_e.achieved_mandays.toFixed(2)).toFixed(2)+`">`+nTcl+`</span></td>`;
+                                });
+                            $(bodyTr).append(`<tr style="background: `+_depDat_[ofx_make_key(e.task_type.name)].color+`; color:#fff; border: none !important;">`+trx+`</tr>`);
+                            }
+                        });
+                    if(Object.keys(tCal).length>0){
+                        let trx = '<th style="vertical-align: middle;"><span>Grand Total</span></th>';
+                        $.each(tCal,function(x,e){
+                            trx = trx+`<td style="text-align: center;"><span title="Target Man Days: `+e.tmd.toFixed(2)+`\nTotal Bid Days: `+e.bids.toFixed(2)+`\nAchieved Mandays: `+e.achieved.toFixed(2)+`">`+e.target.toFixed(2)+`</span></td>`;
+                            });
+                        $(tableParent).find('tfoot > tr').append(trx);
+                        }
+                    },
+                error: function (jqXHR, exception) {
+                    console.log(jqXHR.responseText)
+                    }
+                });
+            });
+    </script>
+{% endblock page_scripts %}

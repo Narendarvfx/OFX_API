@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 'use strict';
 import {exec}        from 'child_process';
 import releaseIt     from 'release-it';

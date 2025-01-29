@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 module('Dropdown - attachBody - positioning');
 
 test('appends to the dropdown parent', function (assert) {

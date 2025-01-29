@@ -1,22 +1,31 @@
-FROM python:3.6.8 AS ldap-build
+# Use an official Python runtime as a parent image
+FROM python:3.10-slim
 
-RUN apt-get update -y && \
-    apt-get install -y libsasl2-dev python-dev libldap2-dev libssl-dev && \
-    python -m pip wheel --wheel-dir=/tmp python-ldap==3.3.1
+# Set the working directory in the container
+WORKDIR /ofx_api
 
-FROM python:3.6.8
-COPY --from=ldap-build /tmp/*.whl /tmp
-RUN python -m pip install /tmp/*.whl
-FROM python:3.6.8
-ENV PYTHONUNBUFFERED 1
-RUN mkdir /my-api
-WORKDIR /my-api
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy the requirements file into the container
+COPY requirements.txt .
 
+# Install any needed packages specified in requirements.txt
+RUN apt-get update \
+    && apt-get install -y default-mysql-client \
+    && pip install --no-cache-dir -r requirements.txt \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy the current directory contents into the container at /app
 COPY . .
 
-CMD [ "python", "./manage.py","makemigrations" ]
-CMD [ "python", "./manage.py","migrate" ]
-CMD [ "python", "./manage.py","collectstaticfiles" ]
-CMD [ "python", "./manage.py","runserver" ]
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Make port 8000 available to the world outside this container
+EXPOSE 8000
+
+# Define environment variable
+#ENV DJANGO_SETTINGS_MODULE=OFX_API.settings
+
+# Run the Django development server
+CMD ["gunicorn", "OFX_API.wsgi:application", "--bind", "0.0.0.0:8000" ]

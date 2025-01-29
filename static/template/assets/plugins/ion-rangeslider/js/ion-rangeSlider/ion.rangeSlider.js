@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 // Ion.RangeSlider
 // version 2.1.4 Build: 355
 // © Denis Ineshin, 2016

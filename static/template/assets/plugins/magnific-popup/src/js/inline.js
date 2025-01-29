@@ -1,4 +1,10 @@
 
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 var INLINE_NS = 'inline',
 	_hiddenClass,
 	_inlinePlaceholder, 

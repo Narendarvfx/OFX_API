@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 /**
  * Bootstrap Table Vietnamese translation
  * Author: Duc N. PHAM <pngduc@gmail.com>

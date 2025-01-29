@@ -1,0 +1,111 @@
+info:
+  description: ''
+  title: ''
+  version: ''
+openapi: 3.0.0
+paths:
+  /api/auth/:
+    post:
+      operationId: auth_create
+      tags:
+      - auth
+  /api/myaccount/:
+    get:
+      description: This is for MyAccount detail
+      operationId: myaccount_list
+      tags:
+      - myaccount
+    put:
+      description: This is for MyAccount detail
+      operationId: myaccount_update
+      tags:
+      - myaccount
+  /api/notifications/:
+    get:
+      description: 'param1 -- user_id - integer
+
+        param2 -- date_range - from_date, to_date
+
+        param3 -- read - boolean'
+      operationId: notifications_list
+      tags:
+      - notifications
+    put:
+      operationId: notifications_update
+      tags:
+      - notifications
+  /api/profile/{profile_id}:
+    get:
+      description: This class will return json data of user profile
+      operationId: profile_read
+      parameters:
+      - in: path
+        name: profile_id
+        required: true
+        schema:
+          description: ''
+          title: ''
+          type: string
+      tags:
+      - profile
+    put:
+      description: This class will return json data of user profile
+      operationId: profile_update
+      parameters:
+      - in: path
+        name: profile_id
+        required: true
+        schema:
+          description: ''
+          title: ''
+          type: string
+      tags:
+      - profile
+  /api/users/:
+    get:
+      operationId: users_list
+      tags:
+      - users
+    post:
+      operationId: users_create
+      tags:
+      - users
+  /api/users/{user_id}:
+    delete:
+      operationId: users_delete
+      parameters:
+      - in: path
+        name: user_id
+        required: true
+        schema:
+          description: ''
+          title: ''
+          type: string
+      tags:
+      - users
+    get:
+      operationId: users_read
+      parameters:
+      - in: path
+        name: user_id
+        required: true
+        schema:
+          description: ''
+          title: ''
+          type: string
+      tags:
+      - users
+    put:
+      operationId: users_update
+      parameters:
+      - in: path
+        name: user_id
+        required: true
+        schema:
+          description: ''
+          title: ''
+          type: string
+      tags:
+      - users
+servers:
+- url: ''

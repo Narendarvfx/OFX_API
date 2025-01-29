@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 /*=========================================================================================
     File Name: pagination.js
     Description: Provide pagination links for your site or app with the multi-page pagination component.

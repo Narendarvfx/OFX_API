@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
+
 /*! DateTime picker for DataTables.net v1.1.2
  *
  * © SpryMedia Ltd, all rights reserved.

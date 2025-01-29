@@ -1,3 +1,9 @@
+<!--
+  - Copyright (c) 2023.
+  - Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+  - All rights reserved.
+  -->
+
 <svg viewbox="0 0 18 18">
   <rect class="ql-stroke" height="10" width="12" x="3" y="4"></rect>
   <circle class="ql-fill" cx="6" cy="7" r="1"></circle>

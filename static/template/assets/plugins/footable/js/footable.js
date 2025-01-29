@@ -1,10 +1,8 @@
 /*
-* FooTable v3 - FooTable is a jQuery plugin that aims to make HTML tables on smaller devices look awesome.
-* @version 3.1.5
-* @link http://fooplugins.com
-* @copyright Steven Usher & Brad Vincent 2015
-* @license Released under the GPLv3 license.
-*/
+ * Copyright (c) 2023.
+ * Designed & Developed by Narendar Reddy G, OscarFX Private Limited
+ * All rights reserved.
+ */
 (function($, F){
 	// add in console we use in case it's missing
 	window.console = window.console || { log:function(){}, error:function(){} };
