@@ -375,7 +375,7 @@ The fastest, most efficient type of cache supported natively by Django,
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': config('MEMCACHED_HOST', cast=str),
+        'LOCATION': 'memcached:11211',  # Use the service name defined in docker-compose.yml
         'TIMEOUT': None,
         'OPTIONS': {
             'server_max_value_length': 1024 * 1024 * 2,

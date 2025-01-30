@@ -13,6 +13,8 @@ services:
       - redis
     env_file:
       - OFX_API/.env
+    networks:
+      - mynetwork
 
   nginx:
     image: nginx:latest
@@ -23,14 +25,23 @@ services:
       - ./static:/static
     depends_on:
       - web
+    networks:
+      - mynetwork
 
   memcached:
     image: memcached:latest
     ports:
       - "11211:11211"
-      
+    networks:
+      - mynetwork
+
   redis:
     image: redis:latest
     restart: always
     ports:
       - "6379:6379"
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
