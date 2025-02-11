@@ -159,7 +159,7 @@ MIDDLEWARE = [
 CORS_ALLOW_HEADERS = DEFAULT_HEADERS
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = False
-CORS_ORIGIN_WHITELIST = ['https://ofxsbbucket.s3.ap-south-1.amazonaws.com','http://10.10.10.10:8000']
+CORS_ORIGIN_WHITELIST = ['http://10.10.10.10:8000']
 
 ROOT_URLCONF = 'OFX_API.urls'
 
@@ -198,7 +198,7 @@ else:
         'default': {
             'BACKEND': 'channels_redis.core.RedisChannelLayer',
             'CONFIG': {
-                "hosts": [('127.0.0.1', 6379)],
+                "hosts": [('redis', 6379)],
             },
         },
     }
@@ -399,12 +399,12 @@ LOG_VIEWER_FILE_LIST_STYLES = "/static/css/my-custom.css"
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760
 
 # CELERY SETTINGS
-CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_BROKER_URL = 'redis://redis:6379/1'
 CELERY_ACCEPT_CONTENT = {'application/json'}
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 # CELERY_TIMEZONE = 'Europe/Paris'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/1'
 
 EMAIL_USE_TLS = True
 # EMAIL_HOST = '124.123.22.16'
