@@ -269,22 +269,16 @@ if config('USE_S3', cast=bool):
         'CacheControl': 'max-age=86400',
     }
     AWS_LOCATION = 'static'
-
     STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     PUBLIC_MEDIA_LOCATION = 'media'
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
     DEFAULT_FILE_STORAGE = 'OFX_API.storage_backends.MediaStorage'  # the media storage configurations
 else:
-
     STATIC_URL = '/static/'
     STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
-# STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles/")
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "staticfiles")]
-
-# if sys.platform == 'linux':
-#     STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
