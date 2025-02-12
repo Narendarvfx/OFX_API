@@ -7,6 +7,7 @@ services:
     volumes:
       - .:/ofx_api
       - ./static:/static  # Mount static folder to share with Nginx
+      - ./OFX_API/migrations:/ofx_api/OFX_API/migrations  # Persist migrations
     ports:
       - "8000:8000"
     depends_on:
