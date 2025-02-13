@@ -70,7 +70,6 @@ class EmployeeFields(admin.ModelAdmin, ExportCsvMixin):
     list_per_page = 15
     list_filter = ['department', 'role', 'employement_status','location']
     filter_horizontal = ('permissions',)
-    list_display.append('manday')
     actions = ["export_as_csv"]
     autocomplete_fields = ['grade', ]
 
