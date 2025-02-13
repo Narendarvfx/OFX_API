@@ -63,7 +63,7 @@ class ExportCsvMixin:
     export_as_csv.short_description = "Export Selected"
 
 class EmployeeFields(admin.ModelAdmin, ExportCsvMixin):
-    list_display = [f.name for f in Employee._meta.fields]
+    list_display = ('id', 'fullName', 'employee_id', 'get_dep', 'get_role', 'employement_status')
 
     search_fields = ('employee_id', 'fullName', 'contact', 'address')
 
@@ -75,23 +75,35 @@ class EmployeeFields(admin.ModelAdmin, ExportCsvMixin):
     autocomplete_fields = ['grade', ]
 
     def get_queryset(self, request):
-        return super().get_queryset(request).select_related("department","role","employement_status","location","grade","team_lead").prefetch_related("permissions")
+        return super().get_queryset(request).select_related(
+            "profile", "employement_status", "department", "role", "grade", "location", 'team_lead', 'supervisor'
+        ).prefetch_related("permissions", "employee_groups").defer("skills", "address")
 
     def manday(self, obj):
         if obj.grade:
             return obj.grade.a_man_day
 
+    @admin.display(ordering="department__name")
     def get_dep(self, obj):
         return obj.department.name
 
     get_dep.admin_order_field = 'department'
     get_dep.short_description = 'Department'
 
+    @admin.display(ordering="role__name")
     def get_role(self, obj):
         return obj.role.name
 
     get_role.admin_order_field = 'role'
     get_role.short_description = 'Role'
+
+    @admin.display(ordering="employement_status__name")
+    def get_employment_status(self, obj):
+        return obj.employement_status.name if obj.employement_status else "-"
+
+    @admin.display(ordering="location__name")
+    def get_location(self, obj):
+        return obj.location.name if obj.location else "-"
 
 
 # admin.site.unregister(Site)
