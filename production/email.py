@@ -3,7 +3,7 @@ import logging
 from datetime import datetime
 
 filename = datetime.now().strftime("%d-%m-%Y %H-%M-%S")#Setting the filename from current date and time
-logging.basicConfig(filename="./email_build.log", filemode='a',
+logging.basicConfig(filename="/tmp/email_build.log", filemode='a',
                     format="%(asctime)s, %(msecs)d %(name)s %(levelname)s [ %(filename)s-%(module)s-%(lineno)d ]  : %(message)s",
                     datefmt="%H:%M:%S",
                     level=logging.DEBUG)
