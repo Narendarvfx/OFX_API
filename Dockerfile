@@ -22,10 +22,13 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 # Make port 8000 available to the world outside this container
-EXPOSE 8000
+EXPOSE 8000 5555
 
 # Define environment variable
 #ENV DJANGO_SETTINGS_MODULE=OFX_API.settings
 
 # Run the Django development server
-CMD ["gunicorn", "OFX_API.wsgi:application", "--bind", "0.0.0.0:8000" ]
+#CMD ["gunicorn", "OFX_API.wsgi:application", "--bind", "0.0.0.0:8000" ]
+
+# Run the Django app and Flower using Supervisor
+CMD ["sh", "-c", "gunicorn OFX_API.wsgi:application --bind 0.0.0.0:8000 & celery -A OFX_API flower --port=5555 --address=0.0.0.0"]
