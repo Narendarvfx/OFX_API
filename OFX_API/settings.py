@@ -405,8 +405,8 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = config('EMAIL_HOST')
 
 EMAIL_PORT = 25
-EMAIL_HOST_USER = 'shotbuzzalerts@oscarfx.com'
-EMAIL_HOST_PASSWORD = 'Oscarfx@12345'
+EMAIL_HOST_USER = 'shotbuzzalerts@pixrock.org'
+EMAIL_HOST_PASSWORD = 'Mail@123'
 
-DEFAULT_FROM_EMAIL = "shotbuzzalerts@oscarfx.com"
+DEFAULT_FROM_EMAIL = "shotbuzzalerts@pixrock.org"
 EMAIL_TIMEOUT = 600
