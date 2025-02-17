@@ -404,7 +404,7 @@ EMAIL_USE_TLS = True
 # EMAIL_HOST = '124.123.22.16'
 EMAIL_HOST = config('EMAIL_HOST')
 
-EMAIL_PORT = 25
+EMAIL_PORT = 587
 EMAIL_HOST_USER = 'shotbuzzalerts@pixrock.org'
 EMAIL_HOST_PASSWORD = 'Mail@123'
 
