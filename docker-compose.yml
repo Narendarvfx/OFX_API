@@ -7,6 +7,7 @@ services:
     volumes:
       - .:/ofx_api
       - ./static:/static  # Mount static folder to share with Nginx
+      - ./media:/media  # Persist media files
       - ./OFX_API/migrations:/ofx_api/OFX_API/migrations  # Persist migrations
     ports:
       - "8000:8000"
@@ -26,6 +27,7 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - ./static:/static
+      - ./media:/media  # Persist media files
     depends_on:
       - web
     networks:
