@@ -12,7 +12,7 @@ import logging
 from datetime import datetime
 
 filename = datetime.now().strftime("%d-%m-%Y %H-%M-%S")#Setting the filename from current date and time
-logging.basicConfig(filename="./email_send.log", filemode='a',
+logging.basicConfig(filename="/tmp/email_send.log", filemode='a',
                     format="%(asctime)s, %(msecs)d %(name)s %(levelname)s [ %(filename)s-%(module)s-%(lineno)d ]  : %(message)s",
                     datefmt="%H:%M:%S",
                     level=logging.DEBUG)
@@ -33,18 +33,26 @@ def send_notification_mail(self, context={}, template=None, subject=str, to_addr
         )
         mail.content_subtype = "html"
 
-        logging.info("Sending email")
+        logging.info(f"Attempting to send email to {to_addr}")
+
         result = mail.send()
 
         if result == 0:
-            raise smtplib.SMTPException("Failed to send email")
+            error_msg = "Failed to send email"
+            logging.error(error_msg)
+            raise smtplib.SMTPException(error_msg)  # Ensure failure is raised
 
+        logging.info(f"Email sent successfully to {to_addr}")
         return {"status": "success", "message": "Email sent successfully"}
 
     except smtplib.SMTPException as e:
-        logging.error(f"Email sending failed: {str(e)}")
-        raise self.retry(exc=e, countdown=10, max_retries=3)  # Retries up to 3 times
+        logging.error(f"SMTPException: {str(e)} - Retrying...")
+
+        # Raise self.retry() properly so Celery marks it as "RETRY"
+        raise self.retry(exc=e, countdown=10)
 
     except Exception as e:
         logging.error(f"Unexpected error: {str(e)}")
-        return {"status": "failed", "message": str(e)}
+
+        # Raise exception so Celery marks it as "FAILED"
+        raise e
