@@ -13,7 +13,7 @@ class EmailBuild():
 
     def on_approve_email_build(version_data=None):
         if version_data:
-            print(version_data[0]['shot'])
+            # print(version_data[0]['shot'])
             context = {
                 "client": version_data[0]['shot']['sequence']['project']['client']['name'],
                 "project": version_data[0]['shot']['sequence']['project']['name'],
