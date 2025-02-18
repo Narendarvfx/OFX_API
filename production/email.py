@@ -56,7 +56,7 @@ class EmailBuild():
 
             try:
                 logging.info("Initiated Email for shot: {}".format(version_data[0]['shot']['name']) )
-                send_notification_mail.delay(context=context,template=template,subject=subject, to_addr=to_addr, cc_addr=cc_addr, reply_to=reply_to)
+                send_notification_mail(context=context,template=template,subject=subject, to_addr=to_addr, cc_addr=cc_addr, reply_to=reply_to)
             except Exception as e:
                 logging.error("Error for shot: {}".format(version_data[0]['shot']['name']))
                 logging.error(e)
