@@ -11,13 +11,6 @@ from OFX_API.settings import DEFAULT_FROM_EMAIL
 import logging
 from datetime import datetime
 
-filename = datetime.now().strftime("%d-%m-%Y %H-%M-%S")#Setting the filename from current date and time
-logging.basicConfig(filename="/tmp/email_send.log", filemode='a',
-                    format="%(asctime)s, %(msecs)d %(name)s %(levelname)s [ %(filename)s-%(module)s-%(lineno)d ]  : %(message)s",
-                    datefmt="%H:%M:%S",
-                    level=logging.DEBUG)
-
-
 @shared_task(bind=True, autoretry_for=(smtplib.SMTPException, ConnectionError, TimeoutError), retry_backoff=10,
              max_retries=3)
 def send_notification_mail(self, context={}, template=None, subject=str, to_addr=[], cc_addr=[], reply_to=[]):
@@ -46,12 +39,14 @@ def send_notification_mail(self, context={}, template=None, subject=str, to_addr
         return {"status": "success", "message": "Email sent successfully"}
 
     except smtplib.SMTPException as e:
+        print(e)
         logging.error(f"SMTPException: {str(e)} - Retrying...")
 
         # Raise self.retry() properly so Celery marks it as "RETRY"
         raise self.retry(exc=e, countdown=10)
 
     except Exception as e:
+        print(e)
         logging.error(f"Unexpected error: {str(e)}")
 
         # Raise exception so Celery marks it as "FAILED"

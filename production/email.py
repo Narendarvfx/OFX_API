@@ -2,11 +2,6 @@ from production.tasks import send_notification_mail
 import logging
 from datetime import datetime
 
-filename = datetime.now().strftime("%d-%m-%Y %H-%M-%S")#Setting the filename from current date and time
-logging.basicConfig(filename="/tmp/email_build.log", filemode='a',
-                    format="%(asctime)s, %(msecs)d %(name)s %(levelname)s [ %(filename)s-%(module)s-%(lineno)d ]  : %(message)s",
-                    datefmt="%H:%M:%S",
-                    level=logging.DEBUG)
 class EmailBuild():
     def __init__(self, version_data):
         self.version_data = version_data
