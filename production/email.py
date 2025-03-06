@@ -32,9 +32,9 @@ class EmailBuild():
             else:
                 template = "./email_templates/approve_email_template.html"
             subject = "Upload Shot: "+ version_data[0]['shot']['sequence']['project']['client']['name']+"_"+version_data[0]['shot']['sequence']['project']['name']+"-"+version_data[0]['shot']['task_type']['name']+":"+version_data[0]['shot']['name']
-            to_addr = ['io@pixrock.org']
+            to_addr = ['IO@pixrock.org']
             reply_to = [version_data[0]['sent_by']['email']]
-            cc_addr = []
+            cc_addr = ['narendar@pixrock.org']
             if version_data[0]['shot']['location']['name'] == "PUNE":
                 cc_addr.extend(['srinivas.r@oscarfx.com','shotbuzzalerts@pixrock.org'])
             else:
