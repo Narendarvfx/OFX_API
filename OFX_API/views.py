@@ -23,7 +23,7 @@ def home_view(request):
         'user':request.user
     }
     user = Employee.objects.get(profile__id=request.user.id)
-    if user.role.name =='CHIEF EXECUTIVE OFFICER' or user.role.name =='CHIEF OPERATING OFFICER' or user.role.name =='CENTRAL PRODUCTION MANAGER' or user.role.name =='HEAD OF PRODUCTION' or user.role.name =='VFX PRODUCER' or user.role.name =='PIPELINE ADMIN':
+    if user.role.name =='CHIEF EXECUTIVE OFFICER' or user.role.name =='CHIEF OPERATING OFFICER' or user.role.name =='CENTRAL PRODUCTION MANAGER' or user.role.name =='HEAD OF PRODUCTION' or user.role.name =='VFX PRODUCER' or user.role.name =='PIPELINE ADMIN' or user.role.name =='DATA I/O':
         return render(request, 'production/studio_report.html', context)
     elif user.role.name =='HEAD OF DEPARTMENT':
         return render(request, 'production/department_report.html', context)
