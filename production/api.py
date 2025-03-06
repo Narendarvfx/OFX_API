@@ -537,7 +537,7 @@ class ShotsApi(APIView):
     def get(self, request, format=None):
         query_params = self.request.query_params
         argumentos = {}
-        order_fields = []
+        order_fields = ['id']
 
         if query_params.get('shot_id'):
             argumentos['pk'] = query_params.get('shot_id')
