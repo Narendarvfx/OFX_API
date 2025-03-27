@@ -12,6 +12,7 @@ venv/
 db.sqlite3
 *.json
 *.sql
+staticfiles/
 static/admin/
 static/admin/css/autocomplete.css
 *.map
@@ -188,3 +189,4 @@ push.sh
 media/attachments/
 OFX_API/.prod_env
 .run/ofx_api.run.xml
+OFX_API/.envv

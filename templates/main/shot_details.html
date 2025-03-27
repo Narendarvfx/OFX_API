@@ -790,7 +790,7 @@
                     xKeyEKEY = shotassignments.makeKey([
                         ofx_page_data.user.fullName!=null?ofx_page_data.user.fullName:null
                         ]);
-                if(typeof shotassignments.shotPosb[xKey] != "undefined" && !shotassignments.shotPosb[xKey].isBeforeArtist && (allowAllActions||typeof shotassignments.shotPosb[xKey].authorizedRoles[xKeyEDR] != "undefined" || typeof shotassignments.shotPosb[xKey].authorizedRoles[xKeyEKEY] != "undefined" ) && (allowAllActions || userPermissions.indexOf("can_view_shots_by_artists")==-1 || [data.supervisor, data.team_lead].indexOf(ofx_make_key(ofx_page_data.user.fullName))!=-1)){
+                if(typeof shotassignments.shotPosb[xKey] != "undefined" && !shotassignments.shotPosb[xKey].isBeforeArtist && (allowAllActions||typeof shotassignments.shotPosb[xKey].authorizedRoles[xKeyEDR] != "undefined" || typeof shotassignments.shotPosb[xKey].authorizedRoles[xKeyEKEY] != "undefined" ) && (allowAllActions || userPermissions.indexOf("can_view_shots_by_artists")==-1 ||userPermissions.indexOf("can_approve_shot")!=-1 || [data.supervisor, data.team_lead].indexOf(ofx_make_key(ofx_page_data.user.fullName))!=-1)){
                     if(shotassignments.shotPosb[xKey].acceptCase !=null){
                         $(approve_button).attr('data-data',JSON.stringify({shot_id:data.id}));
                         $(approve_button).attr('data-set',JSON.stringify({status: shotassignments.shotPosb[xKey].acceptCase.id}));

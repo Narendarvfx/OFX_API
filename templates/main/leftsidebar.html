@@ -27,7 +27,7 @@
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav">
             <ul id="sidebarnav">
-                {% if user.employee.role.name == "CENTRAL PRODUCTION MANAGER" or request.user|has_group:"Developers" %}
+                {% if user.employee.role.name == "CENTRAL PRODUCTION MANAGER" or request.user|has_group:"Developers" or user.employee.role.name == "DATA I/O"%}
                     <li>
                         <a class="has-arrow12" href="/" aria-expanded="false"><i class="mdi mdi-view-dashboard" style="color: coral !important;"></i><span class="hide-menu">Dashboard </span></a>
                     </li>
