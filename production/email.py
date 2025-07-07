@@ -35,15 +35,15 @@ class EmailBuild():
             to_addr = ['IO@pixrock.org']
             reply_to = [version_data[0]['sent_by']['email']]
             cc_addr = ['narendar@pixrock.org']
-            if version_data[0]['shot']['location']['name'] == "PUNE":
-                cc_addr.extend(['srinivas.r@oscarfx.com','shotbuzzalerts@pixrock.org'])
+            if version_data[0]['shot']['location']['name'] == "CHENNAI":
+                cc_addr.extend(['PC1063_Aishwarya@pixrock.org','shotbuzzalerts@pixrock.org'])
             else:
                 if version_data[0]['shot']['task_type']['name'] == "PAINT":
-                    cc_addr.extend(['psc1167_Ilayaraja@PIXROCK.ORG'])
+                    cc_addr.extend(['psc1167_Ilayaraja@PIXROCK.ORG','ps1175_soniya@pixrock.org'])
                 elif version_data[0]['shot']['task_type']['name'] == "ROTO":
-                    cc_addr.extend(['ps1007_Ayyarkannan@PIXROCK.ORG'])
-                # elif version_data[0]['shot']['task_type']['name'] == "MM":
-                #     cc_addr.extend(['varaprasad@oscarfx.com'])
+                    cc_addr.extend(['ps1007_Ayyarkannan@PIXROCK.ORG','ps1270_keerthiga@pixrock.org'])
+                elif version_data[0]['shot']['task_type']['name'] == "MM":
+                    cc_addr.extend(['ps1269_sasi@pixrock.org'])
                 # elif version_data[0]['shot']['task_type']['name'] == "COMP":
                 #     cc_addr.extend(['ramarao.k@oscarfx.com'])
                 if version_data[0]['sent_by'] is not None and version_data[0]['sent_by']['email'] is not None and version_data[0]['sent_by']['email'] not in cc_addr:
